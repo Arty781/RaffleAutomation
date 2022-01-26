@@ -1,0 +1,95 @@
+{
+  "uuid": "5094ba31-883e-40cd-a5b9-382250053436-tr-0-1001",
+  "historyId": "RaffleHouseAutomation.AdminSiteTests.AdminSiteTests.LoginInCms",
+  "fullName": "RaffleHouseAutomation.AdminSiteTests.AdminSiteTests.LoginInCms",
+  "labels": [
+    {
+      "name": "thread",
+      "value": "NonParallelWorker"
+    },
+    {
+      "name": "host",
+      "value": "DESKTOP-PTHM14T"
+    },
+    {
+      "name": "testClass",
+      "value": "RaffleHouseAutomation.AdminSiteTests.AdminSiteTests"
+    },
+    {
+      "name": "testMethod",
+      "value": "LoginInCms"
+    },
+    {
+      "name": "package",
+      "value": "RaffleHouseAutomation.AdminSiteTests.AdminSiteTests"
+    }
+  ],
+  "links": [],
+  "name": "LoginInCms",
+  "status": "passed",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false,
+    "message": "LoginInCms"
+  },
+  "stage": "finished",
+  "steps": [
+    {
+      "name": "LoginInCms",
+      "status": "passed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false
+      },
+      "stage": "finished",
+      "steps": [
+        {
+          "name": "Enter login and password",
+          "status": "passed",
+          "statusDetails": {
+            "known": false,
+            "muted": false,
+            "flaky": false
+          },
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1643134244156,
+          "stop": 1643134244328
+        },
+        {
+          "name": "Click SignIn button",
+          "status": "passed",
+          "statusDetails": {
+            "known": false,
+            "muted": false,
+            "flaky": false
+          },
+          "stage": "finished",
+          "steps": [],
+          "attachments": [],
+          "parameters": [],
+          "start": 1643134244329,
+          "stop": 1643134244373
+        }
+      ],
+      "attachments": [
+        {
+          "name": "Console Output",
+          "source": "ef24f434b258449aa22bcae0b86c4978-attachment.txt",
+          "type": "text/plain"
+        }
+      ],
+      "parameters": [],
+      "start": 1643134242912,
+      "stop": 1643134244961
+    }
+  ],
+  "attachments": [],
+  "parameters": [],
+  "start": 1643134242912,
+  "stop": 1643134244964
+}

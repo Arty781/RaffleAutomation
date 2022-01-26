@@ -1,0 +1,76 @@
+{
+  "uuid": "29821234-1750-4a06-b8a1-860f2b5c7565-tc-0-1000",
+  "name": "RaffleHouseAutomation.AdminSiteTests.AdminSiteTests.LoginInCms",
+  "children": [
+    "45b662b7-1a2a-46fe-8469-4baf0b5a8454-tr-0-1001"
+  ],
+  "befores": [
+    {
+      "name": "OneTimeSetUp",
+      "status": "passed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false
+      },
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [],
+      "start": 1643134273036,
+      "stop": 1643134273036
+    },
+    {
+      "name": "Initialize",
+      "status": "passed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false
+      },
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [],
+      "start": 1643134273036,
+      "stop": 1643134273036
+    }
+  ],
+  "afters": [
+    {
+      "name": "TearDown",
+      "status": "passed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false
+      },
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [],
+      "start": 1643134273036,
+      "stop": 1643134273036
+    },
+    {
+      "name": "OneTimeTearDown",
+      "status": "none",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false,
+        "message": "It's not possible to get status of OneTimeTearDown",
+        "trace": "See Allure.NUnit wiki"
+      },
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [],
+      "start": 1643134273036,
+      "stop": 1643134273036
+    }
+  ],
+  "links": [],
+  "start": 1643134255501,
+  "stop": 1643134273056
+}
