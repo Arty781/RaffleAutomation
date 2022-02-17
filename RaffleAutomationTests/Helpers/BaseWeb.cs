@@ -15,6 +15,7 @@ namespace RaffleAutomationTests.Helpers
         [OneTimeSetUp]
         public static void OneTimeSetUp()
         {
+            AllureConfigFilesHelper.CreateBatFile();
             Browser.Initialize();
         } 
 
