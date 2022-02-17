@@ -41,5 +41,11 @@ namespace RaffleAutomationTests.Helpers
         {
             new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds)).Until(SeleniumExtras.WaitHelpers.ExpectedConditions.VisibilityOfAllElementsLocatedBy(element));
         }
+
+        public static void VisibilityOfAllElementsLocatedBy1(By element, int seconds = 10)
+        {
+            new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds)).Until(OpenQA.Selenium.Support.UI.ExpectedConditions.VisibilityOfAllElementsLocatedBy(element));
+        }
+
     }
 }

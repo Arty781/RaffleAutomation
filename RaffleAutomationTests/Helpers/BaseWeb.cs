@@ -1,43 +1,45 @@
-﻿using NUnit.Allure.Core;
-using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NUnit.Framework;
+using NUnit.Framework.Interfaces;
+using OpenQA.Selenium;
 
 namespace RaffleAutomationTests.Helpers
 {
-    
+
     public class BaseWeb
     {
        
         public static Process? _process;
 
         [OneTimeSetUp]
-        public static void OneTimeSetUp() => _process = Process.Start(Browser.RootPath1() + ChromeDriverPath.path);
+        public static void OneTimeSetUp()
+        {
+            Browser.Initialize();
+        } 
 
 
 
         [OneTimeTearDown]
         public static void OneTimeTearDown()
         {
-            if (_process != null)
+            
+            if (Browser._Driver != null)
             {
-                _process.Kill();
+                Browser.Quit();
             }
+            
         }
 
         [TearDown]
         public static void TearDown()
         {
-            if (Browser._Driver != null)
+            if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
             {
-                Browser.Close();
+                _ = TelegramHelper.SendMessage();
+                _ = TelegramHelper.SendImage();
             }
+            Browser.Close();
         }
     }
 }

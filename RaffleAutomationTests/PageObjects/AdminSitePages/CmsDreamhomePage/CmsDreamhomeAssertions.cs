@@ -10,6 +10,12 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class CmsDreamhome
     {
-
+        [AllureStep("Get dreamhome title")]
+        public string GetDreamhomeTitle()
+        {
+            WaitUntil.ElementIsVisible(_titleInput);
+            string dreamhomeTitle = titleInput.GetAttribute("value");
+            return dreamhomeTitle;
+        }
     }
 }

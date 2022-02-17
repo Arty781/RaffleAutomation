@@ -17,9 +17,8 @@ namespace AdminSiteTests.BASE
 
         [SetUp]
 
-        public void Initialize()
+        public void SetUp()
         {
-            Browser.Initialize("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
             Browser._Driver.Navigate().GoToUrl(Endpoints.adminHost);
         }
         

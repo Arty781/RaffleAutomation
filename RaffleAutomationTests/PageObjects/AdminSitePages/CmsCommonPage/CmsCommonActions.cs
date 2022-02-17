@@ -1,4 +1,5 @@
 ﻿using NUnit.Allure.Steps;
+using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
 using System;
 using System.Collections.Generic;
@@ -129,5 +130,43 @@ namespace RaffleAutomationTests.PageObjects
 
 
         #endregion
+
+        [AllureStep("Click \"Save\" button")]
+        public CmsCommon ClickSaveBtn()
+        {
+            WaitUntil.WaitSomeInterval(1);
+            int elemPos = saveBtn.Location.Y;
+            ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
+            saveBtn.Click();
+
+            return this;
+        }
+
+        [AllureStep("Click \"Cancel\" button")]
+        public CmsCommon ClickCancelBtn()
+        {
+            WaitUntil.ElementIsVisible(_cancelBtn);
+            int elemPos = cancelBtn.Location.Y;
+            ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
+            cancelBtn.Click();
+            WaitUntil.WaitSomeInterval(1);
+
+            return this;
+        }
+
+        [AllureStep("Open \"Description\" tab")]
+        public CmsCommon OpenDescriptionTab()
+        {
+            WaitUntil.ElementIsVisible(_descriptionTab);
+            int elemPos = descriptionTab.Location.Y;
+            ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
+            descriptionTab.Click();
+            WaitUntil.WaitSomeInterval(1);
+
+            return this;
+        }
+
+
+
     }
 }

@@ -19,7 +19,7 @@ namespace WebsiteTests.BASE
 
         public void Initialize()
         {
-            Browser.Initialize("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
+            
             Browser._Driver.Navigate().GoToUrl(Endpoints.websiteHost);
         }
         
