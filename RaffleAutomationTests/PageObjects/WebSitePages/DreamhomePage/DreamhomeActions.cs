@@ -1,5 +1,6 @@
 ﻿using NUnit.Allure.Steps;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using RaffleAutomationTests.Helpers;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open Dreamhome product page")]
        public Dreamhome OpenDreamHomeProductPage()
         {
-            WaitUntil.ElementIsVisible(_raffleBtn);
-            Browser._Driver.SwitchTo().Equals(raffleBtn);
-            raffleBtn.Click();
+            /*WaitUntil.VisibilityOfAllElementsLocatedBy(_raffleBtn);*/
+            ClickHelper.Clicker(raffleBtn);
 
             return this;
         }
@@ -25,7 +25,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open ticket selector")]
         public Dreamhome OpenDreamHomeTicketSelector()
         {
-            WaitUntil.ElementIsVisible(_enterNowDreamhomeBtn);
+            WaitUntil.VisibilityOfAllElementsLocatedBy(_enterNowDreamhomeBtn);
             enterNowDreamhomeBtn.Click();
 
             return this;

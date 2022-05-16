@@ -16,5 +16,20 @@ namespace RaffleAutomationTests.Helpers
 
             return randomNum;
         }
+
+        
+        
+
+        public static string RandomString()
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, 5)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+
+           
+        
     }
 }

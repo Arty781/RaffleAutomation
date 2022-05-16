@@ -82,6 +82,7 @@ namespace RaffleAutomationTests.PageObjects
         {
             WaitUntil.WaitSomeInterval(1);
             WaitUntil.ElementIsVisibleAndClickable(_enterBtn);
+            enterBtn.SendKeys("");
             enterBtn.Click();
             return this;
         }

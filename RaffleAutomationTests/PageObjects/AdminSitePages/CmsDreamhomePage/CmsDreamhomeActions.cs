@@ -296,7 +296,7 @@ namespace RaffleAutomationTests.PageObjects
         public CmsDreamhome EnterPrice()
         {
             WaitUntil.ElementIsVisibleAndClickable(_ticketPriceInput);
-            ticketPriceInput.SendKeys("0.5");
+            ticketPriceInput.SendKeys("0.99");
 
             return this;
         }

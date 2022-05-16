@@ -27,13 +27,13 @@ namespace RaffleAutomationTests.PageObjects
         public readonly static By _selectSubCategory = By.XPath("//*/ul[@class=\"filter-select__list\"]/li");
 
         public IWebElement weeklyProductCard => Browser._Driver.FindElement(_weeklyProductCard);
-        public readonly static By _weeklyProductCard = By.XPath("//*/article");
+        public readonly static By _weeklyProductCard = By.XPath("//article[@class='product-card-component product-card']");
 
         public IWebElement weeklyProductCardEnt => Browser._Driver.FindElement(_weeklyProductCardEnt);
         public readonly static By _weeklyProductCardEnt = By.XPath("//*/article/div[1]/button");
 
         public IWebElement weeklyProductCardTitle => Browser._Driver.FindElement(_weeklyProductCardTitle);
-        public readonly static By _weeklyProductCardTitle = By.XPath("//*/article/div[2]/div/h3");
+        public readonly static By _weeklyProductCardTitle = By.XPath("//article[@class='product-card-component product-card']//h3");
 
 
         public IWebElement closeWeeklyPopUp => Browser._Driver.FindElement(_closeWeeklyPopUp);

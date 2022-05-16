@@ -27,11 +27,13 @@ namespace RaffleAutomationTests.Helpers
 
         public static void Initialize()
         {
+            AllureConfigFilesHelper.CopyJsonConfigFile();
+
             new DriverManager().SetUpDriver(new ChromeConfig());
             windowsDriver = new ChromeDriver();
             _Driver.Manage().Cookies.DeleteAllCookies();
             _Driver.Manage().Window.Maximize();
-            
+
             Assert.NotNull(windowsDriver);
         }
 

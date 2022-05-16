@@ -10,63 +10,50 @@ namespace RaffleAutomationTests.PageObjects
     public partial class Header
     {
         #region Opening links in header
-        public Header OpenHomePage()
+        public Header OpenHomePage(string url)
         {
-            WaitUntil.ElementIsVisibleAndClickable(_logo);
-            logo.Click();
+            Browser._Driver.Navigate().GoToUrl(url);
 
             return this;
         }
 
-        public Header OpenDreamhomePage()
+        public Header OpenDreamhomePage(string url)
         {
-            WaitUntil.WaitSomeInterval(1);
-            liveCompetitionsList.Click();
-            WaitUntil.ElementIsVisibleAndClickable(_dreamHomeLink);
-            dreamHomeLink.Click();
+            Browser._Driver.Navigate().GoToUrl(url);
 
             return this;
         }
 
-        public Header OpenWeeklyPrizesPage()
+        public Header OpenWeeklyPrizesPage(string url)
         {
-            WaitUntil.ElementIsClickable(liveCompetitionsList);
-            liveCompetitionsList.Click();
-            WaitUntil.ElementIsVisibleAndClickable(_weeklyLink);
-            weeklyLink.Click();
+            Browser._Driver.Navigate().GoToUrl(url);
 
             return this;
         }
-        public Header OpenFixedOddsPrizesPage()
+        public Header OpenFixedOddsPrizesPage(string url)
         {
-            WaitUntil.ElementIsClickable(liveCompetitionsList);
-            liveCompetitionsList.Click();
-            WaitUntil.ElementIsVisibleAndClickable(_fixedOddsLink);
-            fixedOddsLink.Click();
+            Browser._Driver.Navigate().GoToUrl(url);
 
             return this;
         }
 
-        public Header OpenWinnersPage()
+        public Header OpenWinnersPage(string url)
         {
-            WaitUntil.ElementIsClickable(winnersLink);
-            winnersLink.Click();
+            Browser._Driver.Navigate().GoToUrl(url);
 
             return this;
         }
 
-        public Header OpenFAQsPage()
+        public Header OpenFAQsPage(string url)
         {
-            WaitUntil.ElementIsClickable(faqsLink);
-            faqsLink.Click();
+            Browser._Driver.Navigate().GoToUrl(url);
 
             return this;
         }
 
-        public Header OpenAboutPage()
+        public Header OpenAboutPage(string url)
         {
-            WaitUntil.ElementIsClickable(aboutLink);
-            aboutLink.Click();
+            Browser._Driver.Navigate().GoToUrl(url);
 
             return this;
         }
@@ -87,10 +74,9 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
-        public Header OpenFreeEntryPage()
+        public Header OpenFreeEntryPage(string url)
         {
-            WaitUntil.ElementIsClickable(freeEntryBtn);
-            freeEntryBtn.Click();
+            Browser._Driver.Navigate().GoToUrl(url);
 
             return this;
         }
