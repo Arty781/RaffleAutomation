@@ -23,13 +23,9 @@ namespace RaffleAutomationTests.Helpers
         
         public void GoToAllureResults()
         {
-
-            Process.Start(RootPath() + "allure serve.bat");
+            AllureConfigFilesHelper.CreateBatFile();
+            Process.Start(Browser.RootPath() + "allure serve.bat");
         }
-        public static string RootPath()
-        {
-            string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\..\\"));
-            return mainpath;
-        }
+        
     }
 }

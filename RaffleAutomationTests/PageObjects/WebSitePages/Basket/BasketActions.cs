@@ -35,14 +35,10 @@ namespace RaffleAutomationTests.PageObjects
         public Basket ClickCheckoutNowBtn()
         {
             
-            new Actions(Browser._Driver)
-                .SendKeys(Keys.End)
-                .SendKeys(Keys.End)
-                .Build()
-                .Perform();
+            
             WaitUntil.ElementIsInvisible(Common._addToBasketBtn);
             WaitUntil.ElementIsVisibleAndClickable(_checkOutNowBtn);
-            checkOutNowBtn.Click();
+            ClickHelper.Clicker(checkOutNowBtn);
 
             return this;
         }
@@ -80,11 +76,10 @@ namespace RaffleAutomationTests.PageObjects
         {
             Browser._Driver.SwitchTo().DefaultContent();
             WaitUntil.ElementIsClickable(payBtn, 20);
+
+            ClickHelper.Clicker(payBtn);
             
-            payBtn.Click();
-
-
-            WaitUntil.WaitSomeInterval(15);
+            WaitUntil.VisibilityOfAllElementsLocatedBy(By.XPath("//h1[@class='orderCompleted']"),15);
             
 
             return this;

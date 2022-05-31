@@ -11,7 +11,7 @@ namespace RaffleAutomationTests.PageObjects
     public partial class Dreamhome
     {
         public IWebElement raffleBtn => Browser._Driver.FindElement(_raffleBtn);
-        public readonly static By _raffleBtn = By.XPath("//*/div[@class=\"competition-cards\"]//*[@class=\"rafflebtn primary full-width\"]");
+        public readonly static By _raffleBtn = By.CssSelector("button.full-width");
 
         public IWebElement firstBundleBtn => Browser._Driver.FindElement(_firstBundleBtn);
         public readonly static By _firstBundleBtn = By.XPath("//*/ul/li[1]/div[@class=\"popular-ticket-content\"]");
@@ -29,6 +29,9 @@ namespace RaffleAutomationTests.PageObjects
         public readonly static By _contactSection = By.XPath("//*/section[@class=\"contacts-submit\"]/*//div[@class=\"winner-club-title\"]");
 
         public IWebElement enterNowDreamhomeBtn => Browser._Driver.FindElement(_enterNowDreamhomeBtn);
-        public readonly static By _enterNowDreamhomeBtn = By.XPath("//*/button[@class=\"rafflebtn secondary full-width sticky-dh-btn\"]");
+        public readonly static By _enterNowDreamhomeBtn = By.XPath("//div[@class='sticky-buy-dh']//button");
+
+        public IWebElement winnersSectionTitle => Browser._Driver.FindElement(_winnersSectionTitle);
+        public readonly static By _winnersSectionTitle = By.XPath("//div[@class='winner-club-title']");
     }
 }

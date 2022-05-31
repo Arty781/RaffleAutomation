@@ -11,15 +11,14 @@ using System.Threading.Tasks;
 
 namespace WebsiteTests.BASE
 {
-    [TestFixture]
-    [AllureNUnit]
+    
     public class TestBaseWeb : BaseWeb
     {
         [SetUp]
 
         public void Initialize()
         {
-            Browser.Initialize("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
+            
             Browser._Driver.Navigate().GoToUrl(Endpoints.websiteHost);
         }
         

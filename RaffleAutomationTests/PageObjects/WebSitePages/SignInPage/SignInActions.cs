@@ -41,7 +41,7 @@ namespace RaffleAutomationTests.PageObjects
                 .Build()
                 .Perform();
             /*GoogleNextBtn.SendKeys(Keys.Enter);*/
-            WaitUntil.ElementIsVisibleAndClickable(_GooglePasswordInput, 10);
+            WaitUntil.ElementIsVisibleAndClickable(_GooglePasswordInput, 3);
             GooglePasswordInput.SendKeys(password);
             new Actions(Browser._Driver)
                 .SendKeys(Keys.Enter)

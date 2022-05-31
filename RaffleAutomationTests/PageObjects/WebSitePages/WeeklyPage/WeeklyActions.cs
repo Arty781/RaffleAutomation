@@ -25,7 +25,7 @@ namespace RaffleAutomationTests.PageObjects
         public Weekly SelectCategory(string category)
         {
            /*WaitUntil.WaitSomeInterval(3);*/
-            WaitUntil.ElementIsVisible(_categorySlider);
+            WaitUntil.VisibilityOfAllElementsLocatedBy(_categorySlider, 30);
             IReadOnlyCollection<IWebElement> catList = Browser._Driver.FindElements(_categorySlider);
             foreach(var cat in catList)
             {
@@ -65,23 +65,24 @@ namespace RaffleAutomationTests.PageObjects
         {
             WaitUntil.WaitSomeInterval(3);
             IReadOnlyCollection<IWebElement> prizeList = Browser._Driver.FindElements(_weeklyProductCard);
+            int i =0;
             foreach (var prize in prizeList)
             {
-               
-                if (prize.FindElement(_weeklyProductCardTitle).Displayed == true)
-                {
-                   
-                    if (prize.FindElement(_weeklyProductCardTitle).Text == title)
+                ++i;
+                string prizeTitle = "//div[@class='lifestyleProductList__card-wrapper'][" + i + "]//article//h3";
+                IWebElement PrizeTitle = Browser._Driver.FindElement(By.XPath(prizeTitle));
+                
+                    if (PrizeTitle.Text == title)
                     {
-                        var prizeImg = prize.FindElement(_weeklyProductCardEnt);
-                        prizeImg.SendKeys(Keys.Control);
+                        string prizeEnterBtn = "//div[@class='lifestyleProductList__card-wrapper'][" + i + "]//article/div/button";
+                        IWebElement PrizeEnterBtn = Browser._Driver.FindElement(By.XPath(prizeEnterBtn));
+                        PrizeEnterBtn.SendKeys("");
                         WaitUntil.WaitSomeInterval(2);
 
-                        prizeImg.Click();
+                        PrizeEnterBtn.Click();
                         break;
                     }
-                    
-                }
+                
                
             }
 

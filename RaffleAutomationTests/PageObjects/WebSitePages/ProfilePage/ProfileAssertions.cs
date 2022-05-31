@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NUnit.Framework;
+using RaffleAutomationTests.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,12 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class Profile
     {
+        public Profile VerifyDisplayingToaster()
+        {
+            WaitUntil.VisibilityOfAllElementsLocatedBy(_SuccessUpdateDialog);
+            Assert.IsTrue(SuccessUpdateDialog.Displayed);
+
+            return this;
+        }
     }
 }

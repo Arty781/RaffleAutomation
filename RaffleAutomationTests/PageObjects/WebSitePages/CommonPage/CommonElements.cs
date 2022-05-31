@@ -11,7 +11,7 @@ namespace RaffleAutomationTests.PageObjects
     public partial class Common
     {
         public IWebElement enterBtn => Browser._Driver.FindElement(_enterBtn);
-        public readonly static By _enterBtn = By.XPath("//*/button[@class=\"enter-now__button\"]");
+        public readonly static By _enterBtn = By.XPath("//button[@class='enter-now__button']");
         
         public IWebElement confirmCookieBtn => Browser._Driver.FindElement(_confirmCookieBtn);
         public readonly static By _confirmCookieBtn = By.XPath("//*/button[@class=\"rafflebtn primary\"][contains(text(), 'Got it')]");

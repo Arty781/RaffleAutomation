@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using RaffleAutomationTests.Helpers;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebDriverManager;
+using WebDriverManager.DriverConfigs.Impl;
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -22,12 +25,15 @@ namespace RaffleAutomationTests.Helpers
             WindowsDriver = windowsDriver;
         }
 
-        public static void Initialize(string application)
+        public static void Initialize()
         {
+            AllureConfigFilesHelper.CopyJsonConfigFile();
+
+            new DriverManager().SetUpDriver(new ChromeConfig());
             windowsDriver = new ChromeDriver();
             _Driver.Manage().Cookies.DeleteAllCookies();
             _Driver.Manage().Window.Maximize();
-            
+
             Assert.NotNull(windowsDriver);
         }
 
@@ -58,17 +64,6 @@ namespace RaffleAutomationTests.Helpers
         {
             windowsDriver.Quit();
         }
-
-        public static string RootPath1()
-        {
-            string currentPath = AppDomain.CurrentDomain.BaseDirectory;
-            var directoryName = System.IO.Path.GetDirectoryName(currentPath);
-            var directory = System.IO.Path.GetDirectoryName(directoryName);
-            
-
-            return currentPath;
-        }
-
 
     }
 }

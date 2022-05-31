@@ -1,3 +1,6 @@
+using Allure.Commons;
+using NUnit.Allure.Attributes;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RaffleAutomationTests.Helpers;
 using RaffleAutomationTests.PageObjects;
@@ -5,10 +8,19 @@ using WebsiteTests.BASE;
 
 namespace RaffleHouseAutomation.WebSiteTests
 {
+    [TestFixture]
+    [AllureNUnit]
     public class WebsiteTests : TestBaseWeb
     {
 
-       [Test]
+       
+        [Test]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Login")]
         public void LoginByEmail()
         {
             Pages.Header
@@ -33,6 +45,12 @@ namespace RaffleHouseAutomation.WebSiteTests
         }
 
         [Test]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
         public void PurchaseWeeklyPrizes()
         {
             Pages.Header
@@ -42,7 +60,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .VerifyIsSignIn();
             Pages.Header
-                .OpenWeeklyPrizesPage();
+                .OpenWeeklyPrizesPage(Endpoints.lifestyle);
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.Weekly
@@ -54,38 +72,76 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickEnterBtn()
                 .ClickAddTenTickets()
                 .ClickAddToBasketBtn();
-           /* Pages.Basket
+            Pages.Basket
                 .ClickAddMoreBtn();
             Pages.Common
                 .ClickAdd25Tickets()
-                .ClickAddToBasketBtn();*/
+                .ClickAddToBasketBtn();
 
             Pages.Header
-                .OpenDreamhomePage();
-            Pages.Common
-                .ScrollToElement();
+                .OpenDreamhomePage(Endpoints.dreamhome);
+           
             Pages.Dreamhome
                 .OpenDreamHomeProductPage()
                 .OpenDreamHomeTicketSelector()
                 .SelectThirdBundleBtn();
             Pages.Common
                 .ClickAddToBasketBtn();
-            /*Pages.Basket
-                .ClickAddMoreBtn();
-            Pages.Dreamhome
-                .SelectFirstBundleBtn();
-            Pages.Common
-                .ClickAddToBasketBtn();*/
-            Pages.Common
-                .ScrollToElement();
             Pages.Basket
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails();
-            Pages.Common
-                .ScrollToElement();
             Pages.Basket
                 .ClickPayNowBtn();
             
+        }
+
+        [Test]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
+        public void RegisterNewUser()
+        {
+            Pages.Header
+                .OpenSignUpPage();
+            Pages.SignUp
+                .EnterUserData();
+            string email = SignUp.GetEmail();
+            Pages.SignUp
+                .ClickSignUpBtn()
+                .VerifyEmail(email);
+
+        }
+
+        [Test]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
+        public void EditUserData()
+        {
+            Pages.Header
+                .OpenSignUpPage();
+            Pages.SignUp
+                .EnterUserData();
+            string email = SignUp.GetEmail();
+            Pages.SignUp
+                .ClickSignUpBtn()
+                .VerifyEmail(email);
+            Pages.Profile
+                .EditPersonalData()
+                .VerifyDisplayingToaster();
+            Pages.Profile
+                .EditPassword()
+                .VerifyDisplayingToaster();
+            Pages.Profile
+                .EditAccountData()
+                .VerifyDisplayingToaster();
+
         }
     }
 }
