@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,57 +12,59 @@ namespace RaffleAutomationTests.PageObjects
     public partial class CmsCommon
     {
         #region SideBarMenu
-        IWebElement prizeManagementBtn => Browser._Driver.FindElement(_prizeManagementBtn);
-        public readonly By _prizeManagementBtn = By.XPath("//li[@role='menuitem']//span[contains(text(),'Prize Management')]");
 
-        IWebElement dreamhomeBtn => Browser._Driver.FindElement(_dreamhomeBtn);
-        public readonly By _dreamhomeBtn = By.XPath("//a[@href='#/dreamHome']");
+        [FindsBy(How = How.XPath, Using = "//li[@role='menuitem']//span[contains(text(),'Prize Management')]")]
+        public IWebElement tbPrizeManagement;
 
-        IWebElement lifestylePrizesBtn => Browser._Driver.FindElement(_lifestylePrizesBtn);
-        public readonly By _lifestylePrizesBtn = By.XPath("//a[@href='#/prizes']");
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/dreamHome']")]
+        public IWebElement tbDreamHome;
 
-        IWebElement fixedOddsBtn => Browser._Driver.FindElement(_fixedOddsBtn);
-        public readonly By _fixedOddsBtn = By.XPath("//a[@href='#/fixedOdds']");
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/prizes']")]
+        public IWebElement tbLifeStylePrizes;
+        
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/fixedOdds']")]
+        public IWebElement tbFixedOdds;
 
-        IWebElement competitionsBtn => Browser._Driver.FindElement(_competitionsBtn);
-        public readonly By _competitionsBtn = By.XPath("//a[@href='#/competitions']");
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/competitions']")]
+        public IWebElement tbCompetitions;
 
-        IWebElement userManagementBtn => Browser._Driver.FindElement(_userManagementBtn);
-        public readonly By _userManagementBtn = By.XPath("//a[@href='#/users']");
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/users']")]
+        public IWebElement tbUserManagement;
 
-        IWebElement staffManagementBtn => Browser._Driver.FindElement(_staffManagementBtn);
-        public readonly By _staffManagementBtn = By.XPath("//a[@href='#/staffUsers']");
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/staffUsers']")]
+        public IWebElement tbStaffManagement;
 
-        IWebElement settingsBtn => Browser._Driver.FindElement(_settingsBtn);
-        public readonly By _settingsBtn = By.XPath("//li[@role='menuitem']//span[contains(text(),'Settings')]");
+        [FindsBy(How = How.XPath, Using = "//li[@role='menuitem']//span[contains(text(),'Settings')]")]
+        public IWebElement tbSettings;
 
-        IWebElement generalBtn => Browser._Driver.FindElement(_generalBtn);
-        public readonly By _generalBtn = By.XPath("//a[@href='#/general']");
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/general']")]
+        public IWebElement tbGeneral;
 
-        IWebElement winnersBtn => Browser._Driver.FindElement(_winnersBtn);
-        public readonly By _winnersBtn = By.XPath("//a[@href='#/winners']");
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/winners']")]
+        public IWebElement tbWinners;
 
-        IWebElement referralsBtn => Browser._Driver.FindElement(_referralsBtn);
-        public readonly By _referralsBtn = By.XPath("//a[@href='#/referrals']");
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/referrals']")]
+        public IWebElement tbReferrals;
 
-        IWebElement reportsBtn => Browser._Driver.FindElement(_reportsBtn);
-        public readonly By _reportsBtn = By.XPath("//a[@href='#/reports']");
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/reports']")]
+        public IWebElement tbReports;
 
         #endregion
 
         #region Save and Cancel btns
 
-        public IWebElement saveBtn => Browser._Driver.FindElement(_saveBtn);
-        public readonly By _saveBtn = By.XPath("//button/span[contains(text(),'Save')]");
+        [FindsBy(How = How.XPath, Using = "//button/span[contains(text(),'Save')]")]
+        public IWebElement btnSave;
 
-        public IWebElement cancelBtn => Browser._Driver.FindElement(_cancelBtn);
-        public readonly By _cancelBtn = By.XPath("//button/span[contains(text(),'Cancel')]");
+        [FindsBy(How = How.XPath, Using = "//button/span[contains(text(),'Cancel')]")]
+        public IWebElement btnCancel;
 
         #endregion
 
         #region Pagination
-        public IWebElement goToLastPageBtn => Browser._Driver.FindElement(_goToLastPageBtn);
-        public readonly By _goToLastPageBtn = By.XPath("//div[@title='Last Page']");
+
+        [FindsBy(How = How.XPath, Using = "//div[@title='Last Page']")]
+        public IWebElement btnGoToLastPage;
 
         #endregion
 

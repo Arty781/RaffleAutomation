@@ -34,21 +34,14 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Click Checkout Now button")]
         public Basket ClickCheckoutNowBtn()
         {
-            
-            
-            WaitUntil.ElementIsInvisible(Common._addToBasketBtn);
-            WaitUntil.ElementIsVisibleAndClickable(_checkOutNowBtn);
-            ClickHelper.Clicker(checkOutNowBtn);
-
+            Elements.Click(checkOutNowBtn);
             return this;
         }
 
         [AllureStep("Open Order summary")]
         public Basket OpenOrderSummary()
         {
-            WaitUntil.ElementIsVisible(_orderSummaryBtn);
-            orderSummaryBtn.Click();
-
+            Elements.Click(orderSummaryBtn);
             return this;
         }
 
@@ -77,7 +70,7 @@ namespace RaffleAutomationTests.PageObjects
             Browser._Driver.SwitchTo().DefaultContent();
             WaitUntil.ElementIsClickable(payBtn, 20);
 
-            ClickHelper.Clicker(payBtn);
+            Elements.Click(payBtn);
             
             WaitUntil.VisibilityOfAllElementsLocatedBy(By.XPath("//h1[@class='orderCompleted']"),15);
             

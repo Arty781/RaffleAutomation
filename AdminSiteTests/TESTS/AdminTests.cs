@@ -66,5 +66,11 @@ namespace RaffleHouseAutomation.AdminSiteTests
 
 
         }
+
+        [Test]
+        public void EditEndDateInFixedOdds()
+        {
+
+        }
     }
 }

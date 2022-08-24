@@ -1,4 +1,5 @@
 ﻿using NUnit.Allure.Steps;
+using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
 using System;
 using System.Collections.Generic;
@@ -46,12 +47,12 @@ namespace RaffleAutomationTests.PageObjects
             WaitUntil.VisibilityOfAllElementsLocatedBy(_EmailInput);
             EditAccountBtn.Click();
             WaitUntil.VisibilityOfAllElementsLocatedBy(_SaveBtn);
-            EmailInput.Clear();
+            EmailInput.SendKeys(Keys.Control + "A" + Keys.Delete);
             EmailInput.SendKeys("qatester - " + DateTime.Now.ToString("yyyy - MM - dThh - mm - ss") + "@xitroo.com");
-            ClickHelper.Clicker(Pages.SignUp.countryInput);
+            Pages.SignUp.countryInput.Click();
             ClickHelper.Clicker(Pages.SignUp.countryList);
-            Pages.SignUp.phoneInput.Clear();
-            Pages.SignUp.phoneInput.SendKeys("953214567");
+            PhoneInput.SendKeys(Keys.Control + "A" + Keys.Delete);
+            PhoneInput.SendKeys("953214567");
             SaveBtn.Click();
             return this;
         }

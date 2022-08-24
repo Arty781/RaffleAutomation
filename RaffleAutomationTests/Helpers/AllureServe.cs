@@ -13,14 +13,8 @@ namespace RaffleAutomationTests.Helpers
 {
     class AllureServe
     {
-        [AllureTag("Regression")]
-        [AllureSeverity(SeverityLevel.critical)]
-        [AllureOwner("Sukharevsky Artem")]
-        [AllureSuite("WebSite")]
-        [AllureSubSuite("Client")]
-        [Test]
-
         
+        [Test]
         public void GoToAllureResults()
         {
             AllureConfigFilesHelper.CreateBatFile();

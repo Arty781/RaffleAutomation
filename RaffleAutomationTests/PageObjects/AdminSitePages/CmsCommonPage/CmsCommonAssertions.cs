@@ -15,8 +15,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Verify is login successfully")]
         public CmsCommon VerifyIsLoginSuccessfull()
         {
-            WaitUntil.VisibilityOfAllElementsLocatedBy(_prizeManagementBtn);
-            Assert.IsTrue(prizeManagementBtn.Displayed);
+            WaitUntil.CustomElementIsVisible(tbPrizeManagement);
+            Assert.IsTrue(tbPrizeManagement.Displayed);
             return this;
         }
 

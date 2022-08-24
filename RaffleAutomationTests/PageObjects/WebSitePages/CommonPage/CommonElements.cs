@@ -35,7 +35,7 @@ namespace RaffleAutomationTests.PageObjects
         public readonly static By _remove25TicketBtn = By.XPath("//*/ul[@class=\"ticket-selector__grid\"]/li[1]");
         
         public IWebElement addToBasketBtn => Browser._Driver.FindElement(_addToBasketBtn);
-        public readonly static By _addToBasketBtn = By.XPath("//*/button/span[@class=\"add-basket\"]");
+        public readonly static By _addToBasketBtn = By.XPath("//button/span[@class='add-basket']");
 
 
 

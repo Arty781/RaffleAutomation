@@ -42,9 +42,68 @@ namespace RaffleAutomationTests.Helpers
             new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds)).Until(SeleniumExtras.WaitHelpers.ExpectedConditions.VisibilityOfAllElementsLocatedBy(element));
         }
 
-        public static void VisibilityOfAllElementsLocatedBy1(By element, int seconds = 10)
+        public static void CustomElementIsVisible(IWebElement element, int seconds = 10)
         {
-            new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds)).Until(OpenQA.Selenium.Support.UI.ExpectedConditions.VisibilityOfAllElementsLocatedBy(element));
+            WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds));
+            wait.PollingInterval = TimeSpan.FromMilliseconds(50);
+            try
+            {
+                wait.Until(e =>
+                {
+                    try
+                    {
+                        if (element.Enabled == true)
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                    catch (NoSuchElementException)
+                    {
+                        return false;
+                    }
+                    catch (StaleElementReferenceException)
+                    {
+                        return false;
+                    }
+
+                });
+            }
+            catch (NoSuchElementException) { }
+            catch (StaleElementReferenceException) { }
+        }
+
+        public static void CustomElevemtIsInvisible(IWebElement element, int seconds = 10)
+        {
+            Task.Delay(TimeSpan.FromMilliseconds(150)).Wait();
+            WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds));
+            wait.PollingInterval = TimeSpan.FromMilliseconds(100);
+            try
+            {
+                wait.Until(e =>
+                {
+                    try
+                    {
+                        if (!element.Enabled == true)
+                        {
+                            return false;
+                        }
+                        return true;
+                    }
+                    catch (NoSuchElementException)
+                    {
+                        return true;
+                    }
+                    catch (StaleElementReferenceException)
+                    {
+                        return true;
+                    }
+
+                });
+            }
+            catch (NoSuchElementException) { }
+            catch (StaleElementReferenceException) { }
+
         }
 
     }

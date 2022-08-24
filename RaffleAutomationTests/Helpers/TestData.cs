@@ -13,9 +13,9 @@ namespace RaffleAutomationTests.Helpers
         public const string signin = "https://staging.rafflehouse.com/sign-in";
         public const string signup = "https://staging.rafflehouse.com/sign-up";
         public const string dreamhome = "https://staging.rafflehouse.com/dreamhome";
-        public const string lifestyle = "https://staging.rafflehouse.com/lifestyleprizes";
+        //public const string lifestyle = "https://staging.rafflehouse.com/lifestyleprizes";
         public const string fixedodds = "https://staging.rafflehouse.com/fixedodds";
-        public const string winners = "https://staging.rafflehouse.com/lifestyleprizes";
+        public const string winners = "https://staging.rafflehouse.com/winners";
         public const string about = "https://staging.rafflehouse.com/about-us";
         public const string profile = "https://staging.rafflehouse.com/profile";
         public const string freeEntry = "https://staging.rafflehouse.com/post";

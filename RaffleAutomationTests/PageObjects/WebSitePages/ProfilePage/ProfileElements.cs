@@ -25,22 +25,22 @@ namespace RaffleAutomationTests.PageObjects
         public readonly static By _PasswordEditBtn = By.XPath("//button[@data-edit='password']");
 
         public IWebElement CurrentPasswordInput => Browser._Driver.FindElement(_CurrentPasswordInput);
-        public readonly static By _CurrentPasswordInput = By.XPath("//div[1]/label/div/div/*[@id='outlined-basic']");
+        public readonly static By _CurrentPasswordInput = By.XPath("//input[@name='oldPassword']");
 
         public IWebElement NewPasswordInput => Browser._Driver.FindElement(_NewPasswordInput);
-        public readonly static By _NewPasswordInput = By.XPath("//div[2]/label/div/div/*[@id='outlined-basic']");
+        public readonly static By _NewPasswordInput = By.XPath("//input[@name='newPassword']");
 
         public IWebElement ConfirmPasswordInput => Browser._Driver.FindElement(_ConfirmPasswordInput);
-        public readonly static By _ConfirmPasswordInput = By.XPath("//div[3]/label/div/div/*[@id='outlined-basic']");
+        public readonly static By _ConfirmPasswordInput = By.XPath("//input[@name='confirmPassword']");
 
         public IWebElement EditAccountBtn => Browser._Driver.FindElement(_AccountEditBtn);
         public readonly static By _AccountEditBtn = By.XPath("//button[@data-edit='account']");
 
         public IWebElement EmailInput => Browser._Driver.FindElement(_EmailInput);
-        public readonly static By _EmailInput = By.XPath("//div[@class='my-details-item account-details']/*/div[1]/div/*[@id]");
+        public readonly static By _EmailInput = By.XPath("//input[@name='email']");
 
         public IWebElement PhoneInput => Browser._Driver.FindElement(_PhoneInput);
-        public readonly static By _PhoneInput = By.XPath("//div[@class='my-details-item account-details']/*/div[2]/div/*[@id]");
+        public readonly static By _PhoneInput = By.XPath("//input[@name='phone']");
 
         public IWebElement EmailCommunication => Browser._Driver.FindElement(_EmailCommunication);
         public readonly static By _EmailCommunication = By.XPath("//*[@value='emailCommunication']");
