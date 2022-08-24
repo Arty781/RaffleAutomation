@@ -19,15 +19,9 @@ namespace RaffleAutomationTests.Helpers
         public IWebDriver WindowsDriver { get; set; }
         private static IWebDriver windowsDriver;
 
-
-        public Browser(IWebDriver windowsDriver)
-        {
-            WindowsDriver = windowsDriver;
-        }
-
         public static void Initialize()
         {
-            AllureConfigFilesHelper.CopyJsonConfigFile();
+            AllureConfigFilesHelper.CreateJsonConfigFile();
 
             new DriverManager().SetUpDriver(new ChromeConfig());
             windowsDriver = new ChromeDriver();
@@ -43,27 +37,11 @@ namespace RaffleAutomationTests.Helpers
             string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\..\\"));
             return mainpath;
         }
-        public static ISearchContext Driver { get { return windowsDriver; } }
-        public static IWebDriver _Driver { get { return windowsDriver; } }
-        public static string Title
-        {
-            get { return windowsDriver.Title; }
-        }
-
-        public static string CurrentURL
-        {
-            get { return windowsDriver.Url; }
-        }
-
-        public static void Close()
-        {
-            windowsDriver.Close();
-        }
-
-        public static void Quit()
-        {
-            windowsDriver.Quit();
-        }
+        public static ISearchContext Driver => windowsDriver;
+        public static IWebDriver _Driver => windowsDriver;
+        public static string Title => windowsDriver.Title;
+        public static string CurrentURL => windowsDriver.Url;
+        
 
     }
 }
