@@ -31,7 +31,7 @@ namespace RaffleAutomationTests.Helpers
             return path;
         }
 
-        public static string CopyJsonConfigFile()
+        public static string CreateJsonConfigFile()
         {
 
             FileInfo fileInf = new FileInfo(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json");

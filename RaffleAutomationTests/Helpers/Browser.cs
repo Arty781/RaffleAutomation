@@ -21,7 +21,7 @@ namespace RaffleAutomationTests.Helpers
 
         public static void Initialize()
         {
-            AllureConfigFilesHelper.CopyJsonConfigFile();
+            AllureConfigFilesHelper.CreateJsonConfigFile();
 
             new DriverManager().SetUpDriver(new ChromeConfig());
             windowsDriver = new ChromeDriver();
