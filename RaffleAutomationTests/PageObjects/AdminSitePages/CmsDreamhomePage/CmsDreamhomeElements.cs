@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,96 +11,109 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class CmsDreamhome
     {
-        public IWebElement addDreamHomeBtn => Browser._Driver.FindElement(_addDreamHomeBtn);
-        public readonly By _addDreamHomeBtn = By.XPath("//span[contains(text(), 'Add new dream home')]");
+        [FindsBy(How = How.XPath, Using = "//a[@aria-label='Add new dream home']")]
+        public IWebElement btnAddDreamHome;
+
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/dreamHome/create']")]
+        public IWebElement tabGeneralDream;
+
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/dreamHome/create/1']")]
+        public IWebElement tabDescrDream;
+
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/dreamHome/create/3']")]
+        public IWebElement tabDiscountTickets;
 
         #region General tab
-        public IWebElement desktopImageInput => Browser._Driver.FindElement(_desktopImageInput);
-        public readonly By _desktopImageInput = By.XPath("//div[@class='dropzone'][1]//input[@type='file']");
 
-        public IWebElement mobileImageInput => Browser._Driver.FindElement(_mobileImageInput);
-        public readonly By _mobileImageInput = By.XPath("//div[@class='dropzone'][2]//input[@type='file']");
 
-        public IWebElement titleInput => Browser._Driver.FindElement(_titleInput);
-        public readonly By _titleInput = By.XPath("//input[@id='title']");
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(),'desktop *')]/following-sibling::div/input")]
+        public IWebElement inputDesktopImage;
 
-        public IWebElement addressInput => Browser._Driver.FindElement(_addressInput);
-        public readonly By _addressInput = By.XPath("//div[contains(@class, 'address-field')]//input[@type='text']");
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(),'mobile *')]/following-sibling::div/input")]
+        public IWebElement inputMobileImage;
 
-        public IWebElement statusSwitcher => Browser._Driver.FindElement(_statusSwitcher);
-        public readonly By _statusSwitcher = By.XPath("//input[@name='active']");
+        [FindsBy(How = How.XPath, Using = "//input[@id='title']")]
+        public IWebElement inputTitle;
 
-        public IWebElement selectDesktopImg => Browser._Driver.FindElement(_selectDesktopImg);
-        public readonly By _selectDesktopImg = By.XPath("//section[1]//img[@class='file-img']");
+        [FindsBy(How = How.XPath, Using = "//div[contains(@class, 'coordinates')]//input")]
+        public IWebElement inputAddress;
 
-        public IWebElement selectMobileImg => Browser._Driver.FindElement(_selectMobileImg);
-        public readonly By _selectMobileImg = By.XPath("//section[2]//img[@class='file-img']");
+        [FindsBy(How = How.XPath, Using = "//input[@name='active']")]
+        public IWebElement switcherStatus;
+
+        [FindsBy(How = How.XPath, Using = "//section[1]//img[@class='file-img']")]
+        public IWebElement imgDesktopSelect;
+
+        [FindsBy(How = How.XPath, Using = "//section[2]//img[@class='file-img']")]
+        public IWebElement imgMobileSelect;
 
         #region Date picker StartDate
-        public IWebElement enterDayStart => Browser._Driver.FindElement(_enterDayStart);
-        public readonly By _enterDayStart = By.XPath("//div[2]//input[@name='day']");
 
-        public IWebElement enterMonthStart => Browser._Driver.FindElement(_enterMonthStart);
-        public readonly By _enterMonthStart = By.XPath("//div[2]//input[@name='month']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='day']")]
+        public IWebElement inputStartDay;
 
-        public IWebElement enterYearStart => Browser._Driver.FindElement(_enterYearStart);
-        public readonly By _enterYearStart = By.XPath("//div[2]//input[@name='year']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='month']")]
+        public IWebElement inputStartMonth;
 
-        public IWebElement enterHourStart => Browser._Driver.FindElement(_enterHourStart);
-        public readonly By _enterHourStart = By.XPath("//div[2]//input[@name='hour12']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='year']")]
+        public IWebElement inputStartYear;
 
-        public IWebElement enterMinuteStart => Browser._Driver.FindElement(_enterMinuteStart);
-        public readonly By _enterMinuteStart = By.XPath("//div[2]//input[@name='minute']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='hour12']")]
+        public IWebElement inputStartHour;
 
-        public IWebElement enterSecondStart => Browser._Driver.FindElement(_enterSecondStart);
-        public readonly By _enterSecondStart = By.XPath("//div[2]//input[@name='second']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='minute']")]
+        public IWebElement inputStartMinute;
 
-        public IWebElement selectAmPmStart => Browser._Driver.FindElement(_selectAmPmStart);
-        public readonly By _selectAmPmStart = By.XPath("//div[2]//select[@name='amPm']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='second']")]
+        public IWebElement inputStartSecond;
+
+        [FindsBy(How = How.XPath, Using = "//p[contains(text(),'Start date')]/parent::div//select[@name='amPm']")]
+        public IWebElement inputStartAmPm;
 
         #endregion
 
         #region Date picker FinishDate
-        public IWebElement enterDayFinish => Browser._Driver.FindElement(_enterDayFinish);
-        public readonly By _enterDayFinish = By.XPath("//div[3]//input[@name='day']");
 
-        public IWebElement enterMonthFinish => Browser._Driver.FindElement(_enterMonthFinish);
-        public readonly By _enterMonthFinish = By.XPath("//div[3]//input[@name='month']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='day']")]
+        public IWebElement inputFinishDay;
 
-        public IWebElement enterYearFinish => Browser._Driver.FindElement(_enterYearFinish);
-        public readonly By _enterYearFinish = By.XPath("//div[3]//input[@name='year']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='month']")]
+        public IWebElement inputFinishMonth;
 
-        public IWebElement enterHourFinish => Browser._Driver.FindElement(_enterHourFinish);
-        public readonly By _enterHourFinish = By.XPath("//div[3]//input[@name='hour12']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='year']")]
+        public IWebElement inputFinishYear;
 
-        public IWebElement enterMinuteFinish => Browser._Driver.FindElement(_enterMinuteFinish);
-        public readonly By _enterMinuteFinish = By.XPath("//div[3]//input[@name='minute']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='hour12']")]
+        public IWebElement inputFinishHour;
 
-        public IWebElement enterSecondFinish => Browser._Driver.FindElement(_enterSecondFinish);
-        public readonly By _enterSecondFinish = By.XPath("//div[3]//input[@name='second']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='minute']")]
+        public IWebElement inputFinishMinute;
 
-        public IWebElement selectAmPmFinish => Browser._Driver.FindElement(_selectAmPmFinish);
-        public readonly By _selectAmPmFinish = By.XPath("//div[3]//select[@name='amPm']");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='second']")]
+        public IWebElement inputFinishSecond;
+
+        [FindsBy(How = How.XPath, Using = "//p[contains(text(),'Finish date')]/parent::div//select[@name='amPm']")]
+        public IWebElement inputFinishAmPm;
 
         #endregion
 
         #region Options
 
-        public IWebElement isTrendingSwitcher => Browser._Driver.FindElement(_isTrendingSwitcher);
-        public readonly By _isTrendingSwitcher = By.XPath("//input[@id='isTrending']");
+        [FindsBy(How = How.XPath, Using = "//input[@id='isTrending']")]
+        public IWebElement inputIsTrending;
 
-        public IWebElement isPopularSwitcher => Browser._Driver.FindElement(_isPopularSwitcher);
-        public readonly By _isPopularSwitcher = By.XPath("//input[@id='isPopular']");
+        [FindsBy(How = How.XPath, Using = "//input[@id='isPopular']")]
+        public IWebElement inputIsPopular;
 
         #endregion
 
         #region Meta Tags
 
-        public IWebElement metaTitle => Browser._Driver.FindElement(_metaTitle);
-        public readonly By _metaTitle = By.XPath("//input[@id='metaTitle']");
+        [FindsBy(How = How.XPath, Using = "//input[@id='metaTitle']")]
+        public IWebElement inputMetaTitle;
 
-        public IWebElement metaDescription => Browser._Driver.FindElement(_metaDescription);
-        public readonly By _metaDescription = By.XPath("//input[@id='metaDescription']");
+        [FindsBy(How = How.XPath, Using = "//input[@id='metaDescription']")]
+        public IWebElement inputMetaDescr;
 
         #endregion
 
@@ -128,22 +142,22 @@ namespace RaffleAutomationTests.PageObjects
 
         #region Text inputs
         public IWebElement bedroomsTextArea => Browser._Driver.FindElement(_bedroomsTextArea);
-        public readonly By _bedroomsTextArea = By.XPath("//div[contains(@class, 'text-parent')][1]//div[@class='ql-editor ql-blank']");
+        public readonly By _bedroomsTextArea = By.XPath("//span[text()='Bedrooms *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']");
 
         public IWebElement bathroomsTextArea => Browser._Driver.FindElement(_bathroomsTextArea);
-        public readonly By _bathroomsTextArea = By.XPath("//div[contains(@class, 'text-parent')][2]//div[@class='ql-editor ql-blank']");
+        public readonly By _bathroomsTextArea = By.XPath("//span[text()='Bathrooms *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']");
 
         public IWebElement outspaceTextArea => Browser._Driver.FindElement(_outspaceTextArea);
-        public readonly By _outspaceTextArea = By.XPath("//div[contains(@class, 'text-parent')][3]//div[@class='ql-editor ql-blank']");
+        public readonly By _outspaceTextArea = By.XPath("//span[text()='Outspace *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']");
 
         public IWebElement aboutTextArea => Browser._Driver.FindElement(_aboutTextArea);
-        public readonly By _aboutTextArea = By.XPath("//div[contains(@class, 'text-parent')][4]//div[@class='ql-editor ql-blank']");
+        public readonly By _aboutTextArea = By.XPath("//span[text()='About *']/ancestor::div[contains(@class,'about-section')]//div[@class='ql-editor ql-blank']");
 
         public IWebElement productCTATextArea => Browser._Driver.FindElement(_productCTATextArea);
-        public readonly By _productCTATextArea = By.XPath("//div[contains(@class, 'text-parent')][5]//div[@class='ql-editor ql-blank']");
+        public readonly By _productCTATextArea = By.XPath("//span[text()='Product Page CTA *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']");
 
         public IWebElement headingTextArea => Browser._Driver.FindElement(_headingTextArea);
-        public readonly By _headingTextArea = By.XPath("//div[contains(@class, 'text-parent')][6]//div[@class='ql-editor ql-blank']");
+        public readonly By _headingTextArea = By.XPath("//span[text()='Heading 1 *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']");
 
         #endregion
 
@@ -155,10 +169,10 @@ namespace RaffleAutomationTests.PageObjects
         public readonly By _removeOverviewBtn = By.XPath("//div[contains(@class, 'deletePropertyRowBtn')]");
 
         #region Overview element rows
-        public IWebElement RowOverviewTitle => Browser._Driver.FindElement(_RowOverviewTitle);
+        public IList<IWebElement> RowOverviewTitle => Browser._Driver.FindElements(_RowOverviewTitle);
         public readonly By _RowOverviewTitle = By.XPath("//div[contains(@class, 'dreamHomeProperty_row')]//*[contains(@name, 'title')]");
 
-        public IWebElement RowOverviewValue => Browser._Driver.FindElement(_RowOverviewValue);
+        public IList<IWebElement> RowOverviewValue => Browser._Driver.FindElements(_RowOverviewValue);
         public readonly By _RowOverviewValue = By.XPath("//input[@name='value']");
 
         public IWebElement TakeTourWithSara => Browser._Driver.FindElement(_TakeTourWithSara);

@@ -11,9 +11,9 @@ namespace RaffleAutomationTests.Helpers
 {
     class WaitUntil
     {
-        public static void WaitSomeInterval(int seconds = 2)
+        public static void WaitSomeInterval(int milliseconds = 2000)
         {
-            Task.Delay(TimeSpan.FromSeconds(seconds)).Wait();
+            Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
         }
 
         public static void ElementIsClickable(IWebElement element, int seconds = 10)
@@ -42,9 +42,65 @@ namespace RaffleAutomationTests.Helpers
             new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds)).Until(SeleniumExtras.WaitHelpers.ExpectedConditions.VisibilityOfAllElementsLocatedBy(element));
         }
 
-        public static void VisibilityOfAllElementsLocatedBy1(By element, int seconds = 10)
+        public static void CustomElevemtIsVisible(IWebElement element, int seconds = 10)
         {
-            new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds)).Until(OpenQA.Selenium.Support.UI.ExpectedConditions.VisibilityOfAllElementsLocatedBy(element));
+            Task.Delay(TimeSpan.FromMilliseconds(150)).Wait();
+            WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds));
+            wait.PollingInterval = TimeSpan.FromMilliseconds(100);
+            try
+            {
+                wait.Until(e =>
+                {
+                    try
+                    {
+                        if (element.Enabled == true)
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                    catch (NoSuchElementException) { return false; }
+                    catch (StaleElementReferenceException) { return false; }
+                    catch (ArgumentOutOfRangeException) { return false; }
+
+                });
+            }
+            catch (NoSuchElementException) { }
+            catch (StaleElementReferenceException) { }
+
+        }
+
+        public static void CustomElevemtIsInvisible(IWebElement element, int seconds = 10)
+        {
+            Task.Delay(TimeSpan.FromMilliseconds(150)).Wait();
+            WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds));
+            wait.PollingInterval = TimeSpan.FromMilliseconds(100);
+            try
+            {
+                wait.Until(e =>
+                {
+                    try
+                    {
+                        if (!element.Enabled == true)
+                        {
+                            return false;
+                        }
+                        return true;
+                    }
+                    catch (NoSuchElementException)
+                    {
+                        return true;
+                    }
+                    catch (StaleElementReferenceException)
+                    {
+                        return true;
+                    }
+
+                });
+            }
+            catch (NoSuchElementException) { }
+            catch (StaleElementReferenceException) { }
+
         }
 
     }

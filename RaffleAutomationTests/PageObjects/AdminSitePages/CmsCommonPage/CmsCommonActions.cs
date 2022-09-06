@@ -16,9 +16,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open PrizeManagement list")]
         public CmsCommon OpenPrizeManagementList()
         {
-            WaitUntil.ElementIsVisible(_prizeManagementBtn);
-            prizeManagementBtn.Click();
-            WaitUntil.WaitSomeInterval(1);
+            Button.Click(pagePrizeManagement);
 
             return this;
         }
@@ -26,9 +24,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open DreamHome page")]
         public CmsCommon OpenDreamHomePage()
         {
-            WaitUntil.ElementIsVisible(_dreamhomeBtn);
-            dreamhomeBtn.Click();
-            WaitUntil.WaitSomeInterval(1);
+            Button.Click(pageDreamHome);
 
             return this;
         }
@@ -36,9 +32,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open LifestylePrizes page")]
         public CmsCommon OpenLifestylePrizesPage()
         {
-            WaitUntil.ElementIsVisible(_lifestylePrizesBtn);
-            lifestylePrizesBtn.Click();
-            WaitUntil.WaitSomeInterval(1);
+            Button.Click(pagePrizes);
 
             return this;
         }
@@ -46,9 +40,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open Competitions page")]
         public CmsCommon OpenCompetitionsPage()
         {
-            WaitUntil.ElementIsVisible(_competitionsBtn);
-            competitionsBtn.Click();
-            WaitUntil.WaitSomeInterval(1);
+            Button.Click(pageCompetitions);
 
             return this;
         }
@@ -56,9 +48,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open UserManagement page")]
         public CmsCommon OpenUserManagementPage()
         {
-            WaitUntil.ElementIsVisible(_userManagementBtn);
-            userManagementBtn.Click();
-            WaitUntil.WaitSomeInterval(1);
+            Button.Click(pageUsers);
 
             return this;
         }
@@ -66,9 +56,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open StaffManagement page")]
         public CmsCommon OpenStaffManagementPage()
         {
-            WaitUntil.ElementIsVisible(_staffManagementBtn);
-            staffManagementBtn.Click();
-            WaitUntil.WaitSomeInterval(1);
+            Button.Click(pageStaff);
 
             return this;
         }
@@ -76,9 +64,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open Settings list")]
         public CmsCommon OpenSettingsList()
         {
-            WaitUntil.ElementIsVisible(_settingsBtn);
-            settingsBtn.Click();
-            WaitUntil.WaitSomeInterval(1);
+            Button.Click(pageSettings);
 
             return this;
         }
@@ -86,9 +72,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open General page")]
         public CmsCommon OpenGeneralPage()
         {
-            WaitUntil.ElementIsVisible(_generalBtn);
-            generalBtn.Click();
-            WaitUntil.WaitSomeInterval(1);
+            Button.Click(pageSettingsGeneral);
 
             return this;
         }
@@ -96,9 +80,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open Winners page")]
         public CmsCommon OpenWinnersPage()
         {
-            WaitUntil.ElementIsVisible(_winnersBtn);
-            winnersBtn.Click();
-            WaitUntil.WaitSomeInterval(1);
+            Button.Click(pageSettingsWinners);
 
             return this;
         }
@@ -106,9 +88,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open Referrals page")]
         public CmsCommon OpenReferralsPage()
         {
-            WaitUntil.ElementIsVisible(_referralsBtn);
-            referralsBtn.Click();
-            WaitUntil.WaitSomeInterval(1);
+            Button.Click(pageSettingsReferrals);
 
             return this;
         }
@@ -116,16 +96,10 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open Reports page")]
         public CmsCommon OpenReportsPage()
         {
-            WaitUntil.ElementIsVisible(_reportsBtn);
-            reportsBtn.Click();
-            WaitUntil.WaitSomeInterval(1);
+            Button.Click(pageSettingsReports);
 
             return this;
         }
-
-
-
-
 
 
 
@@ -135,9 +109,9 @@ namespace RaffleAutomationTests.PageObjects
         public CmsCommon ClickSaveBtn()
         {
             WaitUntil.WaitSomeInterval(1);
-            int elemPos = saveBtn.Location.Y;
+            int elemPos = btnSave.Location.Y;
             ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
-            saveBtn.Click();
+            Button.Click(btnSave);
 
             return this;
         }
@@ -145,26 +119,16 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Click \"Cancel\" button")]
         public CmsCommon ClickCancelBtn()
         {
-            WaitUntil.ElementIsVisible(_cancelBtn);
-            int elemPos = cancelBtn.Location.Y;
+            WaitUntil.CustomElevemtIsVisible(btnCancel);
+            int elemPos = btnCancel.Location.Y;
             ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
-            cancelBtn.Click();
+            btnCancel.Click();
             WaitUntil.WaitSomeInterval(1);
 
             return this;
         }
 
-        [AllureStep("Open \"Description\" tab")]
-        public CmsCommon OpenDescriptionTab()
-        {
-            WaitUntil.ElementIsVisible(_descriptionTab);
-            int elemPos = descriptionTab.Location.Y;
-            ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
-            descriptionTab.Click();
-            WaitUntil.WaitSomeInterval(1);
-
-            return this;
-        }
+        
 
 
 

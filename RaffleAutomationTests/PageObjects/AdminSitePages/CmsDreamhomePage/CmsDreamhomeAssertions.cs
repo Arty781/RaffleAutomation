@@ -13,8 +13,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Get dreamhome title")]
         public string GetDreamhomeTitle()
         {
-            WaitUntil.ElementIsVisible(_titleInput);
-            string dreamhomeTitle = titleInput.GetAttribute("value");
+            WaitUntil.CustomElevemtIsVisible(inputTitle);
+            string dreamhomeTitle = inputTitle.GetAttribute("value");
             return dreamhomeTitle;
         }
     }

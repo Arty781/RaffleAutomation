@@ -27,7 +27,7 @@ namespace RaffleAutomationTests.Helpers
             
             if (Browser._Driver != null)
             {
-                Browser.Quit();
+                Browser._Driver.Quit();
             }
             
         }
@@ -38,9 +38,8 @@ namespace RaffleAutomationTests.Helpers
             if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
             {
                 _ = TelegramHelper.SendMessage();
-                _ = TelegramHelper.SendImage();
             }
-            Browser.Close();
+            Browser._Driver.Close();
         }
     }
 }
