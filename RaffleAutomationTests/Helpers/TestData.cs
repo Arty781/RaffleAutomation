@@ -6,14 +6,20 @@ using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
-    public class Endpoints
+    public class AdminEndpoints
+    {
+        public const string DREAMHOME = "https://admin-staging.rafflehouse.com/#/dreamHome";
+        public const string LIFESTYLE_PRIZES = "https://admin-staging.rafflehouse.com/#/prizes";
+        public const string FIXEDODDS_PRIZES = "https://admin-staging.rafflehouse.com/#/fixedOdds";
+    }
+    public class WebEndpoints
     {
         public const string websiteHost = "https://staging.rafflehouse.com";
         public const string adminHost = "https://admin-staging.rafflehouse.com";
         public const string signin = "https://staging.rafflehouse.com/sign-in";
         public const string signup = "https://staging.rafflehouse.com/sign-up";
         public const string dreamhome = "https://staging.rafflehouse.com/dreamhome";
-        //public const string lifestyle = "https://staging.rafflehouse.com/lifestyleprizes";
+        public const string lifestyle = "https://staging.rafflehouse.com/lifestyleprizes";
         public const string fixedodds = "https://staging.rafflehouse.com/fixedodds";
         public const string winners = "https://staging.rafflehouse.com/winners";
         public const string about = "https://staging.rafflehouse.com/about-us";
