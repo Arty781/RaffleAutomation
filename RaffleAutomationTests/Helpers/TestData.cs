@@ -8,17 +8,51 @@ namespace RaffleAutomationTests.Helpers
 {
     public class Endpoints
     {
-        public const string websiteHost = "https://staging.rafflehouse.com";
-        public const string adminHost = "https://admin-staging.rafflehouse.com";
-        public const string signin = "https://staging.rafflehouse.com/sign-in";
-        public const string signup = "https://staging.rafflehouse.com/sign-up";
-        public const string dreamhome = "https://staging.rafflehouse.com/dreamhome";
-        public const string lifestyle = "https://staging.rafflehouse.com/lifestyleprizes";
-        public const string fixedodds = "https://staging.rafflehouse.com/fixedodds";
-        public const string winners = "https://staging.rafflehouse.com/lifestyleprizes";
-        public const string about = "https://staging.rafflehouse.com/about-us";
-        public const string profile = "https://staging.rafflehouse.com/profile";
-        public const string freeEntry = "https://staging.rafflehouse.com/post";
+        public const string WebsiteHost = "https://staging.rafflehouse.com";
+        public const string AdminHost = "https://admin-staging.rafflehouse.com";
+        public const string Signin = WebsiteHost + "/sign-in";
+        public const string Signup = WebsiteHost + "/sign-up";
+        public const string Dreamhome = WebsiteHost + "/dreamhome";
+        public const string Lifestyle = WebsiteHost + "/lifestyleprizes";
+        public const string Fixedodds = WebsiteHost + "/fixedodds";
+        public const string Winners = WebsiteHost + "/winners";
+        public const string About = WebsiteHost + "/about-us";
+        public const string Profile = WebsiteHost + "/profile";
+        public const string FreeEntry = WebsiteHost + "/post";
+
+        #region API
+
+        public const string ApiHost = "https://staging-api.rafflehouse.com";
+
+        #region Web
+        public const string SignIn = ApiHost + "/api/users/signin";
+        public const string Me = ApiHost + "/api/users/me";
+
+
+        #endregion
+
+        #region CMS
+
+        public static string SignInAdmin = ApiHost + "/api/users/cms/signin";
+
+        #endregion
+
+        #endregion
+    }
+
+    public class Headers
+    {
+        public static ICollection<KeyValuePair<string, string>> HeadersCommon()
+
+        {
+            var headersCommon = new List<KeyValuePair<string, string>>();
+
+            headersCommon.Add(new KeyValuePair<string, string>("accept", "application/json, text/plain, /"));
+            headersCommon.Add(new KeyValuePair<string, string>("accept-encoding", "gzip, deflate, br"));
+            headersCommon.Add(new KeyValuePair<string, string>("content-type", "application/json"));
+
+            return headersCommon;
+        }
     }
 
     public class Credentials
@@ -68,5 +102,41 @@ namespace RaffleAutomationTests.Helpers
                                     + "That’s more chances to win and support for Centrepoint and Housing for Women, our chosen charities.More on them in our About page.";
         public const string ProductPageCTA = "London Dream Home or £200,000 cash";
         public const string Heading = "The London \n WIN this stunning property for just £2. Or, if you don't fancy being a homeowner, you can elect to take £200,000 tax-free!";
+    }
+
+    public class AboutTexts
+    {
+        public static string[] FindOutTexts =
+        {
+            "This is your chance to win your own home, Stamp Duty and legal fees paid while donating to worthy causes. We'll even chuck in your bills and utility costs for a year.Be mortgage-free for life; live in it, rent it, or sell it — it'll be yours, no strings attached.",
+            "Our Fixed Odds competitions offer bigger prizes, and do exactly what they say on the tin; provide certainty around your odds. The amount of tickets is fixed, so your odds are too.We'll always show you how many tickets to be sold in total, as well as a real-time view of how many have been sold."
+        };
+
+        public static string[] StepsTitleTexts =
+        {
+            "Choose Your Prizes & Add Tickets",
+            "Guaranteed Winners",
+            "More Than Just a Ticket"
+        };
+
+        public static string[] StepsDescrTexts =
+        {
+            "Search our Fixed Odds Prizes, as well as our Jackpot Property Prizes.",
+            "We guarantee multiple winners with tens of thousands of pounds up for grabs.",
+            "Choose if you want us to donate some of your purchase value to our homelessness charity partners."
+        };
+
+        public static string[] CharitableTexts =
+        {
+            "As the pandemic continues, more young people than ever are facing homelessness, many for the first time in their lives. Centrepoint are experiencing a surge in calls from homeless young people who have lost their job and their homes, and are uncertain where to turn. From housing and health to learning and engagement, Centrepoint aim to help vulnerable young people move on from homelessness and build a future they can believe in.",
+            ""
+        };
+
+        public static string TitleSiteCredit = "Earn When You Play";
+        public static string[] DescriptionSiteCreditTexts =
+        {
+            "We reward you, every time you play. For every purchase, we'll give you 10% of the total value back in site credit. This credit can be saved or spent as you wish.",
+            "Credit expires 30 days after it was first earned. We'll remind you if you have any credit that is due to expire so you'll never lose out."
+        };
     }
 }

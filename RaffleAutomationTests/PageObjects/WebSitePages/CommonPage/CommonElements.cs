@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +35,8 @@ namespace RaffleAutomationTests.PageObjects
         public IWebElement remove25TicketBtn => Browser._Driver.FindElement(_remove25TicketBtn);
         public readonly static By _remove25TicketBtn = By.XPath("//*/ul[@class=\"ticket-selector__grid\"]/li[1]");
         
-        public IWebElement addToBasketBtn => Browser._Driver.FindElement(_addToBasketBtn);
-        public readonly static By _addToBasketBtn = By.XPath("//*/button/span[@class=\"add-basket\"]");
+        [FindsBy(How = How.XPath, Using = "//button/span[@class='add-basket']")]
+        public static IWebElement btnAddToBasket;
 
 
 

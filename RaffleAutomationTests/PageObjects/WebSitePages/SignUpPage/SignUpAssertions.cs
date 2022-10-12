@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using PutsboxWrapper;
 using RaffleAutomationTests.Helpers;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,23 @@ namespace RaffleAutomationTests.PageObjects
             return email;
         }
 
+
         public SignUp VerifyEmail(string email)
         {
             WaitUntil.VisibilityOfAllElementsLocatedBy(By.XPath("//h1[contains(text(),'My Details')]"));
             string emailFld = InputEmail.GetAttribute("value");
 
             Assert.AreEqual(email, emailFld);
+
+            return this;
+        }
+
+        public SignUp VerifyVisibilityOfToaster(string email)
+        {
+            string s = Putsbox.GetLinkFromEmailWithValue(email, "Verify");
+            Browser._Driver.Navigate().GoToUrl(s);
+            WaitUntil.VisibilityOfAllElementsLocatedBy(By.XPath("//div[contains(text(),'Email verified successfully')]"));
+            
 
             return this;
         }

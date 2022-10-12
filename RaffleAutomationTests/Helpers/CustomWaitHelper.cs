@@ -7,33 +7,50 @@ using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
-    internal class CustomWaitHelper
+    public class AssertHelper
     {
-        private static IWebElement ElementIfVisible(IWebElement element)
-        {
-            return element.Displayed ? element : null;
-        }
-        public static Func<IWebDriver, IWebElement> CustomElementIsClickableByLocator(By locator)
-        {
-            return (driver) =>
+            public static Boolean ElementIsInvisible(IWebElement element)
             {
+                WaitUntil.WaitSomeInterval(250);
                 try
                 {
-                    IWebElement element = ElementIfVisible(driver.FindElement(locator));
-                    if (element != null && element.Enabled)
+                    if (element.Enabled == true)
                     {
-                        return element;
+                        Console.WriteLine(element.Text);
+
+                        return false;
                     }
-                    else
-                    {
-                        return null;
-                    }
+
+                    return true;
+
+
                 }
-                catch (Exception)
+                catch (NoSuchElementException) { return true; }
+
+                catch (StaleElementReferenceException) { return true; }
+            }
+
+        public static Boolean ElementIsVisible(IWebElement element)
+        {
+            WaitUntil.WaitSomeInterval(250);
+            try
+            {
+                if (element.Enabled == true)
                 {
-                    return null;
+                    Console.WriteLine(element.Text);
+
+                    return true;
                 }
-            };
+
+                return false;
+
+
+            }
+            catch (NoSuchElementException) { return false; }
+
+            catch (StaleElementReferenceException) { return false; }
         }
     }
+
+    
 }

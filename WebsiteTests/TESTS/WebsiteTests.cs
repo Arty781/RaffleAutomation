@@ -2,8 +2,12 @@ using Allure.Commons;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
+using PutsboxWrapper;
+using RaffleAutomationTests.APIHelpers.SignInPageAdmin;
+using RaffleAutomationTests.APIHelpers.WebApi;
 using RaffleAutomationTests.Helpers;
 using RaffleAutomationTests.PageObjects;
+using System;
 using WebsiteTests.BASE;
 
 namespace RaffleHouseAutomation.WebSiteTests
@@ -32,17 +36,7 @@ namespace RaffleHouseAutomation.WebSiteTests
            
         }
 
-        [Test]
-        public void LoginByGoogle()
-        {
-            Pages.Header
-                .OpenSignInPage();
-            Pages.SignIn
-                .GoogleAuth(Credentials.login, Credentials.password);
-            Pages.SignIn
-                .VerifyIsSignIn();
-
-        }
+        
 
         [Test]
         [AllureTag("Regression")]
@@ -60,7 +54,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .VerifyIsSignIn();
             Pages.Header
-                .OpenWeeklyPrizesPage(Endpoints.lifestyle);
+                .OpenWeeklyPrizesPage(Endpoints.Lifestyle);
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.Weekly
@@ -79,7 +73,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickAddToBasketBtn();
 
             Pages.Header
-                .OpenDreamhomePage(Endpoints.dreamhome);
+                .OpenDreamhomePage(Endpoints.Dreamhome);
            
             Pages.Dreamhome
                 .OpenDreamHomeProductPage()
@@ -102,6 +96,39 @@ namespace RaffleHouseAutomation.WebSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("Client")]
         [AllureSubSuite("Payment")]
+        public void PurchasePrizes()
+        {
+            Pages.Header
+                .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(Credentials.login, Credentials.password);
+            Pages.SignIn
+                .VerifyIsSignIn();
+
+            var token = SignInRequestWeb.MakeSignIn(Credentials.login, Credentials.password);
+            var dreamHomeId = CountdownRequestWeb.GetCountdown(token);
+            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
+            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
+            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
+            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
+
+            Pages.Basket
+                .ClickCartBtn()
+                .ClickCheckoutNowBtn()
+                .EnterCardDetails()
+                .ClickPayNowBtn()
+                .ConfirmPurchase();
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+        }
+
+        [Test]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
         public void RegisterNewUser()
         {
             Pages.Header
@@ -111,7 +138,8 @@ namespace RaffleHouseAutomation.WebSiteTests
             string email = SignUp.GetEmail();
             Pages.SignUp
                 .ClickSignUpBtn()
-                .VerifyEmail(email);
+                .VerifyEmail(email)
+                .VerifyVisibilityOfToaster(email);
 
         }
 
@@ -141,6 +169,29 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Profile
                 .EditAccountData()
                 .VerifyDisplayingToaster();
+
+        }
+
+        [Test]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("AboutPage")]
+        public void VerifiedAboutPage()
+        {
+            
+            Pages.About
+                .OpenAboutPage(Endpoints.About)
+                .VerifyFindOutBlock()
+                .VerifyStepsBlock()
+                .VerifyCharitableBlock()
+                .VerifySiteCreditBlock();
+
+            var responseLogin = SignInRequestAdmin.MakeAdminSignIn(Credentials.loginAdmin, Credentials.passwordAdmin);
+            SignInAssertionsAdmin
+                .VerifyIsAdminSignInSuccesfull(responseLogin);
 
         }
     }

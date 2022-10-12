@@ -73,7 +73,7 @@ namespace RaffleAutomationTests.PageObjects
         public Common ClickAddToBasketBtn()
         {
             WaitUntil.WaitSomeInterval(1);
-            addToBasketBtn.Click();
+            btnAddToBasket.Click();
             return this;
         }
 

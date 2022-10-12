@@ -45,7 +45,7 @@ namespace RaffleAutomationTests.Helpers
             {
                 WaitUntil.CustomElevemtIsVisible(element, seconds);
                 element.SendKeys(Keys.Control + "A" + Keys.Delete);
-                WaitUntil.WaitSomeInterval(175);
+                WaitUntil.WaitSomeInterval(500);
                 element.SendKeys(data);
             }
             catch (Exception) { }

@@ -1,4 +1,5 @@
 ﻿using NUnit.Allure.Steps;
+using RimuTec.Faker;
 using RaffleAutomationTests.Helpers;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ namespace RaffleAutomationTests.PageObjects
         public SignUp EnterUserData()
         {
             WaitUntil.VisibilityOfAllElementsLocatedBy(_InputFirstName);
-            InputFirstName.SendKeys("Jane");
-            InputSurname.SendKeys("Doe");
-            InputEmail.SendKeys("qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@xitroo.com");
+            InputFirstName.SendKeys(Name.FirstName());
+            InputSurname.SendKeys(Name.LastName());
+            InputEmail.SendKeys("qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com");
             countryInput.Click();            
             ClickHelper.Clicker(countryList);
             phoneInput.SendKeys("961234563");

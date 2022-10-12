@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,14 +44,14 @@ namespace RaffleAutomationTests.PageObjects
         public IWebElement freeEntryBtn => Browser._Driver.FindElement(_freeEntryBtn);
         public readonly static By _freeEntryBtn = By.XPath("//*[@class='headerAuth']/div/button[1]");
 
-        public IWebElement cartBtn => Browser._Driver.FindElement(_cartBtn);
-        public readonly static By _cartBtn = By.XPath("//*[@class='headerBtnCart']");
+        public static IWebElement btnCart => Browser._Driver.FindElement(_btnCart);
+        public readonly static By _btnCart = By.XPath("//button[@class='headerBtnCart']");
 
-        public IWebElement UserFirstNameBtn => Browser._Driver.FindElement(_UserFirstNameBtn);
-        public readonly static By _UserFirstNameBtn = By.XPath("//*[@class='dropdownAccount ']/div[@class='header-drop-name']/span[1]");
+        [FindsBy(How=How.XPath, Using = "//div[@class='header-drop-name']/span[1]")]
+        public IWebElement UserFirstNameBtn;
 
         public IWebElement UserLastNameBtn => Browser._Driver.FindElement(_UserLastNameBtn);
-        public readonly static By _UserLastNameBtn = By.XPath("//*[@class='dropdownAccount ']/div[@class='header-drop-name']/span[2]");
+        public readonly static By _UserLastNameBtn = By.XPath("//div[@class='header-drop-name']/span[2]");
 
     }
 }

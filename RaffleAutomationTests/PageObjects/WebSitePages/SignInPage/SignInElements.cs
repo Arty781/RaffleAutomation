@@ -37,8 +37,6 @@ namespace RaffleAutomationTests.PageObjects
         public IWebElement GooglePasswordInput => Browser._Driver.FindElement(_GooglePasswordInput);
         public readonly static By _GooglePasswordInput = By.XPath("//*[@name='password']");
 
-        public IWebElement GoogleNextBtn => Browser._Driver.FindElement(_GoogleNextBtn);
-        public readonly static By _GoogleNextBtn = By.XPath("//*/div/div[2]/div/div[1]/div/div/button/div[3]");
 
         
 

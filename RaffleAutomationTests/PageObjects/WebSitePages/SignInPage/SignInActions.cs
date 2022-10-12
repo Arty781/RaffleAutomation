@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace RaffleAutomationTests.PageObjects
 {
-    public partial class SignIn : BaseWeb
+    public partial class SignIn
     {
         [AllureStep]
         public SignIn EnterLoginAndPass(string login, string password)
