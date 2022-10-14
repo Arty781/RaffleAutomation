@@ -1,4 +1,6 @@
 ﻿using NUnit.Allure.Steps;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using RaffleAutomationTests.Helpers;
 using System;
 using System.Collections.Generic;
@@ -30,6 +32,12 @@ namespace RaffleAutomationTests.PageObjects
             if(buttonNextPage.Enabled == true)
             {
                 buttonNextPage.Click();
+                WaitUntil.WaitSomeInterval(500);
+                new Actions(Browser._Driver)
+                 .SendKeys(Keys.Home)
+                 .Build()
+                 .Perform();
+                WaitUntil.WaitSomeInterval(2000);
             }
             
             return this;
@@ -37,11 +45,12 @@ namespace RaffleAutomationTests.PageObjects
 
         public CmsLifestylePrizes ActivatePrizesOnPage()
         {
-            WaitUntil.WaitSomeInterval(1);
+            WaitUntil.WaitSomeInterval(150);
             WaitUntil.CustomElementIsVisible(switcher.First());
             for(int i =0; i < switcher.Count; i++)
             {
                 switcher[i].Click();
+                WaitUntil.WaitSomeInterval(150);
             }
             
             return this;

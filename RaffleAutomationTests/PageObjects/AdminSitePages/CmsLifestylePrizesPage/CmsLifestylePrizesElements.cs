@@ -14,10 +14,10 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//a[@href='#/prizes']")]
         public IWebElement titleSideBarLifestyle;
 
-        [FindsBy(How = How.XPath, Using = "//td[@id='status-table-head-actions']//input")]
+        [FindsBy(How = How.XPath, Using = "//td[@id='status-table-head-actions']//label")]
         public IList<IWebElement> switcher;
 
-        [FindsBy(How = How.XPath, Using = "//div/div/input")]
+        [FindsBy(How = How.XPath, Using = "//div[@role='button']")]
         public IWebElement rowPerPage;
 
         [FindsBy(How = How.XPath, Using = "//li[@data-value]")]

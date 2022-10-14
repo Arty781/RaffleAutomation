@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace RaffleAutomationTests.PageObjects
         IWebElement inputPassword => Browser._Driver.FindElement(_inputPassword);
         public readonly By _inputPassword = By.XPath("//*/input[@name=\"password\"]");
 
-        IWebElement signInBtn => Browser._Driver.FindElement(_signInBtn);
-        public readonly By _signInBtn = By.XPath("//*/button");
+        [FindsBy(How = How.XPath, Using = "//button[@type='submit']")]
+        public IWebElement btnSignIn;
     }
 }

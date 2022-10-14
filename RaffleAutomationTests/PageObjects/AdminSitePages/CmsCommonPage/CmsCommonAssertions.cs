@@ -24,7 +24,7 @@ namespace RaffleAutomationTests.PageObjects
         public CmsCommon VerifyIsDreamhomeCreatedSuccessfully(string dreamhomeTitle)
         {
             WaitUntil.VisibilityOfAllElementsLocatedBy(By.XPath("//td"));
-            goToLastPageBtn.Click();
+            //goToLastPageBtn.Click();
             WaitUntil.WaitSomeInterval(5);
             IReadOnlyCollection<IWebElement> dreamhomeList = Browser._Driver.FindElements(By.XPath("//td"));
             
