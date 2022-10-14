@@ -34,5 +34,11 @@ namespace RaffleAutomationTests.PageObjects
 
         [FindsBy(How = How.XPath, Using = "//button[@title='Last Page']")]
         public IWebElement buttonLastPage;
+
+        [FindsBy(How=How.XPath,Using = "//span[text()='Category']")]
+        public IWebElement filterCategory;
+
+        [FindsBy(How=How.XPath,Using = "//span[@class='category-title']")]
+        public IList<IWebElement> filterCategoryItems;
     }
 }

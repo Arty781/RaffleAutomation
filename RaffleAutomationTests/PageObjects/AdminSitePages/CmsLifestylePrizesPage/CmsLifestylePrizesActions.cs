@@ -18,11 +18,26 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        //public CmsLifestylePrizes SetCategoyFilter()
+        //{
+        //    WaitUntil.CustomElementIsVisible(filterCategory);
+        //    filterCategory.Click();
+        //    foreach(var elem in filterCategoryItems)
+        //    {
+        //        if(elem.Text != "All" && elem.)
+        //    }
+
+        //    WaitUntil.WaitSomeInterval(2000);
+
+        //    return this;
+        //}
+
         public CmsLifestylePrizes SetRowsPerPageAs100()
         {
             WaitUntil.CustomElementIsVisible(rowPerPage);
             rowPerPage.Click();
             listOfRowValues.Last().Click();
+            WaitUntil.WaitSomeInterval(2000);
 
             return this;
         }
@@ -47,12 +62,12 @@ namespace RaffleAutomationTests.PageObjects
         {
             WaitUntil.WaitSomeInterval(150);
             WaitUntil.CustomElementIsVisible(switcher.First());
-            for(int i =0; i < switcher.Count; i++)
+            foreach(var switc in switcher)
             {
-                switcher[i].Click();
+                switc.Click();
                 WaitUntil.WaitSomeInterval(150);
             }
-            
+            WaitUntil.WaitSomeInterval(2000);
             return this;
         }
     }

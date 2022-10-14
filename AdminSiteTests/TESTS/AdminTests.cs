@@ -80,6 +80,8 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .SetRowsPerPageAs100()
                 .ActivatePrizesOnPage()
                 .ClickNextBtn()
+                .ActivatePrizesOnPage()
+                .ClickNextBtn()
                 .ActivatePrizesOnPage();
 
         }
