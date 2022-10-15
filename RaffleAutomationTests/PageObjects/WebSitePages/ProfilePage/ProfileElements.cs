@@ -26,13 +26,13 @@ namespace RaffleAutomationTests.PageObjects
         public readonly static By _PasswordEditBtn = By.XPath("//button[@data-edit='password']");
 
         public IWebElement CurrentPasswordInput => Browser._Driver.FindElement(_CurrentPasswordInput);
-        public readonly static By _CurrentPasswordInput = By.XPath("//div[1]/label/div/div/*[@id='outlined-basic']");
+        public readonly static By _CurrentPasswordInput = By.XPath("//input[@name='oldPassword']");
 
         public IWebElement NewPasswordInput => Browser._Driver.FindElement(_NewPasswordInput);
-        public readonly static By _NewPasswordInput = By.XPath("//div[2]/label/div/div/*[@id='outlined-basic']");
+        public readonly static By _NewPasswordInput = By.XPath("//input[@name='newPassword']");
 
         public IWebElement ConfirmPasswordInput => Browser._Driver.FindElement(_ConfirmPasswordInput);
-        public readonly static By _ConfirmPasswordInput = By.XPath("//div[3]/label/div/div/*[@id='outlined-basic']");
+        public readonly static By _ConfirmPasswordInput = By.XPath("//input[@name='confirmPassword']");
 
         [FindsBy(How = How.XPath, Using = "//button[@data-edit='account']")]
         public IWebElement btnEditAccount;

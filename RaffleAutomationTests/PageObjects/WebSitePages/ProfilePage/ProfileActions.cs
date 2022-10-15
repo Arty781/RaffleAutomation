@@ -1,4 +1,5 @@
 ﻿using NUnit.Allure.Steps;
+using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
 using System;
 using System.Collections.Generic;
@@ -31,18 +32,20 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
-        [AllureStep("Edit Password")]
-        public Profile EditAccountData()
-        {
-            WaitUntil.CustomElevemtIsVisible(inputEmail);
-            Button.Click(btnEditAccount);
-            WaitUntil.CustomElevemtIsVisible(btnSave);
-            InputBox.Element(inputEmail, 10, "qatester - " + DateTime.Now.ToString("yyyy - MM - dThh - mm - ss") + "@xitroo.com");
-            Button.Click(inputCountry);
-            Pages.SignUp.phoneInput.Clear();
-            InputBox.Element(inputPhone, 10, "953214567");
-            btnSave.Click();
-            return this;
-        }
+        //[AllureStep("Edit Password")]
+        //public Profile EditAccountData()
+        //{
+        //    WaitUntil.VisibilityOfAllElementsLocatedBy(_EmailInput);
+        //    EditAccountBtn.Click();
+        //    WaitUntil.VisibilityOfAllElementsLocatedBy(_SaveBtn);
+        //    EmailInput.SendKeys(Keys.Control + "A" + Keys.Delete);
+        //    EmailInput.SendKeys("qatester - " + DateTime.Now.ToString("yyyy - MM - dThh - mm - ss") + "@xitroo.com");
+        //    Pages.SignUp.countryInput.Click();
+        //    ClickHelper.Clicker(Pages.SignUp.countryList);
+        //    PhoneInput.SendKeys(Keys.Control + "A" + Keys.Delete);
+        //    PhoneInput.SendKeys("953214567");
+        //    SaveBtn.Click();
+        //    return this;
+        //}
     }
 }

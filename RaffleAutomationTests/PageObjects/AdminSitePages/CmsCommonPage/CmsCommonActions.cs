@@ -9,128 +9,164 @@ using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
-    public partial class CmsCommon
-    {
-        #region Opening sidebar menu's tabs
+    //public partial class CmsCommon
+    //{
+    //    #region Opening sidebar menu's tabs
 
-        [AllureStep("Open PrizeManagement list")]
-        public CmsCommon OpenPrizeManagementList()
-        {
-            Button.Click(pagePrizeManagement);
+    //    [AllureStep("Open PrizeManagement list")]
+    //    public CmsCommon OpenPrizeManagementList()
+    //    {
+    //        WaitUntil.ElementIsVisible(_prizeManagementBtn);
+    //        prizeManagementBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
 
-            return this;
-        }
+    //        return this;
+    //    }
 
-        [AllureStep("Open DreamHome page")]
-        public CmsCommon OpenDreamHomePage()
-        {
-            Button.Click(pageDreamHome);
+    //    [AllureStep("Open DreamHome page")]
+    //    public CmsCommon OpenDreamHomePage()
+    //    {
+    //        WaitUntil.ElementIsVisible(_dreamhomeBtn);
+    //        dreamhomeBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
 
-            return this;
-        }
+    //        return this;
+    //    }
 
-        [AllureStep("Open LifestylePrizes page")]
-        public CmsCommon OpenLifestylePrizesPage()
-        {
-            Button.Click(pagePrizes);
+    //    [AllureStep("Open LifestylePrizes page")]
+    //    public CmsCommon OpenLifestylePrizesPage()
+    //    {
+    //        WaitUntil.ElementIsVisible(_lifestylePrizesBtn);
+    //        lifestylePrizesBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
 
-            return this;
-        }
+    //        return this;
+    //    }
 
-        [AllureStep("Open Competitions page")]
-        public CmsCommon OpenCompetitionsPage()
-        {
-            Button.Click(pageCompetitions);
+    //    [AllureStep("Open Competitions page")]
+    //    public CmsCommon OpenCompetitionsPage()
+    //    {
+    //        WaitUntil.ElementIsVisible(_competitionsBtn);
+    //        competitionsBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
 
-            return this;
-        }
+    //        return this;
+    //    }
 
-        [AllureStep("Open UserManagement page")]
-        public CmsCommon OpenUserManagementPage()
-        {
-            Button.Click(pageUsers);
+    //    [AllureStep("Open UserManagement page")]
+    //    public CmsCommon OpenUserManagementPage()
+    //    {
+    //        WaitUntil.ElementIsVisible(_userManagementBtn);
+    //        userManagementBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
 
-            return this;
-        }
+    //        return this;
+    //    }
 
-        [AllureStep("Open StaffManagement page")]
-        public CmsCommon OpenStaffManagementPage()
-        {
-            Button.Click(pageStaff);
+    //    [AllureStep("Open StaffManagement page")]
+    //    public CmsCommon OpenStaffManagementPage()
+    //    {
+    //        WaitUntil.ElementIsVisible(_staffManagementBtn);
+    //        staffManagementBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
 
-            return this;
-        }
+    //        return this;
+    //    }
 
-        [AllureStep("Open Settings list")]
-        public CmsCommon OpenSettingsList()
-        {
-            Button.Click(pageSettings);
+    //    [AllureStep("Open Settings list")]
+    //    public CmsCommon OpenSettingsList()
+    //    {
+    //        WaitUntil.ElementIsVisible(_settingsBtn);
+    //        settingsBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
 
-            return this;
-        }
+    //        return this;
+    //    }
 
-        [AllureStep("Open General page")]
-        public CmsCommon OpenGeneralPage()
-        {
-            Button.Click(pageSettingsGeneral);
+    //    [AllureStep("Open General page")]
+    //    public CmsCommon OpenGeneralPage()
+    //    {
+    //        WaitUntil.ElementIsVisible(_generalBtn);
+    //        generalBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
 
-            return this;
-        }
+    //        return this;
+    //    }
 
-        [AllureStep("Open Winners page")]
-        public CmsCommon OpenWinnersPage()
-        {
-            Button.Click(pageSettingsWinners);
+    //    [AllureStep("Open Winners page")]
+    //    public CmsCommon OpenWinnersPage()
+    //    {
+    //        WaitUntil.ElementIsVisible(_winnersBtn);
+    //        winnersBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
 
-            return this;
-        }
+    //        return this;
+    //    }
 
-        [AllureStep("Open Referrals page")]
-        public CmsCommon OpenReferralsPage()
-        {
-            Button.Click(pageSettingsReferrals);
+    //    [AllureStep("Open Referrals page")]
+    //    public CmsCommon OpenReferralsPage()
+    //    {
+    //        WaitUntil.ElementIsVisible(_referralsBtn);
+    //        referralsBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
 
-            return this;
-        }
+    //        return this;
+    //    }
 
-        [AllureStep("Open Reports page")]
-        public CmsCommon OpenReportsPage()
-        {
-            Button.Click(pageSettingsReports);
+    //    [AllureStep("Open Reports page")]
+    //    public CmsCommon OpenReportsPage()
+    //    {
+    //        WaitUntil.ElementIsVisible(_reportsBtn);
+    //        reportsBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
 
-            return this;
-        }
-
-
-
-        #endregion
-
-        [AllureStep("Click \"Save\" button")]
-        public CmsCommon ClickSaveBtn()
-        {
-            WaitUntil.WaitSomeInterval(1);
-            int elemPos = btnSave.Location.Y;
-            ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
-            Button.Click(btnSave);
-
-            return this;
-        }
-
-        [AllureStep("Click \"Cancel\" button")]
-        public CmsCommon ClickCancelBtn()
-        {
-            WaitUntil.CustomElevemtIsVisible(btnCancel);
-            int elemPos = btnCancel.Location.Y;
-            ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
-            btnCancel.Click();
-            WaitUntil.WaitSomeInterval(1);
-
-            return this;
-        }
-
-        
+    //        return this;
+    //    }
 
 
 
-    }
+
+
+
+
+    //    #endregion
+
+    //    [AllureStep("Click \"Save\" button")]
+    //    public CmsCommon ClickSaveBtn()
+    //    {
+    //        WaitUntil.WaitSomeInterval(1);
+    //        int elemPos = saveBtn.Location.Y;
+    //        ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
+    //        saveBtn.Click();
+
+    //        return this;
+    //    }
+
+    //    [AllureStep("Click \"Cancel\" button")]
+    //    public CmsCommon ClickCancelBtn()
+    //    {
+    //        WaitUntil.ElementIsVisible(_cancelBtn);
+    //        int elemPos = cancelBtn.Location.Y;
+    //        ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
+    //        cancelBtn.Click();
+    //        WaitUntil.WaitSomeInterval(1);
+
+    //        return this;
+    //    }
+
+    //    [AllureStep("Open \"Description\" tab")]
+    //    public CmsCommon OpenDescriptionTab()
+    //    {
+    //        WaitUntil.ElementIsVisible(_descriptionTab);
+    //        int elemPos = descriptionTab.Location.Y;
+    //        ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
+    //        descriptionTab.Click();
+    //        WaitUntil.WaitSomeInterval(1);
+
+    //        return this;
+    //    }
+
+
+
+    //}
 }

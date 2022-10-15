@@ -11,9 +11,9 @@ namespace RaffleAutomationTests.Helpers
 {
     class WaitUntil
     {
-        public static void WaitSomeInterval(int milliseconds = 2000)
+        public static void WaitSomeInterval(int ms = 2000)
         {
-            Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
+            Task.Delay(TimeSpan.FromMilliseconds(ms)).Wait();
         }
 
         public static void ElementIsClickable(IWebElement element, int seconds = 10)
@@ -42,11 +42,10 @@ namespace RaffleAutomationTests.Helpers
             new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds)).Until(SeleniumExtras.WaitHelpers.ExpectedConditions.VisibilityOfAllElementsLocatedBy(element));
         }
 
-        public static void CustomElevemtIsVisible(IWebElement element, int seconds = 10)
+        public static void CustomElementIsVisible(IWebElement element, int seconds = 10)
         {
-            Task.Delay(TimeSpan.FromMilliseconds(150)).Wait();
             WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds));
-            wait.PollingInterval = TimeSpan.FromMilliseconds(100);
+            wait.PollingInterval = TimeSpan.FromMilliseconds(50);
             try
             {
                 wait.Until(e =>
@@ -59,15 +58,19 @@ namespace RaffleAutomationTests.Helpers
                         }
                         return false;
                     }
-                    catch (NoSuchElementException) { return false; }
-                    catch (StaleElementReferenceException) { return false; }
-                    catch (ArgumentOutOfRangeException) { return false; }
+                    catch (NoSuchElementException)
+                    {
+                        return false;
+                    }
+                    catch (StaleElementReferenceException)
+                    {
+                        return false;
+                    }
 
                 });
             }
             catch (NoSuchElementException) { }
             catch (StaleElementReferenceException) { }
-
         }
 
         public static void CustomElevemtIsInvisible(IWebElement element, int seconds = 10)
@@ -81,21 +84,25 @@ namespace RaffleAutomationTests.Helpers
                 {
                     try
                     {
-                        if (element.Enabled == true)
+                        if (!element.Enabled == true)
                         {
                             return false;
                         }
                         return true;
                     }
-                    catch (NoSuchElementException) { return true; }
-                    catch (StaleElementReferenceException) { return true; }
-                    catch (NullReferenceException) { return true; }
+                    catch (NoSuchElementException)
+                    {
+                        return true;
+                    }
+                    catch (StaleElementReferenceException)
+                    {
+                        return true;
+                    }
 
                 });
             }
             catch (NoSuchElementException) { }
             catch (StaleElementReferenceException) { }
-            catch (NullReferenceException) { }
 
         }
 

@@ -17,7 +17,7 @@ namespace RaffleAutomationTests.PageObjects
        public Dreamhome OpenDreamHomeProductPage()
         {
             /*WaitUntil.VisibilityOfAllElementsLocatedBy(_raffleBtn);*/
-            ClickHelper.Clicker(raffleBtn);
+            Elements.Click(raffleBtn);
 
             return this;
         }
@@ -25,7 +25,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open ticket selector")]
         public Dreamhome OpenDreamHomeTicketSelector()
         {
-            WaitUntil.VisibilityOfAllElementsLocatedBy(_enterNowDreamhomeBtn);
+            WaitUntil.CustomElementIsVisible(enterNowDreamhomeBtn);
             enterNowDreamhomeBtn.Click();
 
             return this;
@@ -35,7 +35,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Select first bundle")]
         public Dreamhome SelectFirstBundleBtn()
         {
-            WaitUntil.ElementIsVisible(_firstBundleBtn);
+            WaitUntil.CustomElementIsVisible(firstBundleBtn);
             firstBundleBtn.Click();
 
             return this;

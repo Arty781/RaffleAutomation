@@ -41,18 +41,14 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Click Checkout Now button")]
         public Basket ClickCheckoutNowBtn()
         {
-            WaitUntil.CustomElevemtIsVisible(btncheckOutNow);
-            ClickHelper.Clicker(btncheckOutNow);
-
+            Elements.Click(checkOutNowBtn);
             return this;
         }
 
         [AllureStep("Open Order summary")]
         public Basket OpenOrderSummary()
         {
-            WaitUntil.ElementIsVisible(_orderSummaryBtn);
-            orderSummaryBtn.Click();
-
+            Elements.Click(orderSummaryBtn);
             return this;
         }
 

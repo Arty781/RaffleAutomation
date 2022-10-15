@@ -6,53 +6,25 @@ using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
-    public class Endpoints
+    public class AdminEndpoints
     {
-        public const string WebsiteHost = "https://staging.rafflehouse.com";
-        public const string AdminHost = "https://admin-staging.rafflehouse.com";
-        public const string Signin = WebsiteHost + "/sign-in";
-        public const string Signup = WebsiteHost + "/sign-up";
-        public const string Dreamhome = WebsiteHost + "/dreamhome";
-        public const string Lifestyle = WebsiteHost + "/lifestyleprizes";
-        public const string Fixedodds = WebsiteHost + "/fixedodds";
-        public const string Winners = WebsiteHost + "/winners";
-        public const string About = WebsiteHost + "/about-us";
-        public const string Profile = WebsiteHost + "/profile";
-        public const string FreeEntry = WebsiteHost + "/post";
-
-        #region API
-
-        public const string ApiHost = "https://staging-api.rafflehouse.com";
-
-        #region Web
-        public const string SignIn = ApiHost + "/api/users/signin";
-        public const string Me = ApiHost + "/api/users/me";
-
-
-        #endregion
-
-        #region CMS
-
-        public static string SignInAdmin = ApiHost + "/api/users/cms/signin";
-
-        #endregion
-
-        #endregion
+        public const string DREAMHOME = "https://admin-staging.rafflehouse.com/#/dreamHome";
+        public const string LIFESTYLE_PRIZES = "https://admin-staging.rafflehouse.com/#/prizes";
+        public const string FIXEDODDS_PRIZES = "https://admin-staging.rafflehouse.com/#/fixedOdds";
     }
-
-    public class Headers
+    public class WebEndpoints
     {
-        public static ICollection<KeyValuePair<string, string>> HeadersCommon()
-
-        {
-            var headersCommon = new List<KeyValuePair<string, string>>();
-
-            headersCommon.Add(new KeyValuePair<string, string>("accept", "application/json, text/plain, /"));
-            headersCommon.Add(new KeyValuePair<string, string>("accept-encoding", "gzip, deflate, br"));
-            headersCommon.Add(new KeyValuePair<string, string>("content-type", "application/json"));
-
-            return headersCommon;
-        }
+        public const string websiteHost = "https://staging.rafflehouse.com";
+        public const string adminHost = "https://admin-staging.rafflehouse.com";
+        public const string signin = "https://staging.rafflehouse.com/sign-in";
+        public const string signup = "https://staging.rafflehouse.com/sign-up";
+        public const string dreamhome = "https://staging.rafflehouse.com/dreamhome";
+        public const string lifestyle = "https://staging.rafflehouse.com/lifestyleprizes";
+        public const string fixedodds = "https://staging.rafflehouse.com/fixedodds";
+        public const string winners = "https://staging.rafflehouse.com/winners";
+        public const string about = "https://staging.rafflehouse.com/about-us";
+        public const string profile = "https://staging.rafflehouse.com/profile";
+        public const string freeEntry = "https://staging.rafflehouse.com/post";
     }
 
     public class Credentials

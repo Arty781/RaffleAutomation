@@ -9,33 +9,33 @@ using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
-    public partial class SignUp
-    {
-        [AllureStep("Enter user data")]
-        public SignUp EnterUserData()
-        {
-            WaitUntil.VisibilityOfAllElementsLocatedBy(_InputFirstName);
-            InputFirstName.SendKeys(Name.FirstName());
-            InputSurname.SendKeys(Name.LastName());
-            InputEmail.SendKeys("qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com");
-            countryInput.Click();            
-            ClickHelper.Clicker(countryList);
-            phoneInput.SendKeys("961234563");
-            InputPassword.SendKeys("Qaz11111");
-            confirmAgeBtn.Click();
-            confirmOptBtn.Click();
-            rememberBtn.Click();
+    //public partial class SignUp
+    //{
+    //    [AllureStep("Enter user data")]
+    //    public SignUp EnterUserData()
+    //    {
+    //        WaitUntil.VisibilityOfAllElementsLocatedBy(_InputFirstName);
+    //        InputFirstName.SendKeys("Jane");
+    //        InputSurname.SendKeys("Doe");
+    //        InputEmail.SendKeys("qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@xitroo.com");
+    //        countryInput.Click();            
+    //        ClickHelper.Clicker(countryList);
+    //        phoneInput.SendKeys("961234563");
+    //        InputPassword.SendKeys("Qaz11111");
+    //        confirmAgeBtn.Click();
+    //        confirmOptBtn.Click();
+    //        rememberBtn.Click();
 
-            return this;
-        }
+    //        return this;
+    //    }
 
-        [AllureStep("Click \"Sign Up\" button")]
-        public SignUp ClickSignUpBtn()
-        {
-            WaitUntil.VisibilityOfAllElementsLocatedBy(_SignUpBtn);
-            SignUpBtn.Click();
+    //    [AllureStep("Click \"Sign Up\" button")]
+    //    public SignUp ClickSignUpBtn()
+    //    {
+    //        WaitUntil.VisibilityOfAllElementsLocatedBy(_SignUpBtn);
+    //        SignUpBtn.Click();
 
-            return this;
-        }
-    }
+    //        return this;
+    //    }
+    //}
 }

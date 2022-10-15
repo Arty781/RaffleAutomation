@@ -24,8 +24,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Click SignIn button")]
         public CmsLogin ClickSignInBtn()
         {
-            WaitUntil.ElementIsVisible(_signInBtn);
-            signInBtn.Click();
+            WaitUntil.CustomElementIsVisible(btnSignIn);
+            btnSignIn.Click();
 
             return this;
         }

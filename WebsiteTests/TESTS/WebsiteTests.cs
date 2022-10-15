@@ -160,6 +160,8 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignUp
                 .ClickSignUpBtn()
                 .VerifyEmail(email);
+            Pages.Common
+                .CloseCookiesPopUp();
             Pages.Profile
                 .EditPersonalData()
                 .VerifyDisplayingToaster();
