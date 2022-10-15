@@ -30,7 +30,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Header
                 .OpenSignInPage();
             Pages.SignIn
-                .EnterLoginAndPass(Credentials.login, Credentials.password);
+                .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
            
@@ -50,17 +50,17 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Header
                 .OpenSignInPage();
             Pages.SignIn
-                .EnterLoginAndPass(Credentials.login, Credentials.password);
+                .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
             Pages.Header
-                .OpenWeeklyPrizesPage(Endpoints.Lifestyle);
+                .OpenWeeklyPrizesPage(WebEndpoints.LIFESTYLE);
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.Weekly
                 .CloseWeeklyPopUp()
-                .SelectCategory(Categories.category)
-                .SelectSubCategory(SubCategories.subCategory)
+                .SelectCategory(Categories.CATEGORY)
+                .SelectSubCategory(SubCategories.SUBCATEGORY)
                 .SelectPrize("iPhone 12 Pro Max");
             Pages.Common
                 .ClickEnterBtn()
@@ -73,7 +73,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickAddToBasketBtn();
 
             Pages.Header
-                .OpenDreamhomePage(Endpoints.Dreamhome);
+                .OpenDreamhomePage(WebEndpoints.DREAMHOME);
            
             Pages.Dreamhome
                 .OpenDreamHomeProductPage()
@@ -101,11 +101,11 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Header
                 .OpenSignInPage();
             Pages.SignIn
-                .EnterLoginAndPass(Credentials.login, Credentials.password);
+                .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
 
-            var token = SignInRequestWeb.MakeSignIn(Credentials.login, Credentials.password);
+            var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
             var dreamHomeId = CountdownRequestWeb.GetCountdown(token);
             DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
             DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
@@ -185,13 +185,13 @@ namespace RaffleHouseAutomation.WebSiteTests
         {
             
             Pages.About
-                .OpenAboutPage(Endpoints.About)
+                .OpenAboutPage(WebEndpoints.ABOUT)
                 .VerifyFindOutBlock()
                 .VerifyStepsBlock()
                 .VerifyCharitableBlock()
                 .VerifySiteCreditBlock();
 
-            var responseLogin = SignInRequestAdmin.MakeAdminSignIn(Credentials.loginAdmin, Credentials.passwordAdmin);
+            var responseLogin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             SignInAssertionsAdmin
                 .VerifyIsAdminSignInSuccesfull(responseLogin);
 

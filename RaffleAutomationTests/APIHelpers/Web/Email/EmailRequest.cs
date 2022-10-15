@@ -15,9 +15,9 @@ namespace RaffleAutomationTests.APIHelpers.Web.Email
         {
 
 
-            var restDriver = new RestClient(Endpoints.ApiHost);
+            var restDriver = new RestClient(ApiEndpoints.API);
             RestRequest? request = new RestRequest("/api/orders", Method.Get);
-            request.AddHeaders(headers: Headers.HeadersCommon());
+            request.AddHeaders(headers: Headers.COMMON);
             
 
             var r = restDriver.Execute(request);

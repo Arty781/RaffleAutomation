@@ -32,20 +32,20 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
-        //[AllureStep("Edit Password")]
-        //public Profile EditAccountData()
-        //{
-        //    WaitUntil.VisibilityOfAllElementsLocatedBy(_EmailInput);
-        //    EditAccountBtn.Click();
-        //    WaitUntil.VisibilityOfAllElementsLocatedBy(_SaveBtn);
-        //    EmailInput.SendKeys(Keys.Control + "A" + Keys.Delete);
-        //    EmailInput.SendKeys("qatester - " + DateTime.Now.ToString("yyyy - MM - dThh - mm - ss") + "@xitroo.com");
-        //    Pages.SignUp.countryInput.Click();
-        //    ClickHelper.Clicker(Pages.SignUp.countryList);
-        //    PhoneInput.SendKeys(Keys.Control + "A" + Keys.Delete);
-        //    PhoneInput.SendKeys("953214567");
-        //    SaveBtn.Click();
-        //    return this;
-        //}
+        [AllureStep("Edit Password")]
+        public Profile EditAccountData()
+        {
+            WaitUntil.CustomElementIsVisible(inputEmail);
+            btnEditAccount.Click();
+            WaitUntil.CustomElementIsVisible(btnSave);
+            inputEmail.SendKeys(Keys.Control + "A" + Keys.Delete);
+            inputEmail.SendKeys("qatester - " + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@xitroo.com");
+            Pages.SignUp.countryInput.Click();
+            ClickHelper.Clicker(Pages.SignUp.countryList);
+            inputPhone.SendKeys(Keys.Control + "A" + Keys.Delete);
+            inputPhone.SendKeys("953214567");
+            btnSave.Click();
+            return this;
+        }
     }
 }

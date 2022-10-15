@@ -12,7 +12,7 @@ namespace RaffleAutomationTests.PageObjects
     {
         public Profile VerifyDisplayingToaster()
         {
-            WaitUntil.CustomElevemtIsVisible(SuccessUpdateDialog);
+            WaitUntil.CustomElementIsVisible(SuccessUpdateDialog);
             Assert.IsTrue(SuccessUpdateDialog.Displayed);
 
             return this;

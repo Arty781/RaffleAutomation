@@ -19,7 +19,7 @@ namespace WebsiteTests.BASE
         public void Initialize()
         {
             
-            Browser._Driver.Navigate().GoToUrl(Endpoints.WebsiteHost);
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST);
         }
         
     }

@@ -25,8 +25,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Dreamhome slider images")]
         public CmsDreamhome UploadImages()
         {
-            inputDesktopImage.SendKeys(Browser.RootPath() + UploadedImages.RaffleOutspace);
-            inputMobileImage.SendKeys(Browser.RootPath() + UploadedImages.RaffleOutspace);
+            inputDesktopImage.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_OUTSPACE);
+            inputMobileImage.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_OUTSPACE);
 
             return this;
         }
@@ -92,7 +92,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open \"Description\" tab")]
         public CmsDreamhome OpenDescriptionTab()
         {
-            WaitUntil.CustomElevemtIsVisible(tabDescrDream);
+            WaitUntil.CustomElementIsVisible(tabDescrDream);
             int elemPos = tabDescrDream.Location.Y;
             ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
             tabDescrDream.Click();
@@ -104,8 +104,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Dreamhome card image")]
         public CmsDreamhome UploadDreamhomeCardImage()
         {
-            WaitUntil.CustomElevemtIsVisible(imgDesktopSelect);
-            dreamhomeCardImg.SendKeys(Browser.RootPath() + UploadedImages.RaffleOutspace);
+            WaitUntil.CustomElementIsVisible(imgDesktopSelect);
+            dreamhomeCardImg.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_OUTSPACE);
 
             return this;
         }
@@ -113,7 +113,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Bedroom card image")]
         public CmsDreamhome UploadBedroomCardImage()
         {
-            bedroomCardImg.SendKeys(Browser.RootPath() + UploadedImages.RaffleBedroom);
+            bedroomCardImg.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_BEDROOM);
 
             return this;
         }
@@ -121,7 +121,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Bathroom card image")]
         public CmsDreamhome UploadBathroomCardImage()
         {
-            bathroomCardImg.SendKeys(Browser.RootPath() + UploadedImages.RaffleBathroom);
+            bathroomCardImg.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_BATHROOM);
 
             return this;
         }
@@ -129,7 +129,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Outspace card image")]
         public CmsDreamhome UploadOutspaceCardImage()
         {
-            outspaceCardImg.SendKeys(Browser.RootPath() + UploadedImages.RaffleOutspace);
+            outspaceCardImg.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_OUTSPACE);
 
             return this;
         }
@@ -137,7 +137,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Floor plan card image")]
         public CmsDreamhome UploadFloorPlanCardImage()
         {
-            floorPlanCardImg.SendKeys(Browser.RootPath() + UploadedImages.RaffleFloorPlan);
+            floorPlanCardImg.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_FLOOR_PLAN);
 
             return this;
         }
