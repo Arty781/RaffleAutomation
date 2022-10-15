@@ -13,7 +13,7 @@ namespace RaffleAutomationTests.APIHelpers.WebApi
         
         public static void VerifyIsAdminSignInSuccesfull(SignInResponseModelWeb response)
         {
-            Assert.IsTrue(Credentials.login == response.User.Email);
+            Assert.IsTrue(Credentials.LOGIN == response.User.Email);
         }
     }
 }

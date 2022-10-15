@@ -27,7 +27,7 @@ namespace RaffleAutomationTests.Helpers
             try
             {
                 WaitUntil.WaitSomeInterval(500);
-                WaitUntil.CustomElevemtIsVisible(element, 30);
+                WaitUntil.CustomElementIsVisible(element, 30);
 
                 element.Click();
             }
@@ -43,7 +43,7 @@ namespace RaffleAutomationTests.Helpers
 
             try
             {
-                WaitUntil.CustomElevemtIsVisible(element, seconds);
+                WaitUntil.CustomElementIsVisible(element, seconds);
                 element.SendKeys(Keys.Control + "A" + Keys.Delete);
                 WaitUntil.WaitSomeInterval(500);
                 element.SendKeys(data);
@@ -57,7 +57,7 @@ namespace RaffleAutomationTests.Helpers
 
             try
             {
-                WaitUntil.CustomElevemtIsVisible(element, seconds);
+                WaitUntil.CustomElementIsVisible(element, seconds);
                 element.SendKeys(data + Keys.Enter);
             }
             catch (NoSuchElementException) { }
@@ -71,13 +71,13 @@ namespace RaffleAutomationTests.Helpers
     {
         public static string GetText(IWebElement element)
         {
-            WaitUntil.CustomElevemtIsVisible(element);
+            WaitUntil.CustomElementIsVisible(element);
             return element.Text;
         }
 
         public static string GetAttribute(IWebElement element, string attribute)
         {
-            WaitUntil.CustomElevemtIsVisible(element);
+            WaitUntil.CustomElementIsVisible(element);
             return element.GetAttribute(attribute);
 
         }

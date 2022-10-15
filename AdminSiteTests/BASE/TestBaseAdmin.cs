@@ -20,7 +20,7 @@ namespace AdminSiteTests.BASE
         public void SetUp()
         {
             
-            Browser._Driver.Navigate().GoToUrl(Endpoints.AdminHost);
+            Browser._Driver.Navigate().GoToUrl(AdminEndpoints.ADMIN_HOST);
         }
         
     }

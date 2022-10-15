@@ -17,7 +17,7 @@ namespace RaffleAutomationTests.PageObjects
             {
                 i++;
                 string descr = description.Text;
-                Assert.IsTrue(descr.Equals(AboutTexts.FindOutTexts[--i]));
+                Assert.IsTrue(descr.Equals(AboutTexts.FINDOUT_TEXT[--i]));
                 i++;
             }
 
@@ -32,7 +32,7 @@ namespace RaffleAutomationTests.PageObjects
             {
                 i++;
                 string descr = title.Text;
-                Assert.IsTrue(descr.Equals(AboutTexts.StepsTitleTexts[--i]));
+                Assert.IsTrue(descr.Equals(AboutTexts.STEPS_TITLE_TEXTS[--i]));
                 i++;
             }
             
@@ -40,7 +40,7 @@ namespace RaffleAutomationTests.PageObjects
             {
                 q++;
                 string descr = description.Text;
-                Assert.IsTrue(descr.Equals(AboutTexts.StepsDescrTexts[--q]));
+                Assert.IsTrue(descr.Equals(AboutTexts.STEPS_DESCR_TEXTS[--q]));
                 q++;
             }
 
@@ -54,7 +54,7 @@ namespace RaffleAutomationTests.PageObjects
             {
                 i++;
                 string descr = description.Text;
-                Assert.IsTrue(descr.Equals(AboutTexts.CharitableTexts[--i]));
+                Assert.IsTrue(descr.Equals(AboutTexts.CHARITABLE_TEXTS[--i]));
                 i++;
             }
 
@@ -64,14 +64,14 @@ namespace RaffleAutomationTests.PageObjects
         public AboutUs VerifySiteCreditBlock()
         {
             
-            Assert.IsTrue(titleSiteCredit.Text.Equals(AboutTexts.TitleSiteCredit));
+            Assert.IsTrue(titleSiteCredit.Text.Equals(AboutTexts.TITLE_SITE_CREDITS));
 
             int i = 0;
             foreach (var description in descriptionSiteCredit)
             {
                 i++;
                 string descr = description.Text;
-                Assert.IsTrue(descr.Equals(AboutTexts.DescriptionSiteCreditTexts[--i]));
+                Assert.IsTrue(descr.Equals(AboutTexts.DESCR_SITE_CREDIT_TEXTS[--i]));
                 i++;
             }
 

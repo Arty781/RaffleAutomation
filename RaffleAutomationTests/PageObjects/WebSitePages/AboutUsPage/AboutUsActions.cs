@@ -12,7 +12,7 @@ namespace RaffleAutomationTests.PageObjects
         public AboutUs OpenAboutPage(string url)
         {
             Browser._Driver.Navigate().GoToUrl(url);
-            WaitUntil.CustomElevemtIsVisible(titleAboutPage);
+            WaitUntil.CustomElementIsVisible(titleAboutPage);
 
 
             return this;

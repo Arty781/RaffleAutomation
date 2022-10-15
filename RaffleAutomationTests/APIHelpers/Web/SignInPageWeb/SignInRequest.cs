@@ -26,9 +26,9 @@ namespace RaffleAutomationTests.APIHelpers.WebApi
         {
             
             
-            var restDriver = new RestClient(Endpoints.ApiHost);
+            var restDriver = new RestClient(ApiEndpoints.API);
             RestRequest? request = new RestRequest("/api/users/signin", Method.Post);
-            request.AddHeaders(headers: Headers.HeadersCommon());
+            request.AddHeaders(headers: Headers.COMMON);
             request.AddJsonBody(SignIn(login, password));
 
             var response = restDriver.Execute(request);

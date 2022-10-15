@@ -58,14 +58,8 @@ namespace RaffleAutomationTests.Helpers
                         }
                         return false;
                     }
-                    catch (NoSuchElementException)
-                    {
-                        return false;
-                    }
-                    catch (StaleElementReferenceException)
-                    {
-                        return false;
-                    }
+                    catch (NoSuchElementException){ return false; }
+                    catch (StaleElementReferenceException){ return false; }
 
                 });
             }
@@ -90,14 +84,8 @@ namespace RaffleAutomationTests.Helpers
                         }
                         return true;
                     }
-                    catch (NoSuchElementException)
-                    {
-                        return true;
-                    }
-                    catch (StaleElementReferenceException)
-                    {
-                        return true;
-                    }
+                    catch (NoSuchElementException) { return false; }
+                    catch (StaleElementReferenceException) { return false; }
 
                 });
             }
