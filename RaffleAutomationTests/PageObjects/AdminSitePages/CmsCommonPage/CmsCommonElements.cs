@@ -14,40 +14,41 @@ namespace RaffleAutomationTests.PageObjects
         #region SideBarMenu
 
         [FindsBy(How = How.XPath, Using = "//li[@role='menuitem']//span[contains(text(),'Prize Management')]")]
-        public IWebElement tbPrizeManagement;
+        public IWebElement pagePrizeManagement;
 
         [FindsBy(How = How.XPath, Using = "//a[@href='#/dreamHome']")]
-        public IWebElement tbDreamHome;
+        public IWebElement pageDreamHome;
 
         [FindsBy(How = How.XPath, Using = "//a[@href='#/prizes']")]
-        public IWebElement tbLifeStylePrizes;
-        
+        public IWebElement pagePrizes;
+
         [FindsBy(How = How.XPath, Using = "//a[@href='#/fixedOdds']")]
-        public IWebElement tbFixedOdds;
+        public IWebElement pageFixedOdds;
 
         [FindsBy(How = How.XPath, Using = "//a[@href='#/competitions']")]
-        public IWebElement tbCompetitions;
+        public IWebElement pageCompetitions;
 
         [FindsBy(How = How.XPath, Using = "//a[@href='#/users']")]
-        public IWebElement tbUserManagement;
+        public IWebElement pageUsers;
 
         [FindsBy(How = How.XPath, Using = "//a[@href='#/staffUsers']")]
-        public IWebElement tbStaffManagement;
+        public IWebElement pageStaff;
 
         [FindsBy(How = How.XPath, Using = "//li[@role='menuitem']//span[contains(text(),'Settings')]")]
-        public IWebElement tbSettings;
+        public IWebElement pageSettings;
 
         [FindsBy(How = How.XPath, Using = "//a[@href='#/general']")]
-        public IWebElement tbGeneral;
+        public IWebElement pageSettingsGeneral;
 
         [FindsBy(How = How.XPath, Using = "//a[@href='#/winners']")]
-        public IWebElement tbWinners;
+        public IWebElement pageSettingsWinners;
 
         [FindsBy(How = How.XPath, Using = "//a[@href='#/referrals']")]
-        public IWebElement tbReferrals;
+        public IWebElement pageSettingsReferrals;
 
         [FindsBy(How = How.XPath, Using = "//a[@href='#/reports']")]
-        public IWebElement tbReports;
+        public IWebElement pageSettingsReports;
+
 
         #endregion
 
@@ -63,19 +64,21 @@ namespace RaffleAutomationTests.PageObjects
 
         #region Pagination
 
+        [FindsBy(How = How.XPath, Using = "//div[@title='First Page']")]
+        public IWebElement btnFirstPage;
+
+        [FindsBy(How = How.XPath, Using = "//div[@title='Previous Page']")]
+        public IWebElement btnPreviousPage;
+
+        [FindsBy(How = How.XPath, Using = "//div[@title='Next Page']")]
+        public IWebElement btnNextPage;
+
         [FindsBy(How = How.XPath, Using = "//div[@title='Last Page']")]
-        public IWebElement btnGoToLastPage;
+        public IWebElement btnLastPage;
+
 
         #endregion
 
-        public IWebElement generalTab => Browser._Driver.FindElement(_generalTab);
-        public readonly By _generalTab = By.XPath("//a[@href='#/dreamHome/create']");
-
-        public IWebElement descriptionTab => Browser._Driver.FindElement(_descriptionTab);
-        public readonly By _descriptionTab = By.XPath("//a[@href='#/dreamHome/create/1']");
-
-        public IWebElement discountTicketsTab => Browser._Driver.FindElement(_discountTicketsTab);
-        public readonly By _discountTicketsTab = By.XPath("//a[@href='#/dreamHome/create/3']");
 
 
     }

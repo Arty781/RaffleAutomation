@@ -27,6 +27,18 @@ namespace RaffleAutomationTests.Helpers
             screenshot.SaveAsFile(name, ScreenshotImageFormat.Png);
             return name;
         }
-        
+
+        public static void DeleteScreenShot(string file)
+        {
+            if (!Directory.Exists(Path.Combine(file, "..\\")))
+            {
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                }
+                Directory.Delete(Path.Combine(file, "..\\"));
+            }
+            
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,26 +34,29 @@ namespace RaffleAutomationTests.PageObjects
         public IWebElement ConfirmPasswordInput => Browser._Driver.FindElement(_ConfirmPasswordInput);
         public readonly static By _ConfirmPasswordInput = By.XPath("//input[@name='confirmPassword']");
 
-        public IWebElement EditAccountBtn => Browser._Driver.FindElement(_AccountEditBtn);
-        public readonly static By _AccountEditBtn = By.XPath("//button[@data-edit='account']");
+        [FindsBy(How = How.XPath, Using = "//button[@data-edit='account']")]
+        public IWebElement btnEditAccount;
 
-        public IWebElement EmailInput => Browser._Driver.FindElement(_EmailInput);
-        public readonly static By _EmailInput = By.XPath("//input[@name='email']");
+        [FindsBy(How = How.XPath, Using = "//input[@name='email']")]
+        public IWebElement inputEmail;
 
-        public IWebElement PhoneInput => Browser._Driver.FindElement(_PhoneInput);
-        public readonly static By _PhoneInput = By.XPath("//input[@name='phone']");
+        [FindsBy(How = How.XPath, Using = "//input[@name='phone']")]
+        public IWebElement inputPhone;
 
-        public IWebElement EmailCommunication => Browser._Driver.FindElement(_EmailCommunication);
-        public readonly static By _EmailCommunication = By.XPath("//*[@value='emailCommunication']");
+        [FindsBy(How = How.XPath, Using = "//input[@name='country']")]
+        public IWebElement inputCountry;
 
-        public IWebElement CorporateNotification => Browser._Driver.FindElement(_CorporateNotification);
-        public readonly static By _CorporateNotification = By.XPath("//*[@value='corporateNotification']");
+        [FindsBy(How = How.XPath, Using = "//input[@value='emailCommunication']")]
+        public IWebElement inputEmailCommunication;
 
-        public IWebElement SaveBtn => Browser._Driver.FindElement(_SaveBtn);
-        public readonly static By _SaveBtn = By.XPath("//button[contains(@class,'savingNewPassword visible')]");
+        [FindsBy(How = How.XPath, Using = "//input[@value='corporateNotification']")]
+        public IWebElement inputCorporateNotification;
 
-        public IWebElement SuccessUpdateDialog => Browser._Driver.FindElement(_SuccessUpdateDialog);
-        public readonly static By _SuccessUpdateDialog = By.XPath("//div[contains(text(), 'Profile info update success')]");
+        [FindsBy(How=How.XPath,Using = "//button[contains(@class,'savingNewPassword visible')]")]
+        public IWebElement btnSave;
+
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(), 'Profile info update success')]")]
+        public IWebElement SuccessUpdateDialog;
 
         #endregion
     }

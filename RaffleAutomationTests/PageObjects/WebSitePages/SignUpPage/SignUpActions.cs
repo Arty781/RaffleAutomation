@@ -1,4 +1,5 @@
 ﻿using NUnit.Allure.Steps;
+using RimuTec.Faker;
 using RaffleAutomationTests.Helpers;
 using System;
 using System.Collections.Generic;

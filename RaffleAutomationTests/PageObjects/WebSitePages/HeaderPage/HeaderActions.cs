@@ -83,8 +83,8 @@ namespace RaffleAutomationTests.PageObjects
 
         public Header OpenCartPage()
         {
-            WaitUntil.ElementIsClickable(cartBtn);
-            cartBtn.Click();
+            WaitUntil.ElementIsClickable(btnCart);
+            btnCart.Click();
 
             return this;
         }

@@ -15,8 +15,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Verify is login successfully")]
         public CmsCommon VerifyIsLoginSuccessfull()
         {
-            WaitUntil.CustomElementIsVisible(tbPrizeManagement);
-            Assert.IsTrue(tbPrizeManagement.Displayed);
+            WaitUntil.CustomElevemtIsVisible(pagePrizeManagement);
+            Assert.IsTrue(pagePrizeManagement.Displayed);
             return this;
         }
 
@@ -24,8 +24,8 @@ namespace RaffleAutomationTests.PageObjects
         public CmsCommon VerifyIsDreamhomeCreatedSuccessfully(string dreamhomeTitle)
         {
             WaitUntil.VisibilityOfAllElementsLocatedBy(By.XPath("//td"));
-            //goToLastPageBtn.Click();
-            WaitUntil.WaitSomeInterval(5);
+            Button.Click(btnLastPage);
+            WaitUntil.WaitSomeInterval(5000);
             IReadOnlyCollection<IWebElement> dreamhomeList = Browser._Driver.FindElements(By.XPath("//td"));
             
             foreach (var dreamhome in dreamhomeList)

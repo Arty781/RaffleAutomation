@@ -11,7 +11,7 @@ namespace RaffleAutomationTests.Helpers
         public static string RandomNumber()
         {
             Random r = new Random();
-            int genRand = r.Next(10, 50);
+            int genRand = r.Next(1, 1000);
             string randomNum = genRand.ToString();
 
             return randomNum;

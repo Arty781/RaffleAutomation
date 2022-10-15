@@ -12,11 +12,19 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class Basket
     {
+        [AllureStep("Open cart")]
+        public Basket ClickCartBtn()
+        {
+            Button.Click(Header.btnCart);
+            WaitUntil.CustomElevemtIsVisible(btncheckOutNow);
+
+            return this;
+        }
+
         [AllureStep("Click Add More button")]
         public Basket ClickAddMoreBtn()
         {
-            WaitUntil.ElementIsVisibleAndClickable(_addMoreTicketsBtn);
-            addMoreTicketsBtn.Click();
+            Button.Click(addMoreTicketsBtn);
 
             return this;
         }
@@ -24,9 +32,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Apply coupon Code")]
         public Basket ApplyCouponCode(string coupon)
         {
-            WaitUntil.ElementIsVisible(_couponInput);
-            couponInput.SendKeys(coupon);
-            applyCouponBtn.Click();
+            InputBox.Element(couponInput, 5, coupon);
+            Button.Click(applyCouponBtn);
 
             return this;
         }
@@ -48,18 +55,19 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter card details")]
         public Basket EnterCardDetails()
         {
-            WaitUntil.ElementIsVisible(_ageControlSection, 10);
-            
-            ageControlSection.Click();
+            Button.Click(checkboxAgeControl);
 
-            WaitUntil.WaitSomeInterval(5);
-            Browser._Driver.SwitchTo().Frame(paymentForm);
-            WaitUntil.ElementIsVisible(_cardNumberInput, 25);
-            cardNumberInput.SendKeys("4242424242424242");
-            WaitUntil.WaitSomeInterval(1);
-            cardExpDate.SendKeys("11/28");
-            WaitUntil.WaitSomeInterval(1);
-            cardCvvInpt.SendKeys("100");
+            WaitUntil.WaitSomeInterval(250);
+            Browser._Driver.SwitchTo().Frame(framePaymentNumber);
+            InputBox.Element(inputCardNumber,5, "4242424242424242");
+            Browser._Driver.SwitchTo().DefaultContent();
+            Browser._Driver.SwitchTo().Frame(framePaymentExpiry);
+            inputExpiryDate.SendKeys("11/28");
+            Browser._Driver.SwitchTo().DefaultContent();
+            Browser._Driver.SwitchTo().Frame(framePaymentCvv);
+            inputCvv.SendKeys("100");
+            Browser._Driver.SwitchTo().DefaultContent();
+            WaitUntil.ElementIsClickable(btnPay, 5);
 
             return this;
         }
@@ -67,15 +75,37 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Click Pay Now button")]
         public Basket ClickPayNowBtn()
         {
-            Browser._Driver.SwitchTo().DefaultContent();
-            WaitUntil.ElementIsClickable(payBtn, 20);
-
-            Elements.Click(payBtn);
-            
-            WaitUntil.VisibilityOfAllElementsLocatedBy(By.XPath("//h1[@class='orderCompleted']"),15);
-            
+            ClickHelper.Clicker(btnPay);
 
             return this;
         }
+
+        [AllureStep("Confirm purchase")]
+        public Basket ConfirmPurchase()
+        {
+            WaitUntil.CustomElevemtIsVisible(frameCheckout);
+            Browser._Driver.SwitchTo().Frame(frameCheckout);
+            InputBox.Element(inputPasswordCheckout, 5, "Checkout1!");
+            Button.Click(btnContinueCheckout);
+            Browser._Driver.SwitchTo().DefaultContent();
+
+
+            return this;
+        }
+
+        [AllureStep("Confirm purchase")]
+        public Basket WaitForTimeout()
+        {
+            WaitUntil.CustomElevemtIsVisible(frameCheckout);
+            Browser._Driver.SwitchTo().Frame(frameCheckout);
+            WaitUntil.CustomElevemtIsInvisible(btnContinueCheckout, 1200);
+            Browser._Driver.SwitchTo().DefaultContent();
+            WaitUntil.CustomElevemtIsVisible(btncheckOutNow, 120);
+
+
+            return this;
+        }
+
+
     }
 }

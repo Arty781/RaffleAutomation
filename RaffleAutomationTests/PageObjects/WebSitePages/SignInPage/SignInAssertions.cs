@@ -13,7 +13,7 @@ namespace RaffleAutomationTests.PageObjects
     {
         public SignIn VerifyIsSignIn()
         {
-            WaitUntil.ElementIsVisibleAndClickable(By.XPath("//*[@class='dropdownAccount ']/div[@class='header-drop-name']/span[1]"), 1);
+            WaitUntil.CustomElevemtIsVisible(Pages.Header.UserFirstNameBtn);
             
             Assert.IsTrue(Pages.Header.UserFirstNameBtn.Displayed);
             Console.WriteLine(Pages.Header.UserFirstNameBtn.Displayed);

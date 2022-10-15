@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,20 +28,52 @@ namespace RaffleAutomationTests.PageObjects
         public IWebElement selectCharityWomen => Browser._Driver.FindElement(_selectCharityWomen);
         public readonly static By _selectCharityWomen = By.XPath("//*/label[@class='MuiFormControlLabel-root'][2]");
         public IWebElement ageControlSection => Browser._Driver.FindElement(_ageControlSection);
-        public readonly static By _ageControlSection = By.XPath("//*/div[@class='age-control-section']/label/span");
-        public IWebElement paymentForm => Browser._Driver.FindElement(_paymentForm);
-        public readonly static By _paymentForm = By.XPath("//*/iframe[@title=\"Secure payment frame - Gr4vy\"]");
-        public IWebElement cardNumberInput => Browser._Driver.FindElement(_cardNumberInput);
-        public readonly static By _cardNumberInput = By.XPath("//*[@id='card-number']");
-        public IWebElement cardExpDate => Browser._Driver.FindElement(_cardExpDate);
-        public readonly static By _cardExpDate = By.XPath("//*[@id='card-expiration-date']");
-        public IWebElement cardCvvInpt => Browser._Driver.FindElement(_cardCvvInpt);
-        public readonly static By _cardCvvInpt = By.XPath("//*[@id='card-security-code']");
-        public IWebElement payBtn => Browser._Driver.FindElement(_payBtn);
-        public readonly static By _payBtn = By.XPath("//*/button[@id=\"pay-button\"]");
-        public IWebElement orderSummaryBtn => Browser._Driver.FindElement(_orderSummaryBtn);
-        public readonly static By _orderSummaryBtn = By.XPath("//*/div[@class='checkout-header']");
+        public readonly static By _ageControlSection = By.XPath("//div[@class='age-control-section']/label//span/input");
 
-        
+        [FindsBy(How = How.Name, Using = "checkedB")]
+        public IWebElement checkboxAgeControl;
+
+        [FindsBy(How = How.Id, Using = "cardNumber")]
+        public IWebElement framePaymentNumber;
+
+        [FindsBy(How = How.Id, Using = "expiryDate")]
+        public IWebElement framePaymentExpiry;
+
+        [FindsBy(How = How.Id, Using = "cvv")]
+        public IWebElement framePaymentCvv;
+
+        [FindsBy(How = How.Id, Using = "checkout-frames-card-number")]
+        public IWebElement inputCardNumber;
+
+        [FindsBy(How = How.Id, Using = "checkout-frames-expiry-date")]
+        public IWebElement inputExpiryDate;
+
+        [FindsBy(How = How.Id, Using = "checkout-frames-cvv")]
+        public IWebElement inputCvv;
+
+        [FindsBy(How = How.Id, Using = "pay-button")]
+        public IWebElement btnPay;
+
+        public IWebElement orderSummaryBtn => Browser._Driver.FindElement(_orderSummaryBtn);
+        public readonly static By _orderSummaryBtn = By.XPath("//div[@class='checkout-header']");
+
+        #region Checkout Verification page
+
+        [FindsBy(How = How.Name, Using = "cko-3ds2-iframe")]
+        public IWebElement frameCheckout;
+
+        [FindsBy(How = How.Id, Using = "password")]
+        public IWebElement inputPasswordCheckout;
+
+        [FindsBy(How = How.XPath, Using = "//input[@value='Continue']")]
+        public IWebElement btnContinueCheckout;
+
+        [FindsBy(How = How.XPath, Using = "//button[@class='rafflebtn primary full-width']")]
+        public IWebElement btncheckOutNow;
+
+
+
+
+        #endregion
     }
 }

@@ -15,9 +15,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Click \"Add new dreamhome\" button")]
         public CmsDreamhome ClickAddDreamhomeBtn()
         {
-            WaitUntil.ElementIsVisible(_addDreamHomeBtn);
-            addDreamHomeBtn.Click();
-            WaitUntil.WaitSomeInterval(2);
+           
+            Button.Click(btnAddDreamHome);
 
             return this;
         }
@@ -26,9 +25,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Dreamhome slider images")]
         public CmsDreamhome UploadImages()
         {
-            
-            desktopImageInput.SendKeys(Browser.RootPath() + UploadedImages.RaffleOutspace);
-            mobileImageInput.SendKeys(Browser.RootPath() + UploadedImages.RaffleOutspace);
+            inputDesktopImage.SendKeys(Browser.RootPath() + UploadedImages.RaffleOutspace);
+            inputMobileImage.SendKeys(Browser.RootPath() + UploadedImages.RaffleOutspace);
 
             return this;
         }
@@ -36,8 +34,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Title")]
         public CmsDreamhome EnterTitle()
         {
-            WaitUntil.ElementIsVisible(_titleInput);
-            titleInput.SendKeys("Dream London flat " + DateTime.UtcNow.ToString("dd-MMMM-yyyy' 'HH-mm-ss"));
+            InputBox.Element(inputTitle, 5, "Dream London flat " + DateTime.UtcNow.ToString("dd-MMMM-yyyy' 'HH-mm-ss"));
 
             return this;
         }
@@ -45,9 +42,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Address")]
         public CmsDreamhome EnterAddress()
         {
-            WaitUntil.ElementIsVisible(_addressInput);
-            addressInput.SendKeys("42 Broadway London E35 0VE 767 Manor Road");
-            WaitUntil.WaitSomeInterval(1);
+            InputBox.Element(inputAddress, 5, "42 Broadway London E35 0VE 767 Manor Road");
 
             return this;
         }
@@ -55,21 +50,14 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Start date")]
         public CmsDreamhome EnterStartDate()
         {
-            WaitUntil.ElementIsVisible(_enterDayStart);
-            enterDayStart.Clear();
-            enterDayStart.SendKeys("10");
-            enterMonthStart.Clear();
-            enterMonthStart.SendKeys("1");
-            enterYearStart.Clear();
-            enterYearStart.SendKeys("2022");
-            enterHourStart.Clear();
-            enterHourStart.SendKeys("00");
-            enterMinuteStart.Clear();
-            enterMinuteStart.SendKeys("0");
-            enterSecondStart.Clear();
-            enterSecondStart.SendKeys("0");
-            selectAmPmStart.SendKeys(Keys.ArrowDown);
-            WaitUntil.WaitSomeInterval(1);
+           
+            InputBox.Element(inputStartDay, 5, "1");
+            InputBox.Element(inputStartMonth, 5, "1");
+            InputBox.Element(inputStartYear, 5, "2022");
+            InputBox.Element(inputStartHour, 5, "00");
+            InputBox.Element(inputStartMinute, 5, "0");
+            InputBox.Element(inputStartSecond, 5, "0");
+            InputBox.Element(inputStartAmPm, 5, Keys.ArrowDown);
 
             return this;
         }
@@ -77,22 +65,13 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Finish date")]
         public CmsDreamhome EnterFinishDate()
         {
-            WaitUntil.ElementIsVisible(_enterDayFinish);
-            enterDayFinish.Clear();
-            enterDayFinish.SendKeys("10");
-            enterMonthFinish.Clear();
-            enterMonthFinish.SendKeys("1");
-            enterYearFinish.Clear();
-            enterYearFinish.SendKeys("2023");
-            enterHourFinish.Clear();
-            enterHourFinish.SendKeys("11");
-            enterMinuteFinish.Clear();
-            enterMinuteFinish.SendKeys("59");
-            enterSecondFinish.Clear();
-            enterSecondFinish.SendKeys("59");
-            selectAmPmFinish.SendKeys(Keys.ArrowDown);
-            selectAmPmFinish.SendKeys(Keys.ArrowDown);
-            WaitUntil.WaitSomeInterval(1);
+            InputBox.Element(inputFinishDay, 5, "1");
+            InputBox.Element(inputFinishMonth, 5, "1");
+            InputBox.Element(inputFinishYear, 5, "2022");
+            InputBox.Element(inputFinishHour, 5, "00");
+            InputBox.Element(inputFinishMinute, 5, "0");
+            InputBox.Element(inputFinishSecond, 5, "0");
+            InputBox.Element(inputFinishAmPm, 5, Keys.ArrowDown + Keys.ArrowDown);
 
             return this;
         }
@@ -100,12 +79,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Meta tags")]
         public CmsDreamhome EnterMetaTags()
         {
-            WaitUntil.ElementIsVisible(_metaTitle);
-            metaTitle.Clear();
-            metaTitle.SendKeys("Dream home");
-            metaDescription.Clear();
-            metaDescription.SendKeys("Dream home description");
-            WaitUntil.WaitSomeInterval(1);
+            InputBox.Element(inputMetaTitle, 5, "Dream home");
+            InputBox.Element(inputMetaDescr, 5, "Dream home description");
 
             return this;
         }
@@ -114,10 +89,22 @@ namespace RaffleAutomationTests.PageObjects
 
         #region Description tab
 
+        [AllureStep("Open \"Description\" tab")]
+        public CmsDreamhome OpenDescriptionTab()
+        {
+            WaitUntil.CustomElevemtIsVisible(tabDescrDream);
+            int elemPos = tabDescrDream.Location.Y;
+            ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
+            tabDescrDream.Click();
+            WaitUntil.WaitSomeInterval(1);
+
+            return this;
+        }
+
         [AllureStep("Upload Dreamhome card image")]
         public CmsDreamhome UploadDreamhomeCardImage()
         {
-            WaitUntil.WaitSomeInterval(1);
+            WaitUntil.CustomElevemtIsVisible(imgDesktopSelect);
             dreamhomeCardImg.SendKeys(Browser.RootPath() + UploadedImages.RaffleOutspace);
 
             return this;
@@ -126,7 +113,6 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Bedroom card image")]
         public CmsDreamhome UploadBedroomCardImage()
         {
-            WaitUntil.WaitSomeInterval(1);
             bedroomCardImg.SendKeys(Browser.RootPath() + UploadedImages.RaffleBedroom);
 
             return this;
@@ -135,7 +121,6 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Bathroom card image")]
         public CmsDreamhome UploadBathroomCardImage()
         {
-            WaitUntil.WaitSomeInterval(1);
             bathroomCardImg.SendKeys(Browser.RootPath() + UploadedImages.RaffleBathroom);
 
             return this;
@@ -144,7 +129,6 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Outspace card image")]
         public CmsDreamhome UploadOutspaceCardImage()
         {
-            WaitUntil.WaitSomeInterval(1);
             outspaceCardImg.SendKeys(Browser.RootPath() + UploadedImages.RaffleOutspace);
 
             return this;
@@ -153,7 +137,6 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Floor plan card image")]
         public CmsDreamhome UploadFloorPlanCardImage()
         {
-            WaitUntil.WaitSomeInterval(1);
             floorPlanCardImg.SendKeys(Browser.RootPath() + UploadedImages.RaffleFloorPlan);
 
             return this;
@@ -162,8 +145,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Bedroom text")]
         public CmsDreamhome EnterBedroomText(string bedroomText)
         {
-            WaitUntil.WaitSomeInterval(1);
-            bedroomsTextArea.SendKeys(bedroomText);
+            InputBox.Element(bedroomsTextArea, 5, bedroomText);
 
             return this;
         }
@@ -171,8 +153,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Bathroom text")]
         public CmsDreamhome EnterBathroomText(string bathroomText)
         {
-            WaitUntil.WaitSomeInterval(1);
-            bathroomsTextArea.SendKeys(bathroomText);
+            InputBox.Element(bathroomsTextArea, 5, bathroomText);
 
             return this;
         }
@@ -180,8 +161,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter OutSpace text")]
         public CmsDreamhome EnterOutSpaceText(string outspaceText)
         {
-            WaitUntil.WaitSomeInterval(1);
-            outspaceTextArea.SendKeys(outspaceText);
+            InputBox.Element(outspaceTextArea, 5, outspaceText);
 
             return this;
         }
@@ -189,8 +169,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter About text")]
         public CmsDreamhome EnterAboutText(string aboutText)
         {
-            WaitUntil.WaitSomeInterval(1);
-            aboutTextArea.SendKeys(aboutText);
+            InputBox.Element(aboutTextArea, 5, aboutText);
 
             return this;
         }
@@ -198,8 +177,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Product CTA text")]
         public CmsDreamhome EnterProductCTAText(string ctaText)
         {
-            WaitUntil.WaitSomeInterval(1);
-            productCTATextArea.SendKeys(ctaText);
+            InputBox.Element(productCTATextArea, 5, ctaText);
 
             return this;
         }
@@ -207,8 +185,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Heading text")]
         public CmsDreamhome EnterHeadingText(string headingText)
         {
-            WaitUntil.WaitSomeInterval(1);
-            headingTextArea.SendKeys(headingText);
+            InputBox.Element(headingTextArea, 5, headingText);
 
             return this;
         }
@@ -216,8 +193,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter TakeTourWithSara link")]
         public CmsDreamhome EnterTakeTourWithSara(string TakeTourWithSaraLink)
         {
-            WaitUntil.WaitSomeInterval(1);
-            headingTextArea.SendKeys(TakeTourWithSaraLink);
+            InputBox.Element(headingTextArea, 5, TakeTourWithSaraLink);
 
             return this;
         }
@@ -229,7 +205,7 @@ namespace RaffleAutomationTests.PageObjects
             for (int i = 0; i < 4; i++)
             {
                 
-                addOverviewBtn.Click();
+                Button.Click(addOverviewBtn);
 
             }
             return this;
@@ -238,14 +214,10 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Overview title")]
         public CmsDreamhome EnterOverviewTitle()
         {
-            WaitUntil.WaitSomeInterval(3);
-            IReadOnlyCollection<IWebElement> titlesList = Browser._Driver.FindElements(_RowOverviewTitle);
-
-            foreach (var title in titlesList)
+            WaitUntil.WaitSomeInterval(1500);
+            foreach (var title in RowOverviewTitle)
             {
-                /*WaitUntil.WaitSomeInterval(1);*/
-                title.Clear();
-                title.SendKeys(RandomHelper.RandomNumber());
+                InputBox.Element(title,5,RandomHelper.RandomNumber());
             }
             return this;
         }
@@ -253,36 +225,12 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Overview Value")]
         public CmsDreamhome EnterOverviewValue()
         {
-            
-            
-            IReadOnlyCollection<IWebElement> valuesList = Browser._Driver.FindElements(_RowOverviewValue);
-            int i = 0;
-            foreach (var value in valuesList)
+            WaitUntil.WaitSomeInterval(1500);
+
+            foreach (var value in RowOverviewValue)
             {
-                ++i;
-                if(i == 4)
-                {
-                    break;
-                }
-                value.Click();
-                value.SendKeys(RandomHelper.RandomNumber());
-                
-                
-            }
-
-            IReadOnlyCollection<IWebElement> valuesSecondList = Browser._Driver.FindElements(_RowOverviewValue);
-
-            foreach (var valueSecond in valuesSecondList)
-            {
-
-                string value = valueSecond.GetAttribute("value");
-                if (value == "")
-                {
-                    valueSecond.Click();
-                    valueSecond.SendKeys(RandomHelper.RandomNumber());
-                }      
-
-                
+                Button.Click(value);
+                InputBox.Element(value, 5, RandomHelper.RandomNumber());
             }
 
             return this;
