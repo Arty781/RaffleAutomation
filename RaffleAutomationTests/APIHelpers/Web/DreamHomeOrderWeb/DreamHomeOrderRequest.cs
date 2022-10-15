@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RaffleAutomationTests.APIHelpers.WebApi
+namespace RaffleAutomationTests.APIHelpers.Web
 {
     public class DreamHomeOrderRequestWeb
     {
@@ -24,7 +24,7 @@ namespace RaffleAutomationTests.APIHelpers.WebApi
             return req;
         }
 
-        public static DreamHomeOrderResponseModelWeb AddDreamhomeTickets(SignInResponseModelWeb SignIn, CountdownResponseModelWeb countdown)
+        public static DreamHomeOrderResponseModelWeb AddDreamhomeTickets(SignInResponseModelWeb SignIn, CountdownResponseModelDreamHomeWeb countdown)
         {
 
 

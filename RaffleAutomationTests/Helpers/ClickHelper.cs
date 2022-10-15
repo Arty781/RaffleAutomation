@@ -1,5 +1,6 @@
 ﻿
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using RaffleAutomationTests.PageObjects;
 using System;
 using System.Collections.Generic;
@@ -24,14 +25,9 @@ namespace RaffleAutomationTests.Helpers
     {
         public static void Click(IWebElement element)
         {
-            try
-            {
-                WaitUntil.WaitSomeInterval(500);
-                WaitUntil.CustomElementIsVisible(element, 30);
-
-                element.Click();
-            }
-            catch (Exception) { }
+            WaitUntil.WaitSomeInterval(150);
+            WaitUntil.CustomElementIsVisible(element, 10);
+            element.Click();
 
         }
 
@@ -40,33 +36,25 @@ namespace RaffleAutomationTests.Helpers
     {
         public static IWebElement Element(IWebElement element, int seconds, string data)
         {
-
-            try
-            {
-                WaitUntil.CustomElementIsVisible(element, seconds);
-                element.SendKeys(Keys.Control + "A" + Keys.Delete);
-                WaitUntil.WaitSomeInterval(500);
-                element.SendKeys(data);
-            }
-            catch (Exception) { }
+            WaitUntil.CustomElementIsVisible(element, seconds);
+            element.SendKeys(Keys.Control + "A" + Keys.Delete);
+            WaitUntil.WaitSomeInterval(150);
+            element.SendKeys(data);
 
             return element;
         }
         public static IWebElement CbbxElement(IWebElement element, int seconds, string data)
         {
 
-            try
-            {
-                WaitUntil.CustomElementIsVisible(element, seconds);
-                element.SendKeys(data + Keys.Enter);
-            }
-            catch (NoSuchElementException) { }
-            catch (StaleElementReferenceException) { }
+            WaitUntil.CustomElementIsVisible(element, seconds);
+            element.SendKeys(data + Keys.Enter);
+
             return element;
         }
 
 
     }
+
     public class TextBox
     {
         public static string GetText(IWebElement element)
@@ -85,18 +73,27 @@ namespace RaffleAutomationTests.Helpers
 
     public class Element
     {
-        public static IWebElement webElem(string xpathString)
+        public static IWebElement FindSpecificDreamhome(string titleDreamhome)
         {
-            WaitUntil.WaitSomeInterval(250);
-            var elem = Browser._Driver.FindElement(By.XPath(xpathString));
-            return elem;
-        }
+            WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(10));
+            wait.PollingInterval = TimeSpan.FromMilliseconds(100);
+            try
+            {
+                wait.Until(e =>
+                {
+                    try { return Browser._Driver.FindElement(By.XPath($"//tbody/tr/td[text()='{titleDreamhome}']")).Enabled; }
+                    catch (NoSuchElementException) { return false; }
+                    catch (StaleElementReferenceException) { return false; }
 
-        public static List<IWebElement> webElemList(string xpathString)
-        {
-            WaitUntil.WaitSomeInterval(250);
-            var elem = Browser._Driver.FindElements(By.XPath(xpathString)).ToList();
-            return elem;
+                });
+            }
+            catch (NoSuchElementException) {  }
+            catch (StaleElementReferenceException) {  }
+
+            var _element = Browser._Driver.FindElement(By.XPath($"//tbody/tr/td[text()='{titleDreamhome}']"));
+
+
+            return _element;
         }
     }
 }

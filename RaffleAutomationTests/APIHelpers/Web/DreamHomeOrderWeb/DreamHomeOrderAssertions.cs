@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RaffleAutomationTests.APIHelpers.WebApi
+namespace RaffleAutomationTests.APIHelpers.Web
 {
     internal class DreamHomeOrderAssertionsWeb
     {

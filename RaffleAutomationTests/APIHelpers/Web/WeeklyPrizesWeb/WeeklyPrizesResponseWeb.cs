@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.APIHelpers.Web
 {
-    
-    public class DreamHomeOrderRequestModel
+    public partial class CreateWeeklyPrizeOrderRequest
     {
         [JsonProperty("numOfTickets")]
         public string NumOfTickets { get; set; }
@@ -18,16 +17,18 @@ namespace RaffleAutomationTests.APIHelpers.Web
 
         [JsonProperty("prizeId")]
         public string PrizeId { get; set; }
+
+        [JsonProperty("totalCost")]
+        public double TotalCost { get; set; }
     }
 
-    public class DreamHomeOrderResponseModelWeb
+    public partial class CreateWeeklyPrizeOrderResponse
     {
-        
         [JsonProperty("message")]
         public string Message { get; set; }
 
         [JsonProperty("orderId")]
         public string OrderId { get; set; }
     }
-}
 
+}

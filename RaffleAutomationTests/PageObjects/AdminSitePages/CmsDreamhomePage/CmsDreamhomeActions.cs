@@ -10,12 +10,11 @@ using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
-    partial class CmsDreamhome
+    public partial class CmsDreamhome
     {
         [AllureStep("Click \"Add new dreamhome\" button")]
         public CmsDreamhome ClickAddDreamhomeBtn()
         {
-           
             Button.Click(btnAddDreamHome);
 
             return this;
@@ -23,10 +22,11 @@ namespace RaffleAutomationTests.PageObjects
 
         #region General tab
         [AllureStep("Upload Dreamhome slider images")]
-        public CmsDreamhome UploadImages()
+        public CmsDreamhome UploadImages(string img)
         {
-            inputDesktopImage.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_OUTSPACE);
-            inputMobileImage.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_OUTSPACE);
+            WaitUntil.WaitSomeInterval(250);
+            inputDesktopImage.SendKeys(Browser.RootPath() + img);
+            inputMobileImage.SendKeys(Browser.RootPath() + img);
 
             return this;
         }
@@ -201,11 +201,22 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Add Overview rows")]
         public CmsDreamhome ClickAddOverviewRowsBtn()
         {
-            WaitUntil.WaitSomeInterval(1);
+            WaitUntil.WaitSomeInterval(150);
             for (int i = 0; i < 4; i++)
             {
-                
+
                 Button.Click(addOverviewBtn);
+                WaitUntil.WaitSomeInterval(250);
+                Console.WriteLine(RowOverviewValue.Count);
+                WaitUntil.CustomElementIsVisible(RowOverviewValue.Last());
+                WaitUntil.WaitSomeInterval(250);
+                InputBox.Element(RowOverviewValue[i], 5, RandomHelper.RandomNumber());
+                WaitUntil.WaitSomeInterval(200);
+                Console.WriteLine(RowOverviewTitle.Count);
+                WaitUntil.CustomElementIsVisible(RowOverviewTitle.Last());
+                WaitUntil.WaitSomeInterval(250);
+                InputBox.Element(RowOverviewTitle[i], 5, "tes");
+
 
             }
             return this;
@@ -214,10 +225,13 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Overview title")]
         public CmsDreamhome EnterOverviewTitle()
         {
-            WaitUntil.WaitSomeInterval(1500);
+            WaitUntil.WaitSomeInterval(250);
+            Console.WriteLine(RowOverviewTitle.Count);
+            WaitUntil.CustomElementIsVisible(RowOverviewTitle.Last());
             foreach (var title in RowOverviewTitle)
             {
-                InputBox.Element(title,5,RandomHelper.RandomNumber());
+                WaitUntil.WaitSomeInterval(250);
+                title.SendKeys(RandomHelper.RandomNumber());
             }
             return this;
         }
@@ -225,12 +239,13 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Overview Value")]
         public CmsDreamhome EnterOverviewValue()
         {
-            WaitUntil.WaitSomeInterval(1500);
-
+            WaitUntil.WaitSomeInterval(250);
+            Console.WriteLine(RowOverviewValue.Count);
+            WaitUntil.CustomElementIsVisible(RowOverviewValue.Last());
             foreach (var value in RowOverviewValue)
             {
-                Button.Click(value);
-                InputBox.Element(value, 5, RandomHelper.RandomNumber());
+                WaitUntil.WaitSomeInterval(250);
+                value.SendKeys(RandomHelper.RandomNumber());
             }
 
             return this;
@@ -243,8 +258,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Price")]
         public CmsDreamhome EnterPrice()
         {
-            WaitUntil.ElementIsVisibleAndClickable(_ticketPriceInput);
-            ticketPriceInput.SendKeys("0.99");
+            InputBox.Element(ticketPriceInput, 5, "0.99");
 
             return this;
         }
@@ -252,8 +266,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter default numbers of tickets")]
         public CmsDreamhome EnterNumOfTickets()
         {
-            WaitUntil.WaitSomeInterval(1);
-            defaultTicketsInput.SendKeys("10");
+            WaitUntil.CustomElementIsVisible(defaultTicketsInput);
+            InputBox.Element(defaultTicketsInput, 5, "10");
 
             return this;
         }

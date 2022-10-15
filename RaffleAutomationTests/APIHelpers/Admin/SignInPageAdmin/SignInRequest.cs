@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RaffleAutomationTests.APIHelpers.SignInPageAdmin
+namespace RaffleAutomationTests.APIHelpers.Admin
 {
     public class SignInRequestAdmin
     {

@@ -16,7 +16,9 @@ namespace RaffleAutomationTests.Helpers
         public static void Click(IWebElement element)
         {
             WaitUntil.CustomElementIsVisible(element);
-            element.Click();
+            IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
+            ex.ExecuteScript("arguments[0].click();", element);
+            //element.Click();
             
         }
 

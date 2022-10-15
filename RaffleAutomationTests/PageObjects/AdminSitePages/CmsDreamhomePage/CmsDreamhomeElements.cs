@@ -11,7 +11,7 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class CmsDreamhome
     {
-        [FindsBy(How = How.XPath, Using = "//a[@aria-label='Add new dream home']")]
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/dreamHome/create']")]
         public IWebElement btnAddDreamHome;
 
         [FindsBy(How = How.XPath, Using = "//a[@href='#/dreamHome/create']")]
@@ -99,20 +99,20 @@ namespace RaffleAutomationTests.PageObjects
 
         #region Options
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='isTrending']")]
+        [FindsBy(How = How.Id, Using = "isTrending")]
         public IWebElement inputIsTrending;
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='isPopular']")]
+        [FindsBy(How = How.Id, Using = "isPopular")]
         public IWebElement inputIsPopular;
 
         #endregion
 
         #region Meta Tags
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='metaTitle']")]
+        [FindsBy(How = How.Id, Using = "metaTitle")]
         public IWebElement inputMetaTitle;
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='metaDescription']")]
+        [FindsBy(How = How.Id, Using = "metaDescription")]
         public IWebElement inputMetaDescr;
 
         #endregion
@@ -123,75 +123,61 @@ namespace RaffleAutomationTests.PageObjects
         #region Description tab
 
         #region Images
-        public IWebElement dreamhomeCardImg => Browser._Driver.FindElement(_dreamhomeCardImg);
-        public readonly By _dreamhomeCardImg = By.XPath("//input[@id='property.filesCard']");
 
-        public IWebElement bedroomCardImg => Browser._Driver.FindElement(_bedroomCardImg);
-        public readonly By _bedroomCardImg = By.XPath("//input[@id='property.filesBedroom']");
+        [FindsBy(How = How.Id, Using = "property.filesCard")]
+        public IWebElement dreamhomeCardImg;
 
-        public IWebElement bathroomCardImg => Browser._Driver.FindElement(_bathroomCardImg);
-        public readonly By _bathroomCardImg = By.XPath("//input[@id='property.filesBathroom']");
+        [FindsBy(How = How.Id, Using = "property.filesBedroom")]
+        public IWebElement bedroomCardImg;
 
-        public IWebElement outspaceCardImg => Browser._Driver.FindElement(_outspaceCardImg);
-        public readonly By _outspaceCardImg = By.XPath("//input[@id='property.filesOutspace']");
+        [FindsBy(How = How.Id, Using = "property.filesBathroom")]
+        public IWebElement bathroomCardImg;
 
-        public IWebElement floorPlanCardImg => Browser._Driver.FindElement(_floorPlanCardImg);
-        public readonly By _floorPlanCardImg = By.XPath("//input[@id='property.filesFloorPlan']");
+        [FindsBy(How = How.Id, Using = "property.filesOutspace")]
+        public IWebElement outspaceCardImg;
+
+        [FindsBy(How = How.Id, Using = "property.filesFloorPlan")]
+        public IWebElement floorPlanCardImg;
 
         #endregion
 
         #region Text inputs
-        public IWebElement bedroomsTextArea => Browser._Driver.FindElement(_bedroomsTextArea);
-        public readonly By _bedroomsTextArea = By.XPath("//span[text()='Bedrooms *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']");
 
-        public IWebElement bathroomsTextArea => Browser._Driver.FindElement(_bathroomsTextArea);
-        public readonly By _bathroomsTextArea = By.XPath("//span[text()='Bathrooms *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']");
+        [FindsBy(How=How.XPath,Using = "//span[text()='Bedrooms *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']")]
+        public IWebElement bedroomsTextArea;
 
-        public IWebElement outspaceTextArea => Browser._Driver.FindElement(_outspaceTextArea);
-        public readonly By _outspaceTextArea = By.XPath("//span[text()='Outspace *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']");
+        [FindsBy(How=How.XPath,Using = "//span[text()='Bathrooms *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']")]
+        public IWebElement bathroomsTextArea;
 
-        public IWebElement aboutTextArea => Browser._Driver.FindElement(_aboutTextArea);
-        public readonly By _aboutTextArea = By.XPath("//span[text()='About *']/ancestor::div[contains(@class,'about-section')]//div[@class='ql-editor ql-blank']");
+        [FindsBy(How = How.XPath, Using = "//span[text()='Outspace *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']")]
+        public IWebElement outspaceTextArea;
 
-        public IWebElement productCTATextArea => Browser._Driver.FindElement(_productCTATextArea);
-        public readonly By _productCTATextArea = By.XPath("//span[text()='Product Page CTA *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']");
+        [FindsBy(How = How.XPath, Using = "//span[text()='About *']/ancestor::div[contains(@class,'about-section')]//div[@class='ql-editor ql-blank']")]
+        public IWebElement aboutTextArea;
 
-        public IWebElement headingTextArea => Browser._Driver.FindElement(_headingTextArea);
-        public readonly By _headingTextArea = By.XPath("//span[text()='Heading 1 *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']");
+        [FindsBy(How = How.XPath, Using = "//span[text()='Product Page CTA *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']")]
+        public IWebElement productCTATextArea;
+
+        [FindsBy(How = How.XPath, Using = "//span[text()='Heading 1 *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']")]
+        public IWebElement headingTextArea;
 
         #endregion
 
         #region Overview section
-        public IWebElement addOverviewBtn => Browser._Driver.FindElement(_addOverviewBtn);
-        public readonly By _addOverviewBtn = By.XPath("//div[contains(@class, 'overview')]//*[contains(@class, 'add-discount')]");
 
-        public IWebElement removeOverviewBtn => Browser._Driver.FindElement(_removeOverviewBtn);
-        public readonly By _removeOverviewBtn = By.XPath("//div[contains(@class, 'deletePropertyRowBtn')]");
+        [FindsBy(How=How.XPath,Using = "//div[contains(@class, 'overview')]//*[contains(@class, 'add-discount')]")]
+        public IWebElement addOverviewBtn;
+
+        [FindsBy(How=How.XPath,Using = "//div[contains(@class, 'deletePropertyRowBtn')]")]
+        public IWebElement removeOverviewBtn;
 
         #region Overview element rows
-        public IList<IWebElement> RowOverviewTitle => Browser._Driver.FindElements(_RowOverviewTitle);
-        public readonly By _RowOverviewTitle = By.XPath("//div[contains(@class, 'dreamHomeProperty_row')]//*[contains(@name, 'title')]");
 
-        public IList<IWebElement> RowOverviewValue => Browser._Driver.FindElements(_RowOverviewValue);
-        public readonly By _RowOverviewValue = By.XPath("//input[@name='value']");
+        [FindsBy(How=How.XPath,Using = "//div[@class='dreamHomeProperty_fieldWrapper']//input[@name='title']")]
+        public IList<IWebElement> RowOverviewTitle;
 
-        public IWebElement TakeTourWithSara => Browser._Driver.FindElement(_TakeTourWithSara);
-        public readonly By _TakeTourWithSara = By.XPath("//input[@id='property.tourLink']");
-
-        public IWebElement secondRowOverviewValue => Browser._Driver.FindElement(_secondRowOverviewValue);
-        public readonly By _secondRowOverviewValue = By.XPath("//div[contains(@class, 'dreamHomeProperty_row')][2]//*[contains(@name, 'value')]");
-
-        public IWebElement thirdRowOverviewTitle => Browser._Driver.FindElement(_thirdRowOverviewTitle);
-        public readonly By _thirdRowOverviewTitle = By.XPath("//div[contains(@class, 'dreamHomeProperty_row')][3]//*[contains(@name, 'title')]");
-
-        public IWebElement thirdRowOverviewValue => Browser._Driver.FindElement(_thirdRowOverviewValue);
-        public readonly By _thirdRowOverviewValue = By.XPath("//div[contains(@class, 'dreamHomeProperty_row')][3]//*[contains(@name, 'value')]");
-
-        public IWebElement forthRowOverviewTitle => Browser._Driver.FindElement(_forthRowOverviewTitle);
-        public readonly By _forthRowOverviewTitle = By.XPath("//div[contains(@class, 'dreamHomeProperty_row')][4]//*[contains(@name, 'title')]");
-
-        public IWebElement forthRowOverviewValue => Browser._Driver.FindElement(_forthRowOverviewValue);
-        public readonly By _forthRowOverviewValue = By.XPath("//div[contains(@class, 'dreamHomeProperty_row')][4]//*[contains(@name, 'value')]");
+        [FindsBy(How = How.XPath, Using = "//input[@name='value']")]
+        public IList<IWebElement> RowOverviewValue;
 
         #endregion
 
@@ -201,14 +187,14 @@ namespace RaffleAutomationTests.PageObjects
 
         #region Discount & Tickets tab
 
-        public IWebElement ticketPriceInput => Browser._Driver.FindElement(_ticketPriceInput);
-        public readonly By _ticketPriceInput = By.XPath("//input[@id='ticketPrice']");
+        [FindsBy(How = How.Id, Using = "ticketPrice")]
+        public IWebElement ticketPriceInput;
 
-        public IWebElement defaultTicketsInput => Browser._Driver.FindElement(_defaultTicketsInput);
-        public readonly By _defaultTicketsInput = By.XPath("//input[@id='defaultTickets']");
+        [FindsBy(How = How.Id, Using = "defaultTickets")]
+        public IWebElement defaultTicketsInput;
 
-        public IWebElement isActiveDiscountToggle => Browser._Driver.FindElement(_isActiveDiscountToggle);
-        public readonly By _isActiveDiscountToggle = By.XPath("//input[@id='isActiveDiscount']");
+        [FindsBy(How = How.Id, Using = "isActiveDiscount")]
+        public IWebElement isActiveDiscountToggle;
 
 
 
