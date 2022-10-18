@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using RimuTec.Faker;
 using RaffleAutomationTests.Helpers;
 using RestSharp;
 using System;
