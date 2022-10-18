@@ -19,6 +19,9 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//a[@href='#/dreamHome']")]
         public IWebElement pageDreamHome;
 
+        [FindsBy(How = How.XPath, Using = "//a[@href='#/dreamHome/create/3']")]
+        public IWebElement tabDiscount;
+
         [FindsBy(How = How.XPath, Using = "//a[@href='#/prizes']")]
         public IWebElement pagePrizes;
 
@@ -54,10 +57,10 @@ namespace RaffleAutomationTests.PageObjects
 
         #region Save and Cancel btns
 
-        [FindsBy(How = How.XPath, Using = "//button/span[contains(text(),'Save')]")]
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Save')]/parent::button")]
         public IWebElement btnSave;
 
-        [FindsBy(How = How.XPath, Using = "//button/span[contains(text(),'Cancel')]")]
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Cancel')]/parent::button")]
         public IWebElement btnCancel;
 
         #endregion

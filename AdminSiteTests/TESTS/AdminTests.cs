@@ -22,35 +22,31 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .VerifyIsLoginSuccessfull();
             Pages.CmsDreamhome
                 .ClickAddDreamhomeBtn()
-                .UploadImages()
                 .EnterTitle();
             string dreamhomeTitle = Pages.CmsDreamhome.GetDreamhomeTitle();
             Pages.CmsDreamhome
                 .EnterAddress()
                 .EnterStartDate()
                 .EnterFinishDate()
-                .EnterMetaTags();
+                .EnterMetaTags()
+                .UploadImages(UploadedImages.RAFFLE_OUTSPACE);
             Pages.CmsCommon
                 .ClickSaveBtn();
-            /*Pages.CmsCommon
-                .OpenDescriptionTab();*/
             Pages.CmsDreamhome
                 .UploadDreamhomeCardImage()
                 .UploadBedroomCardImage()
                 .UploadBathroomCardImage()
                 .UploadOutspaceCardImage()
                 .UploadFloorPlanCardImage()
-                .EnterBedroomText(DreamHomeTexts.BEDROOMS)
-                .EnterBathroomText(DreamHomeTexts.BATHROOMS)
                 .EnterOutSpaceText(DreamHomeTexts.OUTSPACE)
                 .ClickAddOverviewRowsBtn()
-                .EnterOverviewTitle()
-                .EnterOverviewValue()
+                .EnterBedroomText(DreamHomeTexts.BEDROOMS)
+                .EnterBathroomText(DreamHomeTexts.BATHROOMS)
                 .EnterAboutText(DreamHomeTexts.ABOUT)
                 .EnterProductCTAText(DreamHomeTexts.PRODUCT_CTA_BTN)
                 .EnterHeadingText(DreamHomeTexts.HEADING);
             Pages.CmsCommon
-                .ClickSaveBtn();
+                .OpenDiscountTab();
             Pages.CmsDreamhome
                 .EnterPrice()
                 .EnterNumOfTickets();

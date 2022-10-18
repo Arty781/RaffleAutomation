@@ -128,11 +128,9 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Click \"Save\" button")]
         public CmsCommon ClickSaveBtn()
         {
-            WaitUntil.WaitSomeInterval(1);
-            int elemPos = btnSave.Location.Y;
-            ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
-            btnSave.Click();
-            WaitUntil.WaitSomeInterval(250);
+            WaitUntil.WaitSomeInterval(150);
+            ClickHelper.Clicker(btnSave);
+            WaitUntil.WaitSomeInterval(1000);
 
             return this;
         }
@@ -149,17 +147,15 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
-        //[AllureStep("Open \"Description\" tab")]
-        //public CmsCommon OpenDescriptionTab()
-        //{
-        //    WaitUntil.ElementIsVisible(_descriptionTab);
-        //    int elemPos = descriptionTab.Location.Y;
-        //    ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
-        //    descriptionTab.Click();
-        //    WaitUntil.WaitSomeInterval(1);
+        [AllureStep("Open \"Discount\" tab")]
+        public CmsCommon OpenDiscountTab()
+        {
+            WaitUntil.CustomElementIsVisible(tabDiscount);
+            ClickHelper.Clicker(tabDiscount);
+            WaitUntil.WaitSomeInterval(1000);
 
-        //    return this;
-        //}
+            return this;
+        }
 
 
 

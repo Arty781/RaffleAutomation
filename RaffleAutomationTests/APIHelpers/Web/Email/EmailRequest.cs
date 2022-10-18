@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RaffleAutomationTests.APIHelpers.Web.Email
+namespace RaffleAutomationTests.APIHelpers.Web
 {
     public class EmailRequest
     {

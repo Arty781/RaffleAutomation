@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RaffleAutomationTests.APIHelpers.Web;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,8 +18,16 @@ namespace RaffleAutomationTests.Helpers
             return randomNum;
         }
 
-        
-        
+        public static int RandomPrizeId(WeeklyPrizesResponseModelWeb content)
+        {
+            Random r = new Random();
+            int genRand = r.Next(0, content.Prizes.Count());
+
+            return genRand;
+        }
+
+
+
 
         public static string RandomString()
         {

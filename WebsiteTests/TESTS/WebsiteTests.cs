@@ -3,8 +3,8 @@ using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
 using PutsboxWrapper;
-using RaffleAutomationTests.APIHelpers.SignInPageAdmin;
-using RaffleAutomationTests.APIHelpers.WebApi;
+using RaffleAutomationTests.APIHelpers.Admin;
+using RaffleAutomationTests.APIHelpers.Web;
 using RaffleAutomationTests.Helpers;
 using RaffleAutomationTests.PageObjects;
 using System;
@@ -60,7 +60,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Weekly
                 .CloseWeeklyPopUp()
                 .SelectCategory(Categories.CATEGORY)
-                .SelectSubCategory(SubCategories.SUBCATEGORY)
+                .SelectSubCategory(SubCategoriesD.SUBCATEGORY)
                 .SelectPrize("iPhone 12 Pro Max");
             Pages.Common
                 .ClickEnterBtn()
@@ -106,14 +106,21 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyIsSignIn();
 
             var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
-            var dreamHomeId = CountdownRequestWeb.GetCountdown(token);
+            var dreamHomeId = CountdownRequestWeb.GetDreamHomeCountdown(token);
+            var competitionId = CountdownRequestWeb.GetWeeklyPrizesCompetitionId(token);
+            var weeklyID = competitionId[2].Id;
+            var listOfWeeklyPrizes = CountdownRequestWeb.GetWeeklyPrizes(token, weeklyID);
             DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
-            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
-            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
-            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
-
+            for (int i = 0; i < 5; i++)
+            {
+                WeeklyPrizesRequestWeb.GetWeeklyPrizes(token, listOfWeeklyPrizes);
+            }
+            
             Pages.Basket
-                .ClickCartBtn()
+                .ClickCartBtn();
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Basket
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
                 .ClickPayNowBtn()

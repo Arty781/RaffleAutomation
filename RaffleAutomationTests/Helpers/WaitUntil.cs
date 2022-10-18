@@ -58,8 +58,7 @@ namespace RaffleAutomationTests.Helpers
                         }
                         return false;
                     }
-                    catch (NoSuchElementException){ return false; }
-                    catch (StaleElementReferenceException){ return false; }
+                    catch (Exception){ return false; }
 
                 });
             }

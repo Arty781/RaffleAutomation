@@ -45,17 +45,17 @@ namespace RaffleAutomationTests.Helpers
         public const string CATEGORY = "Tech";
     }
 
-    public class SubCategories
+    public class SubCategoriesD
     {
         public const string SUBCATEGORY = "Phones & Tablets";
     }
 
     public class UploadedImages
     {
-        public const string RAFFLE_BATHROOM = $"\\UploadImages\\RaffleBathroom.jfif";
-        public const string RAFFLE_BEDROOM = $"\\UploadImages\\RaffleBedroom.jfif";
+        public const string RAFFLE_BATHROOM = $"\\UploadImages\\RaffleBathroom.jpg";
+        public const string RAFFLE_BEDROOM = $"\\UploadImages\\RaffleBedroom.jpg";
         public const string RAFFLE_FLOOR_PLAN = $"\\UploadImages\\RaffleFloorPlan.jpg"; 
-        public const string RAFFLE_OUTSPACE = $"\\UploadImages\\RaffleOutspace.jfif";
+        public const string RAFFLE_OUTSPACE = $"\\UploadImages\\RaffleOutspace.jpg";
     }
 
     public class TakeTourWithSaraLink
@@ -118,8 +118,9 @@ namespace RaffleAutomationTests.Helpers
     {
         public static Dictionary<string, string> COMMON = new Dictionary<string, string>()
         {
-            {"accept:", "application/json, text/plain, /" },
-            { "accept-encoding:", "gzip, deflate, br"}
+            {"accept", "application/json, text/plain, */*" },
+            { "accept-encoding", "gzip, deflate, br"},
+            {"content-type", "application/json" }
         };
 
     }

@@ -55,8 +55,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter card details")]
         public Basket EnterCardDetails()
         {
-            Button.Click(checkboxAgeControl);
-
+            
             WaitUntil.WaitSomeInterval(250);
             Browser._Driver.SwitchTo().Frame(framePaymentNumber);
             InputBox.Element(inputCardNumber,5, "4242424242424242");
