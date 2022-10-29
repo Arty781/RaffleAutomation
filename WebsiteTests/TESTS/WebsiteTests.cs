@@ -113,7 +113,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
             for (int i = 0; i < 5; i++)
             {
-                WeeklyPrizesRequestWeb.GetWeeklyPrizes(token, listOfWeeklyPrizes);
+                WeeklyPrizesRequestWeb.AddWeeklyPrizes(token, listOfWeeklyPrizes);
             }
             
             Pages.Basket

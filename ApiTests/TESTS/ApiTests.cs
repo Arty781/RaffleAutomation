@@ -3,6 +3,7 @@ using RaffleAutomationTests.Helpers;
 using NUnit.Allure.Core;
 using ApiTests.BASE;
 using RaffleAutomationTests.APIHelpers.Web;
+using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
 
 namespace API
 {
@@ -14,7 +15,10 @@ namespace API
 
         public void Demo()
         {
-            AllureConfigFilesHelper.CreateJsonConfigFile();
+            var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
+            var prizesList = FixedOddsRequest.GetFixedOddsPrizes();
+            FixedOddsRequest.AddFixedOddsPrizes(token, prizesList);
+
         }
 
         [Test]
@@ -28,7 +32,7 @@ namespace API
             DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
             for (int i = 0; i < 5; i++)
             {
-                WeeklyPrizesRequestWeb.GetWeeklyPrizes(token, listOfWeeklyPrizes);
+                WeeklyPrizesRequestWeb.AddWeeklyPrizes(token, listOfWeeklyPrizes);
             }
 
         }

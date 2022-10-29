@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CONFIG_JSON;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,7 +33,7 @@ namespace RaffleAutomationTests.Helpers
             return path;
         }
 
-        public static void CreateJsonConfigFile()
+        public static ConfigJson Json()
         {
             FileInfo fileInf = new FileInfo(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json");
             if (fileInf.Exists == true)
@@ -42,7 +43,7 @@ namespace RaffleAutomationTests.Helpers
             string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json";
             string str = Path.Combine(Browser.RootPath() + "allure-results");
 
-            CONFIG_JSON.ConfigJson req = new()
+            ConfigJson req = new()
             {
                 Allure = new()
                 {
@@ -89,6 +90,19 @@ namespace RaffleAutomationTests.Helpers
                     }
                 }
             };
+
+            return req;
+        }
+
+        public static void CreateJsonConfigFile(ConfigJson req)
+        {
+            FileInfo fileInf = new FileInfo(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json");
+            if (fileInf.Exists == true)
+            {
+                fileInf.Delete();
+            }
+            string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json";
+            string str = Path.Combine(Browser.RootPath() + "allure-results");
 
             using (StreamWriter file = File.CreateText(mainpath))
             {

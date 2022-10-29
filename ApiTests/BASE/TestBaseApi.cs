@@ -14,7 +14,7 @@ namespace ApiTests.BASE
 
         public void SetUp()
         {
-            AllureConfigFilesHelper.CreateJsonConfigFile();
+            AllureConfigFilesHelper.CreateJsonConfigFile(AllureConfigFilesHelper.Json());
         }
     }
 }

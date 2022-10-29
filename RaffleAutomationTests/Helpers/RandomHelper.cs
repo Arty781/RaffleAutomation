@@ -18,7 +18,7 @@ namespace RaffleAutomationTests.Helpers
             return randomNum;
         }
 
-        public static int RandomPrizeId(WeeklyPrizesResponseModelWeb content)
+        public static int RandomPrizeId(dynamic content)
         {
             Random r = new Random();
             int genRand = r.Next(0, content.Prizes.Count());

@@ -16,7 +16,7 @@ namespace RaffleAutomationTests.PageObjects
             WaitUntil.VisibilityOfAllElementsLocatedBy(_InputFirstName);
             InputFirstName.SendKeys("Jane");
             InputSurname.SendKeys("Doe");
-            InputEmail.SendKeys("qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@xitroo.com");
+            InputEmail.SendKeys("qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com");
             countryInput.Click();
             ClickHelper.Clicker(countryList);
             phoneInput.SendKeys("961234563");

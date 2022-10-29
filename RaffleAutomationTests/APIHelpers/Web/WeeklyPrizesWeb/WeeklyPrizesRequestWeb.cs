@@ -25,7 +25,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
         }
 
 
-        public static CreateWeeklyPrizeOrderResponse GetWeeklyPrizes(SignInResponseModelWeb SignIn, WeeklyPrizesResponseModelWeb WeeklyId)
+        public static CreateWeeklyPrizeOrderResponse AddWeeklyPrizes(SignInResponseModelWeb SignIn, WeeklyPrizesResponseModelWeb WeeklyId)
         {
 
 

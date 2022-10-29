@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using CONFIG_JSON;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
@@ -21,7 +22,7 @@ namespace RaffleAutomationTests.Helpers
 
         public static void Initialize()
         {
-            AllureConfigFilesHelper.CreateJsonConfigFile();
+            AllureConfigFilesHelper.CreateJsonConfigFile(AllureConfigFilesHelper.Json());
 
             new DriverManager().SetUpDriver(new ChromeConfig());
             windowsDriver = new ChromeDriver();
