@@ -1,4 +1,5 @@
 ﻿using RaffleAutomationTests.APIHelpers.Web;
+using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace RaffleAutomationTests.Helpers
             return randomNum;
         }
 
-        public static int RandomPrizeId(dynamic content)
+        public static int RandomWPId(WeeklyPrizesResponseModelWeb content)
         {
             Random r = new Random();
             int genRand = r.Next(0, content.Prizes.Count());
@@ -26,7 +27,13 @@ namespace RaffleAutomationTests.Helpers
             return genRand;
         }
 
+        public static int RandomFPId(List<string> content)
+        {
+            Random r = new Random();
+            int genRand = r.Next(0, content.Count());
 
+            return genRand;
+        }
 
 
         public static string RandomString()

@@ -15,7 +15,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Close cookies pop-up")]
         public Common CloseCookiesPopUp()
         {
-            WaitUntil.ElementIsVisibleAndClickable(_confirmCookieBtn);
+            WaitUntil.CustomElementIsVisible(confirmCookieBtn);
             confirmCookieBtn.Click();
 
             return this;
@@ -81,7 +81,7 @@ namespace RaffleAutomationTests.PageObjects
         public Common ClickEnterBtn()
         {
             WaitUntil.WaitSomeInterval(1);
-            WaitUntil.ElementIsVisibleAndClickable(_enterBtn);
+            WaitUntil.CustomElementIsVisible(enterBtn);
             enterBtn.SendKeys("");
             enterBtn.Click();
             return this;

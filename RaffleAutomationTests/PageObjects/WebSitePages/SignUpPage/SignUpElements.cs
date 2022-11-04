@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,37 +11,37 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class SignUp
     {
-        public IWebElement InputEmail => Browser._Driver.FindElement(_InputEmail);
-        public readonly static By _InputEmail = By.XPath("//input[@name='email']");
+        [FindsBy(How = How.Name, Using = "email")]
+        public IWebElement inputEmail;
 
-        public IWebElement InputPassword => Browser._Driver.FindElement(_InputPassword);
-        public readonly static By _InputPassword = By.XPath("//input[@name='password']");
+        [FindsBy(How = How.Name, Using = "password")]
+        public IWebElement inputPassword;
 
-        public IWebElement InputFirstName => Browser._Driver.FindElement(_InputFirstName);
-        public readonly static By _InputFirstName = By.XPath("//input[@name='name']");
+        [FindsBy(How = How.Name, Using = "name")]
+        public IWebElement inputFirstName;
 
-        public IWebElement InputSurname => Browser._Driver.FindElement(_InputSurname);
-        public readonly static By _InputSurname = By.XPath("//input[@name='surname']");
+        [FindsBy(How = How.Name, Using = "surname")]
+        public IWebElement inputSurname;
 
-        public IWebElement SignUpBtn => Browser._Driver.FindElement(_SignUpBtn);
-        public readonly static By _SignUpBtn = By.XPath("//*[@class='rafflebtn primary full-width']");
+        [FindsBy(How = How.XPath, Using = "//button[@class='rafflebtn primary full-width']")]
+        public IWebElement btnSignUp;
 
-        public IWebElement confirmAgeBtn => Browser._Driver.FindElement(_confirmAgeBtn);
-        public readonly static By _confirmAgeBtn = By.XPath("//div[@class='agreeBlock']/label[1]//input[@type='checkbox']");
+        //public IWebElement confirmAgeBtn => Browser._Driver.FindElement(_confirmAgeBtn);
+        //public readonly static By _confirmAgeBtn = By.XPath("//div[@class='agreeBlock']/label[1]//input[@type='checkbox']");
 
-        public IWebElement confirmOptBtn => Browser._Driver.FindElement(_confirmOptBtn);
-        public readonly static By _confirmOptBtn = By.XPath("//div[@class='agreeBlock']/label[2]//input[@type='checkbox']");
+        [FindsBy(How = How.XPath, Using = "//div[@class='agreeBlock']/label[1]//input[@type='checkbox']")]
+        public IWebElement btnConfirmOpt;
 
-        public IWebElement rememberBtn => Browser._Driver.FindElement(_rememberBtn);
-        public readonly static By _rememberBtn = By.XPath("//div[@class='agreeRemebmer']//input[@type='checkbox']");
+        [FindsBy(How = How.XPath, Using = "//div[@class='agreeRemebmer']//input[@type='checkbox']")]
+        public IWebElement btnRememberMe;
 
-        public IWebElement countryList => Browser._Driver.FindElement(_countryList);
-        public readonly static By _countryList = By.XPath("//ul//li[contains(text(),'Ukraine')]");
+        [FindsBy(How = How.XPath, Using = "//ul//li[contains(text(),'Ukraine')]")]
+        public IWebElement listCountry;
 
-        public IWebElement countryInput => Browser._Driver.FindElement(_countryInput);
-        public readonly static By _countryInput = By.XPath("//div[@aria-haspopup='listbox']");
+        [FindsBy(How = How.XPath, Using = "//div[@aria-haspopup='listbox']")]
+        public IWebElement inputCountry;
 
-        public IWebElement phoneInput => Browser._Driver.FindElement(_phoneInput);
-        public readonly static By _phoneInput = By.XPath("//input[@class='phone-input']");
+        [FindsBy(How = How.XPath, Using = "//input[@class='phone-input']")]
+        public IWebElement inputPhone;
     }
 }

@@ -34,6 +34,7 @@ namespace RaffleAutomationTests.PageObjects
         {
             InputBox.Element(couponInput, 5, coupon);
             Button.Click(applyCouponBtn);
+            WaitUntil.WaitSomeInterval(1500);
 
             return this;
         }
@@ -86,6 +87,21 @@ namespace RaffleAutomationTests.PageObjects
             Browser._Driver.SwitchTo().Frame(frameCheckout);
             InputBox.Element(inputPasswordCheckout, 5, "Checkout1!");
             Button.Click(btnContinueCheckout);
+            WaitUntil.CustomElevemtIsInvisible(frameCheckout, 12000);
+            Browser._Driver.SwitchTo().DefaultContent();
+
+
+            return this;
+        }
+
+        [AllureStep("Confirm purchase")]
+        public Basket ConfirmPurchaseLive()
+        {
+            WaitUntil.CustomElementIsVisible(frameCheckout);
+            Browser._Driver.SwitchTo().Frame(frameCheckout);
+            InputBox.Element(inputPasswordCheckout, 5, "Checkout1!");
+            Button.Click(btnContinueCheckout);
+            WaitUntil.CustomElevemtIsInvisible(frameCheckout, 12000);
             Browser._Driver.SwitchTo().DefaultContent();
 
 
@@ -95,9 +111,11 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Confirm purchase")]
         public Basket WaitForTimeout()
         {
+            WaitUntil.WaitSomeInterval(10000);
             WaitUntil.CustomElementIsVisible(frameCheckout);
             Browser._Driver.SwitchTo().Frame(frameCheckout);
-            WaitUntil.CustomElevemtIsInvisible(btnContinueCheckout, 1200);
+            inputPasswordCheckout.SendKeys("Checkout1!");
+            WaitUntil.CustomElevemtIsInvisible(frameCheckout, 12000);
             Browser._Driver.SwitchTo().DefaultContent();
             WaitUntil.CustomElementIsVisible(btncheckOutNow, 120);
 

@@ -15,7 +15,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
         {
             DreamHomeOrderRequestModel req = new()
             {
-                NumOfTickets = RandomHelper.RandomNumber(),
+                NumOfTickets = "1",
                 PrizeType = "raffle",
                 PrizeId = id
             };

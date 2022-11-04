@@ -13,17 +13,16 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter user data")]
         public SignUp EnterUserData()
         {
-            WaitUntil.VisibilityOfAllElementsLocatedBy(_InputFirstName);
-            InputFirstName.SendKeys("Jane");
-            InputSurname.SendKeys("Doe");
-            InputEmail.SendKeys("qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com");
-            countryInput.Click();
-            ClickHelper.Clicker(countryList);
-            phoneInput.SendKeys("961234563");
-            InputPassword.SendKeys("Qaz11111");
-            confirmAgeBtn.Click();
-            confirmOptBtn.Click();
-            rememberBtn.Click();
+            WaitUntil.CustomElementIsVisible(inputFirstName);
+            inputFirstName.SendKeys("Jane");
+            inputSurname.SendKeys("Doe");
+            inputEmail.SendKeys("qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com");
+            inputCountry.Click();
+            ClickHelper.Clicker(listCountry);
+            inputPhone.SendKeys("961234563");
+            inputPassword.SendKeys("Qaz11111");
+            btnConfirmOpt.Click();
+            btnRememberMe.Click();
 
             return this;
         }
@@ -31,8 +30,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Click \"Sign Up\" button")]
         public SignUp ClickSignUpBtn()
         {
-            WaitUntil.VisibilityOfAllElementsLocatedBy(_SignUpBtn);
-            SignUpBtn.Click();
+            WaitUntil.CustomElementIsVisible(btnSignUp);
+            btnSignUp.Click();
 
             return this;
         }

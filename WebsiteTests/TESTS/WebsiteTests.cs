@@ -104,9 +104,9 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.Header
-                .OpenSignInPage();
+               .OpenSignInPage();
             Pages.SignIn
-                .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
+                .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD); 
             Pages.SignIn
                 .VerifyIsSignIn();
 
@@ -121,8 +121,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .EnterCardDetails()
                 .ClickPayNowBtn()
                 .WaitForTimeout();
-            }
-            
+        }
+
         [Test]
         [Category("E2E")]
         [AllureTag("Regression")]

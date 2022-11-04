@@ -24,7 +24,7 @@ namespace RaffleAutomationTests.PageObjects
         public SignUp VerifyEmail(string email)
         {
             WaitUntil.VisibilityOfAllElementsLocatedBy(By.XPath("//h1[contains(text(),'My Details')]"));
-            string emailFld = InputEmail.GetAttribute("value");
+            string emailFld = inputEmail.GetAttribute("value");
 
             Assert.AreEqual(email, emailFld);
 

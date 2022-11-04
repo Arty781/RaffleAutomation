@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using HtmlAgilityPack;
+using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
 using SeleniumExtras.PageObjects;
 using System;

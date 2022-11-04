@@ -33,7 +33,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
             RestRequest? request = new RestRequest("/api/orders", Method.Post);
             request.AddHeaders(headers: Headers.COMMON);
             request.AddHeader("authorization", $"Bearer {SignIn.Token}");
-            request.AddJsonBody(RequestBuilder(WeeklyId.Prizes[RandomHelper.RandomPrizeId(WeeklyId)].Id));
+            request.AddJsonBody(RequestBuilder(WeeklyId.Prizes[RandomHelper.RandomWPId(WeeklyId)].Id));
 
             var response = restDriver.Execute(request);
             var content = response.Content;

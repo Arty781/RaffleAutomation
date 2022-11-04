@@ -40,8 +40,8 @@ namespace RaffleAutomationTests.PageObjects
             WaitUntil.CustomElementIsVisible(btnSave);
             inputEmail.SendKeys(Keys.Control + "A" + Keys.Delete);
             inputEmail.SendKeys("qatester - " + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@xitroo.com");
-            Pages.SignUp.countryInput.Click();
-            ClickHelper.Clicker(Pages.SignUp.countryList);
+            Pages.SignUp.listCountry.Click();
+            ClickHelper.Clicker(Pages.SignUp.listCountry);
             inputPhone.SendKeys(Keys.Control + "A" + Keys.Delete);
             inputPhone.SendKeys("953214567");
             btnSave.Click();

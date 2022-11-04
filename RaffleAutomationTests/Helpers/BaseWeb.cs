@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
 
 namespace RaffleAutomationTests.Helpers
 {
-
+    [AllureNUnit]
     public class BaseWeb
     {
-       
-        public static Process? _process;
 
         [OneTimeSetUp]
         public static void OneTimeSetUp()
@@ -22,14 +21,16 @@ namespace RaffleAutomationTests.Helpers
 
 
         [OneTimeTearDown]
+        
         public static void OneTimeTearDown()
         {
-            
+
             if (Browser._Driver != null)
             {
                 Browser._Driver.Quit();
             }
-            
+
+
         }
 
         [TearDown]

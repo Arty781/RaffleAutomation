@@ -15,7 +15,7 @@ namespace RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb
         {
             CreateFixedOddsOrderRequest req = new()
             {
-                NumOfTickets = RandomHelper.RandomNumber(),
+                NumOfTickets = "1",
                 PrizeType = "fixedOdds",
                 PrizeId = id,
                 TotalCost = 10
@@ -24,7 +24,7 @@ namespace RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb
             return req;
         }
 
-        public static GetFixedOddsOrderResponse GetFixedOddsPrizes()
+        public static List<string> GetFixedOddsPrizes()
         {
 
 
@@ -36,10 +36,19 @@ namespace RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb
             var content = response.Content;
             var countdownResponse = JsonConvert.DeserializeObject<GetFixedOddsOrderResponse>(content);
 
-            return countdownResponse;
+            List<string> result = new List<string>();
+            foreach(var fixedPrize in countdownResponse.FixedOdds)
+            {
+                if((fixedPrize.MaxTickets -fixedPrize.TicketsBought) > 0)
+                {
+                    result.Add(fixedPrize.Id);
+                }
+            }
+
+            return result;
         }
 
-        public static GetFixedOddsOrderResponse AddFixedOddsPrizes(SignInResponseModelWeb SignIn, GetFixedOddsOrderResponse fixedPrizesId)
+        public static GetFixedOddsOrderResponse AddFixedOddsPrizes(SignInResponseModelWeb SignIn, List<string> fixedPrizesId)
         {
 
 
@@ -47,7 +56,7 @@ namespace RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb
             RestRequest? request = new RestRequest("/api/orders", Method.Post);
             request.AddHeaders(headers: Headers.COMMON);
             request.AddHeader("authorization", $"Bearer {SignIn.Token}");
-            request.AddJsonBody(RequestBuilder(fixedPrizesId.FixedOdds[RandomHelper.RandomPrizeId(fixedPrizesId)].Id));
+            request.AddJsonBody(RequestBuilder(fixedPrizesId[RandomHelper.RandomFPId(fixedPrizesId)]));
 
             var response = restDriver.Execute(request);
             var content = response.Content;

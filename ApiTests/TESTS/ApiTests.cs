@@ -19,6 +19,7 @@ namespace API
             var prizesList = FixedOddsRequest.GetFixedOddsPrizes();
             FixedOddsRequest.AddFixedOddsPrizes(token, prizesList);
 
+
         }
 
         [Test]

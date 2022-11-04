@@ -77,14 +77,13 @@ namespace RaffleAutomationTests.Helpers
                 {
                     try
                     {
-                        if (!element.Enabled == true)
+                        if (element.Enabled == true)
                         {
                             return false;
                         }
                         return true;
                     }
-                    catch (NoSuchElementException) { return false; }
-                    catch (StaleElementReferenceException) { return false; }
+                    catch (Exception) { return true; }
 
                 });
             }
