@@ -5,6 +5,7 @@ using NUnit.Framework;
 using PutsboxWrapper;
 using RaffleAutomationTests.APIHelpers.Admin;
 using RaffleAutomationTests.APIHelpers.Web;
+using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
 using RaffleAutomationTests.Helpers;
 using RaffleAutomationTests.PageObjects;
 using System;
@@ -39,6 +40,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         
 
         [Test]
+        [Category("Payment")]
         [AllureTag("Regression")]
         [AllureOwner("Artem Sukharevskyi")]
         [AllureSeverity(SeverityLevel.critical)]
@@ -90,14 +92,17 @@ namespace RaffleHouseAutomation.WebSiteTests
         }
 
         [Test]
+        [Category("E2E")]
         [AllureTag("Regression")]
         [AllureOwner("Artem Sukharevskyi")]
         [AllureSeverity(SeverityLevel.critical)]
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("Client")]
         [AllureSubSuite("Payment")]
-        public void PurchasePrizes()
+        public void PurchaseDreamHome()
         {
+            Pages.Common
+                .CloseCookiesPopUp();
             Pages.Header
                 .OpenSignInPage();
             Pages.SignIn
@@ -107,24 +112,47 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
             var dreamHomeId = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            var competitionId = CountdownRequestWeb.GetWeeklyPrizesCompetitionId(token);
-            var weeklyID = competitionId[2].Id;
-            var listOfWeeklyPrizes = CountdownRequestWeb.GetWeeklyPrizes(token, weeklyID);
             DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
-            for (int i = 0; i < 5; i++)
-            {
-                WeeklyPrizesRequestWeb.AddWeeklyPrizes(token, listOfWeeklyPrizes);
+
+            Pages.Basket
+                .ClickCartBtn()
+                .ApplyCouponCode("test roman21")
+                .ClickCheckoutNowBtn()
+                .EnterCardDetails()
+                .ClickPayNowBtn()
+                .WaitForTimeout();
             }
             
-            Pages.Basket
-                .ClickCartBtn();
+        [Test]
+        [Category("E2E")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
+        [Repeat(10)]
+        public void SignUpAddTicketsMakePurchase()
+        {
             Pages.Common
                 .CloseCookiesPopUp();
+            Pages.Header
+               .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
+
+            var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
+            var dreamHomeId = CountdownRequestWeb.GetDreamHomeCountdown(token);
+            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
+
+            Pages.Basket
+                .ClickCartBtn()
+                .ApplyCouponCode("test roman21");
             Pages.Basket
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
                 .ClickPayNowBtn()
-                .ConfirmPurchase();
+                .ConfirmPurchaseLive();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
         }
