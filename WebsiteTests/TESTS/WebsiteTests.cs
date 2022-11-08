@@ -49,20 +49,19 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void PurchaseWeeklyPrizes()
         {
+            Pages.Common
+                .CloseCookiesPopUp();
             Pages.Header
                 .OpenSignInPage();
             Pages.SignIn
                 .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
-            Pages.Header
-                .OpenWeeklyPrizesPage(WebEndpoints.LIFESTYLE);
-            Pages.Common
-                .CloseCookiesPopUp();
             Pages.Weekly
+                .OpenWeeklyPrizesPage()
                 .CloseWeeklyPopUp()
-                .SelectCategory(Categories.CATEGORY)
-                .SelectSubCategory(SubCategoriesD.SUBCATEGORY)
+                .SelectCategory(Categories.TECH)
+                .SelectSubCategory(SubCategoriesD.PHONES_TABLETS)
                 .SelectPrize("iPhone 12 Pro Max");
             Pages.Common
                 .ClickEnterBtn()
@@ -73,21 +72,14 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Common
                 .ClickAdd25Tickets()
                 .ClickAddToBasketBtn();
-
-            Pages.Header
-                .OpenDreamhomePage(WebEndpoints.DREAMHOME);
-           
-            Pages.Dreamhome
-                .OpenDreamHomeProductPage()
-                .OpenDreamHomeTicketSelector()
-                .SelectThirdBundleBtn();
-            Pages.Common
-                .ClickAddToBasketBtn();
             Pages.Basket
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails();
             Pages.Basket
-                .ClickPayNowBtn();
+                .ClickPayNowBtn()
+                .ConfirmPurchaseStage();
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
             
         }
 
@@ -109,6 +101,12 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD); 
             Pages.SignIn
                 .VerifyIsSignIn();
+            Pages.Dreamhome
+               .OpenDreamHomePage()
+               .OpenDreamHomeTicketSelector()
+               .SelectThirdBundleBtn();
+            Pages.Common
+                .ClickAddToBasketBtn();
 
             var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
             var dreamHomeId = CountdownRequestWeb.GetDreamHomeCountdown(token);
@@ -137,11 +135,15 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.Header
-               .OpenSignInPage();
-            Pages.SignIn
-                .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
+                .OpenSignUpPage();
+            Pages.SignUp
+                .EnterUserData();
+            string email = SignUp.GetEmail();
+            Pages.SignUp
+                .ClickSignUpBtn()
+                .VerifyEmail(email);
 
-            var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
+            var token = SignInRequestWeb.MakeSignIn(email, Credentials.PASSWORD);
             var dreamHomeId = CountdownRequestWeb.GetDreamHomeCountdown(token);
             DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
 
@@ -166,6 +168,8 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void RegisterNewUser()
         {
+            Pages.Common
+                .CloseCookiesPopUp();
             Pages.Header
                 .OpenSignUpPage();
             Pages.SignUp
@@ -173,8 +177,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             string email = SignUp.GetEmail();
             Pages.SignUp
                 .ClickSignUpBtn()
-                .VerifyEmail(email)
-                .VerifyVisibilityOfToaster(email);
+                .VerifyEmail(email);
 
         }
 
@@ -187,6 +190,8 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void EditUserData()
         {
+            Pages.Common
+                .CloseCookiesPopUp();
             Pages.Header
                 .OpenSignUpPage();
             Pages.SignUp
@@ -218,7 +223,8 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("AboutPage")]
         public void VerifiedAboutPage()
         {
-            
+            Pages.Common
+                .CloseCookiesPopUp();
             Pages.About
                 .OpenAboutPage(WebEndpoints.ABOUT)
                 .VerifyFindOutBlock()

@@ -13,37 +13,40 @@ namespace RaffleAutomationTests.PageObjects
     {
         #region My Details 
 
-        public IWebElement EditPersonalBtn => Browser._Driver.FindElement(_PersonalEditBtn);
-        public readonly static By _PersonalEditBtn = By.XPath("//button[@data-edit='personal']");
+        [FindsBy(How = How.XPath, Using = "//h1[contains(text(),'My Details')]")]
+        public IWebElement titleProfile;
 
-        public IWebElement FirstNameInput => Browser._Driver.FindElement(_FirstNameInput);
-        public readonly static By _FirstNameInput = By.XPath("//div[@class='my-details-item personal-details']/*/div[1]/div/*[@id]");
+        [FindsBy(How=How.XPath,Using = "//button[@data-edit='personal']")]
+        public IWebElement EditPersonalBtn;
 
-        public IWebElement LastNameInput => Browser._Driver.FindElement(_LastNameInput);
-        public readonly static By _LastNameInput = By.XPath("//div[@class='my-details-item personal-details']/*/div[2]/div/*[@id]");
+        [FindsBy(How = How.Name, Using = "name")]
+        public IWebElement FirstNameInput;
 
-        public IWebElement EditPasswordBtn => Browser._Driver.FindElement(_PasswordEditBtn);
-        public readonly static By _PasswordEditBtn = By.XPath("//button[@data-edit='password']");
+        [FindsBy(How = How.Name, Using = "surname")]
+        public IWebElement LastNameInput;
 
-        public IWebElement CurrentPasswordInput => Browser._Driver.FindElement(_CurrentPasswordInput);
-        public readonly static By _CurrentPasswordInput = By.XPath("//input[@name='oldPassword']");
+        [FindsBy(How = How.XPath, Using = "//button[@data-edit='password']")]
+        public IWebElement EditPasswordBtn;
 
-        public IWebElement NewPasswordInput => Browser._Driver.FindElement(_NewPasswordInput);
-        public readonly static By _NewPasswordInput = By.XPath("//input[@name='newPassword']");
+        [FindsBy(How = How.Name, Using = "oldPassword")]
+        public IWebElement CurrentPasswordInput;
 
-        public IWebElement ConfirmPasswordInput => Browser._Driver.FindElement(_ConfirmPasswordInput);
-        public readonly static By _ConfirmPasswordInput = By.XPath("//input[@name='confirmPassword']");
+        [FindsBy(How = How.Name, Using = "newPassword")]
+        public IWebElement NewPasswordInput;
+
+        [FindsBy(How = How.Name, Using = "confirmPassword")]
+        public IWebElement ConfirmPasswordInput;
 
         [FindsBy(How = How.XPath, Using = "//button[@data-edit='account']")]
         public IWebElement btnEditAccount;
 
-        [FindsBy(How = How.XPath, Using = "//input[@name='email']")]
+        [FindsBy(How = How.Name, Using = "email")]
         public IWebElement inputEmail;
 
-        [FindsBy(How = How.XPath, Using = "//input[@name='phone']")]
+        [FindsBy(How = How.Name, Using = "phone")]
         public IWebElement inputPhone;
 
-        [FindsBy(How = How.XPath, Using = "//input[@name='country']")]
+        [FindsBy(How = How.Name, Using = "country")]
         public IWebElement inputCountry;
 
         [FindsBy(How = How.XPath, Using = "//input[@value='emailCommunication']")]

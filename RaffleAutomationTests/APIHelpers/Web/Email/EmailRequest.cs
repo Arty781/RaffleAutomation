@@ -11,7 +11,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
 {
     public class EmailRequest
     {
-        public static EmailRequest AddDreamhomeTickets(string email)
+        public static EmailRequest? AddDreamhomeTickets(string email)
         {
 
 

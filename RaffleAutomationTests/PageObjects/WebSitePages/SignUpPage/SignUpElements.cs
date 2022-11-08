@@ -43,5 +43,8 @@ namespace RaffleAutomationTests.PageObjects
 
         [FindsBy(How = How.XPath, Using = "//input[@class='phone-input']")]
         public IWebElement inputPhone;
+
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(),'Email verified successfully')]")]
+        public IWebElement toasterSuccessMessage;
     }
 }

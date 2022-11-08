@@ -19,7 +19,7 @@ namespace AdminSiteTests.BASE
 
         public void SetUp()
         {
-            
+            Browser._Driver.Manage().Window.Maximize();
             Browser._Driver.Navigate().GoToUrl(AdminEndpoints.ADMIN_HOST);
         }
         

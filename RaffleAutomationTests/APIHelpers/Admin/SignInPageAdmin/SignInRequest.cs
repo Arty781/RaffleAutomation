@@ -20,7 +20,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin
             return str;
         }
 
-        public static SignInResponseModelAdmin MakeAdminSignIn(string login, string password)
+        public static SignInResponseModelAdmin? MakeAdminSignIn(string login, string password)
         {
             
             

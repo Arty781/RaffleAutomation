@@ -8,7 +8,6 @@ using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
 namespace API
 {
     [TestFixture]
-    [AllureNUnit]
     public class ApiTests : TestBaseApi
     {
         [Test]

@@ -23,7 +23,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
             return req;
         }
 
-        public static DreamHomeOrderResponseModelWeb AddDreamhomeTickets(SignInResponseModelWeb SignIn, CountdownResponseModelDreamHomeWeb countdown)
+        public static DreamHomeOrderResponseModelWeb? AddDreamhomeTickets(SignInResponseModelWeb SignIn, CountdownResponseModelDreamHomeWeb countdown)
         {
 
 

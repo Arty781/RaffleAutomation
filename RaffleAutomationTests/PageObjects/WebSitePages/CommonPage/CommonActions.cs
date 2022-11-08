@@ -15,87 +15,77 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Close cookies pop-up")]
         public Common CloseCookiesPopUp()
         {
-            WaitUntil.CustomElementIsVisible(confirmCookieBtn);
-            confirmCookieBtn.Click();
-
+            Button.Click(confirmCookieBtn);
             return this;
         }
 
         [AllureStep("Click add +10 tickets")]
         public Common ClickAddTenTickets()
         {
-            WaitUntil.WaitSomeInterval(1);
-            addTenTicketBtn.Click();
+            Button.Click(addTenTicketBtn);
             return this;
         }
 
         [AllureStep("Click add +1 ticket")]
         public Common ClickAddOneTicket()
         {
-            WaitUntil.WaitSomeInterval(1);
-            addOneTicketBtn.Click();
+            Button.Click(addOneTicketBtn);
             return this;
         }
 
         [AllureStep("Click add +25 tickets")]
         public Common ClickAdd25Tickets()
         {
-            WaitUntil.WaitSomeInterval(1);
-            add25TicketBtn.Click();
+            Button.Click(add25TicketBtn);
             return this;
         }
 
         [AllureStep("Click remove 10 tickets")]
         public Common ClickRemoveTenTickets()
         {
-            WaitUntil.WaitSomeInterval(1);
-            removeTenTicketBtn.Click();
+            Button.Click(removeTenTicketBtn);
             return this;
         }
 
         [AllureStep("Click remove 1 ticket")]
         public Common ClickRemoveOneTicket()
         {
-            WaitUntil.WaitSomeInterval(1);
-            removeOneTicketBtn.Click();
+            Button.Click(removeOneTicketBtn);
             return this;
         }
 
         [AllureStep("Click remove 25 tickets")]
         public Common ClickRemove25Tickets()
         {
-            WaitUntil.WaitSomeInterval(1);
-            remove25TicketBtn.Click();
+            Button.Click(remove25TicketBtn);
             return this;
         }
 
         [AllureStep("Click Add To Basket button")]
         public Common ClickAddToBasketBtn()
         {
-            WaitUntil.WaitSomeInterval(1);
-            btnAddToBasket.Click();
+            WaitUntil.WaitSomeInterval(300);
+            Button.Click(btnAddToBasket);
+            WaitUntil.CustomElementIsVisible(Pages.Basket.checkOutNowBtn);
             return this;
         }
 
         [AllureStep("Click Enter button")]
         public Common ClickEnterBtn()
         {
-            WaitUntil.WaitSomeInterval(1);
-            WaitUntil.CustomElementIsVisible(enterBtn);
-            enterBtn.SendKeys("");
-            enterBtn.Click();
+            Button.Click(enterBtn);
             return this;
         }
 
-        public Common ScrollToElement()
-        {
-            new Actions(Browser._Driver)
-                    .SendKeys(Keys.End)
-                    .Build()
-                    .Perform();
+        //public Common ScrollToElement()
+        //{
+        //    new Actions(Browser._Driver)
+        //            .SendKeys(Keys.End)
+        //            .Build()
+        //            .Perform();
 
-            return this;
-        }
+        //    return this;
+        //}
 
     }
 }

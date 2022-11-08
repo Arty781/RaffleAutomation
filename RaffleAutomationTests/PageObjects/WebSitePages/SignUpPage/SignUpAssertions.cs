@@ -23,8 +23,8 @@ namespace RaffleAutomationTests.PageObjects
 
         public SignUp VerifyEmail(string email)
         {
-            WaitUntil.VisibilityOfAllElementsLocatedBy(By.XPath("//h1[contains(text(),'My Details')]"));
-            string emailFld = inputEmail.GetAttribute("value");
+            WaitUntil.CustomElementIsVisible(Pages.Profile.titleProfile);
+            string emailFld = inputEmail.GetAttribute("value").ToLower();
 
             Assert.AreEqual(email, emailFld);
 
@@ -35,7 +35,7 @@ namespace RaffleAutomationTests.PageObjects
         {
             string s = Putsbox.GetLinkFromEmailWithValue(email, "Verify");
             Browser._Driver.Navigate().GoToUrl(s);
-            WaitUntil.VisibilityOfAllElementsLocatedBy(By.XPath("//div[contains(text(),'Email verified successfully')]"));
+            WaitUntil.CustomElementIsVisible(toasterSuccessMessage);
             
 
             return this;

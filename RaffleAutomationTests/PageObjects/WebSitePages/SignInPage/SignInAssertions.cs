@@ -13,10 +13,9 @@ namespace RaffleAutomationTests.PageObjects
     {
         public SignIn VerifyIsSignIn()
         {
-            WaitUntil.CustomElementIsVisible(Pages.Header.UserFirstNameBtn);
+            WaitUntil.CustomElementIsVisible(Pages.Profile.titleProfile);
             
-            Assert.IsTrue(Pages.Header.UserFirstNameBtn.Displayed);
-            Console.WriteLine(Pages.Header.UserFirstNameBtn.Displayed);
+            Assert.IsTrue(Pages.Profile.FirstNameInput.Displayed);
             
 
             return this;

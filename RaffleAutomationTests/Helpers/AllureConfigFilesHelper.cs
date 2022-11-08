@@ -35,19 +35,11 @@ namespace RaffleAutomationTests.Helpers
 
         public static ConfigJson Json()
         {
-            FileInfo fileInf = new FileInfo(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json");
-            if (fileInf.Exists == true)
-            {
-                fileInf.Delete();
-            }
-            string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json";
-            string str = Path.Combine(Browser.RootPath() + "allure-results");
-
             ConfigJson req = new()
             {
                 Allure = new()
                 {
-                    Directory = str,
+                    Directory = Path.Combine(Browser.RootPath() + "allure-results"),
                     Links = new()
                     {
                         "{link}",
@@ -94,7 +86,7 @@ namespace RaffleAutomationTests.Helpers
             return req;
         }
 
-        public static void CreateJsonConfigFile(ConfigJson req)
+        public static void CreateJsonConfigFile()
         {
             FileInfo fileInf = new FileInfo(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json");
             if (fileInf.Exists == true)
@@ -102,13 +94,12 @@ namespace RaffleAutomationTests.Helpers
                 fileInf.Delete();
             }
             string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json";
-            string str = Path.Combine(Browser.RootPath() + "allure-results");
 
             using (StreamWriter file = File.CreateText(mainpath))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 //serialize object directly into file stream
-                serializer.Serialize(file, req);
+                serializer.Serialize(file, Json());
             }
 
 

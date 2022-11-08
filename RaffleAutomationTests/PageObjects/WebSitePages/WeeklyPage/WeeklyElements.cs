@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,34 +11,32 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class Weekly
     {
-        public IWebElement counterPop => Browser._Driver.FindElement(_counterPop);
-        public readonly static By _counterPop = By.XPath("//*/div[contains(text(), \"Next Winner Draw In: \")]");
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(), 'Next Winner Draw In: ')]")]
+        public IWebElement counterPop;
 
-        public IWebElement mainPageBannerInf => Browser._Driver.FindElement(_mainPageBannerInf);
-        public readonly static By _mainPageBannerInf = By.XPath("//*/div[@class='lifestyle-prizes-banner__info']");
+        [FindsBy(How = How.XPath, Using = "//div[@class='lifestyle-prizes-banner__info']")]
+        public IWebElement mainPageBannerInf;
 
+        [FindsBy(How = How.XPath, Using = "//li[contains(@class,'active')]//div[@class='itemName ']")]
+        public IList<IWebElement> categorySlider;
 
-        public IWebElement categorySlider => Browser._Driver.FindElement(_categorySlider);
-        public readonly static By _categorySlider = By.XPath("//*/ul/li[contains(@class,\"react-multi-carousel-item\")][contains(@class,\"active\")]/div/div");
+        [FindsBy(How = How.XPath, Using = "//div[@title='Open']")]
+        public IWebElement btnSubCategoryFilter;
 
-        public IWebElement subCategoryFilter => Browser._Driver.FindElement(_subCategoryFilter);
-        public readonly static By _subCategoryFilter = By.XPath("//*[contains(text(), 'View subcategories')]");
-        
-        public IWebElement selectSubCategory => Browser._Driver.FindElement(_selectSubCategory);
-        public readonly static By _selectSubCategory = By.XPath("//*/ul[@class=\"filter-select__list\"]/li");
+        [FindsBy(How = How.XPath, Using = "//ul[@class='filter-select__list']/li")]
+        public IList<IWebElement> listSubCategory;
 
-        public IWebElement weeklyProductCard => Browser._Driver.FindElement(_weeklyProductCard);
-        public readonly static By _weeklyProductCard = By.XPath("//article[@class='product-card-component product-card']");
+        [FindsBy(How = How.XPath, Using = "//article[@class='product-card-component product-card']")]
+        public IList<IWebElement> weeklyProductCard;
 
-        public IWebElement weeklyProductCardEnt => Browser._Driver.FindElement(_weeklyProductCardEnt);
-        public readonly static By _weeklyProductCardEnt = By.XPath("//*/article/div[1]/button");
+        [FindsBy(How = How.XPath, Using = "//article/div[1]/button")]
+        public IWebElement weeklyProductCardEnt;
 
-        public IWebElement weeklyProductCardTitle => Browser._Driver.FindElement(_weeklyProductCardTitle);
-        public readonly static By _weeklyProductCardTitle = By.XPath("//article[@class='product-card-component product-card']//h3");
+        [FindsBy(How = How.XPath, Using = "//article[@class='product-card-component product-card']//h3")]
+        public IWebElement weeklyProductCardTitle;
 
-
-        public IWebElement closeWeeklyPopUp => Browser._Driver.FindElement(_closeWeeklyPopUp);
-        public readonly static By _closeWeeklyPopUp = By.XPath("//*/button[contains(text(), 'OK')]");
+        [FindsBy(How = How.XPath, Using = "//button[contains(text(), 'OK')]")]
+        public IWebElement closeWeeklyPopUp;
 
     }
 }

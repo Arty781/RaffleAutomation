@@ -17,17 +17,15 @@ namespace RaffleAutomationTests.Helpers
 {
     public class Browser
     {
-        public IWebDriver WindowsDriver { get; set; }
         private static IWebDriver windowsDriver;
 
         public static void Initialize()
         {
-            AllureConfigFilesHelper.CreateJsonConfigFile(AllureConfigFilesHelper.Json());
+            AllureConfigFilesHelper.CreateJsonConfigFile();
 
             new DriverManager().SetUpDriver(new ChromeConfig());
             windowsDriver = new ChromeDriver();
             _Driver.Manage().Cookies.DeleteAllCookies();
-            _Driver.Manage().Window.Maximize();
 
             Assert.NotNull(windowsDriver);
         }
@@ -38,10 +36,21 @@ namespace RaffleAutomationTests.Helpers
             string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\..\\"));
             return mainpath;
         }
+        public static string RootPathReport()
+        {
+            string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\"));
+            return mainpath;
+        }
         public static ISearchContext Driver => windowsDriver;
         public static IWebDriver _Driver => windowsDriver;
-        public static string Title => windowsDriver.Title;
-        public static string CurrentURL => windowsDriver.Url;
+        public static void Close()
+        {
+            windowsDriver.Close();
+        }
+        public static void Quit()
+        {
+            windowsDriver.Quit();
+        }
         
 
     }

@@ -18,7 +18,7 @@ namespace RaffleAutomationTests.PageObjects
         public SignIn EnterLoginAndPass(string login, string password)
         {
             
-            WaitUntil.ElementIsClickable(InputLogin, 3);
+            WaitUntil.CustomElementIsClickable(InputLogin, 3);
 
             InputLogin.SendKeys(login);
             InputPassword.SendKeys(password);
@@ -26,34 +26,6 @@ namespace RaffleAutomationTests.PageObjects
 
             return this;
         }
-
-        public SignIn GoogleAuth(string login, string password)
-        {
-
-            WaitUntil.ElementIsClickable(SignInGoogleBtn, 3);
-
-            SignInGoogleBtn.Click();
-            SwitchWindow();
-            WaitUntil.ElementIsClickable(GoogleEmailInput, 3);
-            GoogleEmailInput.SendKeys(login);
-            new Actions(Browser._Driver)
-                .SendKeys(Keys.Enter)
-                .Build()
-                .Perform();
-            /*GoogleNextBtn.SendKeys(Keys.Enter);*/
-            WaitUntil.ElementIsVisibleAndClickable(_GooglePasswordInput, 3);
-            GooglePasswordInput.SendKeys(password);
-            new Actions(Browser._Driver)
-                .SendKeys(Keys.Enter)
-                .Build()
-                .Perform();
-            /*GoogleNextBtn.SendKeys(Keys.Enter);*/
-
-
-            return this;
-        }
-
-
 
         public SignIn SwitchWindow()
         {

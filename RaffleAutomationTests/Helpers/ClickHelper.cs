@@ -25,7 +25,7 @@ namespace RaffleAutomationTests.Helpers
     {
         public static void Click(IWebElement element)
         {
-            WaitUntil.WaitSomeInterval(150);
+            WaitUntil.WaitSomeInterval(300);
             WaitUntil.CustomElementIsVisible(element, 10);
             element.Click();
 

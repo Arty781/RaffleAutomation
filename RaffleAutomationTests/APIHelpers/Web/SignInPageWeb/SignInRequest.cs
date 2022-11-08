@@ -22,7 +22,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
             return req;
         }
 
-        public static SignInResponseModelWeb MakeSignIn(string login, string password)
+        public static SignInResponseModelWeb? MakeSignIn(string login, string password)
         {
             
             

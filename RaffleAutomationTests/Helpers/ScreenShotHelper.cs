@@ -14,11 +14,11 @@ namespace RaffleAutomationTests.Helpers
     {
         public static string MakeScreenShot()
         {
-            ITakesScreenshot ssdriver = Browser.Driver as ITakesScreenshot;
+            ITakesScreenshot? ssdriver = Browser.Driver as ITakesScreenshot;
             Screenshot screenshot = ssdriver.GetScreenshot();
             string timestampPath = DateTime.Now.ToString("yyyy-MM-dd");
             string timestampName = DateTime.UtcNow.ToString("dd-MMMM-yyyy' 'HH-mm-ss");
-            string path = Browser.RootPath() + "\\ErrorImages\\" + timestampPath + "\\";
+            string path = Browser.RootPath() + @"\ErrorImages\" + timestampPath + @"\";
             string name = path + "Exception-" + timestampName + ".png";
             if (!Directory.Exists(path))
             {

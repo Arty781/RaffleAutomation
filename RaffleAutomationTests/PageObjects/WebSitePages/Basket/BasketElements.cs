@@ -12,24 +12,32 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class Basket
     {
-        public IWebElement addMoreTicketsBtn => Browser._Driver.FindElement(_addMoreTicketsBtn);
-        public readonly static By _addMoreTicketsBtn = By.XPath("//*/button[@class='your-basket-ticket-select']");
-        public IWebElement removeOrderBtn => Browser._Driver.FindElement(_removeOrderBtn);
-        public readonly static By _removeOrderBtn = By.XPath("//*/button[@class='basket-btn']");
-        public IWebElement couponInput => Browser._Driver.FindElement(_couponInput);
-        public readonly static By _couponInput = By.XPath("//*/input[@id='coupon-input']");
-        public IWebElement applyCouponBtn => Browser._Driver.FindElement(_applyCouponBtn);
-        public readonly static By _applyCouponBtn = By.XPath("//*/button[@class='apply-coupon-btn']");
-        public IWebElement checkOutNowBtn => Browser._Driver.FindElement(_checkOutNowBtn);
-        public readonly static By _checkOutNowBtn = By.XPath("//*/button[@class='rafflebtn primary full-width']");
-        public IWebElement orderTotalVal => Browser._Driver.FindElement(_orderTotalVal);
-        public readonly static By _orderTotalVal = By.XPath("//*/div[@class='itemPrice total-credit']/div[2]");
-        public IWebElement selectCharityHomless => Browser._Driver.FindElement(_selectCharityHomless);
-        public readonly static By _selectCharityHomless = By.XPath("//*/label[@class='MuiFormControlLabel-root'][1]");
-        public IWebElement selectCharityWomen => Browser._Driver.FindElement(_selectCharityWomen);
-        public readonly static By _selectCharityWomen = By.XPath("//*/label[@class='MuiFormControlLabel-root'][2]");
-        public IWebElement ageControlSection => Browser._Driver.FindElement(_ageControlSection);
-        public readonly static By _ageControlSection = By.XPath("//div[@class='age-control-section']/label//span/input");
+        [FindsBy(How = How.XPath, Using = "//button[@class='your-basket-ticket-select']")]
+        public IWebElement addMoreTicketsBtn;
+
+        [FindsBy(How = How.XPath, Using = "//button[@class='basket-btn']")]
+        public IWebElement removeOrderBtn;
+
+        [FindsBy(How = How.Id, Using = "coupon-input")]
+        public IWebElement couponInput;
+
+        [FindsBy(How = How.XPath, Using = "//button[@class='apply-coupon-btn']")]
+        public IWebElement applyCouponBtn;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='itemPrice']/button")]
+        public IWebElement checkOutNowBtn;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='itemPrice total-credit']/div[2]")]
+        public IWebElement orderTotalVal;
+
+        [FindsBy(How = How.XPath, Using = "//label[@class='MuiFormControlLabel-root'][1]")]
+        public IWebElement selectCharityHomless;
+
+        [FindsBy(How = How.XPath, Using = "//label[@class='MuiFormControlLabel-root'][2]")]
+        public IWebElement selectCharityWomen;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='age-control-section']/label//span/input")]
+        public IWebElement ageControlSection;
 
         [FindsBy(How = How.Name, Using = "checkedB")]
         public IWebElement checkboxAgeControl;
@@ -55,8 +63,8 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.Id, Using = "pay-button")]
         public IWebElement btnPay;
 
-        public IWebElement orderSummaryBtn => Browser._Driver.FindElement(_orderSummaryBtn);
-        public readonly static By _orderSummaryBtn = By.XPath("//div[@class='checkout-header']");
+        [FindsBy(How = How.XPath, Using = "//div[@class='checkout-header']")]
+        public IWebElement orderSummaryBtn;
 
         #region Checkout Verification page
 

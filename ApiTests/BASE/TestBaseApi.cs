@@ -14,7 +14,7 @@ namespace ApiTests.BASE
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            AllureConfigFilesHelper.CreateJsonConfigFile(AllureConfigFilesHelper.Json());
+            AllureConfigFilesHelper.CreateJsonConfigFile();
         }
         
         [SetUp]

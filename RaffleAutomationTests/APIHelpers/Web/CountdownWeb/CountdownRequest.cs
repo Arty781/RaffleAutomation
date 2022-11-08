@@ -11,7 +11,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
 {
     public class CountdownRequestWeb
     {
-        public static CountdownResponseModelDreamHomeWeb GetDreamHomeCountdown(SignInResponseModelWeb SignIn)
+        public static CountdownResponseModelDreamHomeWeb? GetDreamHomeCountdown(SignInResponseModelWeb SignIn)
         {
 
 
@@ -20,8 +20,8 @@ namespace RaffleAutomationTests.APIHelpers.Web
             request.AddHeaders(headers: Headers.COMMON);
             request.AddHeader("authorization", $"Bearer {SignIn.Token}");
 
-            var response = restDriver.Execute(request);
-            var content = response.Content.Replace("[{", "{").Replace("}]", "}");
+            RestResponse response = restDriver.Execute(request);
+            string content = response.Content.Replace("[{", "{").Replace("}]", "}");
             var countdownResponse = JsonConvert.DeserializeObject<CountdownResponseModelDreamHomeWeb>(content);
 
             return countdownResponse;
@@ -29,7 +29,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
 
         #region Weekly
 
-        public static List<CompetitionResponseModelWeb> GetWeeklyPrizesCompetitionId(SignInResponseModelWeb SignIn)
+        public static List<CompetitionResponseModelWeb>? GetWeeklyPrizesCompetitionId(SignInResponseModelWeb SignIn)
         {
 
 
@@ -61,7 +61,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
         }
 
 
-        public static WeeklyPrizesResponseModelWeb GetWeeklyPrizes(SignInResponseModelWeb SignIn, string WeeklyId)
+        public static WeeklyPrizesResponseModelWeb? GetWeeklyPrizes(SignInResponseModelWeb SignIn, string WeeklyId)
         {
 
 

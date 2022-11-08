@@ -12,10 +12,17 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class Weekly
     {
+        [AllureStep("Open WeeklyPrizes page")]
+        public Weekly OpenWeeklyPrizesPage()
+        {
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.LIFESTYLE);
+            return this;
+        }
+
         [AllureStep("Close Weekly PopUp")]
         public Weekly CloseWeeklyPopUp()
         {
-            WaitUntil.ElementIsVisible(_closeWeeklyPopUp, 10);
+            WaitUntil.CustomElementIsVisible(closeWeeklyPopUp, 10);
             closeWeeklyPopUp.Click();
 
             return this;
@@ -24,18 +31,16 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Select Category {0}")]
         public Weekly SelectCategory(string category)
         {
-           /*WaitUntil.WaitSomeInterval(3);*/
-            WaitUntil.VisibilityOfAllElementsLocatedBy(_categorySlider, 30);
-            IReadOnlyCollection<IWebElement> catList = Browser._Driver.FindElements(_categorySlider);
+            WaitUntil.CustomElementIsVisible(categorySlider.Last(), 30);
+            var catList = categorySlider.Where(x=>x.Enabled);
             foreach(var cat in catList)
             {
                 if (cat.Displayed == true && cat.Text == category)
                 {
                     cat.Click();
-                    Console.WriteLine(cat.Text);
+                    WaitUntil.WaitSomeInterval(500);
                 }
             }
-            categorySlider.Click();
 
             return this;
         }
@@ -43,17 +48,14 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Select SubCategory {0}")]
         public Weekly SelectSubCategory(string subcategory)
         {
-            subCategoryFilter.Click();
-
-            WaitUntil.WaitSomeInterval(1);
-            IReadOnlyCollection<IWebElement> subCatList = Browser._Driver.FindElements(_selectSubCategory);
-            foreach(var subCat in subCatList)
+            btnSubCategoryFilter.Click();
+            WaitUntil.WaitSomeInterval(1000);
+            foreach(var subCat in listSubCategory)
             {
-                
                 if(subCat.Displayed == true && subCat.Text == subcategory)
                 {
                     subCat.Click();
-                    Console.WriteLine(subCat.Text);
+                    WaitUntil.WaitSomeInterval(500);
                 }
             }
             
@@ -63,12 +65,10 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Select prize {0}")]
         public Weekly SelectPrize(string title)
         {
-            WaitUntil.WaitSomeInterval(3);
-            IReadOnlyCollection<IWebElement> prizeList = Browser._Driver.FindElements(_weeklyProductCard);
-            int i =0;
-            foreach (var prize in prizeList)
+            WaitUntil.WaitSomeInterval(250);
+            var prizeList = weeklyProductCard.Where(x=>x.Enabled).ToList();
+            for (int i = 1; i<prizeList.Count; ++i)
             {
-                ++i;
                 string prizeTitle = "//div[@class='lifestyleProductList__card-wrapper'][" + i + "]//article//h3";
                 IWebElement PrizeTitle = Browser._Driver.FindElement(By.XPath(prizeTitle));
                 
@@ -77,7 +77,7 @@ namespace RaffleAutomationTests.PageObjects
                         string prizeEnterBtn = "//div[@class='lifestyleProductList__card-wrapper'][" + i + "]//article/div/button";
                         IWebElement PrizeEnterBtn = Browser._Driver.FindElement(By.XPath(prizeEnterBtn));
                         PrizeEnterBtn.SendKeys("");
-                        WaitUntil.WaitSomeInterval(2);
+                        WaitUntil.WaitSomeInterval(500);
 
                         PrizeEnterBtn.Click();
                         break;

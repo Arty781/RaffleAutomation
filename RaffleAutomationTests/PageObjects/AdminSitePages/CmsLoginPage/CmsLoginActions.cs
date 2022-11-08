@@ -13,10 +13,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter login and password")]
         public CmsLogin EnterLoginAndPassword(string email, string password)
         {
-            WaitUntil.ElementIsVisible(_inputEmail);
-            inputEmail.SendKeys(email);
-            WaitUntil.ElementIsVisible(_inputPassword);
-            inputPassword.SendKeys(password);
+            InputBox.Element(inputEmail, 10, email);
+            InputBox.Element(inputPassword, 10, password);
 
             return this;
         }
@@ -24,9 +22,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Click SignIn button")]
         public CmsLogin ClickSignInBtn()
         {
-            WaitUntil.CustomElementIsVisible(btnSignIn);
-            btnSignIn.Click();
-
+            Button.Click(btnSignIn);
             return this;
         }
 

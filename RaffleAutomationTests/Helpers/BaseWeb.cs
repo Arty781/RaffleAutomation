@@ -16,31 +16,41 @@ namespace RaffleAutomationTests.Helpers
         {
             AllureConfigFilesHelper.CreateBatFile();
             Browser.Initialize();
-        } 
+        }
 
 
 
         [OneTimeTearDown]
-        
-        public static void OneTimeTearDown()
+        public void OneTimeTearDown()
         {
 
             if (Browser._Driver != null)
             {
-                Browser._Driver.Quit();
-            }
+                Browser.Quit();
 
+                ForceCloseWebDriver.ForceClose();
+                ForceCloseWebDriver.RemoveBatFile();
+            }
 
         }
 
         [TearDown]
-        public static void TearDown()
+        public void TearDown()
         {
             if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
             {
                 _ = TelegramHelper.SendMessage();
+                Browser.Close();
             }
-            Browser._Driver.Close();
+            else if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Passed)
+            {
+                Browser.Close();
+            }
+            else if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Skipped)
+            {
+                Browser.Close();
+            }
+
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using NUnit.Allure.Steps;
+﻿using AngleSharp.Dom;
+using NUnit.Allure.Steps;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using RaffleAutomationTests.Helpers;
@@ -14,10 +15,9 @@ namespace RaffleAutomationTests.PageObjects
     {
         #region Ticket Selector
         [AllureStep("Open Dreamhome product page")]
-       public Dreamhome OpenDreamHomeProductPage()
+       public Dreamhome OpenDreamHomePage()
         {
-            /*WaitUntil.VisibilityOfAllElementsLocatedBy(_raffleBtn);*/
-            Elements.Click(raffleBtn);
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.DREAMHOME);
 
             return this;
         }
@@ -25,8 +25,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open ticket selector")]
         public Dreamhome OpenDreamHomeTicketSelector()
         {
-            WaitUntil.CustomElementIsVisible(enterNowDreamhomeBtn);
-            enterNowDreamhomeBtn.Click();
+            Button.Click(btnDreamHome);
 
             return this;
         }
@@ -35,8 +34,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Select first bundle")]
         public Dreamhome SelectFirstBundleBtn()
         {
-            WaitUntil.CustomElementIsVisible(firstBundleBtn);
-            firstBundleBtn.Click();
+            Button.Click(btnFirstBundle);
 
             return this;
         }
@@ -44,8 +42,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Select second bundle")]
         public Dreamhome SelectSecondBundleBtn()
         {
-            WaitUntil.ElementIsVisible(_secondBundleBtn);
-            secondBundleBtn.Click();
+            Button.Click(btnSecondBundle);
 
             return this;
         }
@@ -53,8 +50,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Select third bundle")]
         public Dreamhome SelectThirdBundleBtn()
         {
-            WaitUntil.ElementIsVisible(_thirdBundleBtn);
-            thirdBundleBtn.Click();
+            Button.Click(btnThirdBundle);
 
             return this;
         }
@@ -62,8 +58,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Select forth bundle")]
         public Dreamhome SelectForthBundleBtn()
         {
-            WaitUntil.ElementIsVisible(_forthBundleBtn);
-            forthBundleBtn.Click();
+            Button.Click(btnFourthBundle);
 
             return this;
         }

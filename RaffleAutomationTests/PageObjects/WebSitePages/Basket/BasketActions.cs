@@ -57,17 +57,17 @@ namespace RaffleAutomationTests.PageObjects
         public Basket EnterCardDetails()
         {
             
-            WaitUntil.WaitSomeInterval(250);
+            WaitUntil.CustomElementIsVisible(framePaymentNumber);
             Browser._Driver.SwitchTo().Frame(framePaymentNumber);
             InputBox.Element(inputCardNumber,5, "4242424242424242");
             Browser._Driver.SwitchTo().DefaultContent();
             Browser._Driver.SwitchTo().Frame(framePaymentExpiry);
-            inputExpiryDate.SendKeys("11/28");
+            inputExpiryDate.SendKeys("07/26");
             Browser._Driver.SwitchTo().DefaultContent();
             Browser._Driver.SwitchTo().Frame(framePaymentCvv);
             inputCvv.SendKeys("100");
             Browser._Driver.SwitchTo().DefaultContent();
-            WaitUntil.ElementIsClickable(btnPay, 5);
+            WaitUntil.CustomElementIsClickable(btnPay, 5);
 
             return this;
         }
@@ -81,7 +81,7 @@ namespace RaffleAutomationTests.PageObjects
         }
 
         [AllureStep("Confirm purchase")]
-        public Basket ConfirmPurchase()
+        public Basket ConfirmPurchaseStage()
         {
             WaitUntil.CustomElementIsVisible(frameCheckout);
             Browser._Driver.SwitchTo().Frame(frameCheckout);
@@ -98,11 +98,7 @@ namespace RaffleAutomationTests.PageObjects
         public Basket ConfirmPurchaseLive()
         {
             WaitUntil.CustomElementIsVisible(frameCheckout);
-            Browser._Driver.SwitchTo().Frame(frameCheckout);
-            InputBox.Element(inputPasswordCheckout, 5, "Checkout1!");
-            Button.Click(btnContinueCheckout);
             WaitUntil.CustomElevemtIsInvisible(frameCheckout, 12000);
-            Browser._Driver.SwitchTo().DefaultContent();
 
 
             return this;

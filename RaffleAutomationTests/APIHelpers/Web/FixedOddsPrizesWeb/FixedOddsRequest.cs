@@ -24,31 +24,23 @@ namespace RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb
             return req;
         }
 
-        public static List<string> GetFixedOddsPrizes()
+        public static List<string>? GetFixedOddsPrizes()
         {
 
 
             var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest? request = new RestRequest("/api/fixedOdds", Method.Get);
+            RestRequest request = new RestRequest("/api/fixedOdds", Method.Get);
             request.AddHeaders(headers: Headers.COMMON);
 
             var response = restDriver.Execute(request);
             var content = response.Content;
             var countdownResponse = JsonConvert.DeserializeObject<GetFixedOddsOrderResponse>(content);
-
-            List<string> result = new List<string>();
-            foreach(var fixedPrize in countdownResponse.FixedOdds)
-            {
-                if((fixedPrize.MaxTickets -fixedPrize.TicketsBought) > 0)
-                {
-                    result.Add(fixedPrize.Id);
-                }
-            }
-
-            return result;
+            return (from fixedPrize in countdownResponse.FixedOdds
+                    where (fixedPrize.MaxTickets - fixedPrize.TicketsBought) > 0
+                    select fixedPrize.Id).ToList();
         }
 
-        public static GetFixedOddsOrderResponse AddFixedOddsPrizes(SignInResponseModelWeb SignIn, List<string> fixedPrizesId)
+        public static GetFixedOddsOrderResponse? AddFixedOddsPrizes(SignInResponseModelWeb SignIn, List<string> fixedPrizesId)
         {
 
 

@@ -24,9 +24,9 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
-        public Header OpenWeeklyPrizesPage(string url)
+        public Header OpenWeeklyPrizesPage()
         {
-            Browser._Driver.Navigate().GoToUrl(url);
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.LIFESTYLE);
 
             return this;
         }
@@ -60,15 +60,14 @@ namespace RaffleAutomationTests.PageObjects
 
         public Header OpenSignInPage()
         {
-            WaitUntil.ElementIsClickable(signInBtn);
-            signInBtn.Click();
+            Button.Click(signInBtn);
 
             return this;
         }
 
         public Header OpenSignUpPage()
         {
-            WaitUntil.ElementIsClickable(signUpBtn);
+            WaitUntil.CustomElementIsClickable(signUpBtn);
             signUpBtn.Click();
 
             return this;
@@ -83,7 +82,7 @@ namespace RaffleAutomationTests.PageObjects
 
         public Header OpenCartPage()
         {
-            WaitUntil.ElementIsClickable(btnCart);
+            WaitUntil.CustomElementIsClickable(btnCart);
             btnCart.Click();
 
             return this;

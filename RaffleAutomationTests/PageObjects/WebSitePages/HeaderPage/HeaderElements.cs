@@ -11,47 +11,45 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class Header
     {
-        public IWebElement logo => Browser._Driver.FindElement(_logo);
-        public readonly static By _logo = By.XPath("//*[@class='headerLogo']");
+        [FindsBy(How=How.XPath,Using = "//a[@class='headerLogo']")]
+        public IWebElement logo;
 
-        public IWebElement liveCompetitionsList => Browser._Driver.FindElement(_liveCompetitionsList);
-        public readonly static By _liveCompetitionsList = By.XPath("//*[@class='toggle-live-btn toggle-live-btn-desk false']");
+        [FindsBy(How=How.XPath,Using = "//button[contains(@class,'toggle-live-btn toggle-live-btn-desk')]")]
+        public IWebElement liveCompetitionsList;
 
-        public IWebElement dreamHomeLink => Browser._Driver.FindElement(_dreamHomeLink);
-        public readonly static By _dreamHomeLink = By.XPath("//a/span[contains(text(), 'Dream Home')]");
+        [FindsBy(How=How.XPath,Using = "//a[@href='/dreamhome']")]
+        public IWebElement linkDreamHome;
 
-        public IWebElement weeklyLink => Browser._Driver.FindElement(_weeklyLink);
-        public readonly static By _weeklyLink = By.XPath("//a/span[contains(text(), 'Weekly Prizes')]");
+        [FindsBy(How = How.XPath, Using = "//a[@href='/lifestyleprizes']")]
+        public IWebElement linkWeekly;
 
-        public IWebElement fixedOddsLink => Browser._Driver.FindElement(_fixedOddsLink);
-        public readonly static By _fixedOddsLink = By.XPath("//a/span[contains(text(), 'Fixed Odds')]");
+        [FindsBy(How = How.XPath, Using = "//a[@href='/fixedodds']")]
+        public IWebElement linkFixedOdds;
 
-        public IWebElement winnersLink => Browser._Driver.FindElement(_winnersLink);
-        public readonly static By _winnersLink = By.XPath("//*[@class='headerNav']/a[1]");
+        [FindsBy(How = How.XPath, Using = "//nav[@class='headerNav']/a[@href='/winners']")]
+        public IWebElement winnersLink;
 
-        public IWebElement faqsLink => Browser._Driver.FindElement(_faqsLink);
-        public readonly static By _faqsLink = By.XPath("//*[@class='headerNav']/a[2]");
+        [FindsBy(How = How.XPath, Using = "//nav[@class='headerNav']/a[@href='https://help.rafflehouse.com']")]
+        public IWebElement linkFAQs;
 
-        public IWebElement aboutLink => Browser._Driver.FindElement(_aboutLink);
-        public readonly static By _aboutLink = By.XPath("//*[@class='headerNav']/a[3]");
+        [FindsBy(How = How.XPath, Using = "//nav[@class='headerNav']/a[@href='/about-us']")]
+        public IWebElement linkAboutUs;
 
-        public IWebElement signInBtn => Browser._Driver.FindElement(_signInBtn);
-        public readonly static By _signInBtn = By.XPath("//*[@class='headerAuth']/div/button[1]");
+        [FindsBy(How=How.XPath,Using = "//button[@class='btnSignInHeader']")]
+        public IWebElement signInBtn;
 
-        public IWebElement signUpBtn => Browser._Driver.FindElement(_signUpBtn);
-        public readonly static By _signUpBtn = By.XPath("//*[@class='headerAuth']/div/a");
+        [FindsBy(How=How.XPath,Using = "//a[@href='/sign-up']")]
+        public IWebElement signUpBtn;
 
-        public IWebElement freeEntryBtn => Browser._Driver.FindElement(_freeEntryBtn);
-        public readonly static By _freeEntryBtn = By.XPath("//*[@class='headerAuth']/div/button[1]");
+        [FindsBy(How = How.XPath, Using = "//button[@class='rafflebtn entry-button']")]
+        public IWebElement freeEntryBtn;
 
-        public static IWebElement btnCart => Browser._Driver.FindElement(_btnCart);
-        public readonly static By _btnCart = By.XPath("//button[@class='headerBtnCart']");
+        [FindsBy(How=How.XPath,Using = "//button[@class='headerBtnCart']")]
+        public static IWebElement btnCart;
 
-        [FindsBy(How=How.XPath, Using = "//div[@class='header-drop-name']/span[1]")]
-        public IWebElement UserFirstNameBtn;
+        [FindsBy(How=How.XPath, Using = "//button[@class='dropdownAccount ']")]
+        public IWebElement btnDropDownAccount;
 
-        public IWebElement UserLastNameBtn => Browser._Driver.FindElement(_UserLastNameBtn);
-        public readonly static By _UserLastNameBtn = By.XPath("//div[@class='header-drop-name']/span[2]");
 
     }
 }

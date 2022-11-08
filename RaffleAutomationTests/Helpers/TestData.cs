@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
+    //public class ApiEndpoints
+    //{
+    //    public const string API = "https://staging-api.rafflehouse.com";
+    //}
+
     public class ApiEndpoints
     {
-        public const string API = "https://staging-api.rafflehouse.com";
+        public const string API = "https://backend.rafflehouse.com";
     }
+
     public class AdminEndpoints
     {
         public const string ADMIN_HOST = "https://admin-staging.rafflehouse.com";
@@ -31,6 +37,20 @@ namespace RaffleAutomationTests.Helpers
         public const string FREE_ENTRY = "https://staging.rafflehouse.com/post";
     }
 
+    //public class WebEndpoints
+    //{
+    //    public const string WEBSITE_HOST = "https://rafflehouse.com";
+    //    public const string SIGN_IN = "https://rafflehouse.com/sign-in";
+    //    public const string SIGN_UP = "https://rafflehouse.com/sign-up";
+    //    public const string DREAMHOME = "https://rafflehouse.com/dreamhome";
+    //    public const string LIFESTYLE = "https://rafflehouse.com/lifestyleprizes";
+    //    public const string FIXEDODDS = "https://rafflehouse.com/fixedodds";
+    //    public const string WINNERS = "https://rafflehouse.com/winners";
+    //    public const string ABOUT = "https://rafflehouse.com/about-us";
+    //    public const string PROFILE = "https://rafflehouse.com/profile";
+    //    public const string FREE_ENTRY = "https://rafflehouse.com/post";
+    //}
+
     public class Credentials
     {
         public const string LOGIN = "qatester91311@gmail.com";
@@ -42,20 +62,25 @@ namespace RaffleAutomationTests.Helpers
 
     public class Categories
     {
-        public const string CATEGORY = "Tech";
+        public const string TECH = "Tech";
+        public const string HOLIDAYS_EXPIRIENCES = "Holidays & Experiences";
+        public const string LUXURY = "Luxury";
+        public const string MOTORS = "Motors";
+        public const string LIVING = "Living";
+        public const string WORKING_FROM_HOME = "Working From Home";
     }
 
     public class SubCategoriesD
     {
-        public const string SUBCATEGORY = "Phones & Tablets";
+        public const string PHONES_TABLETS = "Phones & Tablets";
     }
 
     public class UploadedImages
     {
-        public const string RAFFLE_BATHROOM = $"\\UploadImages\\RaffleBathroom.jpg";
-        public const string RAFFLE_BEDROOM = $"\\UploadImages\\RaffleBedroom.jpg";
-        public const string RAFFLE_FLOOR_PLAN = $"\\UploadImages\\RaffleFloorPlan.jpg"; 
-        public const string RAFFLE_OUTSPACE = $"\\UploadImages\\RaffleOutspace.jpg";
+        public const string RAFFLE_BATHROOM = @"\UploadImages\RaffleBathroom.jpg";
+        public const string RAFFLE_BEDROOM = @"\UploadImages\RaffleBedroom.jpg";
+        public const string RAFFLE_FLOOR_PLAN = @"\UploadImages\RaffleFloorPlan.jpg"; 
+        public const string RAFFLE_OUTSPACE = @"\UploadImages\RaffleOutspace.jpg";
     }
 
     public class TakeTourWithSaraLink
@@ -107,6 +132,7 @@ namespace RaffleAutomationTests.Helpers
         };
 
         public static string TITLE_SITE_CREDITS = "Earn When You Play";
+
         public static string[] DESCR_SITE_CREDIT_TEXTS =
         {
             "We reward you, every time you play. For every purchase, we'll give you 10% of the total value back in site credit. This credit can be saved or spent as you wish.",
