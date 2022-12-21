@@ -19,11 +19,8 @@ namespace WebsiteTests.BASE
 
         public void Initialize()
         {
-            Browser._Driver.Manage().Window.Maximize();
+            Browser.Initialize();
             Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST);
         }
-
-        
-
     }
 }

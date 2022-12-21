@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using RaffleAutomationTests.APIHelpers.Web.Basket;
+using RaffleAutomationTests.APIHelpers.Web.SignIn;
 using RaffleAutomationTests.Helpers;
 using RestSharp;
 using System;
@@ -45,11 +47,11 @@ namespace RaffleAutomationTests.APIHelpers.Web
             return countdownResponse;
         }
 
-        public static WeeklyPrizesRequest RequestBuilder(string id)
+        public static WeeklyPrizesRequest RequestBuilder(string id, int i)
         {
             WeeklyPrizesRequest req = new()
             {
-                PageNumber = 1,
+                PageNumber = i,
                 PageCount = 100,
                 CategoryId = "",
                 SubCategoryId = "[]",
@@ -63,17 +65,23 @@ namespace RaffleAutomationTests.APIHelpers.Web
 
         public static WeeklyPrizesResponseModelWeb? GetWeeklyPrizes(SignInResponseModelWeb SignIn, string WeeklyId)
         {
+            WeeklyPrizesResponseModelWeb? countdownResponse = null;
+            for (int i=0; i < 2; i++)
+            {
+                var restDriver = new RestClient(ApiEndpoints.API);
+                RestRequest? request = new RestRequest("/api/prizes/web", Method.Post);
+                request.AddHeaders(headers: Headers.COMMON);
+                request.AddHeader("authorization", $"Bearer {SignIn.Token}");
+                request.AddJsonBody(RequestBuilder(WeeklyId, i));
 
+                var response = restDriver.Execute(request);
+                var content = response.Content;
+                countdownResponse = JsonConvert.DeserializeObject<WeeklyPrizesResponseModelWeb>(content);
 
-            var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest? request = new RestRequest("/api/prizes/web", Method.Post);
-            request.AddHeaders(headers: Headers.COMMON);
-            request.AddHeader("authorization", $"Bearer {SignIn.Token}");
-            request.AddJsonBody(RequestBuilder(WeeklyId));
-
-            var response = restDriver.Execute(request);
-            var content = response.Content;
-            var countdownResponse = JsonConvert.DeserializeObject<WeeklyPrizesResponseModelWeb>(content);
+                
+                
+            }
+            
 
             return countdownResponse;
         }

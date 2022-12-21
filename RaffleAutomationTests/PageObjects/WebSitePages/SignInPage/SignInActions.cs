@@ -18,11 +18,11 @@ namespace RaffleAutomationTests.PageObjects
         public SignIn EnterLoginAndPass(string login, string password)
         {
             
-            WaitUntil.CustomElementIsClickable(InputLogin, 3);
+            WaitUntil.CustomElementIsClickable(inputLogin, 3);
 
-            InputLogin.SendKeys(login);
-            InputPassword.SendKeys(password);
-            SignInBtn.Click();
+            InputBox.Element(inputLogin, 10, login);
+            InputBox.Element(inputPassword, 10, password);
+            Button.Click(btnSignIn);
 
             return this;
         }

@@ -91,6 +91,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
         public string Id { get; set; }
     }
 
+    #region Full response
     [JsonObject]
     public partial class WeeklyPrizesResponseModelWeb
     {
@@ -101,7 +102,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
         public SubCategories SubCategories { get; set; }
 
         [JsonProperty("prizes")]
-        public Prize[] Prizes { get; set; }
+        public List<Prize> Prizes { get; set; }
 
         [JsonProperty("competitions")]
         public Competitions Competitions { get; set; }
@@ -201,6 +202,10 @@ namespace RaffleAutomationTests.APIHelpers.Web
         [JsonProperty("subcategories")]
         public Category[] Subcategories { get; set; }
     }
+
+    #endregion
+
+    
 
     #endregion
 }

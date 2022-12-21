@@ -15,6 +15,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Close cookies pop-up")]
         public Common CloseCookiesPopUp()
         {
+            Browser._Driver.Navigate().Refresh();
             Button.Click(confirmCookieBtn);
             return this;
         }
@@ -64,7 +65,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Click Add To Basket button")]
         public Common ClickAddToBasketBtn()
         {
-            WaitUntil.WaitSomeInterval(300);
+            WaitUntil.WaitSomeInterval(1000);
             Button.Click(btnAddToBasket);
             WaitUntil.CustomElementIsVisible(Pages.Basket.checkOutNowBtn);
             return this;

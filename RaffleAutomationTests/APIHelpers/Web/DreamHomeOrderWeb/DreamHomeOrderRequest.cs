@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
+using RaffleAutomationTests.APIHelpers.Web.SignIn;
 using RaffleAutomationTests.Helpers;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +17,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
         {
             DreamHomeOrderRequestModel req = new()
             {
-                NumOfTickets = "1",
+                NumOfTickets = $"{RandomHelper.RandomNumber()}",
                 PrizeType = "raffle",
                 PrizeId = id
             };
@@ -34,6 +36,11 @@ namespace RaffleAutomationTests.APIHelpers.Web
             request.AddJsonBody(RequestBuilder(countdown.Id));
 
             var r = restDriver.Execute(request);
+            if(r.IsSuccessStatusCode == false)
+            {
+                Debug.WriteLine(r.ErrorMessage);
+            }
+            Debug.WriteLine(r.Content);
             var content = r.Content;
 
             var response = JsonConvert.DeserializeObject<DreamHomeOrderResponseModelWeb>(content);

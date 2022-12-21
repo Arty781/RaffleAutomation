@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RaffleAutomationTests.APIHelpers.Web
+namespace RaffleAutomationTests.APIHelpers.Web.SignIn
 {
     public class SignInRequestWeb
     {
        
-        public static SignInRequestModelWeb SignIn(string login, string password)
+        public static SignInRequestModelWeb RequestBuilder(string login, string password)
         {
             SignInRequestModelWeb req = new()
             {
@@ -29,7 +29,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
             var restDriver = new RestClient(ApiEndpoints.API);
             RestRequest? request = new RestRequest("/api/users/signin", Method.Post);
             request.AddHeaders(headers: Headers.COMMON);
-            request.AddJsonBody(SignIn(login, password));
+            request.AddJsonBody(RequestBuilder(login, password));
 
             var response = restDriver.Execute(request);
             var content = response.Content;

@@ -2,10 +2,7 @@
 using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RimuTec.Faker;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -14,37 +11,100 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Edit Personal data")]
         public Profile EditPersonalData()
         {
-            Button.Click(EditPersonalBtn);
-            InputBox.Element(FirstNameInput, 10, "Qaz11111");
-            InputBox.Element(LastNameInput, 10, "Qaz11111!");
-            Button.Click(btnSave);
+            Button.ClickJS(EditPersonalBtn);
+            InputBox.Element(FirstNameInput, 10, Name.FirstName());
+            InputBox.Element(LastNameInput, 10, Name.LastName());
+            Button.ClickJS(btnSave);
             return this;
         }
 
         [AllureStep("Edit Password")]
         public Profile EditPassword()
         {
-            Button.Click(EditPasswordBtn);
+            Button.ClickJS(EditPasswordBtn);
             InputBox.Element(CurrentPasswordInput, 10, "Qaz11111");
             InputBox.Element(NewPasswordInput, 10, "Qaz11111!");
             InputBox.Element(ConfirmPasswordInput, 10, "Qaz11111!");
-            Button.Click(btnSave);
+            Button.ClickJS(btnSave);
             return this;
         }
 
         [AllureStep("Edit Password")]
         public Profile EditAccountData()
         {
-            WaitUntil.CustomElementIsVisible(inputEmail);
-            btnEditAccount.Click();
+            Button.ClickJS(btnEditAccount);
             WaitUntil.CustomElementIsVisible(btnSave);
-            inputEmail.SendKeys(Keys.Control + "A" + Keys.Delete);
-            inputEmail.SendKeys("qatester - " + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@xitroo.com");
-            Pages.SignUp.listCountry.Click();
-            ClickHelper.Clicker(Pages.SignUp.listCountry);
-            inputPhone.SendKeys(Keys.Control + "A" + Keys.Delete);
-            inputPhone.SendKeys("953214567");
-            btnSave.Click();
+            InputBox.Element(inputEmail, 10, "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@xitroo.com");
+            InputBox.Element(inputPhone, 10, "953214567");
+            btnSave.SendKeys("");
+            Button.ClickJS(btnSave);
+            return this;
+        }
+
+        [AllureStep("Open Order History page")]
+        public Profile OpenOrderHistoryPage()
+        {
+            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/profile");
+            WaitUntil.CustomElementIsVisible(tabOrderHistory);
+            Button.Click(tabOrderHistory);
+            WaitUntil.CustomElementIsVisible(listDreamHomeHistory);
+            return this;
+        }
+
+        [AllureStep("Open Dream Home History list")]
+        public Profile OpenDreamHomeHistoryList()
+        {
+            
+            Button.Click(listDreamHomeHistory);
+            WaitUntil.CustomElementIsVisible(prizeName);
+            WaitUntil.WaitSomeInterval(1000);
+            return this;
+        }
+
+        [AllureStep("Close Dream Home History list")]
+        public Profile CloseDreamHomeHistoryList()
+        {
+
+            Button.Click(listDreamHomeHistory);
+            WaitUntil.CustomElevemtIsInvisible(prizeName);
+            return this;
+        }
+
+        [AllureStep("Open Weekly History list")]
+        public Profile OpenWeeklyHistoryList()
+        {
+
+            Button.Click(listWeeklyHistory);
+            WaitUntil.CustomElementIsVisible(prizeName);
+            WaitUntil.WaitSomeInterval(1000);
+            return this;
+        }
+
+        [AllureStep("Close Weekly History list")]
+        public Profile CloseWeeklyHistoryList()
+        {
+
+            Button.Click(listWeeklyHistory);
+            WaitUntil.CustomElevemtIsInvisible(prizeName);
+            return this;
+        }
+
+        [AllureStep("Open Fixed Odds History list")]
+        public Profile OpenFixedOddsList()
+        {
+
+            Button.Click(listWeeklyHistory);
+            WaitUntil.CustomElementIsVisible(prizeName);
+            WaitUntil.WaitSomeInterval(1000);
+            return this;
+        }
+
+        [AllureStep("Close Fixed Odds History list")]
+        public Profile CloseFixedOddsList()
+        {
+
+            Button.Click(listWeeklyHistory);
+            WaitUntil.CustomElevemtIsInvisible(prizeName);
             return this;
         }
     }

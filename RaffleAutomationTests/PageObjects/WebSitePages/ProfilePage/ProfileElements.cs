@@ -62,5 +62,30 @@ namespace RaffleAutomationTests.PageObjects
         public IWebElement SuccessUpdateDialog;
 
         #endregion
+
+        #region Order History
+
+        [FindsBy(How=How.XPath,Using = "//span[text()='Order History']/parent::button")]
+        public IWebElement tabOrderHistory;
+
+        [FindsBy(How = How.XPath, Using = "//span[text()='Dream Home']/parent::div")]
+        public IWebElement listDreamHomeHistory;
+
+        [FindsBy(How = How.XPath, Using = "//span[text()='Lifestyle Competitions']/parent::div")]
+        public IWebElement listWeeklyHistory;
+
+        [FindsBy(How = How.XPath, Using = "//span[text()='Fixed Odds']/parent::div")]
+        public IWebElement listFixedOddsHistory;
+
+        [FindsBy(How = How.XPath, Using = "//table[@class='historyAreaTable']/tbody/tr/td[1]")]
+        public IWebElement prizeName;
+
+        [FindsBy(How = How.XPath, Using = "//table[@class='historyAreaTable']/tbody/tr/td[3]")]
+        public IWebElement prizeTickets;
+
+        [FindsBy(How = How.XPath, Using = "//table[@class='historyAreaTable']/tbody/tr/td[4]")]
+        public IList<IWebElement> prizePrice;
+
+        #endregion
     }
 }

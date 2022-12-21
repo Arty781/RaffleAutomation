@@ -17,5 +17,13 @@ namespace RaffleAutomationTests.PageObjects
 
             return this;
         }
+
+        public Profile VerifyAddingTickets(double price)
+        {
+            WaitUntil.CustomElementIsVisible(prizePrice.Last());
+            Assert.AreEqual(price, double.Parse(prizePrice.First().Text.Trim('£')));
+
+            return this;
+        }
     }
 }

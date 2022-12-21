@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using RaffleAutomationTests.Helpers;
+using RimuTec.Faker;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +23,46 @@ namespace RaffleAutomationTests.PageObjects
 
         #region General tab
         [AllureStep("Upload Dreamhome slider images")]
-        public CmsDreamhome UploadImages(string img)
+        public CmsDreamhome UploadImages()
         {
             WaitUntil.WaitSomeInterval(250);
-            inputDesktopImage.SendKeys(Browser.RootPath() + img);
-            inputMobileImage.SendKeys(Browser.RootPath() + img);
+            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_1);
+            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_1);
+            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_2);
+            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_2);
+            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_3);
+            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_3);
+            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_4);
+            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_4);
+            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_5);
+            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_5);
+            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_6);
+            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_6);
+            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_7);
+            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_7);
 
             return this;
         }
 
+        //[AllureStep("Upload Dreamhome slider images")]
+        //public CmsDreamhome UploadImagesMobile()
+        //{
+        //    WaitUntil.WaitSomeInterval(250);
+        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_1);
+        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_2);
+        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_3);
+        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_4);
+        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_5);
+        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_6);
+        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_7);
+
+        //    return this;
+        //}
+
         [AllureStep("Enter Title")]
         public CmsDreamhome EnterTitle()
         {
-            InputBox.Element(inputTitle, 5, "Dream London flat " + DateTime.UtcNow.ToString("dd-MMMM-yyyy' 'HH-mm-ss"));
+            InputBox.Element(inputTitle, 5, "Dream New flat " + DateTime.UtcNow.ToString("dd-MMMM-yyyy' 'HH-mm-ss"));
 
             return this;
         }
@@ -52,7 +80,7 @@ namespace RaffleAutomationTests.PageObjects
         {
            
             InputBox.Element(inputStartDay, 5, "1");
-            InputBox.Element(inputStartMonth, 5, "1");
+            InputBox.Element(inputStartMonth, 5, "11");
             InputBox.Element(inputStartYear, 5, "2022");
             InputBox.Element(inputStartHour, 5, "00");
             InputBox.Element(inputStartMinute, 5, "0");
@@ -66,8 +94,8 @@ namespace RaffleAutomationTests.PageObjects
         public CmsDreamhome EnterFinishDate()
         {
             InputBox.Element(inputFinishDay, 5, "1");
-            InputBox.Element(inputFinishMonth, 5, "1");
-            InputBox.Element(inputFinishYear, 5, "2022");
+            InputBox.Element(inputFinishMonth, 5, "11");
+            InputBox.Element(inputFinishYear, 5, "2023");
             InputBox.Element(inputFinishHour, 5, "00");
             InputBox.Element(inputFinishMinute, 5, "0");
             InputBox.Element(inputFinishSecond, 5, "0");
@@ -207,15 +235,13 @@ namespace RaffleAutomationTests.PageObjects
 
                 Button.Click(addOverviewBtn);
                 WaitUntil.WaitSomeInterval(250);
-                Console.WriteLine(RowOverviewValue.Count);
                 WaitUntil.CustomElementIsVisible(RowOverviewValue.Last());
                 WaitUntil.WaitSomeInterval(250);
                 InputBox.Element(RowOverviewValue[i], 5, RandomHelper.RandomNumber());
                 WaitUntil.WaitSomeInterval(200);
-                Console.WriteLine(RowOverviewTitle.Count);
                 WaitUntil.CustomElementIsVisible(RowOverviewTitle.Last());
                 WaitUntil.WaitSomeInterval(250);
-                InputBox.Element(RowOverviewTitle[i], 5, "tes");
+                InputBox.Element(RowOverviewTitle[i], 5, Lorem.Characters(30));
 
 
             }

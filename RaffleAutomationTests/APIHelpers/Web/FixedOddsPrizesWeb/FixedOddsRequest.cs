@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RaffleAutomationTests.APIHelpers.Web.SignIn;
 using RaffleAutomationTests.Helpers;
 using RestSharp;
 using System;

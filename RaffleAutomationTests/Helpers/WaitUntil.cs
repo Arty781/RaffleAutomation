@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
-    class WaitUntil
+    public class WaitUntil
     {
         public static void WaitSomeInterval(int ms = 2000)
         {

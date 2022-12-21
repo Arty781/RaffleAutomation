@@ -11,14 +11,11 @@ namespace RaffleAutomationTests.Helpers
 {
     public class Elements
     {
-        //IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
-        //ex.ExecuteScript("arguments[0].click();", element);
         public static void Click(IWebElement element)
         {
             WaitUntil.CustomElementIsVisible(element);
             IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
             ex.ExecuteScript("arguments[0].click();", element);
-            //element.Click();
             
         }
 

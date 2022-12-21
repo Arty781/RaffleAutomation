@@ -1,5 +1,7 @@
 ﻿
+using AngleSharp.Dom;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using RaffleAutomationTests.PageObjects;
 using System;
@@ -10,25 +12,22 @@ using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
-    public class ClickHelper
-    {
-        public static IWebElement Clicker(IWebElement element)
-        {
-            IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
-            ex.ExecuteScript("arguments[0].click();", element);
-            return element;
-        }
-        
-    }
-
     public class Button
     {
         public static void Click(IWebElement element)
         {
             WaitUntil.WaitSomeInterval(300);
             WaitUntil.CustomElementIsVisible(element, 10);
+            element.SendKeys("");
             element.Click();
 
+        }
+
+        public static void ClickJS(IWebElement element)
+        {
+            WaitUntil.CustomElementIsVisible(element, 10);
+            IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
+            ex.ExecuteScript("arguments[0].click();", element);
         }
 
     }
@@ -36,13 +35,25 @@ namespace RaffleAutomationTests.Helpers
     {
         public static IWebElement Element(IWebElement element, int seconds, string data)
         {
+            WaitUntil.WaitSomeInterval(250);
             WaitUntil.CustomElementIsVisible(element, seconds);
-            element.SendKeys(Keys.Control + "A" + Keys.Delete);
-            WaitUntil.WaitSomeInterval(150);
+            element.SendKeys(Keyss.Control() + "A" + Keys.Delete);
+            WaitUntil.WaitSomeInterval(250);
             element.SendKeys(data);
 
             return element;
         }
+
+        public static IWebElement ElementImage(IWebElement element, int seconds, string data)
+        {
+            WaitUntil.CustomElementIsVisible(element, seconds);
+            WaitUntil.WaitSomeInterval(250);
+            element.Clear();
+            element.SendKeys(data);
+
+            return element;
+        }
+
         public static IWebElement CbbxElement(IWebElement element, int seconds, string data)
         {
 
@@ -94,6 +105,14 @@ namespace RaffleAutomationTests.Helpers
 
 
             return _element;
+        }
+
+        public static void Action(string key)
+        {
+            Actions actions = new Actions(Browser._Driver);
+            actions.SendKeys(key);
+            actions.Perform();
+            WaitUntil.WaitSomeInterval(500);
         }
     }
 }

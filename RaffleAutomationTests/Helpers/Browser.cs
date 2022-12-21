@@ -1,15 +1,9 @@
-﻿using CONFIG_JSON;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Edge;
-using RaffleAutomationTests.Helpers;
 using System;
-using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
 
@@ -25,7 +19,20 @@ namespace RaffleAutomationTests.Helpers
 
             new DriverManager().SetUpDriver(new ChromeConfig());
             windowsDriver = new ChromeDriver();
-            _Driver.Manage().Cookies.DeleteAllCookies();
+            windowsDriver.Manage().Cookies.DeleteAllCookies();
+#if DEBUG_MOBILE
+            windowsDriver.Manage().Window.Size = new Size(390, 844);
+#endif
+#if DEBUG
+            windowsDriver.Manage().Window.Maximize();
+#endif
+
+#if RELEASE_MOBILE
+            windowsDriver.Manage().Window.Size = new Size(390, 844);
+#endif
+#if RELEASE
+            windowsDriver.Manage().Window.Maximize();
+#endif
 
             Assert.NotNull(windowsDriver);
         }
@@ -43,15 +50,15 @@ namespace RaffleAutomationTests.Helpers
         }
         public static ISearchContext Driver => windowsDriver;
         public static IWebDriver _Driver => windowsDriver;
+        
         public static void Close()
         {
-            windowsDriver.Close();
+            _Driver.Close();
         }
+
         public static void Quit()
         {
-            windowsDriver.Quit();
+            _Driver.Quit();
         }
-        
-
     }
 }

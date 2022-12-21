@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RaffleAutomationTests.APIHelpers.Web
+namespace RaffleAutomationTests.APIHelpers.Web.SignIn
 {
     public class SignInRequestModelWeb
     {

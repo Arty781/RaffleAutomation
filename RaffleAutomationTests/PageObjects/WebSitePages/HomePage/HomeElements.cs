@@ -10,63 +10,105 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class Home
     {
-        #region Home > Win block
+        #region Top Slider
 
-        [FindsBy(How = How.XPath, Using = "//div[@class='win-block']/h1")]
-        public IWebElement textWInBlockH1;
+        [FindsBy(How = How.XPath, Using = "//div[contains(@class,'change-button')]/button")]
+        public IList<IWebElement> tbsSlider;
 
-        [FindsBy(How = How.XPath, Using = "//div[@class='win-block']/div[@class='win-home-title']")]
-        public IWebElement textWInBlockTitle;
+        [FindsBy(How = How.XPath, Using = "//section[@class='startpage-slider']//button[@class='slick-arrow slick-prev']")]
+        public IWebElement btnPrevTopSlider;
 
-        [FindsBy(How = How.XPath, Using = "//div[@class='win-block']/div[@class='win-home-subtitle']")]
-        public IWebElement textWInBlockSubtitle;
+        [FindsBy(How = How.XPath, Using = "//section[@class='startpage-slider']//button[@class='slick-arrow slick-next']")]
+        public IWebElement btnNextTopSlider;
 
-        [FindsBy(How = How.XPath, Using = "//div[@class='win-block']/div[@class='our-next-winner']/button")]
-        public IWebElement btnFindOutMoreWinBlock;
+        [FindsBy(How = How.XPath, Using = "//img[@alt='floorplan']")]
+        public IWebElement imgFloorPlan;
 
-        #endregion
+        [FindsBy(How = How.XPath, Using = "//img[@alt='dreamhome location']")]
+        public IWebElement imgMap;
 
-        #region Dream statistic
-
-        [FindsBy(How = How.XPath, Using = "//div[@class='dreaming-big-title']")]
-        public IWebElement textDreamingTitle;
-
-        [FindsBy(How = How.XPath, Using = "//div[@class='dream-big-statistic']")]
-        public IList<IWebElement> textStatisticsValues;
 
         #endregion
 
-        #region Most Popular section
+        #region Banner Secondary Section
 
-        [FindsBy(How = How.XPath, Using = "//div[text()='Most Popular Competitions']/ancestor::div[@class='container']")]
-        public IWebElement sectionMostPopular;
+        [FindsBy(How = How.XPath, Using = "//section[@class='banner-secondary ']//p")]
+        public IWebElement textTitleBannerSecondary;
 
-        //[FindsBy(How = How.XPath, Using = "")]
-        //public IWebElement name;
 
-        //[FindsBy(How = How.XPath, Using = "")]
-        //public IWebElement name;
-
-        //[FindsBy(How = How.XPath, Using = "")]
-        //public IWebElement name;
-
-        //[FindsBy(How = How.XPath, Using = "")]
-        //public IWebElement name;
-
-        //[FindsBy(How = How.XPath, Using = "")]
-        //public IWebElement name;
-
-        //[FindsBy(How = How.XPath, Using = "")]
-        //public IWebElement name;
-
-        //[FindsBy(How = How.XPath, Using = "")]
-        //public IWebElement name;
-
-        //[FindsBy(How = How.XPath, Using = "")]
-        //public IWebElement name;
-
-        //[FindsBy(How = How.XPath, Using = "")]
-        //public IWebElement name;
         #endregion
+
+        #region Info blocks
+
+#if DEBUG || RELEASE
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='info-block']/div[@class='desktop']//h2")]
+        public IList<IWebElement> textTitle;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='info-block']/div[@class='desktop']//p")]
+        public IList<IWebElement> textParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='dream-slider-bg']/div[@class='container']//h2")]
+        public IWebElement textBottomSliderTitle;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='dream-slider-bg']/div[@class='container']//p")]
+        public IWebElement textBottomSliderParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAbout']//h2")]
+        public IWebElement textCharityTitle;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAbout']//p")]
+        public IWebElement textCharityParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAbout']//section//p")]
+        public IWebElement textCharityCard;
+
+#endif
+
+#if DEBUG_MOBILE || RELEASE_MOBILE
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='info-block']/div[@class='mobile']//h2")]
+        public IList<IWebElement> textTitle;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='info-block']/div[@class='mobile']//p")]
+        public IList<IWebElement> textParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='dream-slider-bg']/div[@class='container']//h2")]
+        public IWebElement textBottomSliderTitle;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='dream-slider-bg']/div[@class='container']//p")]
+        public IWebElement textBottomSliderParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAboutSlider']//h2")]
+        public IWebElement textCharityTitle;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAboutSlider']//p")]
+        public IWebElement textCharityParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAboutSlider']//div[@class='cardText']/p")]
+        public IWebElement textCharityCard;
+
+#endif
+
+        #endregion
+
+        #region How It Works
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home container']//h2")]
+        public IWebElement textHowItWorksTitle;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home container']//div[@class='howMainContent']/p")]
+        public IWebElement textHowItWorksParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home container']//div[@class='howStepper']//h3")]
+        public IList<IWebElement> textHowItWorksStepsTitle;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home container']//div[@class='howStepper']//p")]
+        public IList<IWebElement> textHowItWorksStepsParagraph;
+
+
+        #endregion
+
+
     }
 }

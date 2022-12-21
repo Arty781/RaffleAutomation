@@ -26,8 +26,8 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//button[@class='rafflebtn primary full-width']")]
         public IWebElement btnSignUp;
 
-        //public IWebElement confirmAgeBtn => Browser._Driver.FindElement(_confirmAgeBtn);
-        //public readonly static By _confirmAgeBtn = By.XPath("//div[@class='agreeBlock']/label[1]//input[@type='checkbox']");
+        [FindsBy(How=How.XPath,Using = "//button[@class='close-sign-up']")]
+        public IWebElement btnCloseSignUpPopup;
 
         [FindsBy(How = How.XPath, Using = "//div[@class='agreeBlock']/label[1]//input[@type='checkbox']")]
         public IWebElement btnConfirmOpt;
@@ -35,8 +35,11 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//div[@class='agreeRemebmer']//input[@type='checkbox']")]
         public IWebElement btnRememberMe;
 
-        [FindsBy(How = How.XPath, Using = "//ul//li[contains(text(),'Ukraine')]")]
+        [FindsBy(How = How.XPath, Using = "//ul[@role='listbox']/li[contains(text(),'Ukraine')]")]
         public IWebElement listCountry;
+
+        [FindsBy(How = How.XPath, Using = "//ul[@role='listbox']/li")]
+        public IList<IWebElement> listCountryAll;
 
         [FindsBy(How = How.XPath, Using = "//div[@aria-haspopup='listbox']")]
         public IWebElement inputCountry;

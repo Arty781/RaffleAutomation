@@ -129,7 +129,7 @@ namespace RaffleAutomationTests.PageObjects
         public CmsCommon ClickSaveBtn()
         {
             WaitUntil.WaitSomeInterval(150);
-            ClickHelper.Clicker(btnSave);
+            Button.ClickJS(btnSave);
             WaitUntil.WaitSomeInterval(1000);
 
             return this;
@@ -151,7 +151,7 @@ namespace RaffleAutomationTests.PageObjects
         public CmsCommon OpenDiscountTab()
         {
             WaitUntil.CustomElementIsVisible(tabDiscount);
-            ClickHelper.Clicker(tabDiscount);
+            Button.ClickJS(tabDiscount);
             WaitUntil.WaitSomeInterval(1000);
 
             return this;

@@ -23,7 +23,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Verify that dreamhome {0} created successfully")]
         public CmsCommon VerifyIsDreamhomeCreatedSuccessfully(string dreamhomeTitle)
         {
-            Button.Click(btnLastPage);
+            //Button.Click(btnLastPage);
             WaitUntil.CustomElementIsVisible(Element.FindSpecificDreamhome(dreamhomeTitle), 20);
             Assert.IsTrue(dreamhomeTitle == Element.FindSpecificDreamhome(dreamhomeTitle).Text);
             return this;

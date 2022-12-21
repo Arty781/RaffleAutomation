@@ -14,6 +14,15 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How=How.XPath,Using = "//div[@class='sticky-buy-dh']/button")]
         public IWebElement btnDreamHome;
 
+        [FindsBy(How = How.XPath, Using = "//h1[contains(text(), 'Win Your Dream Home in a Raffle')]")]
+        public IWebElement counterTwoDreamhomes;
+
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(), 'Win Your Dream Home')]")]
+        public IWebElement counterDreamhome;
+
+        [FindsBy(How=How.XPath,Using = "//div[@class='card']/div[@class='card__side card__side--front']//button")]
+        public IList<IWebElement> cardDreamhome;
+
         [FindsBy(How=How.XPath,Using = "//ul[@class='popular-tickets']/li[1]")]
         public IWebElement btnFirstBundle;
 

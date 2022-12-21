@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,16 +7,17 @@ using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
-    //public class ApiEndpoints
-    //{
-    //    public const string API = "https://staging-api.rafflehouse.com";
-    //}
-
     public class ApiEndpoints
     {
-        public const string API = "https://backend.rafflehouse.com";
+        public const string API = "https://staging-api.rafflehouse.com";
     }
 
+    //public class ApiEndpoints
+    //{
+    //    public const string API = "https://backend.rafflehouse.com";
+    //}
+
+#if DEBUG || DEBUG_MOBILE
     public class AdminEndpoints
     {
         public const string ADMIN_HOST = "https://admin-staging.rafflehouse.com";
@@ -23,6 +25,7 @@ namespace RaffleAutomationTests.Helpers
         public const string LIFESTYLE_PRIZES = "https://admin-staging.rafflehouse.com/#/prizes";
         public const string FIXEDODDS_PRIZES = "https://admin-staging.rafflehouse.com/#/fixedOdds";
     }
+
     public class WebEndpoints
     {
         public const string WEBSITE_HOST = "https://staging.rafflehouse.com";
@@ -36,21 +39,23 @@ namespace RaffleAutomationTests.Helpers
         public const string PROFILE = "https://staging.rafflehouse.com/profile";
         public const string FREE_ENTRY = "https://staging.rafflehouse.com/post";
     }
+#endif
 
-    //public class WebEndpoints
-    //{
-    //    public const string WEBSITE_HOST = "https://rafflehouse.com";
-    //    public const string SIGN_IN = "https://rafflehouse.com/sign-in";
-    //    public const string SIGN_UP = "https://rafflehouse.com/sign-up";
-    //    public const string DREAMHOME = "https://rafflehouse.com/dreamhome";
-    //    public const string LIFESTYLE = "https://rafflehouse.com/lifestyleprizes";
-    //    public const string FIXEDODDS = "https://rafflehouse.com/fixedodds";
-    //    public const string WINNERS = "https://rafflehouse.com/winners";
-    //    public const string ABOUT = "https://rafflehouse.com/about-us";
-    //    public const string PROFILE = "https://rafflehouse.com/profile";
-    //    public const string FREE_ENTRY = "https://rafflehouse.com/post";
-    //}
-
+#if RELEASE || RELEASE_MOBILE
+    public class WebEndpoints
+    {
+        public const string WEBSITE_HOST = "https://rafflehouse.com";
+        public const string SIGN_IN = "https://rafflehouse.com/sign-in";
+        public const string SIGN_UP = "https://rafflehouse.com/sign-up";
+        public const string DREAMHOME = "https://rafflehouse.com/dreamhome";
+        public const string LIFESTYLE = "https://rafflehouse.com/lifestyleprizes";
+        public const string FIXEDODDS = "https://rafflehouse.com/fixedodds";
+        public const string WINNERS = "https://rafflehouse.com/winners";
+        public const string ABOUT = "https://rafflehouse.com/about-us";
+        public const string PROFILE = "https://rafflehouse.com/profile";
+        public const string FREE_ENTRY = "https://rafflehouse.com/post";
+    }
+#endif
     public class Credentials
     {
         public const string LOGIN = "qatester91311@gmail.com";
@@ -77,10 +82,24 @@ namespace RaffleAutomationTests.Helpers
 
     public class UploadedImages
     {
-        public const string RAFFLE_BATHROOM = @"\UploadImages\RaffleBathroom.jpg";
-        public const string RAFFLE_BEDROOM = @"\UploadImages\RaffleBedroom.jpg";
-        public const string RAFFLE_FLOOR_PLAN = @"\UploadImages\RaffleFloorPlan.jpg"; 
-        public const string RAFFLE_OUTSPACE = @"\UploadImages\RaffleOutspace.jpg";
+        public const string RAFFLE_BATHROOM = @"UploadImages\RaffleBathroom.jpg";
+        public const string RAFFLE_BEDROOM = @"UploadImages\RaffleBedroom.jpg";
+        public const string RAFFLE_FLOOR_PLAN = @"UploadImages\RaffleFloorPlan.jpg"; 
+        public const string RAFFLE_OUTSPACE = @"UploadImages\RaffleOutspace.jpg";
+        public const string RAFFLE_DESKTOP_1 = @"UploadImages\Desktop\DreamHomeImage1.jpg";
+        public const string RAFFLE_DESKTOP_2 = @"UploadImages\Desktop\DreamHomeImage2.jpg";
+        public const string RAFFLE_DESKTOP_3 = @"UploadImages\Desktop\DreamHomeImage3.jpg";
+        public const string RAFFLE_DESKTOP_4 = @"UploadImages\Desktop\DreamHomeImage4.jpg";
+        public const string RAFFLE_DESKTOP_5 = @"UploadImages\Desktop\DreamHomeImage5.jpg";
+        public const string RAFFLE_DESKTOP_6 = @"UploadImages\Desktop\DreamHomeImage6.jpg";
+        public const string RAFFLE_DESKTOP_7 = @"UploadImages\Desktop\DreamHomeImage7.jpg";
+        public const string RAFFLE_MOBILE_1 = @"UploadImages\Mobile\DreamHomeImage1.jpg";
+        public const string RAFFLE_MOBILE_2 = @"UploadImages\Mobile\DreamHomeImage2.jpg";
+        public const string RAFFLE_MOBILE_3 = @"UploadImages\Mobile\DreamHomeImage3.jpg";
+        public const string RAFFLE_MOBILE_4 = @"UploadImages\Mobile\DreamHomeImage4.jpg";
+        public const string RAFFLE_MOBILE_5 = @"UploadImages\Mobile\DreamHomeImage5.jpg";
+        public const string RAFFLE_MOBILE_6 = @"UploadImages\Mobile\DreamHomeImage6.jpg";
+        public const string RAFFLE_MOBILE_7 = @"UploadImages\Mobile\DreamHomeImage7.jpg";
     }
 
     public class TakeTourWithSaraLink
@@ -103,41 +122,42 @@ namespace RaffleAutomationTests.Helpers
         public const string HEADING = "The London \n WIN this stunning property for just £2. Or, if you don't fancy being a homeowner, you can elect to take £200,000 tax-free!";
     }
 
-    public class AboutTexts
+    public class HomeTexts
     {
-        public static string[] FINDOUT_TEXT =
+        public static readonly string SECONDARY_BANNER_TITLE = "Win this Dream Home worth more than £2 million";
+        public static readonly string[] TITLES_INFO_BLOCKS =
         {
-            "This is your chance to win your own home, Stamp Duty and legal fees paid while donating to worthy causes. We'll even chuck in your bills and utility costs for a year.Be mortgage-free for life; live in it, rent it, or sell it — it'll be yours, no strings attached.",
-            "Our Fixed Odds competitions offer bigger prizes, and do exactly what they say on the tin; provide certainty around your odds. The amount of tickets is fixed, so your odds are too.We'll always show you how many tickets to be sold in total, as well as a real-time view of how many have been sold."
+            "This home is what dreams are made of.",
+            "Move in immediately. Furnishings included",
+            "Location, location, location",
+            "No mortgage. No Stamp Duty. No strings attached."
         };
 
-        public static string[] STEPS_TITLE_TEXTS =
+        public static readonly string[] PARAGRAPHS_INFO_BLOCKS =
         {
-            "Choose Your Prizes & Add Tickets",
-            "Guaranteed Winners",
-            "More Than Just a Ticket"
+            "Nestled in picturesque Cornwall, Home Farm is a sight to behold. A beautifully restored Georgian five-bedroom house with a four-bedroom newly refurbished barn and private gardens worth more than £2 million. Your Dream Home is here.",
+            "The property comes fully furnished with £150,000 worth of top-of-the-range home decor. You'll be putting your feet up in no time, enjoying a glass of wine in pure opulence.",
+            "The sumptuous Home Farm can be found in Cornwall, a hop, skip, and a jump from the beautiful English coast and Porthleven. Clotted cream, English jam, and fluffy scones will become an everyday staple while you enjoy your new mortgage-free life.",
+            "You won't pay a penny more than your ticket to win. There's no Stamp Duty to pay and you'd own the freehold outright. We also cover any conveyancing fees as well!Or, you can choose to take the £2 million tax-free alternative. It's time to dream big and do good."
         };
 
-        public static string[] STEPS_DESCR_TEXTS =
+        public static readonly string HOW_IT_WORKS_TITLE = "How It Works";
+        public static readonly string HOW_IT_WORKS_PARAGRAPH = "Entering any of our competitions is quick and easy.";
+
+        public static readonly string[] TITLES_STEPS =
         {
-            "Search our Fixed Odds Prizes, as well as our Jackpot Property Prizes.",
-            "We guarantee multiple winners with tens of thousands of pounds up for grabs.",
-            "Choose if you want us to donate some of your purchase value to our homelessness charity partners."
+            "Choose your ticket bundle",
+            "Make an account",
+            "More than just a ticket"
         };
 
-        public static string[] CHARITABLE_TEXTS =
+        public static readonly string[] PARAGRAPHS_STEPS =
         {
-            "As the pandemic continues, more young people than ever are facing homelessness, many for the first time in their lives. Centrepoint are experiencing a surge in calls from homeless young people who have lost their job and their homes, and are uncertain where to turn. From housing and health to learning and engagement, Centrepoint aim to help vulnerable young people move on from homelessness and build a future they can believe in.",
-            ""
+            "Select which ticket bundle you want to buy to win your Dream Home.",
+            "We will direct you to make an account to keep a record of your purchase. We'll also email you a receipt containing your ticket numbers.",
+            "We'll make a donation to our charity partner and you can sit back and start dreaming! We always contact our winners by email & phone."
         };
 
-        public static string TITLE_SITE_CREDITS = "Earn When You Play";
-
-        public static string[] DESCR_SITE_CREDIT_TEXTS =
-        {
-            "We reward you, every time you play. For every purchase, we'll give you 10% of the total value back in site credit. This credit can be saved or spent as you wish.",
-            "Credit expires 30 days after it was first earned. We'll remind you if you have any credit that is due to expire so you'll never lose out."
-        };
     }
 
     public class Headers
@@ -149,5 +169,178 @@ namespace RaffleAutomationTests.Helpers
             {"content-type", "application/json" }
         };
 
+    }
+
+    public class Keyss
+    {
+        public static string Control()
+        {
+            string control = String.Empty;
+            if (OperatingSystem.IsWindows())
+            {
+                control = Keys.Control;
+            }
+            else if(OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
+            {
+                control = Keys.Command;
+            }
+            return control;
+        }
+    }
+
+    public class Country
+    {
+        public static List<string> COUNTRY_CODES = new()
+        {
+            "Afghanistan",
+            "Albania",
+            "Algeria",
+            "Angola",
+            "Argentina",
+            "Armenia",
+            "Australia",
+            "Austria",
+            "Azerbaijan",
+            "Bahamas",
+            "Bahrain",
+            "Bangladesh",
+            "Barbados",
+            "Belarus",
+            "Belgium",
+            "Bermuda",
+            "Bhutan",
+            "Bolivia",
+            "Bosnia and Herzegovina",
+            "Botswana",
+            "Brazil",
+            "Brunei",
+            "Bulgaria",
+            "Cambodia",
+            "Cameroon",
+            "Canada",
+            "Cayman Islands",
+            "Chad",
+            "Chile",
+            "China",
+            "Colombia",
+            "Costa Rica",
+            "Czech Republic",
+            "DR Congo",
+            "Denmark",
+            "Dominican Republic",
+            "Ecuador",
+            "Egypt",
+            "El Salvador",
+            "Estonia",
+            "Ethiopia",
+            "Fiji",
+            "Finland",
+            "France",
+            "Gambia",
+            "Georgia",
+            "Germany",
+            "Ghana",
+            "Greece",
+            "Guatemala",
+            "Guinea",
+            "Guinea-Bissau",
+            "Guyana",
+            "Haiti",
+            "Honduras",
+            "Hong Kong",
+            "India",
+            "Indonesia",
+            "Iran",
+            "Iraq",
+            "Ireland",
+            "Israel",
+            "Italy",
+            "Jamaica",
+            "Japan",
+            "Jordan",
+            "Kazakhstan",
+            "Kenya",
+            "Kiribati",
+            "Kosovo",
+            "Kuwait",
+            "Kyrgyzstan",
+            "Laos",
+            "Latvia",
+            "Lebanon",
+            "Libya",
+            "Lithuania",
+            "Madagascar",
+            "Malawi",
+            "Malaysia",
+            "Maldives",
+            "Mali",
+            "Malta",
+            "Mauritania",
+            "Mauritius",
+            "Mexico",
+            "Moldova",
+            "Mongolia",
+            "Morocco",
+            "Mozambique",
+            "Myanmar",
+            "Nauru",
+            "Nepal",
+            "Netherlands",
+            "New Caledonia",
+            "New Zealand",
+            "Nicaragua",
+            "Niger",
+            "Nigeria",
+            "North Macedonia",
+            "Oman",
+            "Pakistan",
+            "Palestinian Territories",
+            "Panama",
+            "Papua New Guinea",
+            "Paraguay",
+            "Peru",
+            "Philippines",
+            "Poland",
+            "Portugal",
+            "Qatar",
+            "Republic of Korea",
+            "Romania",
+            "Russia",
+            "Rwanda",
+            "Saint Lucia",
+            "Saint Vincent and the Grenadines",
+            "Samoa",
+            "Saudi Arabia",
+            "Senegal",
+            "Serbia",
+            "Singapore",
+            "Solomon Islands",
+            "South Africa",
+            "Spain",
+            "Sri Lanka",
+            "Suriname",
+            "Sweden",
+            "Switzerland",
+            "Taiwan",
+            "Tajikistan",
+            "Tanzania",
+            "Thailand",
+            "Tonga",
+            "Trinidad & Tobago",
+            "Tunisia",
+            "Turkey",
+            "UAE",
+            "UK",
+            "USA",
+            "Uganda",
+            "Ukraine",
+            "Uruguay",
+            "Uzbekistan",
+            "Vanuatu",
+            "Venezuela",
+            "Vietnam",
+            "Zambia",
+            "Zimbabwe"
+        };
     }
 }

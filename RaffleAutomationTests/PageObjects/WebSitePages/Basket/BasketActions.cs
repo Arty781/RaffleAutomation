@@ -15,10 +15,19 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open cart")]
         public Basket ClickCartBtn()
         {
-            Button.Click(Header.btnCart);
+            Button.Click(Pages.Header.btnCart);
             WaitUntil.CustomElementIsVisible(btncheckOutNow);
 
             return this;
+        }
+
+        [AllureStep("Get Order Total")]
+        public double GetOrderTotal()
+        {
+            WaitUntil.CustomElementIsVisible(orderTotalVal);
+            double total = double.Parse(orderTotalVal.Text.Trim('£'));
+
+            return total;
         }
 
         [AllureStep("Click Add More button")]
@@ -59,13 +68,13 @@ namespace RaffleAutomationTests.PageObjects
             
             WaitUntil.CustomElementIsVisible(framePaymentNumber);
             Browser._Driver.SwitchTo().Frame(framePaymentNumber);
-            InputBox.Element(inputCardNumber,5, "4242424242424242");
+            InputBox.Element(inputCardNumber,15, "4242424242424242");
             Browser._Driver.SwitchTo().DefaultContent();
             Browser._Driver.SwitchTo().Frame(framePaymentExpiry);
-            inputExpiryDate.SendKeys("07/26");
+            InputBox.Element(inputExpiryDate, 15, "07/26");
             Browser._Driver.SwitchTo().DefaultContent();
             Browser._Driver.SwitchTo().Frame(framePaymentCvv);
-            inputCvv.SendKeys("100");
+            InputBox.Element(inputCvv, 15, "100");
             Browser._Driver.SwitchTo().DefaultContent();
             WaitUntil.CustomElementIsClickable(btnPay, 5);
 
@@ -75,7 +84,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Click Pay Now button")]
         public Basket ClickPayNowBtn()
         {
-            ClickHelper.Clicker(btnPay);
+            Button.ClickJS(btnPay);
 
             return this;
         }

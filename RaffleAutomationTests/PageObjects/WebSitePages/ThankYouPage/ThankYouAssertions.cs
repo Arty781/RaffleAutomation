@@ -13,7 +13,7 @@ namespace RaffleAutomationTests.PageObjects
         public void VerifyThankYouPageIsDisplayed()
         {
             WaitUntil.CustomElementIsVisible(titleThankYouPage);
-            Assert.IsTrue(AssertHelper.ElementIsVisible(titleThankYouPage));
+            Assert.IsTrue(titleThankYouPage.Enabled);
 
         }
     }

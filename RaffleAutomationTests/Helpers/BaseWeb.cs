@@ -15,18 +15,18 @@ namespace RaffleAutomationTests.Helpers
         public static void OneTimeSetUp()
         {
             AllureConfigFilesHelper.CreateBatFile();
-            Browser.Initialize();
+            
         }
 
 
 
         [OneTimeTearDown]
-        public void OneTimeTearDown()
+        public static void OneTimeTearDown()
         {
 
             if (Browser._Driver != null)
             {
-                Browser.Quit();
+                Browser._Driver.Quit();
 
                 ForceCloseWebDriver.ForceClose();
                 ForceCloseWebDriver.RemoveBatFile();
@@ -35,20 +35,16 @@ namespace RaffleAutomationTests.Helpers
         }
 
         [TearDown]
-        public void TearDown()
+        public static void TearDown()
         {
             if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
             {
                 _ = TelegramHelper.SendMessage();
-                Browser.Close();
+                Browser._Driver.Close();
             }
-            else if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Passed)
+            else if (TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed)
             {
-                Browser.Close();
-            }
-            else if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Skipped)
-            {
-                Browser.Close();
+                Browser._Driver.Close();
             }
 
         }

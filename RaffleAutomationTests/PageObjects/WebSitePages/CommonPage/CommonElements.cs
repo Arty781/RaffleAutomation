@@ -35,8 +35,15 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//ul[@class='ticket-selector__grid']/li[1]")]
         public IWebElement remove25TicketBtn;
         
-        [FindsBy(How = How.XPath, Using = "//span[@class='add-basket']/ancestor::div/button")]
+        [FindsBy(How = How.XPath, Using = "//span[@class='add-basket']/ancestor::div[@class='popular-tickets-container']/button")]
         public IWebElement btnAddToBasket;
+
+        #region Toaster
+
+        [FindsBy(How = How.XPath, Using = "//div[contains(text(), 'Error')]/parent::div/div[2]")]
+        public IWebElement toaster;
+
+        #endregion
 
 
 

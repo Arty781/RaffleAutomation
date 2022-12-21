@@ -1,6 +1,7 @@
 ﻿
 using NUnit.Allure.Core;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using RaffleAutomationTests.Helpers;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,9 @@ namespace AdminSiteTests.BASE
 
         public void SetUp()
         {
-            Browser._Driver.Manage().Window.Maximize();
+            Browser.Initialize();
             Browser._Driver.Navigate().GoToUrl(AdminEndpoints.ADMIN_HOST);
         }
-        
+
     }
 }

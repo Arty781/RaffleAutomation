@@ -29,7 +29,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .EnterStartDate()
                 .EnterFinishDate()
                 .EnterMetaTags()
-                .UploadImages(UploadedImages.RAFFLE_OUTSPACE);
+                .UploadImages();
             Pages.CmsCommon
                 .ClickSaveBtn();
             Pages.CmsDreamhome

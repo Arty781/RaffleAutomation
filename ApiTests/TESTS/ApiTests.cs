@@ -3,7 +3,10 @@ using RaffleAutomationTests.Helpers;
 using NUnit.Allure.Core;
 using ApiTests.BASE;
 using RaffleAutomationTests.APIHelpers.Web;
+using RaffleAutomationTests.APIHelpers.Web.SignIn;
+using RaffleAutomationTests.APIHelpers.Web.Weekly;
 using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
+using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
 
 namespace API
 {
@@ -14,25 +17,21 @@ namespace API
 
         public void Demo()
         {
-            var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
-            var prizesList = FixedOddsRequest.GetFixedOddsPrizes();
-            FixedOddsRequest.AddFixedOddsPrizes(token, prizesList);
+            var response = SignUpRequest.RegisterNewUser();
+            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
 
 
         }
 
         [Test]
-        public void AddTicketsToBasket()
+        public static void AddTicketsToBasket()
         {
             var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
-            var dreamHomeId = CountdownRequestWeb.GetDreamHomeCountdown(token);
             var competitionId = CountdownRequestWeb.GetWeeklyPrizesCompetitionId(token);
-            var weeklyID = competitionId[2].Id;
-            var listOfWeeklyPrizes = CountdownRequestWeb.GetWeeklyPrizes(token, weeklyID);
-            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, dreamHomeId);
+            var listOfWeeklyPrizes = CountdownRequestWeb.GetWeeklyPrizes(token, competitionId[2].Id);
             for (int i = 0; i < 5; i++)
             {
-                WeeklyPrizesRequestWeb.AddWeeklyPrizes(token, listOfWeeklyPrizes);
+                WeeklyPrizesRequestWeb.AddWeeklyPrizes(token, listOfWeeklyPrizes, "151");
             }
 
         }

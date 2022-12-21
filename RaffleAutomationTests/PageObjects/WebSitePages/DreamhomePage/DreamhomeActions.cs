@@ -5,6 +5,7 @@ using OpenQA.Selenium.Interactions;
 using RaffleAutomationTests.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,10 +16,26 @@ namespace RaffleAutomationTests.PageObjects
     {
         #region Ticket Selector
         [AllureStep("Open Dreamhome product page")]
-       public Dreamhome OpenDreamHomePage()
+        public Dreamhome OpenHomePage()
         {
-            Browser._Driver.Navigate().GoToUrl(WebEndpoints.DREAMHOME);
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST);
 
+            return this;
+        }
+
+        [AllureStep("Select Dreamhome card")]
+        public Dreamhome SelectFirstDreamhome()
+        {
+            WaitUntil.CustomElementIsVisible(counterTwoDreamhomes);
+            Button.ClickJS(cardDreamhome.First());
+            return this;
+        }
+
+        [AllureStep("Select Dreamhome card")]
+        public Dreamhome SelectLastDreamhome()
+        {
+            WaitUntil.CustomElementIsVisible(counterTwoDreamhomes);
+            Button.ClickJS(cardDreamhome.LastOrDefault());
             return this;
         }
 
@@ -35,6 +52,7 @@ namespace RaffleAutomationTests.PageObjects
         public Dreamhome SelectFirstBundleBtn()
         {
             Button.Click(btnFirstBundle);
+            WaitUntil.WaitSomeInterval(2000);
 
             return this;
         }
@@ -43,6 +61,7 @@ namespace RaffleAutomationTests.PageObjects
         public Dreamhome SelectSecondBundleBtn()
         {
             Button.Click(btnSecondBundle);
+            WaitUntil.WaitSomeInterval(2000);
 
             return this;
         }
@@ -51,6 +70,7 @@ namespace RaffleAutomationTests.PageObjects
         public Dreamhome SelectThirdBundleBtn()
         {
             Button.Click(btnThirdBundle);
+            WaitUntil.WaitSomeInterval(2000);
 
             return this;
         }
@@ -59,6 +79,7 @@ namespace RaffleAutomationTests.PageObjects
         public Dreamhome SelectForthBundleBtn()
         {
             Button.Click(btnFourthBundle);
+            WaitUntil.WaitSomeInterval(2000);
 
             return this;
         }

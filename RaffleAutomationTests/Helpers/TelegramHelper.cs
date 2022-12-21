@@ -34,6 +34,7 @@ namespace RaffleAutomationTests.Helpers
                 chatId: _id,
                 photo: inputOnlineFile
                 );
+            ScreenShotHelper.DeleteScreenShot(filePath);
         }
 
     }
