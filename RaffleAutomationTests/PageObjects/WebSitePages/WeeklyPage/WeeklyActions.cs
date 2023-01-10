@@ -1,12 +1,7 @@
 ﻿using NUnit.Allure.Steps;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
 using RaffleAutomationTests.Helpers;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -32,8 +27,8 @@ namespace RaffleAutomationTests.PageObjects
         public Weekly SelectCategory(string category)
         {
             WaitUntil.CustomElementIsVisible(categorySlider.Last(), 30);
-            var catList = categorySlider.Where(x=>x.Enabled);
-            foreach(var cat in catList)
+            var catList = categorySlider.Where(x => x.Enabled);
+            foreach (var cat in catList)
             {
                 if (cat.Displayed == true && cat.Text == category)
                 {
@@ -50,15 +45,15 @@ namespace RaffleAutomationTests.PageObjects
         {
             btnSubCategoryFilter.Click();
             WaitUntil.WaitSomeInterval(1000);
-            foreach(var subCat in listSubCategory)
+            foreach (var subCat in listSubCategory)
             {
-                if(subCat.Displayed == true && subCat.Text == subcategory)
+                if (subCat.Displayed == true && subCat.Text == subcategory)
                 {
                     subCat.Click();
                     WaitUntil.WaitSomeInterval(500);
                 }
             }
-            
+
             return this;
         }
 
@@ -66,29 +61,29 @@ namespace RaffleAutomationTests.PageObjects
         public Weekly SelectPrize(string title)
         {
             WaitUntil.WaitSomeInterval(250);
-            var prizeList = weeklyProductCard.Where(x=>x.Enabled).ToList();
-            for (int i = 1; i<prizeList.Count; ++i)
+            var prizeList = weeklyProductCard.Where(x => x.Enabled).ToList();
+            for (int i = 1; i < prizeList.Count; ++i)
             {
                 string prizeTitle = "//div[@class='lifestyleProductList__card-wrapper'][" + i + "]//article//h3";
                 IWebElement PrizeTitle = Browser._Driver.FindElement(By.XPath(prizeTitle));
-                
-                    if (PrizeTitle.Text == title)
-                    {
-                        string prizeEnterBtn = "//div[@class='lifestyleProductList__card-wrapper'][" + i + "]//article/div/button";
-                        IWebElement PrizeEnterBtn = Browser._Driver.FindElement(By.XPath(prizeEnterBtn));
-                        PrizeEnterBtn.SendKeys("");
-                        WaitUntil.WaitSomeInterval(500);
 
-                        PrizeEnterBtn.Click();
-                        break;
-                    }
-                
-               
+                if (PrizeTitle.Text == title)
+                {
+                    string prizeEnterBtn = "//div[@class='lifestyleProductList__card-wrapper'][" + i + "]//article/div/button";
+                    IWebElement PrizeEnterBtn = Browser._Driver.FindElement(By.XPath(prizeEnterBtn));
+                    PrizeEnterBtn.SendKeys("");
+                    WaitUntil.WaitSomeInterval(500);
+
+                    PrizeEnterBtn.Click();
+                    break;
+                }
+
+
             }
 
             return this;
         }
 
-        
+
     }
 }

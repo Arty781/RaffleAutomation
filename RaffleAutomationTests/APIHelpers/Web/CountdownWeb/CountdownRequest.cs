@@ -1,13 +1,8 @@
 ﻿using Newtonsoft.Json;
-using RaffleAutomationTests.APIHelpers.Web.Basket;
 using RaffleAutomationTests.APIHelpers.Web.SignIn;
 using RaffleAutomationTests.Helpers;
 using RestSharp;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.APIHelpers.Web
 {
@@ -66,7 +61,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
         public static WeeklyPrizesResponseModelWeb? GetWeeklyPrizes(SignInResponseModelWeb SignIn, string WeeklyId)
         {
             WeeklyPrizesResponseModelWeb? countdownResponse = null;
-            for (int i=0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
             {
                 var restDriver = new RestClient(ApiEndpoints.API);
                 RestRequest? request = new RestRequest("/api/prizes/web", Method.Post);
@@ -78,10 +73,10 @@ namespace RaffleAutomationTests.APIHelpers.Web
                 var content = response.Content;
                 countdownResponse = JsonConvert.DeserializeObject<WeeklyPrizesResponseModelWeb>(content);
 
-                
-                
+
+
             }
-            
+
 
             return countdownResponse;
         }

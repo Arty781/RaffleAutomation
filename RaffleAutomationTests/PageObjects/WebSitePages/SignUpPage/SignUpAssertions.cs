@@ -2,11 +2,6 @@
 using OpenQA.Selenium;
 using PutsboxWrapper;
 using RaffleAutomationTests.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -36,7 +31,7 @@ namespace RaffleAutomationTests.PageObjects
             string s = Putsbox.GetLinkFromEmailWithValue(email, "Verify");
             Browser._Driver.Navigate().GoToUrl(s);
             WaitUntil.CustomElementIsVisible(toasterSuccessMessage);
-            
+
 
             return this;
         }

@@ -1,17 +1,12 @@
-﻿using RaffleAutomationTests.Helpers;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using RaffleAutomationTests.Helpers;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.APIHelpers.Web.SignIn
 {
     public class SignInRequestWeb
     {
-       
+
         public static SignInRequestModelWeb RequestBuilder(string login, string password)
         {
             SignInRequestModelWeb req = new()
@@ -24,8 +19,8 @@ namespace RaffleAutomationTests.APIHelpers.Web.SignIn
 
         public static SignInResponseModelWeb? MakeSignIn(string login, string password)
         {
-            
-            
+
+
             var restDriver = new RestClient(ApiEndpoints.API);
             RestRequest? request = new RestRequest("/api/users/signin", Method.Post);
             request.AddHeaders(headers: Headers.COMMON);

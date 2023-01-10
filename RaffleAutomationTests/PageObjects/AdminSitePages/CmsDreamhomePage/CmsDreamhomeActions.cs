@@ -1,13 +1,9 @@
 ﻿using NUnit.Allure.Steps;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
 using RaffleAutomationTests.Helpers;
 using RimuTec.Faker;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -26,20 +22,21 @@ namespace RaffleAutomationTests.PageObjects
         public CmsDreamhome UploadImages()
         {
             WaitUntil.WaitSomeInterval(250);
-            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_1);
-            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_1);
-            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_2);
-            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_2);
-            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_3);
-            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_3);
-            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_4);
-            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_4);
-            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_5);
-            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_5);
-            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_6);
-            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_6);
-            InputBox.ElementImage(inputDesktopImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_7);
-            InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_7);
+            InputBox.ElementImage(inputDesktopImage, 5, String.Concat(Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_1 + "\n" +
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_2 + "\n" +
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_3 + "\n" +
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_4 + "\n" +
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_5 + "\n" +
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_6 + "\n" +
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_7));
+
+            InputBox.ElementImage(inputMobileImage, 5, String.Concat(Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_1 + "\n" +
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_2 + "\n" +
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_3 + "\n" +
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_4 + "\n" +
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_5 + "\n" +
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_6 + "\n" +
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_7));
 
             return this;
         }
@@ -78,13 +75,33 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Start date")]
         public CmsDreamhome EnterStartDate()
         {
-           
-            InputBox.Element(inputStartDay, 5, "1");
-            InputBox.Element(inputStartMonth, 5, "11");
-            InputBox.Element(inputStartYear, 5, "2022");
-            InputBox.Element(inputStartHour, 5, "00");
-            InputBox.Element(inputStartMinute, 5, "0");
-            InputBox.Element(inputStartSecond, 5, "0");
+            for (int i = 0; i < inputStartDate.Count; i++)
+            {
+                if (i == 0)
+                {
+                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("dd"));
+                }
+                else if (i == 1)
+                {
+                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("MM"));
+                }
+                else if (i == 2)
+                {
+                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("yyyy"));
+                }
+                else if (i == 3)
+                {
+                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("hh"));
+                }
+                else if (i == 4)
+                {
+                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("mm"));
+                }
+                else if (i == 5)
+                {
+                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("ss"));
+                }
+            }
             InputBox.Element(inputStartAmPm, 5, Keys.ArrowDown);
 
             return this;
@@ -93,12 +110,33 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Finish date")]
         public CmsDreamhome EnterFinishDate()
         {
-            InputBox.Element(inputFinishDay, 5, "1");
-            InputBox.Element(inputFinishMonth, 5, "11");
-            InputBox.Element(inputFinishYear, 5, "2023");
-            InputBox.Element(inputFinishHour, 5, "00");
-            InputBox.Element(inputFinishMinute, 5, "0");
-            InputBox.Element(inputFinishSecond, 5, "0");
+            for (int i = 0; i < inputFinishDate.Count; i++)
+            {
+                if (i == 0)
+                {
+                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.ToString("dd"));
+                }
+                else if (i == 1)
+                {
+                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.ToString("MM"));
+                }
+                else if (i == 2)
+                {
+                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.AddYears(1).ToString("yyyy"));
+                }
+                else if (i == 3)
+                {
+                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.ToString("hh"));
+                }
+                else if (i == 4)
+                {
+                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.ToString("mm"));
+                }
+                else if (i == 5)
+                {
+                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.ToString("ss"));
+                }
+            }
             InputBox.Element(inputFinishAmPm, 5, Keys.ArrowDown + Keys.ArrowDown);
 
             return this;
@@ -241,7 +279,7 @@ namespace RaffleAutomationTests.PageObjects
                 WaitUntil.WaitSomeInterval(200);
                 WaitUntil.CustomElementIsVisible(RowOverviewTitle.Last());
                 WaitUntil.WaitSomeInterval(250);
-                InputBox.Element(RowOverviewTitle[i], 5, Lorem.Characters(30));
+                InputBox.Element(RowOverviewTitle[i], 5, Lorem.Characters(25));
 
 
             }

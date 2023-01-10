@@ -1,9 +1,8 @@
+using AdminSiteTests.BASE;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RaffleAutomationTests.Helpers;
 using RaffleAutomationTests.PageObjects;
-using AdminSiteTests.BASE;
-using NUnit.Allure.Core;
-using OpenQA.Selenium;
 
 namespace RaffleHouseAutomation.AdminSiteTests
 {

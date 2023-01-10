@@ -1,15 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.APIHelpers.Web.SignIn
 {
     public class SignInRequestModelWeb
     {
-        
+
         [JsonProperty("email")]
         public string Email { get; set; }
 

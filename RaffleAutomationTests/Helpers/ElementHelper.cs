@@ -1,11 +1,6 @@
 ﻿
 using OpenQA.Selenium;
-using RaffleAutomationTests.PageObjects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -16,7 +11,7 @@ namespace RaffleAutomationTests.Helpers
             WaitUntil.CustomElementIsVisible(element);
             IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
             ex.ExecuteScript("arguments[0].click();", element);
-            
+
         }
 
         public static void EnterText(IWebElement element, string text)
@@ -25,7 +20,7 @@ namespace RaffleAutomationTests.Helpers
             element.SendKeys(Keys.Control + "A" + Keys.Delete);
             element.SendKeys(text);
         }
-        
+
         public static string GetAttribute(IWebElement element, string attribute)
         {
             WaitUntil.CustomElementIsVisible(element);

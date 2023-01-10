@@ -1,11 +1,5 @@
 ﻿using OpenQA.Selenium;
-using RaffleAutomationTests.Helpers;
 using SeleniumExtras.PageObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -14,10 +8,10 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//button[@class='enter-now__button']")]
         public IWebElement enterBtn;
 
-        [FindsBy(How=How.XPath,Using = "//button[@class='cookie-close-button']")]
+        [FindsBy(How = How.XPath, Using = "//button[@class='cookie-close-button']")]
         public IWebElement confirmCookieBtn;
 
-        [FindsBy(How=How.XPath,Using = "//ul[@class='ticket-selector__grid']/li[5]")]
+        [FindsBy(How = How.XPath, Using = "//ul[@class='ticket-selector__grid']/li[5]")]
         public IWebElement addOneTicketBtn;
 
         [FindsBy(How = How.XPath, Using = "//ul[@class='ticket-selector__grid']/li[6]")]
@@ -34,7 +28,7 @@ namespace RaffleAutomationTests.PageObjects
 
         [FindsBy(How = How.XPath, Using = "//ul[@class='ticket-selector__grid']/li[1]")]
         public IWebElement remove25TicketBtn;
-        
+
         [FindsBy(How = How.XPath, Using = "//span[@class='add-basket']/ancestor::div[@class='popular-tickets-container']/button")]
         public IWebElement btnAddToBasket;
 

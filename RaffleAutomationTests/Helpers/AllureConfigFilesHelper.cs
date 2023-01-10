@@ -3,9 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -107,7 +105,8 @@ namespace RaffleAutomationTests.Helpers
     }
 }
 
-namespace CONFIG_JSON { 
+namespace CONFIG_JSON
+{
     public partial class ConfigJson
     {
         [JsonProperty("allure")]

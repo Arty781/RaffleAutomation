@@ -6,7 +6,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Configurations>Debug;Release;Debug_Mobile;Release_Mobile</Configurations>
+    <Configurations>Debug;Release;Debug_Mobile;Release_Mobile;Chrome;FireFox</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +16,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.3.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="107.0.5304.6200" />
   </ItemGroup>
 
   <ItemGroup>

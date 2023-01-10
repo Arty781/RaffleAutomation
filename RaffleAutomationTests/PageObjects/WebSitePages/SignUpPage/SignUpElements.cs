@@ -1,11 +1,6 @@
 ﻿using OpenQA.Selenium;
-using RaffleAutomationTests.Helpers;
 using SeleniumExtras.PageObjects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -26,7 +21,7 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//button[@class='rafflebtn primary full-width']")]
         public IWebElement btnSignUp;
 
-        [FindsBy(How=How.XPath,Using = "//button[@class='close-sign-up']")]
+        [FindsBy(How = How.XPath, Using = "//button[@class='close-sign-up']")]
         public IWebElement btnCloseSignUpPopup;
 
         [FindsBy(How = How.XPath, Using = "//div[@class='agreeBlock']/label[1]//input[@type='checkbox']")]

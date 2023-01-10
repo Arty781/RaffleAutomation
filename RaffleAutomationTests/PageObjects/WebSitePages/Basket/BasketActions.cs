@@ -1,12 +1,5 @@
 ﻿using NUnit.Allure.Steps;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
 using RaffleAutomationTests.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -15,7 +8,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open cart")]
         public Basket ClickCartBtn()
         {
-            Button.Click(Pages.Header.btnCart);
+            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/basket");
             WaitUntil.CustomElementIsVisible(btncheckOutNow);
 
             return this;
@@ -65,10 +58,10 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter card details")]
         public Basket EnterCardDetails()
         {
-            
+
             WaitUntil.CustomElementIsVisible(framePaymentNumber);
             Browser._Driver.SwitchTo().Frame(framePaymentNumber);
-            InputBox.Element(inputCardNumber,15, "4242424242424242");
+            InputBox.Element(inputCardNumber, 15, "4242424242424242");
             Browser._Driver.SwitchTo().DefaultContent();
             Browser._Driver.SwitchTo().Frame(framePaymentExpiry);
             InputBox.Element(inputExpiryDate, 15, "07/26");
@@ -92,9 +85,9 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Confirm purchase")]
         public Basket ConfirmPurchaseStage()
         {
-            WaitUntil.CustomElementIsVisible(frameCheckout);
+            WaitUntil.CustomElementIsVisible(frameCheckout, 30);
             Browser._Driver.SwitchTo().Frame(frameCheckout);
-            InputBox.Element(inputPasswordCheckout, 5, "Checkout1!");
+            InputBox.Element(inputPasswordCheckout, 15, "Checkout1!");
             Button.Click(btnContinueCheckout);
             WaitUntil.CustomElevemtIsInvisible(frameCheckout, 12000);
             Browser._Driver.SwitchTo().DefaultContent();

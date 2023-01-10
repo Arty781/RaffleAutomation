@@ -1,9 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using NUnit.Allure.Core;
+﻿using NUnit.Allure.Core;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
-using OpenQA.Selenium;
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -15,7 +12,7 @@ namespace RaffleAutomationTests.Helpers
         public static void OneTimeSetUp()
         {
             AllureConfigFilesHelper.CreateBatFile();
-            
+
         }
 
 

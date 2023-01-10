@@ -6,7 +6,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Configurations>Debug;Release;Debug_Mobile;Release_Mobile</Configurations>
+    <Configurations>Debug;Release;Debug_Mobile;Release_Mobile;Chrome;FireFox</Configurations>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -16,7 +16,6 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="107.0.5304.6200" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,23 +1,11 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
-    public class ApiEndpoints
-    {
-        public const string API = "https://staging-api.rafflehouse.com";
-    }
 
-    //public class ApiEndpoints
-    //{
-    //    public const string API = "https://backend.rafflehouse.com";
-    //}
-
-#if DEBUG || DEBUG_MOBILE
+#if DEBUG || CHROME || FIREFOX || DEBUG_MOBILE
     public class AdminEndpoints
     {
         public const string ADMIN_HOST = "https://admin-staging.rafflehouse.com";
@@ -39,10 +27,15 @@ namespace RaffleAutomationTests.Helpers
         public const string PROFILE = "https://staging.rafflehouse.com/profile";
         public const string FREE_ENTRY = "https://staging.rafflehouse.com/post";
     }
-#endif
 
+    public class ApiEndpoints
+    {
+        public const string API = "https://staging-api.rafflehouse.com";
+    }
+#endif
 #if RELEASE || RELEASE_MOBILE
-    public class WebEndpoints
+    
+public class WebEndpoints
     {
         public const string WEBSITE_HOST = "https://rafflehouse.com";
         public const string SIGN_IN = "https://rafflehouse.com/sign-in";
@@ -55,7 +48,13 @@ namespace RaffleAutomationTests.Helpers
         public const string PROFILE = "https://rafflehouse.com/profile";
         public const string FREE_ENTRY = "https://rafflehouse.com/post";
     }
+
+        public class ApiEndpoints
+    {
+        public const string API = "https://backend.rafflehouse.com";
+    }
 #endif
+
     public class Credentials
     {
         public const string LOGIN = "qatester91311@gmail.com";
@@ -84,7 +83,7 @@ namespace RaffleAutomationTests.Helpers
     {
         public const string RAFFLE_BATHROOM = @"UploadImages\RaffleBathroom.jpg";
         public const string RAFFLE_BEDROOM = @"UploadImages\RaffleBedroom.jpg";
-        public const string RAFFLE_FLOOR_PLAN = @"UploadImages\RaffleFloorPlan.jpg"; 
+        public const string RAFFLE_FLOOR_PLAN = @"UploadImages\RaffleFloorPlan.jpg";
         public const string RAFFLE_OUTSPACE = @"UploadImages\RaffleOutspace.jpg";
         public const string RAFFLE_DESKTOP_1 = @"UploadImages\Desktop\DreamHomeImage1.jpg";
         public const string RAFFLE_DESKTOP_2 = @"UploadImages\Desktop\DreamHomeImage2.jpg";
@@ -112,7 +111,7 @@ namespace RaffleAutomationTests.Helpers
         public const string BEDROOMS = "A spacious primary bedroom with lots of natural light and LED lighting throughout for energy saving light at night. Electric radiator heating system, and Drayton Wiser smart heating system. USB outlets throughout and a video entry-phone system.";
         public const string BATHROOMS = "Contemporary white sanitary-ware with Grohe chrome taps. Fully tiled walls and floor. Overhead Rain shower. Chrome heated towel rail, and modern monochromatic vibes throughout.";
         public const string OUTSPACE = "West Drayton offers a range of parks which are all home to excellent scenery and wildlife. One of these, Bunny Park, is a perfect destination for a family day out as it not only has a fantastic play areas for kids of all ages, but there is also a maze and an animal park that houses birds, goats, sheep and peacocks. ";
-        public const string ABOUT = "On October 30, live your dream and win the £250,000 West Drayton flat for just £2 \n" 
+        public const string ABOUT = "On October 30, live your dream and win the £250,000 West Drayton flat for just £2 \n"
                                     + "Will you live in it, rent it out or sell up? Or you can choose to take a £200,000 cash alternative \n"
                                     + "The new development is being offered exclusively to Raffle House in partnership with the Black Property Network \n"
                                     + "Plus, we’re throwing in £3,000 to help you settle in and cover any bills \n"
@@ -130,15 +129,17 @@ namespace RaffleAutomationTests.Helpers
             "This home is what dreams are made of.",
             "Move in immediately. Furnishings included",
             "Location, location, location",
-            "No mortgage. No Stamp Duty. No strings attached."
+            "No mortgage. No Stamp Duty. No strings attached.",
+            "Dream Big. Do Good"
         };
 
         public static readonly string[] PARAGRAPHS_INFO_BLOCKS =
         {
             "Nestled in picturesque Cornwall, Home Farm is a sight to behold. A beautifully restored Georgian five-bedroom house with a four-bedroom newly refurbished barn and private gardens worth more than £2 million. Your Dream Home is here.",
             "The property comes fully furnished with £150,000 worth of top-of-the-range home decor. You'll be putting your feet up in no time, enjoying a glass of wine in pure opulence.",
-            "The sumptuous Home Farm can be found in Cornwall, a hop, skip, and a jump from the beautiful English coast and Porthleven. Clotted cream, English jam, and fluffy scones will become an everyday staple while you enjoy your new mortgage-free life.",
-            "You won't pay a penny more than your ticket to win. There's no Stamp Duty to pay and you'd own the freehold outright. We also cover any conveyancing fees as well!Or, you can choose to take the £2 million tax-free alternative. It's time to dream big and do good."
+            "This sumptuous Dream Home can be found in Cornwall, a hop, skip, and a jump from the beautiful English coast and Porthleven. Clotted cream, English jam, and fluffy scones will become an everyday staple while you enjoy your new mortgage-free life.",
+            "You won't pay a penny more than your ticket to win. There's no Stamp Duty to pay and you'd own the freehold outright. We also cover any conveyancing fees as well!Or, you can choose to take the £2 million tax-free alternative. It's time to dream big and do good.",
+            "Every time you enter, you're supporting youth homelessness charity Centrepoint. More young people than ever are facing homelessness, many for the first time in their lives. Centrepoint constantly experience calls from homeless young people who have lost their job and their homes, and are uncertain where to turn. From housing and health to learning and engagement, Centrepoint aim to help vulnerable young people move on from homelessness and build a future they can believe in."
         };
 
         public static readonly string HOW_IT_WORKS_TITLE = "How It Works";
@@ -180,7 +181,7 @@ namespace RaffleAutomationTests.Helpers
             {
                 control = Keys.Control;
             }
-            else if(OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
+            else if (OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
             {
                 control = Keys.Command;
             }

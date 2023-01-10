@@ -1,12 +1,4 @@
-﻿using NUnit.Framework;
-using RaffleAutomationTests.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     //public partial class AboutUs
     //{
@@ -35,7 +27,7 @@ namespace RaffleAutomationTests.PageObjects
     //            Assert.IsTrue(descr.Equals(AboutTexts.STEPS_TITLE_TEXTS[--i]));
     //            i++;
     //        }
-            
+
     //        foreach (var description in descriptionHowStep)
     //        {
     //            q++;
@@ -63,7 +55,7 @@ namespace RaffleAutomationTests.PageObjects
 
     //    public AboutUs VerifySiteCreditBlock()
     //    {
-            
+
     //        Assert.IsTrue(titleSiteCredit.Text.Equals(AboutTexts.TITLE_SITE_CREDITS));
 
     //        int i = 0;

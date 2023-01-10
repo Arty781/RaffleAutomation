@@ -1,10 +1,6 @@
 ﻿using OpenQA.Selenium;
 using SeleniumExtras.PageObjects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -32,13 +28,63 @@ namespace RaffleAutomationTests.PageObjects
 
         #region Banner Secondary Section
 
-        [FindsBy(How = How.XPath, Using = "//section[@class='banner-secondary ']//p")]
+        [FindsBy(How = How.XPath, Using = "//h1")]
         public IWebElement textTitleBannerSecondary;
 
 
         #endregion
 
         #region Info blocks
+#if CHROME
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='info-block']/div[@class='desktop']//h2")]
+        public IList<IWebElement> textTitle;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='info-block']/div[@class='desktop']//p")]
+        public IList<IWebElement> textParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='dream-slider-bg']/div[@class='container']//h2")]
+        public IWebElement textBottomSliderTitle;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='dream-slider-bg']/div[@class='container']//p")]
+        public IWebElement textBottomSliderParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAbout']//h2")]
+        public IWebElement textCharityTitle;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAbout']//p")]
+        public IWebElement textCharityParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAbout']//section//p")]
+        public IWebElement textCharityCard;
+
+
+#endif
+#if FIREFOX
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='info-block']/div[@class='desktop']//h2")]
+        public IList<IWebElement> textTitle;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='info-block']/div[@class='desktop']//p")]
+        public IList<IWebElement> textParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='dream-slider-bg']/div[@class='container']//h2")]
+        public IWebElement textBottomSliderTitle;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='dream-slider-bg']/div[@class='container']//p")]
+        public IWebElement textBottomSliderParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAbout']//h2")]
+        public IWebElement textCharityTitle;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAbout']//p")]
+        public IWebElement textCharityParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAbout']//section//p")]
+        public IWebElement textCharityCard;
+
+
+#endif
 
 #if DEBUG || RELEASE
 
@@ -70,7 +116,7 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//div[@class='info-block']/div[@class='mobile']//h2")]
         public IList<IWebElement> textTitle;
 
-        [FindsBy(How = How.XPath, Using = "//div[@class='info-block']/div[@class='mobile']//p")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='info-block']/div[@class='mobile']//p[@class='info-block-subtitle-small']")]
         public IList<IWebElement> textParagraph;
 
         [FindsBy(How = How.XPath, Using = "//div[@class='dream-slider-bg']/div[@class='container']//h2")]
@@ -90,21 +136,40 @@ namespace RaffleAutomationTests.PageObjects
 
 #endif
 
+
         #endregion
 
         #region How It Works
 
-        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home container']//h2")]
+        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home']//h2")]
         public IWebElement textHowItWorksTitle;
 
-        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home container']//div[@class='howMainContent']/p")]
+        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home']//div[@class='howMainContent']/p")]
         public IWebElement textHowItWorksParagraph;
 
-        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home container']//div[@class='howStepper']//h3")]
+        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home']//div[@class='howStepper']//h3")]
         public IList<IWebElement> textHowItWorksStepsTitle;
 
-        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home container']//div[@class='howStepper']//p")]
+        [FindsBy(How = How.XPath, Using = "//section[@class='how-it-works-home']//div[@class='howStepper']//p")]
         public IList<IWebElement> textHowItWorksStepsParagraph;
+
+        [FindsBy(How = How.XPath, Using = "//button[text()='Enter Now']")]
+        public IWebElement btnDreamTicketSelector;
+
+        [FindsBy(How = How.XPath, Using = "//div[text()='Postal Entry']/parent::div")]
+        public IWebElement btnPostalBundle;
+
+        [FindsBy(How = How.XPath, Using = "//ul[@class='popular-tickets']/li[1]")]
+        public IWebElement btnFirstBundle;
+
+        [FindsBy(How = How.XPath, Using = "//ul[@class='popular-tickets']/li[2]")]
+        public IWebElement btnSecondBundle;
+
+        [FindsBy(How = How.XPath, Using = "//ul[@class='popular-tickets']/li[3]")]
+        public IWebElement btnThirdBundle;
+
+        [FindsBy(How = How.XPath, Using = "//ul[@class='popular-tickets']/li[4]")]
+        public IWebElement btnFourthBundle;
 
 
         #endregion

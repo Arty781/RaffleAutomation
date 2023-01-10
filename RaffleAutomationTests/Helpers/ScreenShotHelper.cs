@@ -1,12 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing.Imaging;
-using System.Drawing;
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -38,7 +32,7 @@ namespace RaffleAutomationTests.Helpers
                 }
                 Directory.Delete(Path.Combine(file, "..\\"));
             }
-            
+
         }
     }
 }

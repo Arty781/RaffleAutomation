@@ -1,14 +1,6 @@
-﻿using AngleSharp.Dom;
-using NUnit.Allure.Steps;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
+﻿using NUnit.Allure.Steps;
 using RaffleAutomationTests.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {

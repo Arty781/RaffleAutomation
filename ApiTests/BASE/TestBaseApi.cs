@@ -1,11 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using RaffleAutomationTests.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApiTests.BASE
 {
@@ -16,18 +11,18 @@ namespace ApiTests.BASE
         {
             AllureConfigFilesHelper.CreateJsonConfigFile();
         }
-        
+
         [SetUp]
 
         public void SetUp()
         {
-           
+
         }
 
         [OneTimeTearDown]
         public static void OneTimeTearDown()
         {
-            
+
         }
 
         [TearDown]

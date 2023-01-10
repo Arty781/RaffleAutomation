@@ -1,12 +1,12 @@
-using NUnit.Framework;
-using RaffleAutomationTests.Helpers;
-using NUnit.Allure.Core;
 using ApiTests.BASE;
+using NUnit.Framework;
+using RaffleAutomationTests.APIHelpers.Admin;
+using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
 using RaffleAutomationTests.APIHelpers.Web;
 using RaffleAutomationTests.APIHelpers.Web.SignIn;
-using RaffleAutomationTests.APIHelpers.Web.Weekly;
-using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
 using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
+using RaffleAutomationTests.APIHelpers.Web.Weekly;
+using RaffleAutomationTests.Helpers;
 
 namespace API
 {
@@ -18,8 +18,9 @@ namespace API
         public void Demo()
         {
             var response = SignUpRequest.RegisterNewUser();
-            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
-
+            var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var users = UsersRequest.GetUser(token, response.User.Email);
+            UsersRequest.AddCreditsToUser(token, users.Users.FirstOrDefault().Id, "tomorrow");
 
         }
 
@@ -34,6 +35,42 @@ namespace API
                 WeeklyPrizesRequestWeb.AddWeeklyPrizes(token, listOfWeeklyPrizes, "151");
             }
 
+        }
+
+        [Test]
+        public static void DeleteUsers()
+        {
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var users = UsersRequest.GetUser(tokenAdmin, "");
+            foreach (var user in users.Users)
+            {
+                if (user.Email.Contains("@putsbox.com"))
+                {
+                    UsersRequest.DeleteUser(tokenAdmin, user);
+                }
+
+            }
+
+        }
+
+        [Test]
+        public static void Reristerreferrals()
+        {
+            var response = SignUpRequest.RegisterNewUser();
+            for (int i = 0; i < 10; i++)
+            {
+                SignUpRequest.RegisterNewReferral(response.User.ReferralKey);
+            }
+
+        }
+
+        [Test]
+        public static void AddCreditsToUserForVerifyingOfExpirationEmailsTomorrow()
+        {
+            var response = SignUpRequest.RegisterNewUser();
+            var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var users = UsersRequest.GetUser(token, response.User.Email);
+            UsersRequest.AddCreditsToUser(token, users.Users.FirstOrDefault().Id, "tomorrow");
         }
     }
 }

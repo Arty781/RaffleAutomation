@@ -1,10 +1,6 @@
 ﻿using OpenQA.Selenium;
 using SeleniumExtras.PageObjects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -19,12 +15,12 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//div[@class='findOutWrapper-home']/div[@class='findBlock-home']//p")]
         public IList<IWebElement> descriptionFindOut;
 
-        [FindsBy(How=How.XPath,Using = "//div[@id='about-categories']/a")]
+        [FindsBy(How = How.XPath, Using = "//div[@id='about-categories']/a")]
         public IList<IWebElement> blockCategories;
 
         #region How section
 
-        [FindsBy(How=How.XPath,Using = "//div[@class='howMain']/h2")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='howMain']/h2")]
         public IWebElement titleHowSection;
 
         [FindsBy(How = How.XPath, Using = "//div[@class='howMain']//p")]

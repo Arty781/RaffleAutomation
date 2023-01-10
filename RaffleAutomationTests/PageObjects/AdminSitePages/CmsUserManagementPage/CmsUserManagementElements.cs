@@ -1,97 +1,105 @@
 ﻿using OpenQA.Selenium;
-using RaffleAutomationTests.Helpers;
-using System;
+using SeleniumExtras.PageObjects;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
     public partial class CmsUserManagement
     {
         #region Add new User
-        public IWebElement addUserBtn => Browser._Driver.FindElement(_addUserBtn);
-        public readonly By _addUserBtn = By.XPath("//*/a[@aria-label=\"Add new\"]");
 
-        public IWebElement firstNameInput => Browser._Driver.FindElement(_firstNameInput);
-        public readonly By _firstNameInput = By.XPath("//*[@id=\"user-general-input\"][@name=\"name\"]");
+        [FindsBy(How = How.XPath, Using = "//a[@aria-label='Add new']")]
+        public IWebElement btnAddUser;
 
-        public IWebElement lastNameInput => Browser._Driver.FindElement(_lastNameInput);
-        public readonly By _lastNameInput = By.XPath("//*[@id=\"user-general-input\"][@name=\"surname\"]");
+        [FindsBy(How = How.Name, Using = "name")]
+        public IWebElement inputFirstName;
 
-        public IWebElement emailInput => Browser._Driver.FindElement(_emailInput);
-        public readonly By _emailInput = By.XPath("//*[@id=\"user-general-input\"][@name=\"email\"]");
+        [FindsBy(How = How.Name, Using = "surname")]
+        public IWebElement inputLastName;
 
-        public IWebElement phoneInput => Browser._Driver.FindElement(_phoneInput);
-        public readonly By _phoneInput = By.XPath("//*[@id=\"user-general-input\"][@name=\"phone\"]");
+        [FindsBy(How = How.Name, Using = "email")]
+        public IWebElement inputEmail;
 
-        public IWebElement searchInput => Browser._Driver.FindElement(_searchInput);
-        public readonly By _searchInput = By.XPath("//*[@//*[@id=\"search-input\"]");
+        [FindsBy(How = How.Name, Using = "phone")]
+        public IWebElement inputPhone;
 
-        public IWebElement countryList => Browser._Driver.FindElement(_countryList);
-        public readonly By _countryList = By.XPath("//*/ul[@role=\"listbox\"]");
+        [FindsBy(How = How.Id, Using = "search-input")]
+        public IWebElement inputSearch;
+
+        [FindsBy(How = How.XPath, Using = "//ul[@role='listbox']/li")]
+        public IList<IWebElement> listCountry;
+
+        [FindsBy(How = How.XPath, Using = "//button[@aria-label='Save']")]
+        public IWebElement btnSave;
+
         #endregion
 
         #region Tabs selector
 
-        public IWebElement generalTab => Browser._Driver.FindElement(_generalTab);
-        public readonly By _generalTab = By.XPath("//*/a[@role=\"tab\"][1]");
+        [FindsBy(How = How.XPath, Using = "//span[text()='General']/parent::a")]
+        public IWebElement tabGeneral;
 
-        public IWebElement securityTab => Browser._Driver.FindElement(_securityTab);
-        public readonly By _securityTab = By.XPath("//*/a[@role=\"tab\"][2]");
+        [FindsBy(How = How.XPath, Using = "//span[text()='Security']/parent::a")]
+        public IWebElement tabSecurity;
 
-        public IWebElement ticketsTab => Browser._Driver.FindElement(_ticketsTab);
-        public readonly By _ticketsTab = By.XPath("//*/a[@role=\"tab\"][3]");
+        [FindsBy(How = How.XPath, Using = "//span[text()='Tickets']/parent::a")]
+        public IWebElement tabTickets;
 
-        public IWebElement creditlTab => Browser._Driver.FindElement(_creditTab);
-        public readonly By _creditTab = By.XPath("//*/a[@role=\"tab\"][4]");
+        [FindsBy(How = How.XPath, Using = "//span[text()='Credit']/parent::a")]
+        public IWebElement tabCredit;
 
-        public IWebElement referralTab => Browser._Driver.FindElement(_referralTab);
-        public readonly By _referralTab = By.XPath("//*/a[@role=\"tab\"][5]");
+        [FindsBy(How = How.XPath, Using = "//span[text()='Referral']/parent::a")]
+        public IWebElement tabReferral;
 
-        public IWebElement couponTab => Browser._Driver.FindElement(_couponTab);
-        public readonly By _couponTab = By.XPath("//*/a[@role=\"tab\"][6]");
+        [FindsBy(How = How.XPath, Using = "//span[text()='Coupon']/parent::a")]
+        public IWebElement tabCoupon;
+
+        [FindsBy(How = How.XPath, Using = "//span[text()='Payments']/parent::a")]
+        public IWebElement tabPayments;
 
 
         #endregion
 
         #region Edit User
 
-        public IWebElement newPassInput => Browser._Driver.FindElement(_newPassInput);
-        public readonly By _newPassInput = By.XPath("//*[2]/div/div[1]/div[1]/div/div/div[1]/div");
+        [FindsBy(How = How.XPath, Using = "//p[text()='New password']/parent::div//input[@id='user-general-input']")]
+        public IWebElement inputNewPassword;
 
-        public IWebElement confirmPassInput => Browser._Driver.FindElement(_confirmPassInput);
-        public readonly By _confirmPassInput = By.XPath("//*[2]/div/div[1]/div[2]/div/div/div[1]/div");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Confirm new password']/parent::div//input[@id='user-general-input']")]
+        public IWebElement inputConfirmPassword;
 
-        public IWebElement saveBtn => Browser._Driver.FindElement(_saveBtn);
-        public readonly By _saveBtn = By.XPath("//*[2]/div/div[2]/button");
+        [FindsBy(How = How.XPath, Using = "//span[text()='Save Changes']/parent::button")]
+        public IWebElement btnSaveChanges;
 
-        public IWebElement addTicketBtn => Browser._Driver.FindElement(_addTicketBtn);
-        public readonly By _addTicketBtn = By.XPath("//*[3]/div/div/div[1]/button");
+        [FindsBy(How = How.XPath, Using = "//span[text()='Add Ticket']/parent::button")]
+        public IWebElement btnAddTicket;
 
-        public IWebElement competitionCbbx => Browser._Driver.FindElement(_competitionCbbx);
-        public readonly By _competitionCbbx = By.XPath("//*/div[3]/div/div/div/div[2]/div/div");
+        [FindsBy(How = How.Name, Using = "competition")]
+        public IWebElement cbbxCompetition;
 
-        public IWebElement dreamhomeInList => Browser._Driver.FindElement(_dreamhomeInList);
-        public readonly By _dreamhomeInList = By.XPath("//*/ul/li[1]");
+        [FindsBy(How = How.XPath, Using = "//div/ul/li")]
+        public IList<IWebElement> listCompetitions;
 
-        public IWebElement lifestyleInList => Browser._Driver.FindElement(_lifestyleInList);
-        public readonly By _lifestyleInList = By.XPath("//*/ul/li[2]");
+        [FindsBy(How = How.Name, Using = "product")]
+        public IWebElement cbbxProduct;
 
-        public IWebElement fixedInList => Browser._Driver.FindElement(_fixedInList);
-        public readonly By _fixedInList = By.XPath("//*/ul/li[3]");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Tickets']/parent::div//input")]
+        public IWebElement inputNumberOfTickets;
 
-        public IWebElement categoryCbbx => Browser._Driver.FindElement(_categoryCbbx);
-        public readonly By _categoryCbbx = By.XPath("//*/div/div/div/div[3]/div/div");
+        [FindsBy(How = How.XPath, Using = "//span[text()='Add Credits']/parent::button")]
+        public IWebElement btnAddCredits;
 
-        public IWebElement subCategoryCbbx => Browser._Driver.FindElement(_subCategoryCbbx);
-        public readonly By _subCategoryCbbx = By.XPath("//*/div/div/div/div[4]/div/div");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Credits']/parent::div//input")]
+        public IWebElement inputNumberOfCredits;
 
-        public IWebElement LifestyleProductCbbx => Browser._Driver.FindElement(_LifestyleProductCbbx);
-        public readonly By _LifestyleProductCbbx = By.XPath("//*/div/div/div/div[5]/div/div");
+        [FindsBy(How = How.XPath, Using = "//p[text()='Description']/parent::div//div[@class='DraftEditor-root']//span")]
+        public IWebElement inputCreditDescription;
 
+        [FindsBy(How = How.XPath, Using = "//div[@role='dialog']//span[text()='Save']/parent::button")]
+        public IWebElement btnSaveInPopup;
 
+        [FindsBy(How = How.XPath, Using = "//div[@role='dialog']//span[text()='Cancel']/parent::button")]
+        public IWebElement btnCancelInPopup;
 
 
         #endregion

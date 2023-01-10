@@ -1,11 +1,6 @@
 ﻿using OpenQA.Selenium;
-using RaffleAutomationTests.Helpers;
 using SeleniumExtras.PageObjects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -35,10 +30,10 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//button[@title='Last Page']")]
         public IWebElement buttonLastPage;
 
-        [FindsBy(How=How.XPath,Using = "//span[text()='Category']")]
+        [FindsBy(How = How.XPath, Using = "//span[text()='Category']")]
         public IWebElement filterCategory;
 
-        [FindsBy(How=How.XPath,Using = "//span[@class='category-title']")]
+        [FindsBy(How = How.XPath, Using = "//span[@class='category-title']")]
         public IList<IWebElement> filterCategoryItems;
     }
 }

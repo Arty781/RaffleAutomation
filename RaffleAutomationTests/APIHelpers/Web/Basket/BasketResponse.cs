@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.APIHelpers.Web.Basket
 {
@@ -18,8 +15,8 @@ namespace RaffleAutomationTests.APIHelpers.Web.Basket
 
     public class CreateBasketRequest
     {
-       [JsonProperty("order")]
-       public string Order { get; set; }
+        [JsonProperty("order")]
+        public string Order { get; set; }
     }
 
     public class CreateBasketResponse

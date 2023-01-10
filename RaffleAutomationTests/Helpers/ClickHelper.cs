@@ -1,14 +1,7 @@
-﻿
-using AngleSharp.Dom;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
-using RaffleAutomationTests.PageObjects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -17,9 +10,28 @@ namespace RaffleAutomationTests.Helpers
         public static void Click(IWebElement element)
         {
             WaitUntil.WaitSomeInterval(300);
-            WaitUntil.CustomElementIsVisible(element, 10);
-            element.SendKeys("");
-            element.Click();
+            WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(10))
+            {
+                PollingInterval = TimeSpan.FromMilliseconds(50)
+            };
+            try
+            {
+                wait.Until(e =>
+                {
+                    try
+                    {
+                        if (element != null && element.Enabled)
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                    catch (Exception) { return false; }
+
+                });
+                element.Click();
+            }
+            catch (Exception) { }
 
         }
 
@@ -29,6 +41,15 @@ namespace RaffleAutomationTests.Helpers
             IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
             ex.ExecuteScript("arguments[0].click();", element);
         }
+
+        public static void ClickCountryJS(IWebElement element)
+        {
+            var elem = Browser._Driver.FindElement(By.XPath($"//ul[@role='listbox']/li[contains(text(),'{Country.COUNTRY_CODES[RandomHelper.RandomFPId(Country.COUNTRY_CODES)]}')]"));
+            WaitUntil.CustomElementIsVisible(element, 10);
+            IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
+            ex.ExecuteScript("arguments[0].click();", elem);
+        }
+
 
     }
     public class InputBox
@@ -48,7 +69,6 @@ namespace RaffleAutomationTests.Helpers
         {
             WaitUntil.CustomElementIsVisible(element, seconds);
             WaitUntil.WaitSomeInterval(250);
-            element.Clear();
             element.SendKeys(data);
 
             return element;
@@ -98,8 +118,8 @@ namespace RaffleAutomationTests.Helpers
 
                 });
             }
-            catch (NoSuchElementException) {  }
-            catch (StaleElementReferenceException) {  }
+            catch (NoSuchElementException) { }
+            catch (StaleElementReferenceException) { }
 
             var _element = Browser._Driver.FindElement(By.XPath($"//tbody/tr/td[text()='{titleDreamhome}']"));
 
@@ -112,7 +132,7 @@ namespace RaffleAutomationTests.Helpers
             Actions actions = new Actions(Browser._Driver);
             actions.SendKeys(key);
             actions.Perform();
-            WaitUntil.WaitSomeInterval(500);
+            WaitUntil.WaitSomeInterval(700);
         }
     }
 }

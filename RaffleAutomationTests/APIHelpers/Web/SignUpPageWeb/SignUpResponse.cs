@@ -1,11 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RaffleAutomationTests.Helpers;
-using Newtonsoft.Json;
-using RestSharp;
 
 namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
 {
@@ -34,6 +29,37 @@ namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
 
         [JsonProperty("notifications")]
         public Notifications Notifications { get; set; }
+
+    }
+
+    public class SignUpReferralRequestModel
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("surname")]
+        public string Surname { get; set; }
+
+        [JsonProperty("email")]
+        public string Email { get; set; }
+
+        [JsonProperty("password")]
+        public string Password { get; set; }
+
+        [JsonProperty("country")]
+        public string Country { get; set; }
+
+        [JsonProperty("phone")]
+        public string Phone { get; set; }
+
+        [JsonProperty("emailCommunication")]
+        public bool EmailCommunication { get; set; }
+
+        [JsonProperty("notifications")]
+        public Notifications Notifications { get; set; }
+
+        [JsonProperty("referralKey")]
+        public string ReferralKey { get; set; }
     }
     public class SignUpResponse
     {
@@ -103,10 +129,10 @@ namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
         public string Country { get; set; }
 
         [JsonProperty("registerRaffle")]
-        public string RegisterRaffle { get; set; }
+        public string? RegisterRaffle { get; set; }
 
         [JsonProperty("referralKey")]
-        public Guid ReferralKey { get; set; }
+        public string? ReferralKey { get; set; }
 
         [JsonProperty("createdAt")]
         public DateTimeOffset CreatedAt { get; set; }

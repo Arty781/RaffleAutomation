@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.APIHelpers.Web
 {
@@ -205,7 +202,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
 
     #endregion
 
-    
+
 
     #endregion
 }

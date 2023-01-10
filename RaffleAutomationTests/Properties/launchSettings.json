@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RaffleAutomationTests": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

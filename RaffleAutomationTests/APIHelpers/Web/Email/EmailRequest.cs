@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RaffleAutomationTests.Helpers;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.APIHelpers.Web
 {
@@ -18,7 +13,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
             var restDriver = new RestClient(ApiEndpoints.API);
             RestRequest? request = new RestRequest("/api/orders", Method.Get);
             request.AddHeaders(headers: Headers.COMMON);
-            
+
 
             var r = restDriver.Execute(request);
             var content = r.Content;

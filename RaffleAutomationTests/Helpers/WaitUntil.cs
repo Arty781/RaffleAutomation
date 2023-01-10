@@ -1,10 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
@@ -18,8 +14,10 @@ namespace RaffleAutomationTests.Helpers
 
         public static void CustomElementIsVisible(IWebElement element, int seconds = 10)
         {
-            WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(seconds));
-            wait.PollingInterval = TimeSpan.FromMilliseconds(50);
+            WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(seconds))
+            {
+                PollingInterval = TimeSpan.FromMilliseconds(50)
+            };
             try
             {
                 wait.Until(e =>
@@ -32,7 +30,7 @@ namespace RaffleAutomationTests.Helpers
                         }
                         return false;
                     }
-                    catch (Exception){ return false; }
+                    catch (Exception) { return false; }
 
                 });
             }

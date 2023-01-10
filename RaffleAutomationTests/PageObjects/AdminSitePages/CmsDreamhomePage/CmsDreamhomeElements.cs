@@ -1,11 +1,6 @@
 ﻿using OpenQA.Selenium;
-using RaffleAutomationTests.Helpers;
 using SeleniumExtras.PageObjects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -49,23 +44,8 @@ namespace RaffleAutomationTests.PageObjects
 
         #region Date picker StartDate
 
-        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='day']")]
-        public IWebElement inputStartDay;
-
-        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='month']")]
-        public IWebElement inputStartMonth;
-
-        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='year']")]
-        public IWebElement inputStartYear;
-
-        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='hour12']")]
-        public IWebElement inputStartHour;
-
-        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='minute']")]
-        public IWebElement inputStartMinute;
-
-        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div//input[@name='second']")]
-        public IWebElement inputStartSecond;
+        [FindsBy(How = How.XPath, Using = "//p[text()='Start date']/parent::div/div//input[@autocomplete]")]
+        public IList<IWebElement> inputStartDate;
 
         [FindsBy(How = How.XPath, Using = "//p[contains(text(),'Start date')]/parent::div//select[@name='amPm']")]
         public IWebElement inputStartAmPm;
@@ -74,23 +54,8 @@ namespace RaffleAutomationTests.PageObjects
 
         #region Date picker FinishDate
 
-        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='day']")]
-        public IWebElement inputFinishDay;
-
-        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='month']")]
-        public IWebElement inputFinishMonth;
-
-        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='year']")]
-        public IWebElement inputFinishYear;
-
-        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='hour12']")]
-        public IWebElement inputFinishHour;
-
-        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='minute']")]
-        public IWebElement inputFinishMinute;
-
-        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div//input[@name='second']")]
-        public IWebElement inputFinishSecond;
+        [FindsBy(How = How.XPath, Using = "//p[text()='Finish date']/parent::div/div//input[@autocomplete]")]
+        public IList<IWebElement> inputFinishDate;
 
         [FindsBy(How = How.XPath, Using = "//p[contains(text(),'Finish date')]/parent::div//select[@name='amPm']")]
         public IWebElement inputFinishAmPm;
@@ -143,10 +108,10 @@ namespace RaffleAutomationTests.PageObjects
 
         #region Text inputs
 
-        [FindsBy(How=How.XPath,Using = "//span[text()='Bedrooms *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']")]
+        [FindsBy(How = How.XPath, Using = "//span[text()='Bedrooms *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']")]
         public IWebElement bedroomsTextArea;
 
-        [FindsBy(How=How.XPath,Using = "//span[text()='Bathrooms *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']")]
+        [FindsBy(How = How.XPath, Using = "//span[text()='Bathrooms *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']")]
         public IWebElement bathroomsTextArea;
 
         [FindsBy(How = How.XPath, Using = "//span[text()='Outspace *']/ancestor::div[contains(@class,'text-parent')]//div[@class='ql-editor ql-blank']")]
@@ -165,15 +130,15 @@ namespace RaffleAutomationTests.PageObjects
 
         #region Overview section
 
-        [FindsBy(How=How.XPath,Using = "//div[contains(@class, 'overview')]//*[contains(@class, 'add-discount')]")]
+        [FindsBy(How = How.XPath, Using = "//div[contains(@class, 'overview')]//*[contains(@class, 'add-discount')]")]
         public IWebElement addOverviewBtn;
 
-        [FindsBy(How=How.XPath,Using = "//div[contains(@class, 'deletePropertyRowBtn')]")]
+        [FindsBy(How = How.XPath, Using = "//div[contains(@class, 'deletePropertyRowBtn')]")]
         public IWebElement removeOverviewBtn;
 
         #region Overview element rows
 
-        [FindsBy(How=How.XPath,Using = "//div[@class='dreamHomeProperty_fieldWrapper']//input[@name='title']")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='dreamHomeProperty_fieldWrapper']//input[@name='title']")]
         public IList<IWebElement> RowOverviewTitle;
 
         [FindsBy(How = How.XPath, Using = "//input[@name='value']")]
@@ -200,7 +165,7 @@ namespace RaffleAutomationTests.PageObjects
 
         #endregion
 
-        
+
 
 
     }

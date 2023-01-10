@@ -1,13 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.APIHelpers.Web
 {
-    
+
     public class DreamHomeOrderRequestModel
     {
         [JsonProperty("numOfTickets")]
@@ -22,7 +17,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
 
     public class DreamHomeOrderResponseModelWeb
     {
-        
+
         [JsonProperty("message")]
         public string Message { get; set; }
 

@@ -1,7 +1,6 @@
 ﻿using NUnit.Allure.Steps;
 using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
-using System;
 using RimuTec.Faker;
 
 namespace RaffleAutomationTests.PageObjects
@@ -34,7 +33,9 @@ namespace RaffleAutomationTests.PageObjects
         {
             Button.ClickJS(btnEditAccount);
             WaitUntil.CustomElementIsVisible(btnSave);
-            InputBox.Element(inputEmail, 10, "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@xitroo.com");
+            Element.Action(Keys.End);
+            cbbxCountry.Click();
+            Button.ClickCountryJS(inputCountry);
             InputBox.Element(inputPhone, 10, "953214567");
             btnSave.SendKeys("");
             Button.ClickJS(btnSave);
@@ -42,11 +43,10 @@ namespace RaffleAutomationTests.PageObjects
         }
 
         [AllureStep("Open Order History page")]
-        public Profile OpenOrderHistoryPage()
+        public Profile OpenMyTicketsCompetitions()
         {
-            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/profile");
-            WaitUntil.CustomElementIsVisible(tabOrderHistory);
-            Button.Click(tabOrderHistory);
+            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/profile/tickets");
+            WaitUntil.CustomElementIsVisible(tabMyTicketsCompetitions);
             WaitUntil.CustomElementIsVisible(listDreamHomeHistory);
             return this;
         }
@@ -54,7 +54,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open Dream Home History list")]
         public Profile OpenDreamHomeHistoryList()
         {
-            
+
             Button.Click(listDreamHomeHistory);
             WaitUntil.CustomElementIsVisible(prizeName);
             WaitUntil.WaitSomeInterval(1000);

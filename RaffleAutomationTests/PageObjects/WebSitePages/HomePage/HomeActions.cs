@@ -1,12 +1,7 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
+﻿using NUnit.Allure.Steps;
+using NUnit.Framework;
 using RaffleAutomationTests.Helpers;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -22,11 +17,11 @@ namespace RaffleAutomationTests.PageObjects
 
         public Home SwitchingSliderImages()
         {
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Button.Click(btnNextTopSlider);
             }
-            for(int i = 0; i< 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Button.Click(btnPrevTopSlider);
             }
@@ -57,7 +52,7 @@ namespace RaffleAutomationTests.PageObjects
 
         public Home VerifyInfoBlockTitles()
         {
-            for(int i =0; i<4;i++)
+            for (int i = 0; i < 5; i++)
             {
                 Debug.WriteLine(textTitle[i].Text.ToLower());
                 Assert.IsTrue(textTitle[i].Text.ToLower() == HomeTexts.TITLES_INFO_BLOCKS[i].ToLower());
@@ -68,7 +63,7 @@ namespace RaffleAutomationTests.PageObjects
 
         public Home VerifyInfoBlockParagraphs()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Debug.WriteLine(textParagraph[i].Text.ToLower());
                 Assert.IsTrue(textParagraph[i].Text.ToLower() == HomeTexts.PARAGRAPHS_INFO_BLOCKS[i].ToLower());
@@ -107,6 +102,61 @@ namespace RaffleAutomationTests.PageObjects
                 Debug.WriteLine(textHowItWorksStepsParagraph[i].Text.ToLower());
                 Assert.IsTrue(textHowItWorksStepsParagraph[i].Text.ToLower() == HomeTexts.PARAGRAPHS_STEPS[i].ToLower());
             }
+            return this;
+        }
+
+        [AllureStep("Open Dreamhome product page")]
+        public Home OpenHomePage()
+        {
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST);
+
+            return this;
+        }
+
+        public Home OpenDreamTicketSelector()
+        {
+            Button.ClickJS(btnDreamTicketSelector);
+
+            return this;
+        }
+
+        [AllureStep("Select first bundle")]
+        public Home SelectFirstBundleBtn()
+        {
+            WaitUntil.WaitSomeInterval(500);
+            Button.Click(btnFirstBundle);
+            WaitUntil.WaitSomeInterval(2000);
+
+            return this;
+        }
+
+        [AllureStep("Select second bundle")]
+        public Home SelectSecondBundleBtn()
+        {
+            WaitUntil.WaitSomeInterval(500);
+            Button.Click(btnSecondBundle);
+            WaitUntil.WaitSomeInterval(2000);
+
+            return this;
+        }
+
+        [AllureStep("Select third bundle")]
+        public Home SelectThirdBundleBtn()
+        {
+            WaitUntil.WaitSomeInterval(500);
+            Button.Click(btnThirdBundle);
+            WaitUntil.WaitSomeInterval(2000);
+
+            return this;
+        }
+
+        [AllureStep("Select forth bundle")]
+        public Home SelectForthBundleBtn()
+        {
+            WaitUntil.WaitSomeInterval(500);
+            Button.Click(btnFourthBundle);
+            WaitUntil.WaitSomeInterval(2000);
+
             return this;
         }
     }

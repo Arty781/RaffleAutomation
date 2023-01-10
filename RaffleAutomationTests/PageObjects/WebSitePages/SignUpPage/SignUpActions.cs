@@ -1,7 +1,7 @@
 ﻿using NUnit.Allure.Steps;
 using RaffleAutomationTests.Helpers;
-using System;
 using RimuTec.Faker;
+using System;
 using System.Collections.Generic;
 
 namespace RaffleAutomationTests.PageObjects
@@ -19,20 +19,20 @@ namespace RaffleAutomationTests.PageObjects
             }
             return countrylist;
         }
+
         [AllureStep("Enter user data")]
         public SignUp EnterUserData()
         {
             WaitUntil.CustomElementIsVisible(inputFirstName);
-            inputFirstName.SendKeys(Name.FirstName());
-            inputSurname.SendKeys(Name.LastName());
-            inputEmail.SendKeys("qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com");
-            inputCountry.Click();
-            GetCountryList();
-            Button.ClickJS(listCountry);
-            inputPhone.SendKeys("961234563");
-            inputPassword.SendKeys("Qaz11111");
-            btnConfirmOpt.Click();
-            btnRememberMe.Click();
+            InputBox.Element(inputFirstName, 10, Name.FirstName());
+            InputBox.Element(inputSurname, 10, Name.LastName());
+            InputBox.Element(inputEmail, 10, "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com");
+            Button.Click(inputCountry);
+            Button.ClickCountryJS(inputCountry);
+            InputBox.Element(inputPhone, 10, "");
+            InputBox.Element(inputPassword, 10, "Qaz11111");
+            Button.Click(btnConfirmOpt);
+            Button.Click(btnRememberMe);
 
             return this;
         }

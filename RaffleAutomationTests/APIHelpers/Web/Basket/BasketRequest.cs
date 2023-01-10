@@ -51,15 +51,15 @@ namespace RaffleAutomationTests.APIHelpers.Web.Basket
 
         public static GetBasketOrdersResponse? GetBasketOrders(SignInResponseModelWeb SignIn)
         {
-           var restDriver = new RestClient(ApiEndpoints.API);
-                RestRequest? request = new RestRequest("/api/orders/getBasketOrders", Method.Post);
-                request.AddHeaders(headers: Headers.COMMON);
-                request.AddHeader("authorization", $"Bearer {SignIn.Token}");
-                request.AddJsonBody(RequesBuilder());
+            var restDriver = new RestClient(ApiEndpoints.API);
+            RestRequest? request = new RestRequest("/api/orders/getBasketOrders", Method.Post);
+            request.AddHeaders(headers: Headers.COMMON);
+            request.AddHeader("authorization", $"Bearer {SignIn.Token}");
+            request.AddJsonBody(RequesBuilder());
 
-                var response = restDriver.Execute(request);
-                var content = response.Content;
-                var countdownResponse = JsonConvert.DeserializeObject<GetBasketOrdersResponse>(content);
+            var response = restDriver.Execute(request);
+            var content = response.Content;
+            var countdownResponse = JsonConvert.DeserializeObject<GetBasketOrdersResponse>(content);
 
             return countdownResponse;
         }

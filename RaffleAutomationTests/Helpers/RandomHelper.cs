@@ -1,10 +1,7 @@
 ﻿using RaffleAutomationTests.APIHelpers.Web;
-using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -17,6 +14,14 @@ namespace RaffleAutomationTests.Helpers
             string randomNum = genRand.ToString();
 
             return randomNum;
+        }
+
+        public static int RandomIntNumber()
+        {
+            Random r = new Random();
+            int genRand = r.Next(1, 100);
+
+            return genRand;
         }
 
         public static int RandomWPId(WeeklyPrizesResponseModelWeb content)
