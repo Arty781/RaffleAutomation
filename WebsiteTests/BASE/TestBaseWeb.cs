@@ -7,7 +7,6 @@ namespace WebsiteTests.BASE
     public class TestBaseWeb : BaseWeb
     {
         [SetUp]
-
         public void Initialize()
         {
             Browser.Initialize();

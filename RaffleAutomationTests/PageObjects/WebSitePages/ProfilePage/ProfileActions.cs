@@ -1,4 +1,5 @@
 ﻿using NUnit.Allure.Steps;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
 using RimuTec.Faker;
@@ -12,6 +13,32 @@ namespace RaffleAutomationTests.PageObjects
         {
             Button.ClickJS(EditPersonalBtn);
             InputBox.Element(FirstNameInput, 10, Name.FirstName());
+            InputBox.Element(LastNameInput, 10, Name.LastName());
+            Button.ClickJS(btnSave);
+            return this;
+        }
+
+        [AllureStep("Displayed error message")]
+        public Profile EnterFirstnameWithMore50Characters()
+        {
+            Button.ClickJS(EditPersonalBtn);
+            InputBox.Element(FirstNameInput, 10, Lorem.ParagraphByChars(51).Trim(' '));
+            InputBox.Element(LastNameInput, 10, Name.LastName());
+            Button.ClickJS(btnSave);
+            Assert.IsTrue(textErrorMessage.Displayed, "Error message is not displayed");
+            InputBox.Element(FirstNameInput, 10, Name.FirstName());
+            Button.ClickJS(btnSave);
+            return this;
+        }
+
+        [AllureStep("Displayed error message")]
+        public Profile EnterLastnameWithMore50Characters()
+        {
+            Button.ClickJS(EditPersonalBtn);
+            InputBox.Element(FirstNameInput, 10, Name.FirstName());
+            InputBox.Element(LastNameInput, 10, Lorem.ParagraphByChars(51).Trim(' '));
+            Button.ClickJS(btnSave);
+            Assert.IsTrue(textErrorMessage.Displayed, "Error message is not displayed");
             InputBox.Element(LastNameInput, 10, Name.LastName());
             Button.ClickJS(btnSave);
             return this;

@@ -1,8 +1,10 @@
 using ApiTests.BASE;
 using NUnit.Framework;
 using RaffleAutomationTests.APIHelpers.Admin;
+using RaffleAutomationTests.APIHelpers.Admin.DreamHomePage;
 using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
 using RaffleAutomationTests.APIHelpers.Web;
+using RaffleAutomationTests.APIHelpers.Web.Basket;
 using RaffleAutomationTests.APIHelpers.Web.SignIn;
 using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
 using RaffleAutomationTests.APIHelpers.Web.Weekly;
@@ -18,9 +20,10 @@ namespace API
         public void Demo()
         {
             var response = SignUpRequest.RegisterNewUser();
-            var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var users = UsersRequest.GetUser(token, response.User.Email);
-            UsersRequest.AddCreditsToUser(token, users.Users.FirstOrDefault().Id, "tomorrow");
+            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
+            var basketOrders = BasketRequest.GetBasketOrders(token);
+            BasketRequest.DeleteOrders(token, basketOrders);
+            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
 
         }
 
@@ -71,6 +74,12 @@ namespace API
             var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var users = UsersRequest.GetUser(token, response.User.Email);
             UsersRequest.AddCreditsToUser(token, users.Users.FirstOrDefault().Id, "tomorrow");
+        }
+
+        [Test]
+        public static void RegisterNewUser()
+        {
+            var response = SignUpRequest.RegisterNewUser();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace RaffleAutomationTests.PageObjects
 {
-    public partial class FreeEntry
+    public partial class Postal
     {
-
     }
 }

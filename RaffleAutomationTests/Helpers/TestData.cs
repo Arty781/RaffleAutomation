@@ -92,6 +92,7 @@ public class WebEndpoints
         public const string RAFFLE_DESKTOP_5 = @"UploadImages\Desktop\DreamHomeImage5.jpg";
         public const string RAFFLE_DESKTOP_6 = @"UploadImages\Desktop\DreamHomeImage6.jpg";
         public const string RAFFLE_DESKTOP_7 = @"UploadImages\Desktop\DreamHomeImage7.jpg";
+        public const string RAFFLE_DESKTOP_8 = @"UploadImages\Desktop\DreamHomeImage8.jpg";
         public const string RAFFLE_MOBILE_1 = @"UploadImages\Mobile\DreamHomeImage1.jpg";
         public const string RAFFLE_MOBILE_2 = @"UploadImages\Mobile\DreamHomeImage2.jpg";
         public const string RAFFLE_MOBILE_3 = @"UploadImages\Mobile\DreamHomeImage3.jpg";
@@ -99,6 +100,7 @@ public class WebEndpoints
         public const string RAFFLE_MOBILE_5 = @"UploadImages\Mobile\DreamHomeImage5.jpg";
         public const string RAFFLE_MOBILE_6 = @"UploadImages\Mobile\DreamHomeImage6.jpg";
         public const string RAFFLE_MOBILE_7 = @"UploadImages\Mobile\DreamHomeImage7.jpg";
+        public const string RAFFLE_MOBILE_8 = @"UploadImages\Mobile\DreamHomeImage8.jpg";
     }
 
     public class TakeTourWithSaraLink
@@ -123,23 +125,43 @@ public class WebEndpoints
 
     public class HomeTexts
     {
-        public static readonly string SECONDARY_BANNER_TITLE = "Win this Dream Home worth more than £2 million";
-        public static readonly string[] TITLES_INFO_BLOCKS =
+        public static readonly string SECONDARY_BANNER_TITLE = "Win This Dream Home Worth More Than £2.5 Million";
+        public static readonly string SECONDARY_BANNER_SUBTITLE = "Plus £1 million in bonus cash-prizes to be won by four lucky customers! Enter today for your chance to win.";
+        public static readonly string BOTTOM_SLIDER_TITLE = "Let’s Take A Closer Look At Your Dream Home";
+        public static readonly List<string> BOTTOM_SLIDER_SUBTITLE = new()
         {
-            "This home is what dreams are made of.",
-            "Move in immediately. Furnishings included",
-            "Location, location, location",
-            "No mortgage. No Stamp Duty. No strings attached.",
-            "Dream Big. Do Good"
+            "Renovated and furnished to the highest standard & located in London’s Upminster, this Dream Home boasts 5,800 sqft over three floors, two large gardens to enjoy those lazy days in." ,
+            "You'll be the envy of all your friends – who get to enjoy private visitor parking when they come over.",
+            "It’s time to quit the rat race and put your feet up." 
         };
 
+        public static readonly List<string> TITLES_INFO_BLOCKS = new()
+        {
+            "This home is what dreams are made of",
+            "Move in immediately. Furnishings included",
+            "Location, location, location",
+            "No mortgage. No Stamp Duty. No strings attached",
+            "Dream Big. Do Good",
+            "Enter Now To Win A £250,000 Early Bird Bonus Prize"
+        };
         public static readonly string[] PARAGRAPHS_INFO_BLOCKS =
         {
-            "Nestled in picturesque Cornwall, Home Farm is a sight to behold. A beautifully restored Georgian five-bedroom house with a four-bedroom newly refurbished barn and private gardens worth more than £2 million. Your Dream Home is here.",
-            "The property comes fully furnished with £150,000 worth of top-of-the-range home decor. You'll be putting your feet up in no time, enjoying a glass of wine in pure opulence.",
-            "This sumptuous Dream Home can be found in Cornwall, a hop, skip, and a jump from the beautiful English coast and Porthleven. Clotted cream, English jam, and fluffy scones will become an everyday staple while you enjoy your new mortgage-free life.",
-            "You won't pay a penny more than your ticket to win. There's no Stamp Duty to pay and you'd own the freehold outright. We also cover any conveyancing fees as well!Or, you can choose to take the £2 million tax-free alternative. It's time to dream big and do good.",
-            "Every time you enter, you're supporting youth homelessness charity Centrepoint. More young people than ever are facing homelessness, many for the first time in their lives. Centrepoint constantly experience calls from homeless young people who have lost their job and their homes, and are uncertain where to turn. From housing and health to learning and engagement, Centrepoint aim to help vulnerable young people move on from homelessness and build a future they can believe in."
+            "A Dream Home prize worth more than £2.5 million, with £250,000 to help start your new life. Nestled in the London borough of Havering, Bonham Grange is a boutique new development and a sight to behold.",
+            "A beautifully built six-bedroom, six-bathroom house over nearly 6,000 sqft with manicured gardens within a private gated community." ,
+            "Your Dream Home is here.",
+            "The property comes fully furnished with more than £100,000 worth of dramatic and sublime home décor from leading interior design house, Alexander James." ,
+            "You'll be putting your feet up in no time, enjoying a glass of wine in pure opulence.",
+            "This sumptuous Dream Home can be found in London, a hop, skip, jump, and just 20 minutes from the centre of our great country’s capital.",
+            "The best restaurants in the world and exceptional shopping will become an everyday staple while you enjoy your new mortgage-free life and the £250,000 tax-free bonus.",
+            "You won't pay a penny more than your ticket to win. There's no Stamp Duty to pay and you'd own the freehold outright. We also cover any conveyancing fees as well.", 
+            "Or, you can choose to take the £2.5 million tax-free alternative.",
+            "It's time to dream big and do good, our 7th Dream Home competition has arrived.",
+            "Every time you enter, you’re supporting the Great Ormond Street Hospital. Every day, about 600 children and young people from across the UK arrive for life-changing treatments." ,
+            "Young lives hang in the balance as patients, families and staff battle the most complex illnesses. The brightest minds come together to achieve pioneering medical breakthroughs that change the lives of thousands of children – and change the world.",
+            "This extraordinary hospital has always depended on charitable support, and you can make a difference today by supporting them just by buying a ticket to win your Dream Home.",
+            "Enter today for your chance to win your slice of £1 million in bonus, early bird prizes as well.",
+            "Every time you buy Dream Home tickets, every single one of them will be entered into all upcoming £250,000 draws - and there are four of these before before the big £2.5 million Dream Home competition comes to a close!",
+            "That's a total prize pool worth more than £3.5 million. The time to dream big is today."
         };
 
         public static readonly string HOW_IT_WORKS_TITLE = "How It Works";
@@ -342,6 +364,53 @@ public class WebEndpoints
             "Vietnam",
             "Zambia",
             "Zimbabwe"
+        };
+    }
+
+    public class FooterText
+    {
+        public const string FOOTER_TITLE = "About Raffle House";
+        public const string FOOTER_PARAGRAPH = "We offer you the chance to win your Dream Home or multi-million pound cash-prize while donating to worthwhile causes. Every Dream Home entry is automatically added to the bonus prize pools and will be drawn for each consecutive competition. Our paid competitions to win a Dream Home and bonus prizes also include a postal entry method. It’s time to dream big and do good.";
+        public static readonly List<string> FOOTER_CONTACTS_LINKS = new()
+        {
+            "Home",
+            "Winners",
+            "Login / Register",
+            "Terms & Conditions",
+            "Privacy Policy",
+            "Contact"
+        };
+        public static readonly List<string> FOOTER_SPONSORS_LINKS = new()
+        {
+            "GambleAware",
+            "Copyright 2017-2023 - Raffle House Ltd.",
+            "Company Reg. No. 10928240 - All Rights Reserved"
+        };
+    }
+
+    public class PostText
+    {
+        public const string TITLE_POST = "How To Enter For Free By Post";
+        public static readonly List<string> PARAGRAPH_POST = new()
+        {
+            "Raffle House offers a postal entry for its competitions. Just like the paid method of entering its competitions, the postal method requires that you create an online account and accept our T&Cs. This is so that we can verify your entry details and provide you with an electronic record of your entry.",
+            "Click the button below to create an account.",
+            "On a blank sheet of paper write your full name, date of birth, telephone number, email address, and the title of the competition you are submitting an entry for. Please refer to the individual product pages for competition titles. Examples of these can be found in our T&Cs. This information must match the information that you use to create your online account and needs to be written legibly otherwise the entry may be deemed invalid.",
+            "We have appointed Civica Election Services, formerly known as Electoral Reform Services (ERS),as our independent scrutineers to administer this competition. They have over 100 years’ experience in administering elections, ballots and competitions for a wide range of clients including TV programmes and various lottery projects. Please send the sheet of paper in an envelope to the following address via first- or second-class post to:​​​",
+            "Due to differing postal timings, entries enclosed in envelopes stamped ​with a second-class stamp will not be considered.",
+            "A maximum of one entry can be made per envelope received.",
+            "Postal entries are treated in exactly the same way as paid entries for the purposes of determining a winner. However, there is a difference in the deadlines for postal entries for the property competition.Our property draw closes at midnight on its final day; the corresponding cut-off for postal entries will be that they are received and processed before 5pm four business days later.",
+            "One postal entry has an equal chance of winning as any one paid entry. If a postal entry wins a prize there will be no further purchase or payment necessary to be notified of the win or to receive the prize. If the above steps are not followed as described, then a postal entry will be invalid.",
+            "You will not be notified if your entry is invalid and only valid entries will appear on your online account."
+
+        };
+        public static readonly List<string> PARAGRAPH_LINKS_POST = new()
+        {
+            "Raffle House Postal Entry​",
+            "Civica Election Services​",
+            "33 Clarendon Road​",
+            "London",
+            "N8 0NW​"
         };
     }
 }

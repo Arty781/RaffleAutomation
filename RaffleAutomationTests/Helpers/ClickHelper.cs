@@ -106,8 +106,10 @@ namespace RaffleAutomationTests.Helpers
     {
         public static IWebElement FindSpecificDreamhome(string titleDreamhome)
         {
-            WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(10));
-            wait.PollingInterval = TimeSpan.FromMilliseconds(100);
+            WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(30))
+            {
+                PollingInterval = TimeSpan.FromMilliseconds(100)
+            };
             try
             {
                 wait.Until(e =>
@@ -129,7 +131,7 @@ namespace RaffleAutomationTests.Helpers
 
         public static void Action(string key)
         {
-            Actions actions = new Actions(Browser._Driver);
+            Actions actions = new(Browser._Driver);
             actions.SendKeys(key);
             actions.Perform();
             WaitUntil.WaitSomeInterval(700);

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace RaffleAutomationTests.Helpers
 {
-    partial class RandomHelper
+    public partial class RandomHelper
     {
         public static string RandomNumber()
         {
@@ -16,10 +16,10 @@ namespace RaffleAutomationTests.Helpers
             return randomNum;
         }
 
-        public static int RandomIntNumber()
+        public static int RandomIntNumber(int num)
         {
             Random r = new Random();
-            int genRand = r.Next(1, 100);
+            int genRand = r.Next(1, num);
 
             return genRand;
         }
@@ -54,6 +54,14 @@ namespace RaffleAutomationTests.Helpers
             Random random = new Random();
             const string chars = "0123456789";
             return new string(Enumerable.Repeat(chars, 9)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public static string RandomPhone(int charNum)
+        {
+            Random random = new Random();
+            const string chars = "0123456789";
+            return new string(Enumerable.Repeat(chars, charNum)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 

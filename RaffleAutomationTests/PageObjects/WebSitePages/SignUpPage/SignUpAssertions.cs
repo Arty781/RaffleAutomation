@@ -35,5 +35,13 @@ namespace RaffleAutomationTests.PageObjects
 
             return this;
         }
+
+        public SignUp VerifyDisplayingErrorMessage(IWebElement element)
+        {
+            WaitUntil.WaitSomeInterval(250);
+            WaitUntil.CustomElementIsVisible(element);
+            Assert.IsTrue(element.Displayed);
+            return this;
+        }
     }
 }

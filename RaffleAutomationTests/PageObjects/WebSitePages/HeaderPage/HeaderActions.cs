@@ -34,9 +34,9 @@ namespace RaffleAutomationTests.PageObjects
         //    return this;
         //}
 
-        public Header OpenWinnersPage(string url)
+        public Header OpenWinnersPage()
         {
-            Browser._Driver.Navigate().GoToUrl(url);
+            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/winners");
 
             return this;
         }
@@ -87,6 +87,13 @@ namespace RaffleAutomationTests.PageObjects
         public Header OpenCartPage()
         {
             Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/basket");
+
+            return this;
+        }
+
+        public Header OpenPostPage()
+        {
+            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/post");
 
             return this;
         }

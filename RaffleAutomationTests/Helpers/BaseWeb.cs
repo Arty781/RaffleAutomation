@@ -23,7 +23,7 @@ namespace RaffleAutomationTests.Helpers
 
             if (Browser._Driver != null)
             {
-                Browser._Driver.Quit();
+                Browser.Quit();
 
                 ForceCloseWebDriver.ForceClose();
                 ForceCloseWebDriver.RemoveBatFile();
@@ -37,11 +37,11 @@ namespace RaffleAutomationTests.Helpers
             if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
             {
                 _ = TelegramHelper.SendMessage();
-                Browser._Driver.Close();
+                Browser.Close();
             }
             else if (TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed)
             {
-                Browser._Driver.Close();
+                Browser.Close();
             }
 
         }

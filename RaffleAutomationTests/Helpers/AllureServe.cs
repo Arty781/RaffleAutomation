@@ -35,7 +35,7 @@ namespace RaffleAutomationTests.Helpers
         public static void RemoveBatFile()
         {
             string path = Browser.RootPathReport() + "_!CloseOpenWith.bat";
-            FileInfo fileInf = new FileInfo(path);
+            FileInfo fileInf = new(path);
             if (fileInf.Exists == true)
             {
                 fileInf.Delete();

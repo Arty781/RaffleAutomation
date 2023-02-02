@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using RaffleAutomationTests.Helpers;
+using RaffleAutomationTests.PageObjects._3rdPartyPage.Klaviyo;
 using SeleniumExtras.PageObjects;
 
 namespace RaffleAutomationTests.PageObjects
@@ -22,7 +23,7 @@ namespace RaffleAutomationTests.PageObjects
         public static Dreamhome Dreamhome => GetPage<Dreamhome>();
         public static FixedOdds FixedOdds => GetPage<FixedOdds>();
         public static Footer Footer => GetPage<Footer>();
-        public static FreeEntry FreeEntry => GetPage<FreeEntry>();
+        public static Postal Postal => GetPage<Postal>();
         public static Header Header => GetPage<Header>();
         public static Home Home => GetPage<Home>();
         public static Profile Profile => GetPage<Profile>();
@@ -43,6 +44,7 @@ namespace RaffleAutomationTests.PageObjects
         public static CmsSettingsWinners CmsSettingsWinners => GetPage<CmsSettingsWinners>();
         public static CmsSettingsReferrals CmsSettingsReferrals => GetPage<CmsSettingsReferrals>();
         public static CmsReports CmsReports => GetPage<CmsReports>();
+        public static Klaviyo Klaviyo => GetPage<Klaviyo>();
 
     }
 }

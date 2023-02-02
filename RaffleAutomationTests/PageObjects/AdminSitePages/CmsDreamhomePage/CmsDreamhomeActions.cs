@@ -1,5 +1,6 @@
 ﻿using NUnit.Allure.Steps;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using RaffleAutomationTests.Helpers;
 using RimuTec.Faker;
 using System;
@@ -28,7 +29,8 @@ namespace RaffleAutomationTests.PageObjects
                                                                       Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_4 + "\n" +
                                                                       Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_5 + "\n" +
                                                                       Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_6 + "\n" +
-                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_7));
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_7 + "\n" +
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_8));
 
             InputBox.ElementImage(inputMobileImage, 5, String.Concat(Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_1 + "\n" +
                                                                      Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_2 + "\n" +
@@ -36,25 +38,11 @@ namespace RaffleAutomationTests.PageObjects
                                                                      Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_4 + "\n" +
                                                                      Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_5 + "\n" +
                                                                      Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_6 + "\n" +
-                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_7));
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_7 + "\n" +
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_8));
 
             return this;
         }
-
-        //[AllureStep("Upload Dreamhome slider images")]
-        //public CmsDreamhome UploadImagesMobile()
-        //{
-        //    WaitUntil.WaitSomeInterval(250);
-        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_1);
-        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_2);
-        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_3);
-        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_4);
-        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_5);
-        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_6);
-        //    InputBox.ElementImage(inputMobileImage, 5, Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_7);
-
-        //    return this;
-        //}
 
         [AllureStep("Enter Title")]
         public CmsDreamhome EnterTitle()
@@ -272,9 +260,9 @@ namespace RaffleAutomationTests.PageObjects
             {
 
                 Button.Click(addOverviewBtn);
-                WaitUntil.WaitSomeInterval(250);
+                WaitUntil.WaitSomeInterval(450);
                 WaitUntil.CustomElementIsVisible(RowOverviewValue.Last());
-                WaitUntil.WaitSomeInterval(250);
+                WaitUntil.WaitSomeInterval(550);
                 InputBox.Element(RowOverviewValue[i], 5, RandomHelper.RandomNumber());
                 WaitUntil.WaitSomeInterval(200);
                 WaitUntil.CustomElementIsVisible(RowOverviewTitle.Last());
@@ -322,7 +310,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Price")]
         public CmsDreamhome EnterPrice()
         {
-            InputBox.Element(ticketPriceInput, 5, "0.99");
+            InputBox.Element(ticketPriceInput, 5, "2");
 
             return this;
         }
@@ -336,7 +324,81 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        public CmsDreamhome SetDiscountThreshold()
+        {
+            WaitUntil.CustomElementIsVisible(btnDiscountStepsToggle);
+            Button.Click(btnDiscountStepsToggle);
+            Button.Click(btnDiscountStepsRadio.LastOrDefault());
+            Button.Click(btnAddThresholds);
+            InputBox.Element(inputDiscountThreshold.FirstOrDefault(), 10, "15");
+            InputBox.Element(inputDiscountValue.FirstOrDefault(), 10, "1.666666666666");
+            InputBox.Element(inputDiscountThreshold.LastOrDefault(), 10, "16");
+            InputBox.Element(inputDiscountValue.LastOrDefault(), 10, "2");
+            return this;
+        }
+
+        public CmsDreamhome AddTicketsBundles()
+        {
+            WaitUntil.CustomElementIsVisible(btnAddBundles);
+            Button.Click(btnAddBundles);
+            Button.Click(btnAddBundles);
+            for(int i = 0; i < 4; i++)
+            {
+                if(i == 0)
+                {
+                    InputBox.Element(inputBundles[i], 10, "5");
+                }
+                else if (i == 1)
+                {
+                    InputBox.Element(inputBundles[i], 10, "15");
+                }
+                else if (i == 2)
+                {
+                    InputBox.Element(inputBundles[i], 10, "20");
+                }
+                else if (i == 3)
+                {
+                    InputBox.Element(inputBundles[i], 10, "50");
+                }
+
+            }
+
+            return this;
+        }
+
         #endregion
+
+        public CmsDreamhome EditDreamHome(string dreamhomeTitle)
+        {
+            WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(10))
+            {
+                PollingInterval = TimeSpan.FromMilliseconds(50)
+            };
+            try
+            {
+                wait.Until(e =>
+                {
+                    try
+                    {
+                        if (Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']")) 
+                        != null && Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']")).Enabled)
+                        {
+                            var btnEditDreamhome = Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']"));
+                            btnEditDreamhome.Click();
+                            return true;
+                        }
+                        return false;
+                    }
+                    catch (Exception) { return false; }
+
+                });
+            }
+            catch (NoSuchElementException) { }
+            catch (StaleElementReferenceException) { }
+
+            
+            return this;
+        }
 
     }
 }

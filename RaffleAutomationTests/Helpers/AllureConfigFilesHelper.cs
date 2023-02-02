@@ -31,7 +31,7 @@ namespace RaffleAutomationTests.Helpers
             return path;
         }
 
-        public static ConfigJson Json()
+        private static ConfigJson Json()
         {
             ConfigJson req = new()
             {

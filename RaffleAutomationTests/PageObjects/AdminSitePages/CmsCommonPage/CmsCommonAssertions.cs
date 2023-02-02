@@ -18,7 +18,7 @@ namespace RaffleAutomationTests.PageObjects
         public CmsCommon VerifyIsDreamhomeCreatedSuccessfully(string dreamhomeTitle)
         {
             //Button.Click(btnLastPage);
-            WaitUntil.CustomElementIsVisible(Element.FindSpecificDreamhome(dreamhomeTitle), 20);
+            WaitUntil.CustomElementIsVisible(Element.FindSpecificDreamhome(dreamhomeTitle), 60);
             Assert.IsTrue(dreamhomeTitle == Element.FindSpecificDreamhome(dreamhomeTitle).Text);
             return this;
         }

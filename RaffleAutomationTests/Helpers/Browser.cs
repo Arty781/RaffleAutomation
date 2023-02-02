@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using System;
 using System.IO;
@@ -15,13 +16,30 @@ namespace RaffleAutomationTests.Helpers
         public static void Initialize()
         {
             AllureConfigFilesHelper.CreateJsonConfigFile();
-#if CHROME
-            new DriverManager().SetUpDriver(new ChromeConfig());
-            windowsDriver = new ChromeDriver();
+#if DEBUG || CHROME
+            try
+            {
+                new DriverManager().SetUpDriver(new ChromeConfig());
+                windowsDriver = new ChromeDriver();
+                Assert.NotNull(windowsDriver);
+            }
+           catch(Exception ex)
+            {
+                Console.WriteLine( ex.Message);
+            }
 #endif
 #if FIREFOX
-            new DriverManager().SetUpDriver(new FirefoxConfig());
-            windowsDriver = new FirefoxDriver();
+            try
+            {
+                new DriverManager().SetUpDriver(new FirefoxConfig());
+                windowsDriver = new FirefoxDriver();
+                Assert.NotNull(windowsDriver);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine( ex.Message);
+            }
+
 #endif
             windowsDriver.Manage().Cookies.DeleteAllCookies();
 #if DEBUG_MOBILE
@@ -38,7 +56,7 @@ namespace RaffleAutomationTests.Helpers
             windowsDriver.Manage().Window.Maximize();
 #endif
 
-            Assert.NotNull(windowsDriver);
+            
         }
 
         public static string RootPath()

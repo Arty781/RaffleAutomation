@@ -1,5 +1,6 @@
 ﻿using NUnit.Allure.Steps;
 using RaffleAutomationTests.Helpers;
+using System.Linq;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -71,15 +72,16 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
-        //public Common ScrollToElement()
-        //{
-        //    new Actions(Browser._Driver)
-        //            .SendKeys(Keys.End)
-        //            .Build()
-        //            .Perform();
-
-        //    return this;
-        //}
+        [AllureStep("Close tab")]
+        public Common CloseTabAndWait30Seconds() 
+        {
+            Browser._Driver.SwitchTo().NewWindow(OpenQA.Selenium.WindowType.Tab);
+            Browser._Driver.SwitchTo().Window(Browser._Driver.WindowHandles.ToList().FirstOrDefault());
+            Browser._Driver.Close();
+            Browser._Driver.SwitchTo().Window(Browser._Driver.WindowHandles.ToList().FirstOrDefault());
+            WaitUntil.WaitSomeInterval(30000);
+            return this;
+        }
 
     }
 }

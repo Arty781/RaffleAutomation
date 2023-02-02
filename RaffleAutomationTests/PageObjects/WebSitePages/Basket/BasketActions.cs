@@ -1,5 +1,6 @@
 ﻿using NUnit.Allure.Steps;
 using RaffleAutomationTests.Helpers;
+using System;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -64,7 +65,7 @@ namespace RaffleAutomationTests.PageObjects
             InputBox.Element(inputCardNumber, 15, "4242424242424242");
             Browser._Driver.SwitchTo().DefaultContent();
             Browser._Driver.SwitchTo().Frame(framePaymentExpiry);
-            InputBox.Element(inputExpiryDate, 15, "07/26");
+            InputBox.Element(inputExpiryDate, 15, DateTime.Now.AddYears(1).ToString("MM'/'yy"));
             Browser._Driver.SwitchTo().DefaultContent();
             Browser._Driver.SwitchTo().Frame(framePaymentCvv);
             InputBox.Element(inputCvv, 15, "100");
@@ -85,7 +86,9 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Confirm purchase")]
         public Basket ConfirmPurchaseStage()
         {
+
             WaitUntil.CustomElementIsVisible(frameCheckout, 30);
+            WaitUntil.WaitSomeInterval(1000);
             Browser._Driver.SwitchTo().Frame(frameCheckout);
             InputBox.Element(inputPasswordCheckout, 15, "Checkout1!");
             Button.Click(btnContinueCheckout);

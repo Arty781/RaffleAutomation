@@ -1,27 +1,37 @@
-﻿using Newtonsoft.Json;
+﻿using Chilkat;
+using Newtonsoft.Json;
+using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
 using RaffleAutomationTests.APIHelpers.Web.SignIn;
 using RaffleAutomationTests.Helpers;
 using RestSharp;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace RaffleAutomationTests.APIHelpers.Web
 {
     public class CountdownRequestWeb
     {
-        public static CountdownResponseModelDreamHomeWeb? GetDreamHomeCountdown(SignInResponseModelWeb SignIn)
+        public static List<CountdownResponseModelDreamHomeWeb?> GetDreamHomeCountdown(SignInResponseModelWeb SignIn)
         {
-
-
-            var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest? request = new RestRequest("api/raffles/active/countdowns/", Method.Get);
-            request.AddHeaders(headers: Headers.COMMON);
-            request.AddHeader("authorization", $"Bearer {SignIn.Token}");
-
-            RestResponse response = restDriver.Execute(request);
-            string content = response.Content.Replace("[{", "{").Replace("}]", "}");
-            var countdownResponse = JsonConvert.DeserializeObject<CountdownResponseModelDreamHomeWeb>(content);
-
-            return countdownResponse;
+            HttpRequest req = new()
+            {
+                HttpVerb = "GET",
+                Path = $"/api/raffles/active/countdowns/",
+                ContentType = "application/json"
+            };
+            req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("authorization", $"Bearer {SignIn.Token}");
+            Http http = new();
+            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            if(http.LastMethodSuccess != true)
+                {
+                Debug.WriteLine(http.LastErrorText);
+            }
+            Debug.WriteLine("response message is " + "\r\n" + Convert.ToString(resp.BodyStr));
+            var response = JsonConvert.DeserializeObject<List<CountdownResponseModelDreamHomeWeb?>>(resp.BodyStr);
+            return response;
         }
 
         #region Weekly

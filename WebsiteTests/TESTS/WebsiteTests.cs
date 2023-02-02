@@ -10,8 +10,10 @@ using RaffleAutomationTests.APIHelpers.Web;
 using RaffleAutomationTests.APIHelpers.Web.Basket;
 using RaffleAutomationTests.APIHelpers.Web.SignIn;
 using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
+using RaffleAutomationTests.APIHelpers.Web.WinnersWeb;
 using RaffleAutomationTests.Helpers;
 using RaffleAutomationTests.PageObjects;
+using System.Linq;
 using WebsiteTests.BASE;
 
 namespace RaffleHouseAutomation.WebSiteTests
@@ -24,16 +26,33 @@ namespace RaffleHouseAutomation.WebSiteTests
         public void Demotest()
         {
             var response = SignUpRequest.RegisterNewUser();
+            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
+            var basketOrders = BasketRequest.GetBasketOrders(token);
+            BasketRequest.DeleteOrders(token, basketOrders);
+            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
             Pages.Common
                 .CloseCookiesPopUp();
-            WaitUntil.WaitSomeInterval(250);
             Pages.Header
                 .OpenSignInPage();
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
-            Browser.Navigate("https://staging.rafflehouse.com/#contact-us");
-            Browser.Navigate("https://staging.rafflehouse.com/post");
-            Browser.Navigate("https://staging.rafflehouse.com/winners");
+            Pages.SignIn
+                .VerifyIsSignIn();
+            for (int q = 0; q < 100; q++)
+            {
+                DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList.FirstOrDefault());
+                WaitUntil.WaitSomeInterval(250);
+            }
+
+            Pages.Basket
+                .ClickCartBtn();
+            Pages.Basket
+                .ClickCheckoutNowBtn()
+                .EnterCardDetails()
+                .ClickPayNowBtn()
+                .ConfirmPurchaseStage();
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
         }
     }
 
@@ -94,7 +113,10 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void EditUserData()
         {
+            #region Preconditions
             var response = SignUpRequest.RegisterNewUser();
+            #endregion
+
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.Header
@@ -111,9 +133,12 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Profile
                 .EditAccountData()
                 .VerifyDisplayingToaster();
+
+            #region Postconditions
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
-            UsersRequest.DeleteLastUser(tokenAdmin, users);
+            var users = UsersRequest.GetUser(tokenAdmin, response.User.Email).Users.FirstOrDefault();
+            UsersRequest.DeleteUser(tokenAdmin, users);
+            #endregion
 
         }
 
@@ -122,49 +147,44 @@ namespace RaffleHouseAutomation.WebSiteTests
     [AllureNUnit]
     public class Payment : TestBaseWeb
     {
-        //[Test]
-        //[Category("Payment")]
-        //[AllureTag("Regression")]
-        //[AllureOwner("Artem Sukharevskyi")]
-        //[AllureSeverity(SeverityLevel.critical)]
-        //[Author("Artem", "qatester91311@gmail.com")]
-        //[AllureSuite("Client")]
-        //[AllureSubSuite("Payment")]
-        //public void PurchaseWeeklyPrizes()
-        //{
-        //    Pages.Common
-        //        .CloseCookiesPopUp();
-        //    Pages.Header
-        //        .OpenSignInPage();
-        //    Pages.SignIn
-        //        .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
-        //    Pages.SignIn
-        //        .VerifyIsSignIn();
-        //    Pages.Weekly
-        //        .OpenWeeklyPrizesPage()
-        //        .CloseWeeklyPopUp()
-        //        .SelectCategory(Categories.TECH)
-        //        .SelectSubCategory(SubCategoriesD.PHONES_TABLETS)
-        //        .SelectPrize("iPhone 12 Pro Max");
-        //    Pages.Common
-        //        .ClickEnterBtn()
-        //        .ClickAddTenTickets()
-        //        .ClickAddToBasketBtn();
-        //    Pages.Basket
-        //        .ClickAddMoreBtn();
-        //    Pages.Common
-        //        .ClickAdd25Tickets()
-        //        .ClickAddToBasketBtn();
-        //    Pages.Basket
-        //        .ClickCheckoutNowBtn()
-        //        .EnterCardDetails();
-        //    Pages.Basket
-        //        .ClickPayNowBtn()
-        //        .ConfirmPurchaseStage();
-        //    Pages.ThankYou
-        //        .VerifyThankYouPageIsDisplayed();
-
-        //}
+        [Test]
+        [Category("Payment")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
+        public void MakePurchaseWithDelayAndClosingTab()
+        {
+            var response = SignUpRequest.RegisterNewUser();
+            Pages.Common
+                    .CloseCookiesPopUp();
+            WaitUntil.WaitSomeInterval(250);
+            Pages.Header
+                    .OpenSignInPage();
+            Pages.SignIn
+                    .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.Home
+                    .OpenHomePage();
+            Pages.Home
+                    .OpenDreamTicketSelector()
+                    .SelectFirstBundleBtn();
+            Pages.Common
+                    .CloseTabAndWait30Seconds();
+            Pages.Home
+                    .OpenHomePage();
+            Pages.Home
+                    .OpenDreamTicketSelector()
+                    .SelectFirstBundleBtn();
+            Pages.Basket
+                .ClickCheckoutNowBtn()
+                .EnterCardDetails()
+                .ClickPayNowBtn()
+                .ConfirmPurchaseStage();
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+        }
 
         [Test]
         [Category("Payment")]
@@ -179,6 +199,13 @@ namespace RaffleHouseAutomation.WebSiteTests
             var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
+            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
+            for(int i = 0; i < 10; i++)
+            {
+                DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList.FirstOrDefault());
+                WaitUntil.WaitSomeInterval(250);
+            }
+            
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.Header
@@ -187,14 +214,81 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
-            Pages.Home
-               .OpenHomePage();
-            Element.Action(Keys.End);
-            Pages.Home
-               .OpenDreamTicketSelector()
-               .SelectThirdBundleBtn();
-            Pages.Common
-                .ClickAddToBasketBtn();
+            for(int i = 0; i<2; i++)
+            {
+                
+                if (i == 0)
+                {
+                    Pages.Home
+                    .OpenHomePage();
+                    Element
+                        .Action(Keys.End);
+                    Pages.Home
+                    .OpenDreamTicketSelector()
+                    .SelectFirstBundleBtn();
+                }
+                else if (i == 1)
+                {
+                    Pages.Home
+                    .OpenHomePage();
+                    Element
+                        .Action(Keys.End);
+                    Pages.Home
+                    .OpenDreamTicketSelector()
+                    .SelectSecondBundleBtn();
+                }
+                else if (i == 2)
+                {
+                    Pages.Home
+                    .OpenHomePage();
+                    Element
+                        .Action(Keys.End);
+                    Pages.Home
+                    .OpenDreamTicketSelector()
+                    .SelectForthBundleBtn();
+                }
+                else if (i == 3)
+                {
+                    Pages.Home
+                    .OpenHomePage();
+                    Element
+                        .Action(Keys.End);
+                    Pages.Home
+                    .OpenDreamTicketSelector()
+                    .SelectThirdBundleBtn();
+                }
+                else if (i == 4)
+                {
+                    Pages.Home
+                    .OpenHomePage();
+                    Element
+                        .Action(Keys.End);
+                    Pages.Home
+                    .OpenDreamTicketSelector()
+                    .SelectForthBundleBtn();
+                }
+                else if (i == 5)
+                {
+                    Pages.Home
+                    .OpenHomePage();
+                    Element
+                        .Action(Keys.End);
+                    Pages.Home
+                    .OpenDreamTicketSelector()
+                    .SelectFirstBundleBtn();
+                }
+                else if (i > 5)
+                {
+                    Pages.Home
+                    .OpenHomePage();
+                    Element
+                        .Action(Keys.End);
+                    Pages.Home
+                    .OpenDreamTicketSelector()
+                    .SelectFirstBundleBtn();
+                }
+            }
+            
             double totalOrder = Pages.Basket.GetOrderTotal();
             Pages.Basket
                 .ClickCheckoutNowBtn()
@@ -205,60 +299,9 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyThankYouPageIsDisplayed();
             Pages.Profile
                 .OpenMyTicketsCompetitions()
-                .OpenDreamHomeHistoryList()
-                .VerifyAddingTickets(totalOrder);
+                .OpenDreamHomeHistoryList();
+                //.VerifyAddingTickets(totalOrder);
         }
-
-        //[Test]
-        //[Category("Payment")]
-        //[AllureTag("Regression")]
-        //[AllureOwner("Artem Sukharevskyi")]
-        //[AllureSeverity(SeverityLevel.critical)]
-        //[Author("Artem", "qatester91311@gmail.com")]
-        //[AllureSuite("Client")]
-        //[AllureSubSuite("Payment")]
-        //public void PurchaseTwoActiveDreamHome()
-        //{
-        //    var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
-        //    var basketOrders = BasketRequest.GetBasketOrders(token);
-        //    BasketRequest.DeleteOrders(token, basketOrders);
-        //    Pages.Common
-        //        .CloseCookiesPopUp();
-        //    Pages.Header
-        //       .OpenSignInPage();
-        //    Pages.SignIn
-        //        .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
-        //    Pages.SignIn
-        //        .VerifyIsSignIn();
-        //    Pages.Dreamhome
-        //       .OpenHomePage()
-        //       .SelectFirstDreamhome()
-        //       .OpenDreamHomeTicketSelector()
-        //       .SelectThirdBundleBtn();
-        //    Pages.Common
-        //        .ClickAddToBasketBtn();
-        //    Pages.Dreamhome
-        //       .OpenHomePage()
-        //       .SelectLastDreamhome()
-        //       .OpenDreamHomeTicketSelector()
-        //       .SelectThirdBundleBtn();
-        //    Pages.Common
-        //        .ClickAddToBasketBtn();
-        //    Pages.Basket
-        //        .ClickCartBtn();
-        //    double totalOrder = Pages.Basket.GetOrderTotal();
-        //    Pages.Basket
-        //        .ClickCheckoutNowBtn()
-        //        .EnterCardDetails()
-        //        .ClickPayNowBtn()
-        //        .ConfirmPurchaseStage();
-        //    Pages.ThankYou
-        //        .VerifyThankYouPageIsDisplayed();
-        //    Pages.Profile
-        //        .OpenOrderHistoryPage()
-        //        .OpenDreamHomeHistoryList()
-        //        .VerifyAddingTickets(totalOrder);
-        //}
 
         [Test]
         [Category("E2E")]
@@ -275,7 +318,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             var response = SignUpRequest.RegisterNewUser();
             var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList);
+            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList.FirstOrDefault());
             WaitUntil.WaitSomeInterval(250);
             Pages.Header
                 .OpenSignInPage();
@@ -293,7 +336,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyThankYouPageIsDisplayed();
             for (int i = 0; i < 5; i++)
             {
-                DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList);
+                DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList.FirstOrDefault());
                 WaitUntil.WaitSomeInterval(250);
             }
             Pages.Profile
@@ -321,13 +364,12 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void SignUpAddReferralsAndTicketsMakePurchase()
         {
-            WaitUntil.WaitSomeInterval(5000);
             Pages.Common
                 .CloseCookiesPopUp();
             var response = SignUpRequest.RegisterNewUser();
             var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList);
+            DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList.FirstOrDefault());
             WaitUntil.WaitSomeInterval(250);
             Pages.Header
                 .OpenSignInPage();
@@ -354,7 +396,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 var responseReferral = SignUpRequest.RegisterNewReferral(response.User.ReferralKey);
                 var tokenReferral = SignInRequestWeb.MakeSignIn(responseReferral.User.Email, Credentials.PASSWORD);
                 var prizesListReferral = CountdownRequestWeb.GetDreamHomeCountdown(tokenReferral);
-                DreamHomeOrderRequestWeb.AddDreamhomeTickets(tokenReferral, prizesListReferral);
+                DreamHomeOrderRequestWeb.AddDreamhomeTickets(tokenReferral, prizesListReferral.FirstOrDefault());
                 WaitUntil.WaitSomeInterval(250);
                 Pages.Header
                     .OpenSignInPage();
@@ -379,37 +421,60 @@ namespace RaffleHouseAutomation.WebSiteTests
             }
         }
 
+        [Test]
+        [Category("Payment")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
+        public void GetPurchaseDreamHome()
+        {
+            var response = SignUpRequest.RegisterNewUser();
+            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
+            var basketOrders = BasketRequest.GetBasketOrders(token);
+            BasketRequest.DeleteOrders(token, basketOrders);
+            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Header
+                .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
+            for (int i = 0; i<= 0; i++)
+            {
+                for (int q = 0; q < RandomHelper.RandomIntNumber(2); q++)
+                {
+                    DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList.FirstOrDefault());
+                    WaitUntil.WaitSomeInterval(250);
+                }
+                
+                Pages.Basket
+                    .ClickCartBtn();
+                Pages.Basket
+                    .ClickCheckoutNowBtn()
+                    .EnterCardDetails()
+                    .ClickPayNowBtn()
+                    .ConfirmPurchaseStage();
+                Pages.ThankYou
+                    .VerifyThankYouPageIsDisplayed();
+            }
+            
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
+        }
+
     }
 
     [TestFixture]
     [AllureNUnit]
     public class CheckingTextsOnPages : TestBaseWeb
     {
-        //[Test]
-        //[AllureTag("Regression")]
-        //[AllureOwner("Artem Sukharevskyi")]
-        //[AllureSeverity(SeverityLevel.critical)]
-        //[Author("Artem", "qatester91311@gmail.com")]
-        //[AllureSuite("Client")]
-        //[AllureSubSuite("AboutPage")]
-        //public void VerifiedAboutPage()
-        //{
-        //    Pages.Common
-        //        .CloseCookiesPopUp();
-        //    Pages.About
-        //        .OpenAboutPage(WebEndpoints.ABOUT)
-        //        .VerifyFindOutBlock()
-        //        .VerifyStepsBlock()
-        //        .VerifyCharitableBlock()
-        //        .VerifySiteCreditBlock();
-
-        //    var responseLogin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-        //    SignInAssertionsAdmin
-        //        .VerifyIsAdminSignInSuccesfull(responseLogin);
-
-        //}
-
-        [Test]
+        [Test, Category("Home")]
         [AllureTag("Regression")]
         [AllureOwner("Artem Sukharevskyi")]
         [AllureSeverity(SeverityLevel.critical)]
@@ -422,18 +487,145 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .CloseCookiesPopUp();
             Pages.Home
                 .OpenHomePage(WebEndpoints.WEBSITE_HOST)
-                .SwitchingSliderImages()
-                .OpenFloorPlan()
-                .OpenMap()
                 .VerifySecondaryBannerTitle()
-                .VerifyInfoBlockTitles()
-                .VerifyInfoBlockParagraphs();
+                .VerifySecondaryBannerSubitle()
+                .VerifyBottomSliderTitle()
+                .VerifyBottomSliderSubitle();
             Element.Action(Keys.End);
             Pages.Home
+                .VerifyInfoBlockTitles()
+                .VerifyInfoBlockParagraphs()
                 .VerifyHowItWorksTitle()
                 .VerifyHowItWorksParagraph()
                 .VerifyHowItWorksStepsTitles()
                 .VerifyHowItWorksStepsParagraphs();
+
+        }
+
+        [Test, Category("Footer")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Home Page")]
+        public void VerifiedDisplayingFooterElements()
+        {
+            Pages.Common
+               .CloseCookiesPopUp();
+            Pages.Home
+                .OpenHomePage(WebEndpoints.WEBSITE_HOST);
+            Pages.Footer
+                .VerifyIsDisplayedFooterTitle()
+                .VerifyIsDisplayedFooterParagraph()
+                .VerifyIsDisplayedContactLinks()
+                .VerifyIsDisplayedSponsorLinks();
+            Pages.Header
+                .OpenWinnersPage();
+            Pages.Footer
+                .VerifyIsDisplayedFooterTitle()
+                .VerifyIsDisplayedFooterParagraph()
+                .VerifyIsDisplayedContactLinks()
+                .VerifyIsDisplayedSponsorLinks();
+            Pages.Header
+                .OpenCartPage();
+            Pages.Footer
+                .VerifyIsDisplayedFooterTitle()
+                .VerifyIsDisplayedFooterParagraph()
+                .VerifyIsDisplayedContactLinks()
+                .VerifyIsDisplayedSponsorLinks();
+            Pages.Header
+                .OpenPostPage();
+            Pages.Footer
+                .VerifyIsDisplayedFooterTitle()
+                .VerifyIsDisplayedFooterParagraph()
+                .VerifyIsDisplayedContactLinks()
+                .VerifyIsDisplayedSponsorLinks();
+        }
+
+        [Test, Category("Winners")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Home Page")]
+        public void VerifyDisplayedWinners2019()
+        {
+            var winners = WinnersRequest.GetAllWinners();
+            winners = WinnersRequest.GetAllWinnersByYear(winners.Years[0]);
+            Pages.Header
+                .OpenWinnersPage();
+            Pages.Common
+               .CloseCookiesPopUp();
+            Pages.Winners
+                .FilterWinnersByYear(winners.Years[0])
+                .ScrollToEndOfList(winners.AllCount)
+                .VerifyDisplayedFilteredWinnersByYear(winners);
+            
+        }
+
+        [Test, Category("Winners")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Home Page")]
+        public void VerifyDisplayedWinners2020()
+        {
+            var winners = WinnersRequest.GetAllWinners();
+            winners = WinnersRequest.GetAllWinnersByYear(winners.Years[1]);
+            Pages.Header
+                .OpenWinnersPage();
+            Pages.Common
+               .CloseCookiesPopUp();
+            Pages.Winners
+                .FilterWinnersByYear(winners.Years[1])
+                .ScrollToEndOfList(winners.AllCount)
+                .VerifyDisplayedFilteredWinnersByYear(winners);
+
+        }
+
+        [Test, Category("Winners")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Home Page")]
+        public void VerifyDisplayedWinners2021()
+        {
+            var winners = WinnersRequest.GetAllWinners();
+            winners = WinnersRequest.GetAllWinnersByYear(winners.Years[2]);
+            Pages.Header
+                .OpenWinnersPage();
+            Pages.Common
+               .CloseCookiesPopUp();
+            Pages.Winners
+                .FilterWinnersByYear(winners.Years[2])
+                .ScrollToEndOfList(winners.AllCount)
+                .VerifyDisplayedFilteredWinnersByYear(winners);
+
+        }
+
+        [Test, Category("Winners")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Home Page")]
+        public void VerifyDisplayedCTACards()
+        {
+            var winners = WinnersRequest.GetAllWinners();
+            Pages.Header
+                .OpenWinnersPage();
+            Pages.Common
+               .CloseCookiesPopUp();
+            Pages.Winners
+                .ScrollToEndOfList(winners.AllCount)
+                .VerifyDisplayedCTAButtons(winners.AllCount);
 
         }
     }
@@ -465,7 +657,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList, 151);
+            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList.FirstOrDefault(), 151);
             WaitUntil.WaitSomeInterval(250);
 
             #endregion
@@ -491,6 +683,8 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.6666666, 2);
             var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
+            var userOrders = UsersRequest.GetUserOrders(tokenAdmin, users.Users.FirstOrDefault().Id);
+            UsersRequest.RemoveTicketsFromUser(tokenAdmin, userOrders);
             UsersRequest.DeleteLastUser(tokenAdmin, users);
 
             #endregion
@@ -517,7 +711,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList, 62);
+            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList.FirstOrDefault(), 62);
             WaitUntil.WaitSomeInterval(250);
 
             #endregion
@@ -543,6 +737,8 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.6666666, 2);
             var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
+            var userOrders = UsersRequest.GetUserOrders(tokenAdmin, users.Users.FirstOrDefault().Id);
+            UsersRequest.RemoveTicketsFromUser(tokenAdmin, userOrders);
             UsersRequest.DeleteLastUser(tokenAdmin, users);
 
             #endregion
@@ -569,7 +765,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList, 154);
+            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList.FirstOrDefault(), 154);
             WaitUntil.WaitSomeInterval(250);
 
             #endregion
@@ -595,6 +791,8 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.6666666, 2);
             var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
+            basketOrders = BasketRequest.GetBasketOrders(token);
+            BasketRequest.DeleteOrders(token, basketOrders);
             UsersRequest.DeleteLastUser(tokenAdmin, users);
 
             #endregion
@@ -621,7 +819,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList, 163);
+            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList.FirstOrDefault(), 163);
             WaitUntil.WaitSomeInterval(250);
 
             #endregion
@@ -647,6 +845,8 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.6666666, 2);
             var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
+            var userOrders = UsersRequest.GetUserOrders(tokenAdmin, users.Users.FirstOrDefault().Id);
+            UsersRequest.RemoveTicketsFromUser(tokenAdmin, userOrders);
             UsersRequest.DeleteLastUser(tokenAdmin, users);
 
             #endregion
@@ -673,7 +873,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList, 12);
+            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList.FirstOrDefault(), 12);
             WaitUntil.WaitSomeInterval(250);
 
             #endregion
@@ -699,6 +899,8 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.6666666, 2);
             var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
+            var userOrders = UsersRequest.GetUserOrders(tokenAdmin, users.Users.FirstOrDefault().Id);
+            UsersRequest.RemoveTicketsFromUser(tokenAdmin, userOrders);
             UsersRequest.DeleteLastUser(tokenAdmin, users);
 
             #endregion

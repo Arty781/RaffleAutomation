@@ -161,7 +161,26 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.Id, Using = "isActiveDiscount")]
         public IWebElement isActiveDiscountToggle;
 
+        [FindsBy(How=How.XPath,Using = "//h6[contains(text(),'Discount')]/parent::div//input[@type='checkbox']")]
+        public IWebElement btnDiscountStepsToggle;
 
+        [FindsBy(How = How.XPath, Using = "//h6[contains(text(),'Discount')]/parent::div//input[@type='radio']")]
+        public IList<IWebElement> btnDiscountStepsRadio;
+
+        [FindsBy(How=How.XPath,Using = "//label[contains(text(),'threshold')]/parent::div//input")]
+        public IList<IWebElement> inputDiscountThreshold;
+
+        [FindsBy(How = How.XPath, Using = "//label[contains(text(),'£')]/parent::div//input")]
+        public IList<IWebElement> inputDiscountValue;
+
+        [FindsBy(How=How.XPath,Using = "//h6[contains(text(),'Tickets Bundles')]/parent::div//*[@class='MuiSvgIcon-root add-discount']")]
+        public IWebElement btnAddBundles;
+
+        [FindsBy(How = How.XPath, Using = "//h6[contains(text(),'Discount')]/parent::div//*[@class='MuiSvgIcon-root add-discount']")]
+        public IWebElement btnAddThresholds;
+
+        [FindsBy(How = How.XPath, Using = "//h6[contains(text(),'Tickets Bundles')]/parent::div//input")]
+        public IList<IWebElement> inputBundles;
 
         #endregion
 

@@ -59,6 +59,9 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//div[contains(text(), 'Profile info update success')]")]
         public IWebElement SuccessUpdateDialog;
 
+        [FindsBy(How=How.Id,Using = "outlined-basic-helper-text")]
+        public IWebElement textErrorMessage;
+
         #endregion
 
         #region Order History

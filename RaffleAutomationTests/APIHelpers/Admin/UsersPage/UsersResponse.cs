@@ -58,7 +58,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
         public List<User> Users { get; set; }
 
         [JsonProperty("allCount")]
-        public long AllCount { get; set; }
+        public int AllCount { get; set; }
     }
 
     public class User

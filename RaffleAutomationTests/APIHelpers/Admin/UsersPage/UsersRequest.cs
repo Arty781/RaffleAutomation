@@ -38,6 +38,35 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             return JsonConvert.SerializeObject(requestModel);
         }
 
+        public static string JsonBodyFilterUser(int pageCount, int usersCount)
+        {
+            var s = (pageCount / usersCount) * usersCount;
+            var d = pageCount - s;
+            UsersRequestModel requestModel = new()
+            {
+                Filter = new Filter()
+                {
+                    Blocked = "All",
+                    SearchName = "",
+                    SearchEmail = "",
+                    SearchPhone = "",
+                    SearchSurname = ""
+                },
+                Pagination = new Pagination()
+                {
+                    Page = pageCount / usersCount,
+                    PerPage = usersCount + d
+                },
+                Sort = new Sort()
+                {
+                    Field = "_id",
+                    Order = "asc"
+                }
+            };
+
+            return JsonConvert.SerializeObject(requestModel);
+        }
+
         public static string JsonBody()
         {
             UserOrdersRequestModel requestModel = new()
@@ -71,7 +100,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             {
                 Competition = "raffle",
                 PrizeId = prizeId,
-                TicketsCount = RandomHelper.RandomIntNumber()
+                TicketsCount = RandomHelper.RandomIntNumber(100)
             };
 
             return JsonConvert.SerializeObject(requestModel);
@@ -101,7 +130,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
                 {
                     requestModel = new()
                     {
-                        Amount = RandomHelper.RandomIntNumber(),
+                        Amount = RandomHelper.RandomIntNumber(100),
                         CreatedDate = createDateOneDay,
                         ExpiredDate = DateTime.Parse(createDateOneDay).AddDays(30).ToString("yyyy-MM-dd'T'HH:mm:ss.fff'z'"),
                         Description = Lorem.Sentence()
@@ -112,7 +141,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
                 {
                     requestModel = new()
                     {
-                        Amount = RandomHelper.RandomIntNumber(),
+                        Amount = RandomHelper.RandomIntNumber(100),
                         CreatedDate = createDateThreeDays,
                         ExpiredDate = DateTime.Parse(createDateThreeDays).AddDays(30).ToString("yyyy-MM-dd'T'HH:mm:ss.fff'z'"),
                         Description = Lorem.Sentence()
@@ -123,7 +152,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
                 {
                     requestModel = new()
                     {
-                        Amount = RandomHelper.RandomIntNumber(),
+                        Amount = RandomHelper.RandomIntNumber(100),
                         CreatedDate = createDateSevenDays,
                         ExpiredDate = DateTime.Parse(createDateSevenDays).AddDays(30).ToString("yyyy-MM-dd'T'HH:mm:ss.fff'z'"),
                         Description = Lorem.Sentence()
@@ -141,7 +170,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
                 {
                     requestModel = new()
                     {
-                        Amount = RandomHelper.RandomIntNumber(),
+                        Amount = RandomHelper.RandomIntNumber(100),
                         CreatedDate = createDateOneDay,
                         ExpiredDate = DateTime.Parse(createDateOneDay).AddDays(30).ToString("yyyy-MM-dd'T'HH:mm:ss.fff'z'"),
                         Description = Lorem.Sentence()
@@ -152,7 +181,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
                 {
                     requestModel = new()
                     {
-                        Amount = RandomHelper.RandomIntNumber(),
+                        Amount = RandomHelper.RandomIntNumber(100),
                         CreatedDate = createDateThreeDays,
                         ExpiredDate = DateTime.Parse(createDateThreeDays).AddDays(30).ToString("yyyy-MM-dd'T'HH:mm:ss.fff'z'"),
                         Description = Lorem.Sentence()
@@ -163,7 +192,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
                 {
                     requestModel = new()
                     {
-                        Amount = RandomHelper.RandomIntNumber(),
+                        Amount = RandomHelper.RandomIntNumber(100),
                         CreatedDate = createDateSevenDays,
                         ExpiredDate = DateTime.Parse(createDateSevenDays).AddDays(30).ToString("yyyy-MM-dd'T'HH:mm:ss.fff'z'"),
                         Description = Lorem.Sentence()
@@ -176,7 +205,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             return JsonConvert.SerializeObject(requestModel);
         }
 
-        public static UsersResponse GetUser(SignInResponseModelAdmin token, string email)
+        public static UsersResponse? GetUser(SignInResponseModelAdmin token, string email)
         {
             HttpRequest req = new()
             {
@@ -198,11 +227,57 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             }
             Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
 
-            var response = JsonConvert.DeserializeObject<UsersResponse>(resp.BodyStr);
+            var response = JsonConvert.DeserializeObject<UsersResponse?>(resp.BodyStr);
             return response;
         }
 
-        public static OrdersResponseModel GetUserOrders(SignInResponseModelAdmin token, string userId)
+        public static UsersResponse? GetLastUsers(SignInResponseModelAdmin token, int usersCount)
+        {
+            HttpRequest req = new()
+            {
+                HttpVerb = "POST",
+                Path = $"api/users/get",
+                ContentType = "application/json"
+            };
+            req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("authorization", $"Bearer {token.Token}");
+            req.LoadBodyFromString(JsonBodyFilterUser(110, 10), charset: "utf-8");
+
+            Http http = new();
+
+            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Debug.WriteLine(http.LastErrorText);
+            }
+            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+            var response = JsonConvert.DeserializeObject<UsersResponse>(resp.BodyStr);
+            req = new()
+            {
+                HttpVerb = "POST",
+                Path = $"api/users/get",
+                ContentType = "application/json"
+            };
+            req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("authorization", $"Bearer {token.Token}");
+            req.LoadBodyFromString(JsonBodyFilterUser(response.AllCount, usersCount), charset: "utf-8");
+
+            http = new();
+
+            resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Debug.WriteLine(http.LastErrorText);
+            }
+            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+
+            response = JsonConvert.DeserializeObject<UsersResponse?>(resp.BodyStr);
+            return response;
+        }
+
+        public static OrdersResponseModel? GetUserOrders(SignInResponseModelAdmin token, string userId)
         {
             HttpRequest req = new()
             {
@@ -221,12 +296,12 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
                 Debug.WriteLine(http.LastErrorText);
             }
             Debug.WriteLine("response message is " + "\r\n" + Convert.ToString(resp.BodyStr));
-            var response = JsonConvert.DeserializeObject<OrdersResponseModel>(resp.BodyStr);
+            var response = JsonConvert.DeserializeObject<OrdersResponseModel?>(resp.BodyStr);
 
             return response;
         }
 
-        public static AddTicketsResponseModel AddDreamhomeTicketsToUser(SignInResponseModelAdmin token, string userId, string prizeId)
+        public static AddTicketsResponseModel? AddDreamhomeTicketsToUser(SignInResponseModelAdmin token, string userId, string prizeId)
         {
             HttpRequest req = new()
             {
@@ -245,13 +320,13 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
                 Debug.WriteLine(http.LastErrorText);
             }
             Debug.WriteLine("response message is " + "\r\n" + Convert.ToString(resp.BodyStr));
-            var response = JsonConvert.DeserializeObject<AddTicketsResponseModel>(resp.BodyStr);
+            var response = JsonConvert.DeserializeObject<AddTicketsResponseModel?>(resp.BodyStr);
             return response;
         }
 
-        public static AddCreditsResponseModel AddCreditsToUser(SignInResponseModelAdmin token, string userId, string nowOrTomorrow)
+        public static AddCreditsResponseModel? AddCreditsToUser(SignInResponseModelAdmin token, string userId, string nowOrTomorrow)
         {
-            AddCreditsResponseModel response = null;
+            AddCreditsResponseModel? response = null;
             for (int i = 0; i < 3; i++)
             {
                 HttpRequest req = new()
@@ -271,7 +346,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
                     Debug.WriteLine(http.LastErrorText);
                 }
                 Debug.WriteLine("response message is " + "\r\n" + Convert.ToString(resp.BodyStr));
-                response = JsonConvert.DeserializeObject<AddCreditsResponseModel>(resp.BodyStr);
+                response = JsonConvert.DeserializeObject<AddCreditsResponseModel?>(resp.BodyStr);
             }
             return response;
         }
