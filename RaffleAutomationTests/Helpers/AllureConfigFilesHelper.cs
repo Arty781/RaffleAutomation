@@ -86,7 +86,7 @@
             }
             string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json";
 
-            using (StreamWriter file = File.CreateText(mainpath))
+            using (StreamWriter file = System.IO.File.CreateText(mainpath))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 //serialize object directly into file stream

@@ -8,7 +8,7 @@ namespace RaffleAutomationTests.PageObjects
         public SignIn EnterLoginAndPass(string login, string password)
         {
 
-            WaitUntil.CustomElementIsClickable(inputLogin, 3);
+            WaitUntil.CustomElementIsVisible(inputLogin, 3);
 
             InputBox.Element(inputLogin, 10, login);
             InputBox.Element(inputPassword, 10, password);

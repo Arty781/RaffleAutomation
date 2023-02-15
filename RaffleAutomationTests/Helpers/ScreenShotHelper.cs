@@ -22,9 +22,9 @@
         {
             if (!Directory.Exists(Path.Combine(file, "..\\")))
             {
-                if (File.Exists(file))
+                if (System.IO.File.Exists(file))
                 {
-                    File.Delete(file);
+                    System.IO.File.Delete(file);
                 }
                 Directory.Delete(Path.Combine(file, "..\\"));
             }

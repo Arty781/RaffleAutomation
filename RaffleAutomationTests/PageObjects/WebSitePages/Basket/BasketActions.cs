@@ -66,7 +66,7 @@
             Browser._Driver.SwitchTo().Frame(framePaymentCvv);
             InputBox.Element(inputCvv, 15, "100");
             Browser._Driver.SwitchTo().DefaultContent();
-            WaitUntil.CustomElementIsClickable(btnPay, 5);
+            WaitUntil.CustomElementIsVisible(btnPay, 5);
 
             return this;
         }

@@ -6,7 +6,7 @@
         private static TelegramBotClient? _clientM;
         private static readonly string _id = "595478648";
 
-        public static async Task SendMessage()
+        public static async System.Threading.Tasks.Task SendMessage()
         {
             _clientM = new TelegramBotClient(token);
             string filePath = ScreenShotHelper.MakeScreenShot();
