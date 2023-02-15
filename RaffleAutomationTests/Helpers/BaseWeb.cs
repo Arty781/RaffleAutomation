@@ -1,8 +1,4 @@
-﻿using NUnit.Allure.Core;
-using NUnit.Framework;
-using NUnit.Framework.Interfaces;
-
-namespace RaffleAutomationTests.Helpers
+﻿namespace RaffleAutomationTests.Helpers
 {
     [AllureNUnit]
     public class BaseWeb

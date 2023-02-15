@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using RaffleAutomationTests.Helpers;
-using RestSharp;
-
-namespace RaffleAutomationTests.APIHelpers.Admin
+﻿namespace RaffleAutomationTests.APIHelpers.Admin
 {
     public class SignInRequestAdmin
     {

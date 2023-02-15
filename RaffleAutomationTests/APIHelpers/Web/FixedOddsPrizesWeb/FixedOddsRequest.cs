@@ -1,11 +1,4 @@
-﻿using Newtonsoft.Json;
-using RaffleAutomationTests.APIHelpers.Web.SignIn;
-using RaffleAutomationTests.Helpers;
-using RestSharp;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb
+﻿namespace RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb
 {
     public class FixedOddsRequest
     {

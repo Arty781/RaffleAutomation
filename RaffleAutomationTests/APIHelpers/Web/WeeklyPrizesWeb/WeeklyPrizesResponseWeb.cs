@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace RaffleAutomationTests.APIHelpers.Web.Weekly
+﻿namespace RaffleAutomationTests.APIHelpers.Web.Weekly
 {
     public partial class CreateWeeklyPrizeOrderRequest
     {

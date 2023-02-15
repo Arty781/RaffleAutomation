@@ -1,11 +1,4 @@
-﻿using Chilkat;
-using Newtonsoft.Json;
-using RaffleAutomationTests.Helpers;
-using RimuTec.Faker;
-using System;
-using System.Diagnostics;
-
-namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
+﻿namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
 {
     public class SignUpRequest
     {

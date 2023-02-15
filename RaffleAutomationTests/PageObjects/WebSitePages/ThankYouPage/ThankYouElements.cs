@@ -1,7 +1,4 @@
-﻿using OpenQA.Selenium;
-using SeleniumExtras.PageObjects;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class ThankYou
     {

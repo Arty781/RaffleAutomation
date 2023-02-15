@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using RaffleAutomationTests.Helpers;
-using RestSharp;
-
-namespace RaffleAutomationTests.APIHelpers.Web.SignIn
+﻿namespace RaffleAutomationTests.APIHelpers.Web.SignIn
 {
     public class SignInRequestWeb
     {

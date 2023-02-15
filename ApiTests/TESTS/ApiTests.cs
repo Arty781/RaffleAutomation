@@ -49,7 +49,7 @@ namespace API
             {
                 if (user.Email.Contains("@putsbox.com"))
                 {
-                    UsersRequest.DeleteUser(tokenAdmin, user);
+                    UsersRequest.DeleteUser(tokenAdmin, user.Id);
                 }
 
             }
@@ -57,7 +57,7 @@ namespace API
         }
 
         [Test]
-        public static void Reristerreferrals()
+        public static void Registerreferrals()
         {
             var response = SignUpRequest.RegisterNewUser();
             for (int i = 0; i < 10; i++)

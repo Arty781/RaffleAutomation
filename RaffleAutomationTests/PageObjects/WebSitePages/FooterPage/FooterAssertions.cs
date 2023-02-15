@@ -1,15 +1,11 @@
-﻿using NUnit.Framework;
-using RaffleAutomationTests.Helpers;
-using System.Linq;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class Footer
     {
         public Footer VerifyIsDisplayedFooterTitle()
         {
             WaitUntil.CustomElementIsVisible(textTitleFooter);
-            Assert.IsTrue(textTitleFooter.Text.ToLower() == FooterText.FOOTER_TITLE.ToLower(), string.Concat("\"", textTitleFooter.Text,"\""," not matched with ", FooterText.FOOTER_TITLE));
+            Assert.IsTrue(textTitleFooter.Text.ToLower() == FooterText.FOOTER_TITLE.ToLower(), string.Concat("\"", textTitleFooter.Text, "\"", " not matched with ", FooterText.FOOTER_TITLE));
 
             return this;
         }
@@ -25,11 +21,11 @@ namespace RaffleAutomationTests.PageObjects
         public Footer VerifyIsDisplayedContactLinks()
         {
             WaitUntil.CustomElementIsVisible(textLinkContactsFooter.FirstOrDefault());
-            for(int i = 0; i < textLinkContactsFooter.Count; i++)
+            for (int i = 0; i < textLinkContactsFooter.Count; i++)
             {
                 Assert.IsTrue(textLinkContactsFooter[i].Text.ToLower() == FooterText.FOOTER_CONTACTS_LINKS[i].ToLower(), string.Concat("\"", textLinkContactsFooter[i].Text, "\"", " not matched with ", FooterText.FOOTER_CONTACTS_LINKS[i]));
             }
-            
+
 
             return this;
         }

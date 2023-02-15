@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace RaffleAutomationTests.APIHelpers.Web
+﻿namespace RaffleAutomationTests.APIHelpers.Web
 {
 
     public class DreamHomeOrderRequestModel

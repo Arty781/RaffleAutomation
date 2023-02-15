@@ -1,9 +1,4 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
-using RaffleAutomationTests.Helpers;
-using System.Linq;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class CmsLifestylePrizes
     {

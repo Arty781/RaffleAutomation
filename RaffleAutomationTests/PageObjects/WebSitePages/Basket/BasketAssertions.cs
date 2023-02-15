@@ -1,7 +1,4 @@
-﻿using RaffleAutomationTests.Helpers;
-using System;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class Basket
     {

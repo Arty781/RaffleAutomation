@@ -1,8 +1,4 @@
-﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-
-namespace RaffleAutomationTests.Helpers
+﻿namespace RaffleAutomationTests.Helpers
 {
 
 #if DEBUG || CHROME || FIREFOX || DEBUG_MOBILE
@@ -125,43 +121,41 @@ public class WebEndpoints
 
     public class HomeTexts
     {
-        public static readonly string SECONDARY_BANNER_TITLE = "Win This Dream Home Worth More Than £2.5 Million";
-        public static readonly string SECONDARY_BANNER_SUBTITLE = "Plus £1 million in bonus cash-prizes to be won by four lucky customers! Enter today for your chance to win.";
+        public static readonly string SECONDARY_BANNER_TITLE = "Win This Dream Home Worth More Than £2 Million";
+        public static readonly string SECONDARY_BANNER_SUBTITLE = "Plus £1 million in early bird cash-prizes to be won by four lucky customers! Enter today for your chance to win.";
+
         public static readonly string BOTTOM_SLIDER_TITLE = "Let’s Take A Closer Look At Your Dream Home";
         public static readonly List<string> BOTTOM_SLIDER_SUBTITLE = new()
         {
-            "Renovated and furnished to the highest standard & located in London’s Upminster, this Dream Home boasts 5,800 sqft over three floors, two large gardens to enjoy those lazy days in." ,
-            "You'll be the envy of all your friends – who get to enjoy private visitor parking when they come over.",
-            "It’s time to quit the rat race and put your feet up." 
+            "Built to the highest standard and nestled in Ovingdean, a stone’s throw from Brighton and the South Downs National Park, this luxury and bespoke Dream Home boasts a private courtyard and woodland to enjoy those lazy days in." ,
+            "It’s time to quit the rat race and put your feet up."
         };
 
         public static readonly List<string> TITLES_INFO_BLOCKS = new()
         {
-            "This home is what dreams are made of",
-            "Move in immediately. Furnishings included",
+            "This Home Is What Dreams Are Made Of; Meet The Orchard",
+            "Move In Immediately. Furnishings Included",
             "Location, location, location",
             "No mortgage. No Stamp Duty. No strings attached",
             "Dream Big. Do Good",
             "Enter Now To Win A £250,000 Early Bird Bonus Prize"
         };
-        public static readonly string[] PARAGRAPHS_INFO_BLOCKS =
+        public static readonly List<string> PARAGRAPHS_INFO_BLOCKS = new()
         {
-            "A Dream Home prize worth more than £2.5 million, with £250,000 to help start your new life. Nestled in the London borough of Havering, Bonham Grange is a boutique new development and a sight to behold.",
-            "A beautifully built six-bedroom, six-bathroom house over nearly 6,000 sqft with manicured gardens within a private gated community." ,
+            "A Dream Home prize worth more than £2 million, with £100,000 to help start your new life. Or a tax-free alternative of £2 million cash.",
+            "The Orchard is a luxury and contemporary four-bedroom house with private gardens and woodland on England’s south coast." ,
             "Your Dream Home is here.",
-            "The property comes fully furnished with more than £100,000 worth of dramatic and sublime home décor from leading interior design house, Alexander James." ,
-            "You'll be putting your feet up in no time, enjoying a glass of wine in pure opulence.",
-            "This sumptuous Dream Home can be found in London, a hop, skip, jump, and just 20 minutes from the centre of our great country’s capital.",
-            "The best restaurants in the world and exceptional shopping will become an everyday staple while you enjoy your new mortgage-free life and the £250,000 tax-free bonus.",
-            "You won't pay a penny more than your ticket to win. There's no Stamp Duty to pay and you'd own the freehold outright. We also cover any conveyancing fees as well.", 
-            "Or, you can choose to take the £2.5 million tax-free alternative.",
-            "It's time to dream big and do good, our 7th Dream Home competition has arrived.",
-            "Every time you enter, you’re supporting the Great Ormond Street Hospital. Every day, about 600 children and young people from across the UK arrive for life-changing treatments." ,
-            "Young lives hang in the balance as patients, families and staff battle the most complex illnesses. The brightest minds come together to achieve pioneering medical breakthroughs that change the lives of thousands of children – and change the world.",
+            "We want to make the winner’s journey that much more exciting by providing a further £100,000 to furnish the property as you see fit." ,
+            "We’ll set you up with world renowned and leading interior design house, Alexander James, to fully kit out your new Dream Home with dramatic and sublime home décor.",
+            "This sublime Dream Home can be found in Ovingdean, a hop, skip and jump from our country’s summer capital, Brighton.",
+            "The Orchard is surrounded by private woodland, the South Downs, and England’s great countryside, which are yours to enjoy in your new mortgage-free life.",
+            "You won't pay a penny more than your ticket to win. There's no Stamp Duty to pay and you'd own the freehold outright. We also cover any conveyancing fees as well.",
+            "Or you can choose to take the £2 million tax-free cash alternative. It's time to dream big and do good, our 7th Dream Home competition has arrived.",
+            "Every time you enter, you’ll be supporting the Great Ormond Street Hospital, which sees about 600 children and young people from across the UK arrive for life-changing treatments every single day.",
             "This extraordinary hospital has always depended on charitable support, and you can make a difference today by supporting them just by buying a ticket to win your Dream Home.",
             "Enter today for your chance to win your slice of £1 million in bonus, early bird prizes as well.",
-            "Every time you buy Dream Home tickets, every single one of them will be entered into all upcoming £250,000 draws - and there are four of these before before the big £2.5 million Dream Home competition comes to a close!",
-            "That's a total prize pool worth more than £3.5 million. The time to dream big is today."
+            "Every time you buy Dream Home tickets, every single one of them will be entered into all upcoming £250,000 draws - and there are four of these before the big £2 million Dream Home competition ends!",
+            "That's a total prize pool worth more than £3 million. The time to dream big is today."
         };
 
         public static readonly string HOW_IT_WORKS_TITLE = "How It Works";
@@ -173,7 +167,6 @@ public class WebEndpoints
             "Make an account",
             "More than just a ticket"
         };
-
         public static readonly string[] PARAGRAPHS_STEPS =
         {
             "Select which ticket bundle you want to buy to win your Dream Home.",

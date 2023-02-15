@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-
-namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
+﻿namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
 {
     public class SignUpRequestModel
     {

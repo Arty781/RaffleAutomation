@@ -1,13 +1,4 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using System;
-using System.IO;
-using WebDriverManager;
-using WebDriverManager.DriverConfigs.Impl;
-
-namespace RaffleAutomationTests.Helpers
+﻿namespace RaffleAutomationTests.Helpers
 {
     public class Browser
     {
@@ -23,9 +14,9 @@ namespace RaffleAutomationTests.Helpers
                 windowsDriver = new ChromeDriver();
                 Assert.NotNull(windowsDriver);
             }
-           catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine( ex.Message);
+                Console.WriteLine(ex.Message);
             }
 #endif
 #if FIREFOX
@@ -56,7 +47,7 @@ namespace RaffleAutomationTests.Helpers
             windowsDriver.Manage().Window.Maximize();
 #endif
 
-            
+
         }
 
         public static string RootPath()

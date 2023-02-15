@@ -1,8 +1,4 @@
-﻿using OpenQA.Selenium;
-using SeleniumExtras.PageObjects;
-using System.Collections.Generic;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class SignUp
     {
@@ -45,7 +41,7 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//div[contains(text(),'Email verified successfully')]")]
         public IWebElement toasterSuccessMessage;
 
-        [FindsBy(How=How.XPath,Using = "//label[contains(text(), 'First name')]/parent::div/p[@id='outlined-basic-helper-text']")]
+        [FindsBy(How = How.XPath, Using = "//label[contains(text(), 'First name')]/parent::div/p[@id='outlined-basic-helper-text']")]
         public IWebElement textFirstNameErrorMessage;
 
         [FindsBy(How = How.XPath, Using = "//label[contains(text(), 'Last name')]/parent::div/p[@id='outlined-basic-helper-text']")]

@@ -1,11 +1,4 @@
-﻿using Newtonsoft.Json;
-using RaffleAutomationTests.APIHelpers.Web.SignIn;
-using RaffleAutomationTests.Helpers;
-using RestSharp;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace RaffleAutomationTests.APIHelpers.Web.Weekly
+﻿namespace RaffleAutomationTests.APIHelpers.Web.Weekly
 {
     public class WeeklyPrizesRequestWeb
     {

@@ -1,21 +1,3 @@
-using Allure.Commons;
-using NUnit.Allure.Attributes;
-using NUnit.Allure.Core;
-using NUnit.Framework;
-using OpenQA.Selenium;
-using RaffleAutomationTests.APIHelpers.Admin;
-using RaffleAutomationTests.APIHelpers.Admin.DreamHomePage;
-using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
-using RaffleAutomationTests.APIHelpers.Web;
-using RaffleAutomationTests.APIHelpers.Web.Basket;
-using RaffleAutomationTests.APIHelpers.Web.SignIn;
-using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
-using RaffleAutomationTests.APIHelpers.Web.WinnersWeb;
-using RaffleAutomationTests.Helpers;
-using RaffleAutomationTests.PageObjects;
-using System.Linq;
-using WebsiteTests.BASE;
-
 namespace RaffleHouseAutomation.WebSiteTests
 {
     [TestFixture]
@@ -71,14 +53,23 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Login")]
         public void LoginByEmail()
         {
+            #region Preconditions
+            var response = SignUpRequest.RegisterNewUser();
+            #endregion
+
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.Header
                 .OpenSignInPage();
             Pages.SignIn
-                .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
+
+            #region Postconditions
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            UsersRequest.DeleteUser(tokenAdmin, response.User.Id);
+            #endregion
 
         }
 
@@ -101,6 +92,12 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignUp
                 .ClickSignUpBtn()
                 .VerifyEmail(email);
+
+            #region Postconditions
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var user = UsersRequest.GetUser(tokenAdmin, email);
+            UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
+            #endregion
 
         }
 
@@ -136,8 +133,7 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             #region Postconditions
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var users = UsersRequest.GetUser(tokenAdmin, response.User.Email).Users.FirstOrDefault();
-            UsersRequest.DeleteUser(tokenAdmin, users);
+            UsersRequest.DeleteUser(tokenAdmin, response.User.Id);
             #endregion
 
         }
@@ -200,12 +196,12 @@ namespace RaffleHouseAutomation.WebSiteTests
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList.FirstOrDefault());
                 WaitUntil.WaitSomeInterval(250);
             }
-            
+
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.Header
@@ -214,9 +210,9 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
-            for(int i = 0; i<2; i++)
+            for (int i = 0; i < 2; i++)
             {
-                
+
                 if (i == 0)
                 {
                     Pages.Home
@@ -288,8 +284,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                     .SelectFirstBundleBtn();
                 }
             }
-            
-            double totalOrder = Pages.Basket.GetOrderTotal();
+
             Pages.Basket
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
@@ -300,7 +295,6 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList();
-                //.VerifyAddingTickets(totalOrder);
         }
 
         [Test]
@@ -444,14 +438,14 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
-            for (int i = 0; i<= 0; i++)
+            for (int i = 0; i <= 0; i++)
             {
                 for (int q = 0; q < RandomHelper.RandomIntNumber(2); q++)
                 {
                     DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList.FirstOrDefault());
                     WaitUntil.WaitSomeInterval(250);
                 }
-                
+
                 Pages.Basket
                     .ClickCartBtn();
                 Pages.Basket
@@ -462,7 +456,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 Pages.ThankYou
                     .VerifyThankYouPageIsDisplayed();
             }
-            
+
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList();
@@ -562,7 +556,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .FilterWinnersByYear(winners.Years[0])
                 .ScrollToEndOfList(winners.AllCount)
                 .VerifyDisplayedFilteredWinnersByYear(winners);
-            
+
         }
 
         [Test, Category("Winners")]

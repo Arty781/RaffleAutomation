@@ -1,11 +1,4 @@
-﻿using CONFIG_JSON;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
-namespace RaffleAutomationTests.Helpers
+﻿namespace RaffleAutomationTests.Helpers
 {
     public class AllureConfigFilesHelper
     {

@@ -1,7 +1,4 @@
-﻿using NUnit.Framework;
-using RaffleAutomationTests.Helpers;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class ThankYou
     {

@@ -1,9 +1,4 @@
-﻿using NUnit.Framework;
-using RaffleAutomationTests.Helpers;
-using System.Diagnostics;
-using System.Linq;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class Home
     {
@@ -32,7 +27,7 @@ namespace RaffleAutomationTests.PageObjects
         public Home VerifyBottomSliderSubitle()
         {
             Debug.WriteLine(textBottomSliderParagraph.FirstOrDefault().Text);
-            for(int i = 0; i< textBottomSliderParagraph.Count; i++)
+            for (int i = 0; i < textBottomSliderParagraph.Count; i++)
             {
                 Assert.IsTrue(textBottomSliderParagraph[i].Text.ToLower() == HomeTexts.BOTTOM_SLIDER_SUBTITLE[i].ToLower());
             }
@@ -45,7 +40,7 @@ namespace RaffleAutomationTests.PageObjects
             {
                 string t = HomeTexts.TITLES_INFO_BLOCKS[i].ToLower();
                 Debug.WriteLine(textTitle[i].Text.ToLower());
-                Assert.IsTrue(textTitle[i].Text.ToLower() == t, string.Concat("Not matched ","\"",textTitle[i].Text), "\"");
+                Assert.IsTrue(textTitle[i].Text.ToLower() == t, string.Concat("Not matched ", "\"", textTitle[i].Text), "\"");
             }
 
             return this;

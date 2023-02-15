@@ -1,7 +1,4 @@
-﻿using NUnit.Allure.Steps;
-using NUnit.Framework;
-using RaffleAutomationTests.Helpers;
-using System.Diagnostics;
+﻿
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -46,6 +43,7 @@ namespace RaffleAutomationTests.PageObjects
         public Home OpenHomePage()
         {
             Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST);
+            WaitUntil.WaitSomeInterval(1000);
 
             return this;
         }

@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-
-namespace RaffleAutomationTests.APIHelpers.Admin
+﻿namespace RaffleAutomationTests.APIHelpers.Admin
 {
     public partial class SettingsGeneralAdminResponseModel
     {

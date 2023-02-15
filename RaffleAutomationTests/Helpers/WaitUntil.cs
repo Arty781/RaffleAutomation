@@ -1,9 +1,4 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
-using System.Threading.Tasks;
-
-namespace RaffleAutomationTests.Helpers
+﻿namespace RaffleAutomationTests.Helpers
 {
     public class WaitUntil
     {

@@ -1,7 +1,4 @@
-﻿using OpenQA.Selenium;
-using RaffleAutomationTests.Helpers;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class gr4vy
     {

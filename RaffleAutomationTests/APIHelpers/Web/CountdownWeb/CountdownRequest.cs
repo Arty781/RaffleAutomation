@@ -1,18 +1,8 @@
-﻿using Chilkat;
-using Newtonsoft.Json;
-using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
-using RaffleAutomationTests.APIHelpers.Web.SignIn;
-using RaffleAutomationTests.Helpers;
-using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-
-namespace RaffleAutomationTests.APIHelpers.Web
+﻿namespace RaffleAutomationTests.APIHelpers.Web
 {
     public class CountdownRequestWeb
     {
-        public static List<CountdownResponseModelDreamHomeWeb?> GetDreamHomeCountdown(SignInResponseModelWeb SignIn)
+        public static List<CountdownResponseModelDreamHomeWeb?>? GetDreamHomeCountdown(SignInResponseModelWeb SignIn)
         {
             HttpRequest req = new()
             {
@@ -25,8 +15,8 @@ namespace RaffleAutomationTests.APIHelpers.Web
             req.AddHeader("authorization", $"Bearer {SignIn.Token}");
             Http http = new();
             HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
-            if(http.LastMethodSuccess != true)
-                {
+            if (http.LastMethodSuccess != true)
+            {
                 Debug.WriteLine(http.LastErrorText);
             }
             Debug.WriteLine("response message is " + "\r\n" + Convert.ToString(resp.BodyStr));

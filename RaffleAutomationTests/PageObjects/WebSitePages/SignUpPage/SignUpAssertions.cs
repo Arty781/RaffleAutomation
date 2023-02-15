@@ -1,9 +1,4 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using PutsboxWrapper;
-using RaffleAutomationTests.Helpers;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class SignUp
     {

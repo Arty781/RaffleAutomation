@@ -1,7 +1,4 @@
-﻿using NUnit.Framework;
-using RaffleAutomationTests.Helpers;
-
-namespace RaffleAutomationTests.APIHelpers.Admin
+﻿namespace RaffleAutomationTests.APIHelpers.Admin
 {
     public class SignInAssertionsAdmin
     {

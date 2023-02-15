@@ -1,8 +1,4 @@
-﻿using OpenQA.Selenium;
-using System;
-using System.IO;
-
-namespace RaffleAutomationTests.Helpers
+﻿namespace RaffleAutomationTests.Helpers
 {
     public class ScreenShotHelper
     {

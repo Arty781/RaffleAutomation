@@ -1,7 +1,4 @@
-﻿using NUnit.Allure.Steps;
-using OpenQA.Selenium;
-using RaffleAutomationTests.Helpers;
-using System.Linq;
+﻿
 
 namespace RaffleAutomationTests.PageObjects
 {

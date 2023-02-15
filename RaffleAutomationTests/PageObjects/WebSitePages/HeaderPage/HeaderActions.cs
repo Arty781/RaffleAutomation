@@ -1,6 +1,4 @@
-﻿using RaffleAutomationTests.Helpers;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class Header
     {

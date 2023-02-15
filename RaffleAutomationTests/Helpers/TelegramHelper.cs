@@ -1,11 +1,4 @@
-﻿using NUnit.Framework;
-using System.IO;
-using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Types;
-using Telegram.Bot.Types.InputFiles;
-
-namespace RaffleAutomationTests.Helpers
+﻿namespace RaffleAutomationTests.Helpers
 {
     public partial class TelegramHelper
     {

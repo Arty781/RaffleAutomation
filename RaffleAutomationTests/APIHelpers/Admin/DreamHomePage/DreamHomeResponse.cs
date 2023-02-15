@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-
-namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
+﻿namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
 {
     [JsonObject]
     public class DreamHomeRequestModel
@@ -88,7 +84,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
         public List<Raffle> Raffles { get; set; }
     }
 
-    
+
     public class Raffle
     {
         [JsonProperty("active")]

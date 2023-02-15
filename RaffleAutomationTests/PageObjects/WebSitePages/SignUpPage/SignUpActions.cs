@@ -1,10 +1,4 @@
-﻿using NUnit.Allure.Steps;
-using RaffleAutomationTests.Helpers;
-using RimuTec.Faker;
-using System;
-using System.Collections.Generic;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class SignUp
     {

@@ -1,7 +1,4 @@
-﻿using OpenQA.Selenium;
-using SeleniumExtras.PageObjects;
-
-namespace RaffleAutomationTests.PageObjects.WebSitePages
+﻿namespace RaffleAutomationTests.PageObjects.WebSitePages
 {
     public class SidebarElements
     {

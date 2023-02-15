@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json;
-using RaffleAutomationTests.APIHelpers.Web.SignIn;
-using RaffleAutomationTests.Helpers;
-using RestSharp;
-
-namespace RaffleAutomationTests.APIHelpers.Web.Basket
+﻿namespace RaffleAutomationTests.APIHelpers.Web.Basket
 {
     public class BasketRequest
     {

@@ -1,9 +1,4 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using RaffleAutomationTests.Helpers;
-using System.Linq;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class Winners
     {
@@ -11,7 +6,7 @@ namespace RaffleAutomationTests.PageObjects
         {
             //WaitUntil.CustomElementIsVisible(textWinnerTitle.FirstOrDefault());
             WaitUntil.WaitSomeInterval(2000);
-            for(int i =0; i< (winnerCount/6); i++)
+            for (int i = 0; i < (winnerCount / 6); i++)
             {
                 Element.Action(Keys.End);
             }
@@ -21,9 +16,9 @@ namespace RaffleAutomationTests.PageObjects
         public Winners FilterWinnersByYear(int yearNum)
         {
             WaitUntil.CustomElementIsVisible(filterYearSelector.LastOrDefault());
-            foreach(var year in filterYearSelector)
+            foreach (var year in filterYearSelector)
             {
-                if(yearNum.ToString() == year.Text)
+                if (yearNum.ToString() == year.Text)
                 {
                     year.Click();
                 }

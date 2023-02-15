@@ -1,8 +1,4 @@
-﻿using NUnit.Framework;
-using RaffleAutomationTests.Helpers;
-using System.Linq;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class Profile
     {

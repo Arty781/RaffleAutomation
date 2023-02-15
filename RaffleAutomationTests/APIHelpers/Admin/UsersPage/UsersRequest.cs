@@ -1,13 +1,4 @@
-﻿using Chilkat;
-using Newtonsoft.Json;
-using RaffleAutomationTests.Helpers;
-using RimuTec.Faker;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-
-namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
+﻿namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
 {
     public class UsersRequest
     {
@@ -394,12 +385,12 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
         }
 
-        public static void DeleteUser(SignInResponseModelAdmin token, User user)
+        public static void DeleteUser(SignInResponseModelAdmin token, string userId)
         {
             HttpRequest req = new()
             {
                 HttpVerb = "DELETE",
-                Path = $"api/users/{user.Id}",
+                Path = $"api/users/{userId}",
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");

@@ -1,16 +1,4 @@
-﻿using Chilkat;
-using Newtonsoft.Json;
-using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
-using RaffleAutomationTests.Helpers;
-using RimuTec.Faker;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RaffleAutomationTests.APIHelpers.Web.WinnersWeb
+﻿namespace RaffleAutomationTests.APIHelpers.Web.WinnersWeb
 {
     public partial class WinnersRequest
     {
@@ -21,7 +9,7 @@ namespace RaffleAutomationTests.APIHelpers.Web.WinnersWeb
                 HttpVerb = "GET",
                 Path = $"api/winners/web?pageNumber=1&pageCount=1000&year="
             };
-            
+
             req.AddHeader("accept-encoding", "gzip, deflate, br");
 
             Http http = new();

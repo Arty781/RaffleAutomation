@@ -1,11 +1,4 @@
-﻿using Allure.Commons;
-using NUnit.Allure.Attributes;
-using NUnit.Framework;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-
-namespace RaffleAutomationTests.Helpers
+﻿namespace RaffleAutomationTests.Helpers
 {
     class AllureServe
     {

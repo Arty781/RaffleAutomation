@@ -1,13 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-
-namespace RaffleAutomationTests.APIHelpers.Web.Basket
+﻿namespace RaffleAutomationTests.APIHelpers.Web.Basket
 {
     public class GetBasketOrdersRequest
     {
         [JsonProperty("couponId")]
-        public object CouponId { get; set; }
+        public object? CouponId { get; set; }
 
         [JsonProperty("isApplyCredit")]
         public bool IsApplyCredit { get; set; }

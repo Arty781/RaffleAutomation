@@ -7,7 +7,13 @@
     <IsPackable>false</IsPackable>
 
     <Configurations>Debug;Release;Debug_Mobile;Release_Mobile;Chrome;FireFox</Configurations>
+
+    <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="_!CloseOpenWith.bat" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />

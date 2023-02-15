@@ -1,14 +1,4 @@
-﻿using Chilkat;
-using Newtonsoft.Json;
-using RaffleAutomationTests.Helpers;
-using RimuTec.Faker;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-
-namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
+﻿namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
 {
     public class DreamHomeRequest
     {
@@ -85,23 +75,23 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
         {
             Property str = new()
             {
-                GalleryImages= new List<string>() { },
-                GalleryImagesMobile= new List<string>() { },
+                GalleryImages = new List<string>() { },
+                GalleryImagesMobile = new List<string>() { },
                 FloorPlanImage = String.Empty,
-                BadroomImage= String.Empty,
-                BathroomImage= String.Empty,
-                CardImage= String.Empty,
-                OutspaceImage= String.Empty,
-                BathroomText= Lorem.ParagraphByChars(300),
-                BedroomText= Lorem.ParagraphByChars(300),
-                OutspaceText= Lorem.ParagraphByChars(300),
-                Description= Lorem.ParagraphByChars(50),
-                Heading= Lorem.ParagraphByChars(20),
-                GeneralText= Lorem.ParagraphByChars(50),
-                PixangleSource= String.Empty,
-                Location= Address.FullAddress(),
-                Latitude=Address.Latitude(),
-                Longitude=Address.Longitude(),
+                BadroomImage = String.Empty,
+                BathroomImage = String.Empty,
+                CardImage = String.Empty,
+                OutspaceImage = String.Empty,
+                BathroomText = Lorem.ParagraphByChars(300),
+                BedroomText = Lorem.ParagraphByChars(300),
+                OutspaceText = Lorem.ParagraphByChars(300),
+                Description = Lorem.ParagraphByChars(50),
+                Heading = Lorem.ParagraphByChars(20),
+                GeneralText = Lorem.ParagraphByChars(50),
+                PixangleSource = String.Empty,
+                Location = Address.FullAddress(),
+                Latitude = Address.Latitude(),
+                Longitude = Address.Longitude(),
                 TourLink = String.Empty,
                 Overview = new List<Overview>()
                 {
@@ -203,7 +193,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
                 MetaTitle = Lorem.ParagraphByChars(50),
                 MetaDescription = Lorem.ParagraphByChars(40),
                 Property = property.Id
-                
+
             };
             return JsonConvert.SerializeObject(req);
         }
@@ -279,7 +269,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
             }
             var res = JsonConvert.DeserializeObject<DreamHomeResponse>(resp.BodyStr).Raffles.Count;
             var response = JsonConvert.DeserializeObject<DreamHomeResponse?>(resp.BodyStr);
-            
+
 
             return response;
         }

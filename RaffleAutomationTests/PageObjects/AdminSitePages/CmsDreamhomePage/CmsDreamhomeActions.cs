@@ -1,10 +1,4 @@
-﻿using NUnit.Allure.Steps;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using RaffleAutomationTests.Helpers;
-using RimuTec.Faker;
-using System;
-using System.Linq;
+﻿
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -342,9 +336,9 @@ namespace RaffleAutomationTests.PageObjects
             WaitUntil.CustomElementIsVisible(btnAddBundles);
             Button.Click(btnAddBundles);
             Button.Click(btnAddBundles);
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                if(i == 0)
+                if (i == 0)
                 {
                     InputBox.Element(inputBundles[i], 10, "5");
                 }
@@ -380,7 +374,7 @@ namespace RaffleAutomationTests.PageObjects
                 {
                     try
                     {
-                        if (Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']")) 
+                        if (Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']"))
                         != null && Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']")).Enabled)
                         {
                             var btnEditDreamhome = Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']"));
@@ -396,7 +390,7 @@ namespace RaffleAutomationTests.PageObjects
             catch (NoSuchElementException) { }
             catch (StaleElementReferenceException) { }
 
-            
+
             return this;
         }
 

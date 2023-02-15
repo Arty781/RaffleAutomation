@@ -1,8 +1,4 @@
-﻿
-using OpenQA.Selenium;
-using System;
-
-namespace RaffleAutomationTests.Helpers
+﻿namespace RaffleAutomationTests.Helpers
 {
     public class Elements
     {

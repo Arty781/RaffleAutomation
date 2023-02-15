@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-
-namespace RaffleAutomationTests.APIHelpers.Web
+﻿namespace RaffleAutomationTests.APIHelpers.Web
 {
     #region Dreamhome
     public partial class CountdownResponseModelDreamHomeWeb

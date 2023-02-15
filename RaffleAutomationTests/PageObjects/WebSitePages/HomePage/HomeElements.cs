@@ -1,8 +1,4 @@
-﻿using OpenQA.Selenium;
-using SeleniumExtras.PageObjects;
-using System.Collections.Generic;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class Home
     {
@@ -31,7 +27,7 @@ namespace RaffleAutomationTests.PageObjects
         [FindsBy(How = How.XPath, Using = "//h1")]
         public IWebElement textTitleBannerSecondary;
 
-        [FindsBy(How=How.XPath,Using = "//h1/parent::div/p")]
+        [FindsBy(How = How.XPath, Using = "//h1/parent::div/p")]
         public IWebElement textSubtitleBannerSecondary;
 
 

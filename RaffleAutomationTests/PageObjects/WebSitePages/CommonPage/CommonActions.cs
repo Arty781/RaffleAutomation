@@ -1,6 +1,4 @@
-﻿using NUnit.Allure.Steps;
-using RaffleAutomationTests.Helpers;
-using System.Linq;
+﻿
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -73,7 +71,7 @@ namespace RaffleAutomationTests.PageObjects
         }
 
         [AllureStep("Close tab")]
-        public Common CloseTabAndWait30Seconds() 
+        public Common CloseTabAndWait30Seconds()
         {
             Browser._Driver.SwitchTo().NewWindow(OpenQA.Selenium.WindowType.Tab);
             Browser._Driver.SwitchTo().Window(Browser._Driver.WindowHandles.ToList().FirstOrDefault());

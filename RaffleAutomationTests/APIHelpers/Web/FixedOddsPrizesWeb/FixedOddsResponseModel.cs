@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-
-namespace RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb
+﻿namespace RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb
 {
 
     public partial class CreateFixedOddsOrderRequest

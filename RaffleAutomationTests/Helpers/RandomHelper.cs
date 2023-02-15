@@ -1,9 +1,4 @@
-﻿using RaffleAutomationTests.APIHelpers.Web;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace RaffleAutomationTests.Helpers
+﻿namespace RaffleAutomationTests.Helpers
 {
     public partial class RandomHelper
     {

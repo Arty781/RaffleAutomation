@@ -1,9 +1,4 @@
-﻿using OpenQA.Selenium;
-using RaffleAutomationTests.Helpers;
-using RaffleAutomationTests.PageObjects._3rdPartyPage.Klaviyo;
-using SeleniumExtras.PageObjects;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public class Pages
     {
@@ -44,7 +39,6 @@ namespace RaffleAutomationTests.PageObjects
         public static CmsSettingsWinners CmsSettingsWinners => GetPage<CmsSettingsWinners>();
         public static CmsSettingsReferrals CmsSettingsReferrals => GetPage<CmsSettingsReferrals>();
         public static CmsReports CmsReports => GetPage<CmsReports>();
-        public static Klaviyo Klaviyo => GetPage<Klaviyo>();
 
     }
 }

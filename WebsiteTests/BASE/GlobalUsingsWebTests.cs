@@ -1,0 +1,17 @@
+﻿global using RaffleAutomationTests.APIHelpers.Admin;
+global using RaffleAutomationTests.APIHelpers.Admin.DreamHomePage;
+global using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
+global using RaffleAutomationTests.APIHelpers.Web;
+global using RaffleAutomationTests.APIHelpers.Web.Basket;
+global using RaffleAutomationTests.APIHelpers.Web.SignIn;
+global using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
+global using RaffleAutomationTests.APIHelpers.Web.WinnersWeb;
+global using RaffleAutomationTests.Helpers;
+global using Allure.Commons;
+global using NUnit.Allure.Attributes;
+global using NUnit.Allure.Core;
+global using NUnit.Framework;
+global using OpenQA.Selenium;
+global using RaffleAutomationTests.PageObjects;
+global using System.Linq;
+global using WebsiteTests.BASE;
