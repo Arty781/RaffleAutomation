@@ -3,7 +3,7 @@
     public partial class Header
     {
 
-#if DEBUG || CHROME || FIREFOX
+#if DEBUG || RELEASE || CHROME || FIREFOX
 
         [FindsBy(How = How.XPath, Using = "//a[@class='headerLogo']")]
         public IWebElement logo;

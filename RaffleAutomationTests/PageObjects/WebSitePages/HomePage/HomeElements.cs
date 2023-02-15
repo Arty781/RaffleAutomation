@@ -72,7 +72,7 @@
         public IWebElement textBottomSliderTitle;
 
         [FindsBy(How = How.XPath, Using = "//div[@class='dream-slider-bg']/div[@class='container']//p")]
-        public IWebElement textBottomSliderParagraph;
+        public IList<IWebElement> textBottomSliderParagraph;
 
         [FindsBy(How = How.XPath, Using = "//section[@class='charitable-home-block']//div[@class='givingAbout']//h2")]
         public IWebElement textCharityTitle;

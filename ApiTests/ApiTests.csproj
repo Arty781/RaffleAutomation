@@ -7,7 +7,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Configurations>Debug;Release;Debug_Mobile;Release_Mobile;Chrome;FireFox</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

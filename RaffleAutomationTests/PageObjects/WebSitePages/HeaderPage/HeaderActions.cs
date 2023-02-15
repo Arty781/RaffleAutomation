@@ -2,7 +2,7 @@
 {
     public partial class Header
     {
-#if DEBUG || CHROME || FIREFOX
+#if DEBUG || RELEASE || CHROME || FIREFOX
 
         #region Opening links in header
         public Header OpenHomePage(string url)
@@ -19,44 +19,16 @@
             return this;
         }
 
-        //public Header OpenWeeklyPrizesPage()
-        //{
-        //    Browser._Driver.Navigate().GoToUrl(WebEndpoints.LIFESTYLE);
-
-        //    return this;
-        //}
-        //public Header OpenFixedOddsPrizesPage(string url)
-        //{
-        //    Browser._Driver.Navigate().GoToUrl(url);
-
-        //    return this;
-        //}
-
         public Header OpenWinnersPage()
         {
-            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/winners");
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.WINNERS);
 
             return this;
         }
 
-        //public Header OpenFAQsPage(string url)
-        //{
-        //    Browser._Driver.Navigate().GoToUrl(url);
-
-        //    return this;
-        //}
-
-        //public Header OpenAboutPage(string url)
-        //{
-        //    Browser._Driver.Navigate().GoToUrl(url);
-
-        //    return this;
-        //}
-
         public Header OpenSignInPage()
         {
-            //Button.Click(signInBtn);
-            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/sign-in");
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.SIGN_IN);
 
             return this;
         }
@@ -64,14 +36,7 @@
         public Header OpenSignUpPage()
         {
 
-            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/sign-up");
-
-            return this;
-        }
-
-        public Header OpenFreeEntryPage()
-        {
-            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/post");
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.SIGN_UP);
 
             return this;
         }
@@ -84,14 +49,14 @@
 
         public Header OpenCartPage()
         {
-            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/basket");
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.BASKET);
 
             return this;
         }
 
         public Header OpenPostPage()
         {
-            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/post");
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.FREE_ENTRY);
 
             return this;
         }

@@ -1,7 +1,4 @@
-﻿using NUnit.Framework;
-using RaffleAutomationTests.Helpers;
-
-namespace WebsiteTests.BASE
+﻿namespace WebsiteTests.BASE
 {
 
     public class TestBaseWeb : BaseWeb

@@ -22,6 +22,7 @@
         public const string ABOUT = "https://staging.rafflehouse.com/about-us";
         public const string PROFILE = "https://staging.rafflehouse.com/profile";
         public const string FREE_ENTRY = "https://staging.rafflehouse.com/post";
+        public const string BASKET = "https://staging.rafflehouse.com/basket";
     }
 
     public class ApiEndpoints
@@ -30,8 +31,15 @@
     }
 #endif
 #if RELEASE || RELEASE_MOBILE
-    
-public class WebEndpoints
+
+    public class AdminEndpoints
+    {
+        public const string ADMIN_HOST = "https://admin.rafflehouse.com";
+        public const string DREAMHOME_PRIZES = "https://admin.rafflehouse.com/#/dreamHome";
+        public const string LIFESTYLE_PRIZES = "https://admin.rafflehouse.com/#/prizes";
+        public const string FIXEDODDS_PRIZES = "https://admin.rafflehouse.com/#/fixedOdds";
+    }
+    public class WebEndpoints
     {
         public const string WEBSITE_HOST = "https://rafflehouse.com";
         public const string SIGN_IN = "https://rafflehouse.com/sign-in";
@@ -43,6 +51,7 @@ public class WebEndpoints
         public const string ABOUT = "https://rafflehouse.com/about-us";
         public const string PROFILE = "https://rafflehouse.com/profile";
         public const string FREE_ENTRY = "https://rafflehouse.com/post";
+        public const string BASKET = "https://rafflehouse.com/basket";
     }
 
         public class ApiEndpoints
