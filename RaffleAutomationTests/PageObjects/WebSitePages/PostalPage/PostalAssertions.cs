@@ -11,12 +11,27 @@
         public Postal VerifyDisplayingParagraphs()
         {
             WaitUntil.CustomElementIsVisible(textParagraphsPostPage.FirstOrDefault());
-            for (int i = 0; i < textParagraphsPostPage.Count; i++)
+            List<string> expectedText = PostText.PARAGRAPH_POST.Where(x => x.Any()).Select(x => x.Trim().ToLower()).ToList();
+            List<string> actualText = textParagraphsPostPage.Where(x => x.Enabled).Select(x => x.Text.Trim().ToLower()).ToList();
+
+            Assert.Multiple(() =>
             {
-                string t = textParagraphsPostPage[i].Text.Trim().ToLower();
-                string q = textParagraphsPostPage[i].Text.Trim().ToLower(); //PostText.PARAGRAPH_POST[i].Trim().ToLower();
-                Assert.IsTrue(t == q, "\r\n" + textParagraphsPostPage[i].Text + "\r\n not matched with " + "\r\n" + PostText.PARAGRAPH_POST[i]);
-            }
+                Assert.That(actualText, Is.EqualTo(expectedText), "Texts don't match");
+                Assert.That(expectedText.Count, Is.EqualTo(actualText.Count), "Number of elements doesn't match");
+
+                var mismatchedIndices = expectedText.Select((text, index) => new { text, index })
+                    .Where(item => !actualText[item.index].Equals(item.text))
+                    .Select(item => item.index)
+                    .ToList();
+
+                if (mismatchedIndices.Count > 0)
+                {
+                    string errorMessage = $"Expected text does not match the actual text at index(es): {string.Join(", ", mismatchedIndices)}";
+                    Assert.Fail(errorMessage);
+                }
+            });
+
+
 
             return this;
         }

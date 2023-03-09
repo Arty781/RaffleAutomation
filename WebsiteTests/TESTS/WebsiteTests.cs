@@ -12,111 +12,13 @@ namespace RaffleHouseAutomation.WebSiteTests
         {
             Pages.Common
                 .CloseCookiesPopUp();
-            string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
-            for (int i = 0; i < 5; i++)
-            {
-                Pages.Home
-                .AddTicketsToBasket(0);
-                Pages.Basket
-                    .MakeAPurchaseAsUnauthorizedUser(email);
-                Pages.ThankYou
-                    .VerifyThankYouPageIsDisplayed();
-            }
-
-            //Pages.ThankYou
-            //    .GoToActivationLink(email);
-            //Pages.Activate
-            //    .ActivateUser(email);
-            //Pages.Activate
-            //    .VerifySuccessfullActivation();
-
-
-            //#region Postconditions
-            //var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            //var user = UsersRequest.GetUser(tokenAdmin, email);
-            //UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
-            //#endregion
-        }
-
-        [Test]
-        public void DemotestWIn()
-        {
-            var response = SignUpRequest.RegisterNewUser();
-            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
-            var basketOrders = BasketRequest.GetBasketOrders(token);
-            BasketRequest.DeleteOrders(token, basketOrders);
-            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            Pages.Common
-                .CloseCookiesPopUp();
-            
-            Pages.WinRafflePage
-                .OpenWinRaffle();
-
-            int bundleWinNumber = RandomHelper.RandomIntNumber(3);
-            string bunleWinPrice = Pages.WinRafflePage.textTicketBundlePrice[bundleWinNumber].Text;
-
-            Pages.WinRafflePage
-                .SelectTicketBundle(bundleWinNumber)
-                .VerifyPriceOfAddedOrder(bunleWinPrice);
             Pages.Header
-                .OpenSignInPage();
-            Pages.SignIn
-                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
-            Pages.SignIn
-                .VerifyIsSignIn();
-            Pages.Basket
-                    .ClickCartBtn();
-            Pages.Basket
-                .ClickCheckoutNowBtn()
-                .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
-            Pages.ThankYou
-                .VerifyThankYouPageIsDisplayed();
-            Pages.Profile
-                .OpenMyTicketsCompetitions()
-                .OpenDreamHomeHistoryList();
+                .OpenPostPage();
+            Pages.Postal
+                .VerifyDisplayingParagraphs();
         }
 
-        [Test]
-        public void DemotestPageDiscount()
-        {
-            var response = SignUpRequest.RegisterNewUser();
-            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
-            var basketOrders = BasketRequest.GetBasketOrders(token);
-            BasketRequest.DeleteOrders(token, basketOrders);
-            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            Pages.Common
-                .CloseCookiesPopUp();
-            
-            Pages.PageDiscountPage
-                .OpenPageDiscount();
-
-            int bundleNumber = RandomHelper.RandomIntNumber(3);
-            string bunlePrice = Pages.PageDiscountPage.textTicketBundlePrice[bundleNumber].Text;
-
-            Pages.PageDiscountPage
-                .SelectTicketBundle(bundleNumber)
-                .VerifyPriceOfAddedOrder(bunlePrice);
-            Pages.Header
-                .OpenSignInPage();
-            Pages.SignIn
-                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
-            Pages.SignIn
-                .VerifyIsSignIn();
-            Pages.Basket
-                    .ClickCartBtn();
-            Pages.Basket
-                .ClickCheckoutNowBtn()
-                .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
-            Pages.ThankYou
-                .VerifyThankYouPageIsDisplayed();
-            Pages.Profile
-                .OpenMyTicketsCompetitions()
-                .OpenDreamHomeHistoryList();
-        }
+        
     }
 
     [TestFixture]
@@ -885,7 +787,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("Client")]
         [AllureSubSuite("Home Page")]
-        [Ignore("")]
+        //[Ignore("")]
         public void VerifiedHomePage()
         {
             Pages.Common
