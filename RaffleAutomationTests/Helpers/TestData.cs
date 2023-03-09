@@ -23,11 +23,14 @@
         public const string PROFILE = "https://staging.rafflehouse.com/profile";
         public const string FREE_ENTRY = "https://staging.rafflehouse.com/post";
         public const string BASKET = "https://staging.rafflehouse.com/basket";
+        public const string PAGE_DISCOUNT = "https://pagediscount-staging.rafflehouse.com/";
+        public const string WIN_RAFFLE = "https://win-staging.rafflehouse.com/";
     }
 
     public class ApiEndpoints
     {
         public const string API = "https://staging-api.rafflehouse.com";
+        public const string API_CHIL = "staging-api.rafflehouse.com";
     }
 #endif
 #if RELEASE || RELEASE_MOBILE
@@ -52,11 +55,14 @@
         public const string PROFILE = "https://rafflehouse.com/profile";
         public const string FREE_ENTRY = "https://rafflehouse.com/post";
         public const string BASKET = "https://rafflehouse.com/basket";
+        public const string PAGE_DISCOUNT = "https://discount.rafflehouse.com/";
+        public const string WIN_RAFFLE = "https://win.rafflehouse.com/";
     }
 
         public class ApiEndpoints
     {
         public const string API = "https://backend.rafflehouse.com";
+        public const string API_CHIL = "backend.rafflehouse.com";
     }
 #endif
 
@@ -64,6 +70,7 @@
     {
         public const string LOGIN = "qatester91311@gmail.com";
         public const string PASSWORD = "Qaz11111";
+        public const string NEW_PASWORD = "Qaz11111!";
 
         public const string LOGIN_ADMIN = "bennospencer@gmail.com";
         public const string PASSWORD_ADMIN = "1289Raffle@!CMS";

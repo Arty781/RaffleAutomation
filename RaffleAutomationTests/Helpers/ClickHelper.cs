@@ -1,4 +1,10 @@
-﻿namespace RaffleAutomationTests.Helpers
+﻿using Fizzler.Systems.HtmlAgilityPack;
+using HtmlAgilityPack;
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
+using System.Threading;
+
+namespace RaffleAutomationTests.Helpers
 {
     public class Button
     {
@@ -131,5 +137,69 @@
             actions.Perform();
             WaitUntil.WaitSomeInterval(700);
         }
+    }
+
+    public class PutsBox
+    {
+        private static string GetJsonUrl(string email)
+        {
+            string arg = email.Substring(0, email.IndexOf('@'));
+            return $"https://preview.putsbox.com/p/{arg}/last.json";
+        }
+
+        private static string GetBodyData(string value)
+        {
+            int startIndex = value.IndexOf("body");
+            return value.Substring(startIndex);
+        }
+
+        private static string Decode(string rawData)
+        {
+            return Regex.Unescape(rawData);
+        }
+
+        private static PutsboxWrapper.Email ParseAllLinks(string rawData)
+        {
+            PutsboxWrapper.Email email = new PutsboxWrapper.Email();
+            Collection<PutsboxWrapper.Link> collection = new Collection<PutsboxWrapper.Link>();
+            HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(rawData);
+            foreach (HtmlNode item in htmlDocument.DocumentNode.QuerySelectorAll("a"))
+            {
+                collection.Add(new PutsboxWrapper.Link
+                {
+                    Name = item.InnerText,
+                    Url = item.GetAttributeValue("href", null)
+                });
+            }
+
+            email.Link = collection;
+            return email;
+        }
+
+        private static string GetJsonContent(string email)
+        {
+            RestClient client = new RestClient(GetJsonUrl(email));
+            RestRequest request = new RestRequest("");
+            return client.ExecuteGetAsync(request).Result.Content;
+        }
+
+        public static string GetLinkFromEmailWithValue(string domain, string value)
+        {
+            string value2 = value;
+            Thread.Sleep(2000);
+            string jsonContent = GetJsonContent(domain);
+            if (jsonContent.Contains("Not Found"))
+            {
+                Thread.Sleep(2000);
+                jsonContent = GetJsonContent(domain);
+            }
+
+            string text = Decode(jsonContent);
+            GetBodyData(text);
+            return ParseAllLinks(text).Link.First((PutsboxWrapper.Link x) => x.Name == value2).Url;
+        }
+
+
     }
 }

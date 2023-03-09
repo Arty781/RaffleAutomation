@@ -5,13 +5,13 @@
 
         public Basket VerifyErrorMessageIsDisplayed()
         {
-
-
             WaitUntil.CustomElementIsVisible(Pages.Common.toaster);
             Console.WriteLine(Pages.Common.toaster.Text);
             WaitUntil.CustomElementIsVisible(checkOutNowBtn);
 
             return this;
         }
+
+
     }
 }

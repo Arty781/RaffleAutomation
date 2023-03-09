@@ -4,10 +4,18 @@
     {
         public static string CreateBatFile()
         {
-            string path = Browser.RootPath() + "allure serve.bat";
+            string path = String.Empty;
+            if (OperatingSystem.IsWindows())
+            {
+                path = Browser.RootPath() + "allure serve.bat";
+            }
+            else if (OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
+            {
+                path = Browser.RootPath() + "allure serve.sh";
+            }
             string allureResultsDirectory = Browser.RootPath() + @"\allure-results";
             string allureResults = @"allure serve " + allureResultsDirectory;
-            FileInfo fileInf = new FileInfo(path);
+            FileInfo fileInf = new(path);
             if (fileInf.Exists)
             {
                 fileInf.Delete();
@@ -24,9 +32,27 @@
             return path;
         }
 
-        private static ConfigJson Json()
+        public static void DeleteBatFile()
         {
-            ConfigJson req = new()
+            string path = String.Empty;
+            if (OperatingSystem.IsWindows())
+            {
+                path = Browser.RootPath() + "allure serve.bat";
+            }
+            else if (OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
+            {
+                path = Browser.RootPath() + "allure serve.sh";
+            }
+            FileInfo fileInf = new(path);
+            if (fileInf.Exists)
+            {
+                fileInf.Delete();
+            }
+        }
+
+        public static void CreateJsonConfigFile()
+        {
+            ConfigJson json = new()
             {
                 Allure = new()
                 {
@@ -74,26 +100,16 @@
                 }
             };
 
-            return req;
-        }
-
-        public static void CreateJsonConfigFile()
-        {
-            FileInfo fileInf = new FileInfo(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json");
+            FileInfo fileInf = new(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json");
             if (fileInf.Exists == true)
             {
                 fileInf.Delete();
             }
             string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory)) + "allureConfig.json";
 
-            using (StreamWriter file = System.IO.File.CreateText(mainpath))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                //serialize object directly into file stream
-                serializer.Serialize(file, Json());
-            }
-
-
+            using StreamWriter file = System.IO.File.CreateText(mainpath);
+            JsonSerializer serializer = new();
+            serializer.Serialize(file, json);
         }
     }
 }

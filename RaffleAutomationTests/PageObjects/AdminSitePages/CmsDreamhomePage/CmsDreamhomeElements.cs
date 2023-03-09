@@ -100,6 +100,9 @@
         [FindsBy(How = How.Id, Using = "property.filesFloorPlan")]
         public IWebElement floorPlanCardImg;
 
+        [FindsBy(How = How.Id, Using = "property.filesMapImage")]
+        public IWebElement mapCardImg;
+
         #endregion
 
         #region Text inputs

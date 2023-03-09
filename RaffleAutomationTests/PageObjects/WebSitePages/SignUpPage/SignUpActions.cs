@@ -21,11 +21,22 @@
             InputBox.Element(inputFirstName, 10, Name.FirstName());
             InputBox.Element(inputSurname, 10, Name.LastName());
             InputBox.Element(inputEmail, 10, "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com");
-            Button.Click(inputCountry);
-            Button.ClickCountryJS(inputCountry);
             InputBox.Element(inputPhone, 10, "");
             InputBox.Element(inputPassword, 10, "Qaz11111");
-            Button.Click(btnConfirmOpt);
+            Button.Click(btnRememberMe);
+
+            return this;
+        }
+
+        [AllureStep("Enter user data")]
+        public SignUp EnterUserDataForNonActivated(string email)
+        {
+            WaitUntil.CustomElementIsVisible(inputFirstName);
+            InputBox.Element(inputFirstName, 10, Name.FirstName());
+            InputBox.Element(inputSurname, 10, Name.LastName());
+            InputBox.Element(inputEmail, 10, email);
+            InputBox.Element(inputPhone, 10, PhoneNumber.CellPhone());
+            InputBox.Element(inputPassword, 10, "Qaz11111");
             Button.Click(btnRememberMe);
 
             return this;

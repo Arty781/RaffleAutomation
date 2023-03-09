@@ -4,6 +4,7 @@
     {
         public static void Click(IWebElement element)
         {
+            WaitUntil.WaitSomeInterval(350);
             WaitUntil.CustomElementIsVisible(element);
             IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
             ex.ExecuteScript("arguments[0].click();", element);

@@ -24,5 +24,12 @@ namespace RaffleAutomationTests.PageObjects
             Browser._Driver.SwitchTo().Window(Browser._Driver.WindowHandles.ToList().Last());
             return this;
         }
+
+        public SignIn ClickForgotPassword()
+        {
+            Button.Click(btnForgotPassword);
+            return this;
+        }
+
     }
 }

@@ -7,7 +7,7 @@
         public static void Initialize()
         {
             AllureConfigFilesHelper.CreateJsonConfigFile();
-#if DEBUG || CHROME
+#if DEBUG || CHROME || RELEASE
             try
             {
                 new DriverManager().SetUpDriver(new ChromeConfig());
@@ -18,6 +18,8 @@
             {
                 Console.WriteLine(ex.Message);
             }
+            windowsDriver.Manage().Window.Maximize();
+            windowsDriver.Manage().Cookies.DeleteAllCookies();
 #endif
 #if FIREFOX
             try
@@ -30,24 +32,13 @@
             {
                 Console.WriteLine( ex.Message);
             }
-
-#endif
+            windowsDriver.Manage().Window.Maximize();
             windowsDriver.Manage().Cookies.DeleteAllCookies();
-#if DEBUG_MOBILE
+#endif
+#if DEBUG_MOBILE || RELEASE_MOBILE
             windowsDriver.Manage().Window.Size = new Size(390, 844);
+            windowsDriver.Manage().Cookies.DeleteAllCookies();
 #endif
-#if DEBUG || CHROME || FIREFOX
-            windowsDriver.Manage().Window.Maximize();
-#endif
-
-#if RELEASE_MOBILE
-            windowsDriver.Manage().Window.Size = new Size(390, 844);
-#endif
-#if RELEASE
-            windowsDriver.Manage().Window.Maximize();
-#endif
-
-
         }
 
         public static string RootPath()

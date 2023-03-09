@@ -5,11 +5,9 @@
         public SignIn VerifyIsSignIn()
         {
             WaitUntil.CustomElementIsVisible(Pages.Profile.titleProfile);
-
             Assert.IsTrue(Pages.Profile.FirstNameInput.Displayed);
-
-
             return this;
         }
+
     }
 }

@@ -1,33 +1,35 @@
-﻿namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
+﻿using Newtonsoft.Json;
+
+namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
 {
     public class DreamHomeRequest
     {
-        private static string JsonBody(RaffleResponse response, double priceWithDiscount, double priceWithoutDiscount)
+        private static string JsonBody(RaffleResponse response, double priceWithDiscount, double priceWithoutDiscount, List<long> bundles)
         {
             DreamHomeRequestModel req = new()
             {
-                Active = response.Active,
-                IsActiveDiscount = response.IsActiveDiscount,
-                IsPopular = response.IsPopular,
-                IsTrending = response.IsTrending,
-                EndsAt = response.EndsAt,
-                StartAt = response.StartAt,
+                Active = response.Raffles.First().Active,
+                IsActiveDiscount = response.Raffles.First().IsActiveDiscount,
+                IsPopular = response.Raffles.First().IsPopular,
+                IsTrending = response.Raffles.First().IsTrending,
+                EndsAt = response.Raffles.First().EndsAt.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
+                StartAt = response.Raffles.First().StartAt.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
                 TicketPrice = priceWithoutDiscount,
-                DefaultTickets = response.DefaultTickets,
-                IsDiscountRates = response.IsDiscountRates,
+                DefaultTickets = response.Raffles.First().DefaultTickets,
+                IsDiscountRates = response.Raffles.First().IsDiscountRates,
                 CreditsRates = new List<CreditsRate>()
                 {
                     new CreditsRate()
                     {
                         Id = 1,
-                    Count = 20,
-                    Percent = 30
+                        Count = 20,
+                        Percent = 30
                     }
                 },
-                CreditsEndDate = response.CreditsEndDate,
-                CreditsStartDate = response.CreditsStartDate,
-                IsCreditsActive = response.IsCreditsActive,
-                IsCreditsPermanent = response.IsCreditsPermanent,
+                CreditsEndDate = response.Raffles.First().CreditsEndDate.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
+                CreditsStartDate = response.Raffles.First().CreditsStartDate.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
+                IsCreditsActive = response.Raffles.First().IsCreditsActive,
+                IsCreditsPermanent = response.Raffles.First().IsCreditsPermanent,
                 DiscountRates = new List<DiscountRate>()
                 {
                     new DiscountRate()
@@ -48,25 +50,14 @@
                     Percent = 1,
                     NewPrice = 1
                 },
-                DiscountCategory = response.DiscountCategory,
-                FreeTicketsRates = new List<object>()
-                {
-                    new FreeTicketsRate()
-                    {
-
-                    }
-                },
-                IsFreeTicketsRates = response.IsFreeTicketsRates,
-                TicketsBundles = new()
-                {
-                    5,
-                    15,
-                    50,
-                    150
-                },
-                Title = response.Title,
-                MetaTitle = response.MetaTitle,
-                MetaDescription = response.MetaDescription
+                DiscountCategory = response.Raffles.First().DiscountCategory,
+                FreeTicketsRates = Array.Empty<string>(),
+                IsFreeTicketsRates = response.Raffles.First().IsFreeTicketsRates,
+                TicketsBundles = bundles,
+                Title = response.Raffles.First().Title,
+                MetaTitle = response.Raffles.First().MetaTitle,
+                MetaDescription = response.Raffles.First().MetaDescription,
+                StepperCountdown= response.Raffles.First().StepperCountdown
             };
             return JsonConvert.SerializeObject(req);
         }
@@ -129,7 +120,7 @@
 
         private static string JsonBodyRaffle(PropertyResponse property)
         {
-            DreamHomeRequestModel req = new()
+            CreateDreamHomeRequestModel req = new()
             {
                 Active = false,
                 IsActiveDiscount = false,
@@ -198,23 +189,23 @@
             return JsonConvert.SerializeObject(req);
         }
 
-        public static void EditTiketPriceInDreamHome(SignInResponseModelAdmin token, RaffleResponse response, double priceWithDiscount, double priceWithoutDiscount)
+        public static void EditTiketPriceInDreamHome(SignInResponseModelAdmin token, RaffleResponse response, double priceWithDiscount, double priceWithoutDiscount, List<long> bundles)
         {
             HttpRequest req = new HttpRequest
             {
                 HttpVerb = "PUT",
-                Path = $"/api/raffles/{response.Id}",
+                Path = $"/api/raffles/{response.Raffles.First().Id}",
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
 
-            req.LoadBodyFromString(JsonBody(response, priceWithDiscount, priceWithoutDiscount), charset: "utf-8");
+            req.LoadBodyFromString(JsonBody(response, priceWithDiscount, priceWithoutDiscount, bundles), charset: "utf-8");
 
             Http http = new();
 
-            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
                 Debug.WriteLine(http.LastErrorText);
@@ -237,7 +228,7 @@
 
             Http http = new();
 
-            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
                 Debug.WriteLine(http.LastErrorText);

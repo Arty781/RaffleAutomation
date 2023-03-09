@@ -59,7 +59,7 @@ namespace RaffleAutomationTests.PageObjects
         public Home SelectFirstBundleBtn()
         {
             WaitUntil.WaitSomeInterval(500);
-            Button.Click(btnFirstBundle);
+            Button.Click(btnBundles[0]);
             WaitUntil.WaitSomeInterval(2000);
 
             return this;
@@ -69,7 +69,7 @@ namespace RaffleAutomationTests.PageObjects
         public Home SelectSecondBundleBtn()
         {
             WaitUntil.WaitSomeInterval(500);
-            Button.Click(btnSecondBundle);
+            Button.Click(btnBundles[1]);
             WaitUntil.WaitSomeInterval(2000);
 
             return this;
@@ -79,7 +79,7 @@ namespace RaffleAutomationTests.PageObjects
         public Home SelectThirdBundleBtn()
         {
             WaitUntil.WaitSomeInterval(500);
-            Button.Click(btnThirdBundle);
+            Button.Click(btnBundles[2]);
             WaitUntil.WaitSomeInterval(2000);
 
             return this;
@@ -88,9 +88,53 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Select forth bundle")]
         public Home SelectForthBundleBtn()
         {
-            WaitUntil.WaitSomeInterval(500);
-            Button.Click(btnFourthBundle);
+            WaitUntil.WaitSomeInterval(700);
+            Button.Click(btnBundles[3]);
             WaitUntil.WaitSomeInterval(2000);
+
+            return this;
+        }
+
+        [AllureStep("AddTickets")]
+        public Home AddTicketsToBasket(int maxIterations)
+        {
+            
+            for (int i = 0; i <= maxIterations; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        OpenHomePage();
+                        Element.Action(Keys.End);
+                        OpenDreamTicketSelector();
+                        SelectFirstBundleBtn();
+                        break;
+                    case 1:
+                        OpenHomePage();
+                        Element.Action(Keys.End);
+                        OpenDreamTicketSelector();
+                        SelectSecondBundleBtn();
+                        break;
+                    case 2:
+                        OpenHomePage();
+                        Element.Action(Keys.End);
+                        OpenDreamTicketSelector();
+                        SelectForthBundleBtn();
+                        break;
+                    case 3:
+                        OpenHomePage();
+                        Element.Action(Keys.End);
+                        OpenDreamTicketSelector();
+                        SelectThirdBundleBtn();
+                        break;
+                    default:
+                        OpenHomePage();
+                        Element.Action(Keys.End);
+                        OpenDreamTicketSelector();
+                        SelectFirstBundleBtn();
+                        break;
+                }
+            }
 
             return this;
         }

@@ -20,7 +20,7 @@
             if (Browser._Driver != null)
             {
                 Browser.Quit();
-
+                AllureConfigFilesHelper.DeleteBatFile();
                 ForceCloseWebDriver.ForceClose();
                 ForceCloseWebDriver.RemoveBatFile();
             }

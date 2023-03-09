@@ -1,8 +1,11 @@
 ﻿namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
 {
     [JsonObject]
-    public class DreamHomeRequestModel
+    public class CreateDreamHomeRequestModel
     {
+        [JsonProperty("stepperCountdown")]
+        public StepperCountdown StepperCountdown { get; set; }
+
         [JsonProperty("active")]
         public bool Active { get; set; }
 
@@ -74,6 +77,82 @@
 
         [JsonProperty("property")]
         public string? Property { get; set; }
+    }
+
+    [JsonObject]
+    public class DreamHomeRequestModel
+    {
+        [JsonProperty("stepperCountdown")]
+        public StepperCountdown StepperCountdown { get; set; }
+
+        [JsonProperty("active")]
+        public bool Active { get; set; }
+
+        [JsonProperty("isActiveDiscount")]
+        public bool IsActiveDiscount { get; set; }
+
+        [JsonProperty("isPopular")]
+        public bool IsPopular { get; set; }
+
+        [JsonProperty("isTrending")]
+        public bool IsTrending { get; set; }
+
+        [JsonProperty("endsAt")]
+        public string EndsAt { get; set; }
+
+        [JsonProperty("startAt")]
+        public string StartAt { get; set; }
+
+        [JsonProperty("ticketPrice")]
+        public double TicketPrice { get; set; }
+
+        [JsonProperty("defaultTickets")]
+        public long DefaultTickets { get; set; }
+
+        [JsonProperty("isDiscountRates")]
+        public bool IsDiscountRates { get; set; }
+
+        [JsonProperty("creditsRates")]
+        public List<CreditsRate> CreditsRates { get; set; }
+
+        [JsonProperty("creditsEndDate")]
+        public string CreditsEndDate { get; set; }
+
+        [JsonProperty("creditsStartDate")]
+        public string CreditsStartDate { get; set; }
+
+        [JsonProperty("isCreditsActive")]
+        public bool IsCreditsActive { get; set; }
+
+        [JsonProperty("isCreditsPermanent")]
+        public bool IsCreditsPermanent { get; set; }
+
+        [JsonProperty("discountRates")]
+        public List<DiscountRate> DiscountRates { get; set; }
+
+        [JsonProperty("discountTicket")]
+        public DiscountTicket DiscountTicket { get; set; }
+
+        [JsonProperty("discountCategory")]
+        public string DiscountCategory { get; set; }
+
+        [JsonProperty("freeTicketsRates")]
+        public string[] FreeTicketsRates { get; set; }
+
+        [JsonProperty("isFreeTicketsRates")]
+        public bool IsFreeTicketsRates { get; set; }
+
+        [JsonProperty("ticketsBundles")]
+        public List<long> TicketsBundles { get; set; }
+
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
+        [JsonProperty("metaTitle")]
+        public string MetaTitle { get; set; }
+
+        [JsonProperty("metaDescription")]
+        public string MetaDescription { get; set; }
     }
 
 
@@ -180,6 +259,16 @@
 
     public class RaffleResponse
     {
+        [JsonProperty("raffles")]
+        public List<Raffles> Raffles { get; set; }
+    }
+
+    public class Raffles
+    {
+        
+        [JsonProperty("stepperCountdown")]
+        public StepperCountdown StepperCountdown { get; set; }
+
         [JsonProperty("active")]
         public bool Active { get; set; }
 
@@ -226,10 +315,10 @@
         public string Id { get; set; }
 
         [JsonProperty("endsAt")]
-        public DateTimeOffset EndsAt { get; set; }
+        public DateTime EndsAt { get; set; }
 
         [JsonProperty("startAt")]
-        public DateTimeOffset StartAt { get; set; }
+        public DateTime StartAt { get; set; }
 
         [JsonProperty("ticketPrice")]
         public double TicketPrice { get; set; }
@@ -238,10 +327,10 @@
         public string Property { get; set; }
 
         [JsonProperty("creditsEndDate")]
-        public DateTimeOffset CreditsEndDate { get; set; }
+        public DateTime CreditsEndDate { get; set; }
 
         [JsonProperty("creditsStartDate")]
-        public DateTimeOffset CreditsStartDate { get; set; }
+        public DateTime CreditsStartDate { get; set; }
 
         [JsonProperty("isCreditsPermanent")]
         public bool IsCreditsPermanent { get; set; }
@@ -262,13 +351,29 @@
         public string MetaDescription { get; set; }
 
         [JsonProperty("createdAt")]
-        public DateTimeOffset CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         [JsonProperty("updatedAt")]
-        public DateTimeOffset UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         [JsonProperty("__v")]
         public long V { get; set; }
+    }
+
+    
+    public class StepperCountdown
+    {
+        [JsonProperty("isActive")]
+        public bool isActive { get; set; }
+
+        [JsonProperty("title")]
+        public string title { get; set; }
+
+        [JsonProperty("startAt")]
+        public DateTime startAt { get; set; }
+
+        [JsonProperty("endsAt")]
+        public DateTime endsAt { get; set; }
     }
 
     public class CreditsRate
@@ -294,7 +399,6 @@
         [JsonProperty("newPrice")]
         public double NewPrice { get; set; }
     }
-
 
     public class DiscountTicket
     {

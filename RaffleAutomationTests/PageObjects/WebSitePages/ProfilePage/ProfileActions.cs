@@ -57,8 +57,6 @@ namespace RaffleAutomationTests.PageObjects
             Button.ClickJS(btnEditAccount);
             WaitUntil.CustomElementIsVisible(btnSave);
             Element.Action(Keys.End);
-            cbbxCountry.Click();
-            Button.ClickCountryJS(inputCountry);
             InputBox.Element(inputPhone, 10, "953214567");
             btnSave.SendKeys("");
             Button.ClickJS(btnSave);

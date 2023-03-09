@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace RaffleHouseAutomation.AdminSiteTests
 {
     [TestFixture]
@@ -27,14 +29,8 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .ClickSaveBtn();
             Pages.CmsDreamhome
                 .UploadDreamhomeCardImage()
-                .UploadBedroomCardImage()
-                .UploadBathroomCardImage()
-                .UploadOutspaceCardImage()
                 .UploadFloorPlanCardImage()
-                .EnterOutSpaceText(DreamHomeTexts.OUTSPACE)
-                .ClickAddOverviewRowsBtn()
-                .EnterBedroomText(DreamHomeTexts.BEDROOMS)
-                .EnterBathroomText(DreamHomeTexts.BATHROOMS)
+                .UploadLocationImage()
                 .EnterAboutText(DreamHomeTexts.ABOUT)
                 .EnterProductCTAText(DreamHomeTexts.PRODUCT_CTA_BTN)
                 .EnterHeadingText(DreamHomeTexts.HEADING);
@@ -133,7 +129,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsCommon
                 .VerifyIsLoginSuccessfull();
             Pages.CmsDreamhome
-                .EditDreamHome(dreamHome.Title)
+                .EditDreamHome(dreamHome.Raffles.First().Title)
                 .UploadImages();
             Pages.CmsCommon
                 .ClickSaveBtn();
@@ -148,7 +144,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             WaitUntil.WaitSomeInterval(10000);
             Pages.CmsCommon
                 .ClickSaveBtn()
-                .VerifyIsDreamhomeCreatedSuccessfully(dreamHome.Title);
+                .VerifyIsDreamhomeCreatedSuccessfully(dreamHome.Raffles.First().Title);
         }
     }
 }

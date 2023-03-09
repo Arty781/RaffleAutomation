@@ -1,13 +1,21 @@
 using ApiTests.BASE;
+using Fizzler.Systems.HtmlAgilityPack;
+using HtmlAgilityPack;
 using NUnit.Framework;
+using PutsboxWrapper;
 using RaffleAutomationTests.APIHelpers.Admin;
+using RaffleAutomationTests.APIHelpers.Admin.DreamHomePage;
 using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
 using RaffleAutomationTests.APIHelpers.Web;
 using RaffleAutomationTests.APIHelpers.Web.Basket;
+using RaffleAutomationTests.APIHelpers.Web.ForgotPasswordWeb;
 using RaffleAutomationTests.APIHelpers.Web.SignIn;
 using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
 using RaffleAutomationTests.APIHelpers.Web.Weekly;
 using RaffleAutomationTests.Helpers;
+using RestSharp;
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace API
 {
@@ -18,11 +26,38 @@ namespace API
 
         public void Demo()
         {
-            var response = SignUpRequest.RegisterNewUser();
-            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
-            var basketOrders = BasketRequest.GetBasketOrders(token);
-            BasketRequest.DeleteOrders(token, basketOrders);
-            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
+            #region Preconditions
+
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            List<long> bundles = new()
+            {
+                12,
+                62,
+                151,
+                154,
+                163
+            };
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 0.16666666, 0.01, bundles);
+
+            bundles = new()
+            {
+                5,
+                15,
+                50,
+                150
+            };
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.66666666, 2, bundles);
+
+            //var response = SignUpRequest.RegisterNewUser();
+            //var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
+            //var basketOrders = BasketRequest.GetBasketOrders(token);
+            //BasketRequest.DeleteOrders(token, basketOrders);
+            //var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
+            //DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList.FirstOrDefault(), 151);
+            //WaitUntil.WaitSomeInterval(250);
+
+            #endregion
 
         }
 
@@ -79,6 +114,17 @@ namespace API
         public static void RegisterNewUser()
         {
             var response = SignUpRequest.RegisterNewUser();
+        }
+
+        [Test]
+        public static void ResetPassword()
+        {
+            var response = SignUpRequest.RegisterNewUser();
+            RequestForgotPassword.ForgotPassword(response.User.Email);
+            string s = PutsBox.GetLinkFromEmailWithValue(response.User.Email, "Reset Password").Substring(29);
+            var token = RequestForgotPassword.GetResetLink(s).Substring(47);
+            var reset = RequestForgotPassword.ResetPassword(token);
+            Console.WriteLine(reset.Message);
         }
     }
 }

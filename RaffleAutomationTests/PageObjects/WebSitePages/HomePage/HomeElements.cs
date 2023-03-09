@@ -133,17 +133,8 @@
         [FindsBy(How = How.XPath, Using = "//div[text()='Postal Entry']/parent::div")]
         public IWebElement btnPostalBundle;
 
-        [FindsBy(How = How.XPath, Using = "//div[@class='ticket-list']//button[text()='Buy Now'][1]")]
-        public IWebElement btnFirstBundle;
-
-        [FindsBy(How = How.XPath, Using = "//div[@class='ticket-list']//button[text()='Buy Now'][2]")]
-        public IWebElement btnSecondBundle;
-
-        [FindsBy(How = How.XPath, Using = "//div[@class='ticket-list']//button[text()='Buy Now'][3]")]
-        public IWebElement btnThirdBundle;
-
-        [FindsBy(How = How.XPath, Using = "//div[@class='ticket-list']//button[text()='Buy Now'][4]")]
-        public IWebElement btnFourthBundle;
+        [FindsBy(How = How.XPath, Using = "//div[@class='ticket-list']//button[text()='Buy Now']")]
+        public IList<IWebElement> btnBundles;
 
 
         #endregion

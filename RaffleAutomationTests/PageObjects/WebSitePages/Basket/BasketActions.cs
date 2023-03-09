@@ -5,7 +5,7 @@
         [AllureStep("Open cart")]
         public Basket ClickCartBtn()
         {
-            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/basket");
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.BASKET);
             WaitUntil.CustomElementIsVisible(btncheckOutNow);
 
             return this;
@@ -120,6 +120,74 @@
             return this;
         }
 
+        public Basket VerifyUrl()
+        {
+            if (!Browser._Driver.Url.Contains($"{WebEndpoints.WEBSITE_HOST}"))
+            {
+                WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(10))
+                {
+                    PollingInterval = TimeSpan.FromMilliseconds(50)
+                };
+                try
+                {
+                    wait.Until(e =>
+                    {
+                        try
+                        {
+                            var url = Browser._Driver.Url;
+                            if (url.Contains("localhost"))
+                            {
+                                return true;
+                            }
+                            return false;
+                        }
+                        catch (Exception ex)
+                        {
+                            return false;
+                        }
 
+                    });
+                }
+                catch (NoSuchElementException) { }
+                catch (StaleElementReferenceException) { }
+
+                var url = Browser._Driver.Url.Replace("http://localhost:8000", WebEndpoints.WEBSITE_HOST);
+                Browser._Driver.Navigate().GoToUrl(url);
+
+                
+            }
+            return this;
+        }
+
+        public Basket EnterEmail(string email)
+        {
+            WaitUntil.CustomElementIsVisible(inputEmail, 10);
+            InputBox.Element(inputEmail, 10, email);
+
+            return this;
+        }
+
+        [AllureStep("Make a purchase as unauthorized user")]
+        public Basket MakeAPurchaseAsUnauthorizedUser(string email)
+        {
+            ClickCheckoutNowBtn();
+            EnterEmail(email);
+            EnterCardDetails();
+            ClickPayNowBtn();
+            ConfirmPurchaseStage();
+
+            return this;
+        }
+
+        [AllureStep("Make a purchase as unauthorized user")]
+        public Basket MakeAPurchaseAsAuthorizedUser()
+        {
+            ClickCheckoutNowBtn();
+            EnterCardDetails();
+            ClickPayNowBtn();
+            ConfirmPurchaseStage();
+
+            return this;
+        }
     }
 }

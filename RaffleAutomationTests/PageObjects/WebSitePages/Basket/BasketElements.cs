@@ -2,6 +2,9 @@
 {
     public partial class Basket
     {
+        [FindsBy(How = How.XPath, Using = "//div[@class='your-basket-ticket-price']")]
+        public IList<IWebElement> textPrice;
+
         [FindsBy(How = How.XPath, Using = "//button[@class='your-basket-ticket-select']")]
         public IWebElement addMoreTicketsBtn;
 
@@ -69,6 +72,9 @@
 
         [FindsBy(How = How.XPath, Using = "//button[@class='rafflebtn primary full-width']")]
         public IWebElement btncheckOutNow;
+
+        [FindsBy(How = How.Name, Using ="email")]
+        public IWebElement inputEmail;
 
 
 

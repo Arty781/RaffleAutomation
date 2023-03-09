@@ -1,4 +1,8 @@
-﻿namespace RaffleAutomationTests.PageObjects
+﻿using RaffleAutomationTests.PageObjects.WebSitePages;
+using RaffleAutomationTests.PageObjects.WebSitePages.ActivatePage;
+using RaffleAutomationTests.PageObjects.WebSitePages.ResetPasswordPage;
+
+namespace RaffleAutomationTests.PageObjects
 {
     public class Pages
     {
@@ -39,6 +43,9 @@
         public static CmsSettingsWinners CmsSettingsWinners => GetPage<CmsSettingsWinners>();
         public static CmsSettingsReferrals CmsSettingsReferrals => GetPage<CmsSettingsReferrals>();
         public static CmsReports CmsReports => GetPage<CmsReports>();
-
+        public static PageDiscountPage PageDiscountPage => GetPage<PageDiscountPage>();
+        public static WinRafflePage WinRafflePage => GetPage<WinRafflePage>();
+        public static Activate Activate => GetPage<Activate>();
+        public static ResetPassword ResetPassword => GetPage<ResetPassword>();
     }
 }

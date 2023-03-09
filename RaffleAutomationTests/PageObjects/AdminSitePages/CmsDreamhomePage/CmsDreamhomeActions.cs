@@ -190,6 +190,14 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Upload Floor plan card image")]
+        public CmsDreamhome UploadLocationImage()
+        {
+            mapCardImg.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_FLOOR_PLAN);
+
+            return this;
+        }
+
         [AllureStep("Enter Bedroom text")]
         public CmsDreamhome EnterBedroomText(string bedroomText)
         {

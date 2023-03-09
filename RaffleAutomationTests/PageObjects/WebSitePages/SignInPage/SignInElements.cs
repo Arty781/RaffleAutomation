@@ -15,11 +15,7 @@
         public IWebElement checkboxPolicy;
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(), 'Forgot password?')]")]
-        public IWebElement inputForgotPassword;
-
-
-
-
+        public IWebElement btnForgotPassword;
 
     }
 }
