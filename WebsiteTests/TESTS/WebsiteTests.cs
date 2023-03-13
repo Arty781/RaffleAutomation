@@ -12,10 +12,17 @@ namespace RaffleHouseAutomation.WebSiteTests
         {
             Pages.Common
                 .CloseCookiesPopUp();
+            Pages.Footer
+                .OpenTerms();
+            var actualTerms = Pages.TermsAndConditions.GetTextTerms();
             Pages.Header
-                .OpenPostPage();
-            Pages.Postal
-                .VerifyDisplayingParagraphs();
+                .OpenHomePage(WebEndpoints.WEBSITE_HOST);
+            Pages.Footer
+                .OpenPrivacy();
+            var actualPrivacy = Pages.TermsAndConditions.GetTextPrivacy();
+
+            Pages.TermsAndConditions
+                .VerifyDisplayingParagraphs(actualTerms, actualPrivacy);
         }
 
         
@@ -807,6 +814,48 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyHowItWorksStepsTitles()
                 .VerifyHowItWorksStepsParagraphs();
 
+        }
+
+
+        [Test, Category("Postal")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Postal Page")]
+        public void VerifyTextOnPostalPage()
+        {
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Header
+                .OpenPostPage();
+            Pages.Postal
+                .VerifyDisplayingParagraphs();
+        }
+
+        [Test, Category("Privacy Policy and Terms & Conditions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Terms&Conditions Page")]
+        public void VerifyTextOfTermsAndConditions()
+        {
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Footer
+                .OpenTerms();
+            var actualTerms = Pages.TermsAndConditions.GetTextTerms();
+            Pages.Header
+                .OpenHomePage(WebEndpoints.WEBSITE_HOST);
+            Pages.Footer
+                .OpenPrivacy();
+            var actualPrivacy = Pages.TermsAndConditions.GetTextPrivacy();
+
+            Pages.TermsAndConditions
+                .VerifyDisplayingParagraphs(actualTerms, actualPrivacy);
         }
 
         [Test, Category("Footer")]

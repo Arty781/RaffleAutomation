@@ -1,6 +1,7 @@
 ﻿using RaffleAutomationTests.PageObjects.WebSitePages;
 using RaffleAutomationTests.PageObjects.WebSitePages.ActivatePage;
 using RaffleAutomationTests.PageObjects.WebSitePages.ResetPasswordPage;
+using RaffleAutomationTests.PageObjects.WebSitePages.TermsAndConditionsPage;
 
 namespace RaffleAutomationTests.PageObjects
 {
@@ -47,5 +48,6 @@ namespace RaffleAutomationTests.PageObjects
         public static WinRafflePage WinRafflePage => GetPage<WinRafflePage>();
         public static Activate Activate => GetPage<Activate>();
         public static ResetPassword ResetPassword => GetPage<ResetPassword>();
+        public static TermsAndConditions TermsAndConditions => GetPage<TermsAndConditions>();
     }
 }
