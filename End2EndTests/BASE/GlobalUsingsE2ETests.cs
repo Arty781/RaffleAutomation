@@ -1,0 +1,11 @@
+﻿global using NUnit.Allure.Core;
+global using NUnit.Framework;
+global using RaffleAutomationTests.Helpers;
+global using End2EndTests.BASE;
+global using RaffleAutomationTests.APIHelpers.Admin.DreamHomePage;
+global using RaffleAutomationTests.APIHelpers.Admin;
+global using RaffleAutomationTests.PageObjects;
+global using RaffleAutomationTests.APIHelpers.Web.Basket;
+global using RaffleAutomationTests.APIHelpers.Web.SignIn;
+global using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
+global using RaffleAutomationTests.APIHelpers.Web;

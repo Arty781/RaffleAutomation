@@ -1,10 +1,49 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RaffleHouseAutomation.AdminSiteTests
 {
     [TestFixture]
     [AllureNUnit]
-    public class AdminSiteTests : TestBaseAdmin
+    public class DemoTest : TestBaseAdmin
+    {
+        [Test]
+        public void Demo()
+        {
+            var email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"), "@putsbox.com");
+            Pages.CmsLogin
+                .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
+                .ClickSignInBtn();
+            Pages.CmsCommon
+                .VerifyIsLoginSuccessfull();
+            Pages.CmsUserManagement
+                .OpenUserManagement()
+                .ClickAddNewBtn()
+                .EnterUserData(email);
+            Pages.CmsCommon
+                .ClickSaveBtn();
+            Pages.CmsUserManagement
+                .SearchIsUserDisplayed(email);
+            var password = Pages.CmsUserManagement.GetPassword(email);
+
+            Browser.Navigate(WebEndpoints.WEBSITE_HOST);
+            Pages.Common
+               .CloseCookiesPopUp();
+            Pages.Header
+               .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(email, password);
+            Pages.SignIn
+                .VerifyIsSignIn();
+        }
+    }
+
+
+
+    [TestFixture]
+    [AllureNUnit]
+    public class AdminDreamHomeTests : TestBaseAdmin
     {
 
         [Test]
@@ -50,6 +89,14 @@ namespace RaffleHouseAutomation.AdminSiteTests
         [Test]
         public void CreateNewDreamhomeWithFreeTicketsWithin()
         {
+            #region Preconditions
+
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            DreamHomeRequest.DeactivateDreamHome(tokenAdmin, dreamResponse);
+
+            #endregion
+
             Pages.CmsLogin
                 .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
                 .ClickSignInBtn();
@@ -62,6 +109,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             string dreamhomeTitle = Pages.CmsDreamhome.GetDreamhomeTitle();
             Pages.CmsDreamhome
                 .EnterAddress()
+                .AcivateDreamHome()
                 .EnterStartDate()
                 .EnterFinishDate()
                 .EnterMetaTags()
@@ -81,6 +129,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .EnterPrice()
                 .EnterNumOfTickets()
                 .SetDiscountThreshold()
+                .SetFreeTickets()
                 .AddTicketsBundles();
             Pages.CmsCommon
                 .ClickSaveBtn()
@@ -135,6 +184,12 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .VerifyIsDreamhomeCreatedSuccessfully(dreamhomeTitle);
         }
 
+    }
+
+    [TestFixture]
+    [AllureNUnit]
+    public class AdminLifestyleTests : TestBaseAdmin
+    {
         [Test]
         public void ActivateLF()
         {
@@ -153,19 +208,13 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .ActivatePrizesOnPage();
 
         }
+    }
 
-        [Test]
-        public void Demo()
-        {
-            Pages.CmsLogin
-                .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
-                .ClickSignInBtn();
-            Pages.CmsCommon
-                .VerifyIsLoginSuccessfull();
-            Pages.CmsDreamhome
-                .OpenDreamhomePage();
-            Pages.CmsCommon
-                .VerifyIsDreamhomeCreatedSuccessfully("Dream New flat 14-March-2023 10-52-07");
-        }
+
+    [TestFixture]
+    [AllureNUnit]
+    public class AdminUserManagementTests : TestBaseAdmin
+    {
+
     }
 }

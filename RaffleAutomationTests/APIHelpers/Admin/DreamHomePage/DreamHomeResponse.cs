@@ -128,7 +128,7 @@
         public bool IsCreditsPermanent { get; set; }
 
         [JsonProperty("discountRates")]
-        public List<DiscountRate> DiscountRates { get; set; }
+        public List<DiscountRate>? DiscountRates { get; set; }
 
         [JsonProperty("discountTicket")]
         public DiscountTicket DiscountTicket { get; set; }
@@ -143,7 +143,7 @@
         public bool IsFreeTicketsRates { get; set; }
 
         [JsonProperty("ticketsBundles")]
-        public List<long> TicketsBundles { get; set; }
+        public List<long>? TicketsBundles { get; set; }
 
         [JsonProperty("title")]
         public string Title { get; set; }
@@ -153,6 +153,9 @@
 
         [JsonProperty("metaDescription")]
         public string MetaDescription { get; set; }
+
+        [JsonProperty("isClosed")]
+        public bool IsClosed { get; set; }
     }
 
 

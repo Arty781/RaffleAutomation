@@ -8,6 +8,12 @@
         public const string DREAMHOME_PRIZES = "https://admin-staging.rafflehouse.com/#/dreamHome";
         public const string LIFESTYLE_PRIZES = "https://admin-staging.rafflehouse.com/#/prizes";
         public const string FIXEDODDS_PRIZES = "https://admin-staging.rafflehouse.com/#/fixedOdds";
+        public const string USER_MANAGEMENT = "https://admin-staging.rafflehouse.com/#/users";
+        public const string STAFF_MANAGEMENT = "https://admin-staging.rafflehouse.com/#/staffUsers";
+        public const string SETTINGS_GENERAL = "https://admin-staging.rafflehouse.com/#/general";
+        public const string SETTING_WINNERS = "https://admin-staging.rafflehouse.com/#/winners";
+        public const string SETTINGS_REFERRALS = "https://admin-staging.rafflehouse.com/#/referrals";
+        public const string COMPETITIONS = "https://admin-staging.rafflehouse.com/#/competitions";
     }
 
     public class WebEndpoints
@@ -96,6 +102,7 @@
         public const string RAFFLE_BATHROOM = @"UploadImages\RaffleBathroom.jpg";
         public const string RAFFLE_BEDROOM = @"UploadImages\RaffleBedroom.jpg";
         public const string RAFFLE_FLOOR_PLAN = @"UploadImages\RaffleFloorPlan.jpg";
+        public const string RAFFLE_LOCATION_MAP = @"UploadImages\RaffleLocationMap.jpg";
         public const string RAFFLE_OUTSPACE = @"UploadImages\RaffleOutspace.jpg";
         public const string RAFFLE_DESKTOP_1 = @"UploadImages\Desktop\DreamHomeImage1.jpg";
         public const string RAFFLE_DESKTOP_2 = @"UploadImages\Desktop\DreamHomeImage2.jpg";
@@ -105,6 +112,9 @@
         public const string RAFFLE_DESKTOP_6 = @"UploadImages\Desktop\DreamHomeImage6.jpg";
         public const string RAFFLE_DESKTOP_7 = @"UploadImages\Desktop\DreamHomeImage7.jpg";
         public const string RAFFLE_DESKTOP_8 = @"UploadImages\Desktop\DreamHomeImage8.jpg";
+        public const string RAFFLE_DESKTOP_9 = @"UploadImages\Desktop\DreamHomeImage9.jpg";
+        public const string RAFFLE_DESKTOP_10 = @"UploadImages\Desktop\DreamHomeImage10.jpg";
+        public const string RAFFLE_DESKTOP_11 = @"UploadImages\Desktop\DreamHomeImage11.jpg";
         public const string RAFFLE_MOBILE_1 = @"UploadImages\Mobile\DreamHomeImage1.jpg";
         public const string RAFFLE_MOBILE_2 = @"UploadImages\Mobile\DreamHomeImage2.jpg";
         public const string RAFFLE_MOBILE_3 = @"UploadImages\Mobile\DreamHomeImage3.jpg";
@@ -113,6 +123,9 @@
         public const string RAFFLE_MOBILE_6 = @"UploadImages\Mobile\DreamHomeImage6.jpg";
         public const string RAFFLE_MOBILE_7 = @"UploadImages\Mobile\DreamHomeImage7.jpg";
         public const string RAFFLE_MOBILE_8 = @"UploadImages\Mobile\DreamHomeImage8.jpg";
+        public const string RAFFLE_MOBILE_9 = @"UploadImages\Mobile\DreamHomeImage9.jpg";
+        public const string RAFFLE_MOBILE_10 = @"UploadImages\Mobile\DreamHomeImage10.jpg";
+        public const string RAFFLE_MOBILE_11 = @"UploadImages\Mobile\DreamHomeImage11.jpg";
     }
 
     public class TakeTourWithSaraLink

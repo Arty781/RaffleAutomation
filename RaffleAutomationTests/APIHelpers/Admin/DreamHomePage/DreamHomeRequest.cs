@@ -57,7 +57,54 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
                 Title = response.Raffles.First().Title,
                 MetaTitle = response.Raffles.First().MetaTitle,
                 MetaDescription = response.Raffles.First().MetaDescription,
-                StepperCountdown= response.Raffles.First().StepperCountdown
+                StepperCountdown= response.Raffles.First().StepperCountdown,
+                IsClosed = false
+            };
+            return JsonConvert.SerializeObject(req);
+        }
+
+        private static string JsonBodyDeactivate(RaffleResponse response)
+        {
+            DreamHomeRequestModel req = new()
+            {
+                Active = false,
+                IsActiveDiscount = response.Raffles.First().IsActiveDiscount,
+                IsPopular = response.Raffles.First().IsPopular,
+                IsTrending = response.Raffles.First().IsTrending,
+                EndsAt = response.Raffles.First().EndsAt.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
+                StartAt = response.Raffles.First().StartAt.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
+                TicketPrice = response.Raffles.First().TicketPrice,
+                DefaultTickets = response.Raffles.First().DefaultTickets,
+                IsDiscountRates = response.Raffles.First().IsDiscountRates,
+                CreditsRates = new List<CreditsRate>()
+                {
+                    new CreditsRate()
+                    {
+                        Id = 1,
+                        Count = 20,
+                        Percent = 30
+                    }
+                },
+                CreditsEndDate = response.Raffles.First().CreditsEndDate.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
+                CreditsStartDate = response.Raffles.First().CreditsStartDate.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
+                IsCreditsActive = response.Raffles.First().IsCreditsActive,
+                IsCreditsPermanent = response.Raffles.First().IsCreditsPermanent,
+                DiscountRates = response.Raffles.First().DiscountRates,
+                DiscountTicket = new()
+                {
+                    Percent = 1,
+                    NewPrice = 1
+                },
+                DiscountCategory = response.Raffles.First().DiscountCategory,
+                FreeTicketsRates = Array.Empty<string>(),
+                IsFreeTicketsRates = response.Raffles.First().IsFreeTicketsRates,
+                TicketsBundles = response.Raffles.First().TicketsBundles,
+                Title = response.Raffles.First().Title,
+                MetaTitle = response.Raffles.First().MetaTitle,
+                MetaDescription = response.Raffles.First().MetaDescription,
+                StepperCountdown = response.Raffles.First().StepperCountdown,
+                IsClosed = true
+                
             };
             return JsonConvert.SerializeObject(req);
         }
@@ -213,6 +260,35 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
                 return;
             }
             Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+        }
+
+        public static void DeactivateDreamHome(SignInResponseModelAdmin token, RaffleResponse response)
+        {
+            HttpRequest req = new HttpRequest
+            {
+                HttpVerb = "PUT",
+                Path = $"/api/raffles/{response.Raffles.First().Id}",
+                ContentType = "application/json"
+            };
+            req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("authorization", $"Bearer {token.Token}");
+
+            req.LoadBodyFromString(JsonBodyDeactivate(response), charset: "utf-8");
+            if(response != null)
+            {
+                Http http = new();
+
+                HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+                if (http.LastMethodSuccess != true)
+                {
+                    Debug.WriteLine(http.LastErrorText);
+                    return;
+                }
+                Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+            }
+            
         }
 
         public static RaffleResponse? GetActiveDreamHome(SignInResponseModelAdmin token)

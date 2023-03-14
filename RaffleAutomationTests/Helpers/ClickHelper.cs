@@ -130,6 +130,31 @@ namespace RaffleAutomationTests.Helpers
             return _element;
         }
 
+        public static IWebElement FindSpecificUser(string email)
+        {
+            WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(30))
+            {
+                PollingInterval = TimeSpan.FromMilliseconds(100)
+            };
+            try
+            {
+                wait.Until(e =>
+                {
+                    try { return Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']")).Enabled; }
+                    catch (NoSuchElementException) { return false; }
+                    catch (StaleElementReferenceException) { return false; }
+
+                });
+            }
+            catch (NoSuchElementException) { }
+            catch (StaleElementReferenceException) { }
+
+            var _element = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']"));
+
+
+            return _element;
+        }
+
         public static void Action(string key)
         {
             Actions actions = new(Browser._Driver);
@@ -177,6 +202,19 @@ namespace RaffleAutomationTests.Helpers
             return email;
         }
 
+        private static string ParseAllText(string rawData)
+        {
+            HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(rawData);
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            foreach (HtmlNode item in htmlDocument.DocumentNode.QuerySelectorAll("p"))
+            {
+                sb.AppendLine(item.InnerText);
+            }
+
+            return sb.ToString();
+        }
+
         private static string GetJsonContent(string email)
         {
             RestClient client = new RestClient(GetJsonUrl(email));
@@ -198,6 +236,26 @@ namespace RaffleAutomationTests.Helpers
             string text = Decode(jsonContent);
             GetBodyData(text);
             return ParseAllLinks(text).Link.First((PutsboxWrapper.Link x) => x.Name == value2).Url;
+        }
+
+        public static string GetTextFromEmailWithValue(string domain, string value, int index)
+        {
+            string value2 = value;
+            Thread.Sleep(2000);
+            string jsonContent = GetJsonContent(domain);
+            if (jsonContent.Contains("Not Found"))
+            {
+                Thread.Sleep(2000);
+                jsonContent = GetJsonContent(domain);
+            }
+
+            string text = Decode(jsonContent);
+            GetBodyData(text);
+            string[] texts = ParseAllText(text)
+                .Split(Environment.NewLine)
+                .Where(x => x.Contains(value2))
+                .ToArray();
+            return ParseAllText(text).Split(Environment.NewLine).Where(x => x.Contains(value2)).FirstOrDefault().Replace($"{value2}", "");
         }
 
 

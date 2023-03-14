@@ -34,7 +34,10 @@ namespace RaffleAutomationTests.PageObjects
                                                                       Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_5 + "\n" +
                                                                       Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_6 + "\n" +
                                                                       Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_7 + "\n" +
-                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_8));
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_8 + "\n" +
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_9 + "\n" +
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_10 + "\n" +
+                                                                      Browser.RootPath() + UploadedImages.RAFFLE_DESKTOP_11));
 
             InputBox.ElementImage(inputMobileImage, 5, String.Concat(Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_1 + "\n" +
                                                                      Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_2 + "\n" +
@@ -43,7 +46,10 @@ namespace RaffleAutomationTests.PageObjects
                                                                      Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_5 + "\n" +
                                                                      Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_6 + "\n" +
                                                                      Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_7 + "\n" +
-                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_8));
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_8 + "\n" +
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_9 + "\n" +
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_10 + "\n" +
+                                                                     Browser.RootPath() + UploadedImages.RAFFLE_MOBILE_11));
 
             return this;
         }
@@ -72,6 +78,13 @@ namespace RaffleAutomationTests.PageObjects
                 Button.ClickJS(btnDeleteImageMobile.FirstOrDefault());
             }
 
+            return this;
+        }
+
+        [AllureStep("Activate dreamhome")]
+        public CmsDreamhome AcivateDreamHome()
+        {
+            Button.ClickJS(toggleSwitcherStatus);
             return this;
         }
 
@@ -144,7 +157,7 @@ namespace RaffleAutomationTests.PageObjects
                         InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("MM"));
                         break;
                     case 2:
-                        InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("yyyy"));
+                        InputBox.Element(inputFinishDate[i], 5, currentDate.AddYears(1).ToString("yyyy"));
                         break;
                     case 3:
                         InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("hh"));
@@ -234,7 +247,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Upload Floor plan card image")]
         public CmsDreamhome UploadLocationImage()
         {
-            mapCardImg.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_FLOOR_PLAN);
+            mapCardImg.SendKeys(Browser.RootPath() + UploadedImages.RAFFLE_LOCATION_MAP);
 
             return this;
         }
@@ -420,13 +433,10 @@ namespace RaffleAutomationTests.PageObjects
             for(int i = 0; i < 3; i++)
             {
                 Button.Click(btnAddFreeTickets);
+                WaitUntil.WaitSomeInterval(250);
             }
             EnterFreeTicktesData();
             
-            InputBox.Element(inputDiscountThreshold.FirstOrDefault(), 10, "15");
-            InputBox.Element(inputDiscountValue.FirstOrDefault(), 10, "1.666666666666");
-            InputBox.Element(inputDiscountThreshold.LastOrDefault(), 10, "16");
-            InputBox.Element(inputDiscountValue.LastOrDefault(), 10, "2");
             return this;
         }
 
@@ -486,8 +496,6 @@ namespace RaffleAutomationTests.PageObjects
                 }
 
             }
-
-            return (evenElements, oddElements);
         }
 
         #endregion

@@ -2,9 +2,15 @@
 {
     public partial class CmsUserManagement
     {
+        [FindsBy(How = How.XPath, Using = "//div[text()='User Management']")]
+        public IWebElement textTitleUserManagement;
+
+
+
+
         #region Add new User
 
-        [FindsBy(How = How.XPath, Using = "//a[@aria-label='Add new']")]
+        [FindsBy(How = How.XPath, Using = "//a[@aria-label='Add new ']")]
         public IWebElement btnAddUser;
 
         [FindsBy(How = How.Name, Using = "name")]

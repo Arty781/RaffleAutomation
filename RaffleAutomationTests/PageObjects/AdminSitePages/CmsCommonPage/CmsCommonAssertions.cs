@@ -22,5 +22,15 @@ namespace RaffleAutomationTests.PageObjects
             Assert.IsTrue(dreamhomeTitle == Element.FindSpecificDreamhome(dreamhomeTitle).Text);
             return this;
         }
+
+        public CmsCommon VerifyIsUserCreatedSuccessfully(string email)
+        {
+            WaitUntil.CustomElementIsVisible(Pages.CmsDreamhome.titleAddedDreamhome, 25);
+            Element.Action(Keys.End);
+            Button.Click(btnLastPage);
+            WaitUntil.CustomElementIsVisible(Element.FindSpecificUser(email));
+            Assert.IsTrue(email == Element.FindSpecificUser(email).Text);
+            return this;
+        }
     }
 }

@@ -38,7 +38,7 @@
         public IWebElement inputAddress;
 
         [FindsBy(How = How.XPath, Using = "//input[@name='active']")]
-        public IWebElement switcherStatus;
+        public IWebElement toggleSwitcherStatus;
 
         [FindsBy(How = How.XPath, Using = "//section[1]//img[@class='file-img']")]
         public IWebElement imgDesktopSelect;
