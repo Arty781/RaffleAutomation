@@ -48,9 +48,8 @@ namespace RaffleAutomationTests.PageObjects
         public Profile EditAccountData()
         {
             WaitUntil.CustomElementIsVisible(btnSave);
-            Element.Action(Keys.End);
+            InputBox.Element(inputEmail, 10, "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com");
             InputBox.Element(inputPhone, 10, "953214567");
-            btnSave.SendKeys("");
             Button.ClickJS(btnSave);
             return this;
         }

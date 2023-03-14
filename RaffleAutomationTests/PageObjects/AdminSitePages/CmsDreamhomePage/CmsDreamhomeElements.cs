@@ -14,8 +14,16 @@
         [FindsBy(How = How.XPath, Using = "//a[@href='#/dreamHome/create/3']")]
         public IWebElement tabDiscountTickets;
 
+        [FindsBy(How=How.XPath,Using = "//h6[text()=' New Dream Home ']/parent::div[@class='active-table-title']/parent::div/following::tbody/tr/td[1]")]
+        public IWebElement titleAddedDreamhome;
+
         #region General tab
 
+        [FindsBy(How=How.XPath,Using = "//div[text()='Add images for desktop *']/parent::div/section[@class='file-list'][1]//div[contains(@class, 'image-actions')]//*[contains(@class,'remove-image-icon')]")]
+        public IList<IWebElement> btnDeleteImageDesktop;
+
+        [FindsBy(How = How.XPath, Using = "//div[text()='Add images for mobile *']/parent::div/section[@class='file-list'][2]//div[contains(@class, 'image-actions')]//*[contains(@class,'remove-image-icon')]")]
+        public IList<IWebElement> btnDeleteImageMobile;
 
         [FindsBy(How = How.XPath, Using = "//div[contains(text(),'desktop *')]/following-sibling::div/input")]
         public IWebElement inputDesktopImage;
@@ -162,6 +170,15 @@
 
         [FindsBy(How = How.XPath, Using = "//h6[contains(text(),'Discount')]/parent::div//input[@type='checkbox']")]
         public IWebElement btnDiscountStepsToggle;
+
+        [FindsBy(How = How.XPath, Using = "//h6[text()='Free Tickets']/parent::div//h6[text()='Status']/parent::div//input")]
+        public IWebElement btnFreeTicketsToggle;
+
+        [FindsBy(How = How.XPath, Using = "//h6[text()='Free Tickets']/parent::div//*[@class='MuiSvgIcon-root add-discount']")]
+        public IWebElement btnAddFreeTickets;
+
+        [FindsBy(How = How.XPath, Using = "//h6[text()='Free Tickets']/parent::div//input[@type='number']")]
+        public IList<IWebElement> inputFreeTickets;
 
         [FindsBy(How = How.XPath, Using = "//h6[contains(text(),'Discount')]/parent::div//input[@type='radio']")]
         public IList<IWebElement> btnDiscountStepsRadio;

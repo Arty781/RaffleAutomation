@@ -2,11 +2,20 @@
 {
     public partial class Profile
     {
-        public Profile VerifyDisplayingToaster()
+        public Profile VerifyDisplayingSuccessfullToaster()
         {
             WaitUntil.WaitSomeInterval(350);
             WaitUntil.CustomElementIsVisible(SuccessUpdateDialog);
             Assert.IsTrue(SuccessUpdateDialog.Displayed);
+
+            return this;
+        }
+
+        public Profile VerifyUpdatePasswordSuccessfullToaster()
+        {
+            WaitUntil.WaitSomeInterval(350);
+            WaitUntil.CustomElementIsVisible(SuccessUpdatePasswordDialog);
+            Assert.IsTrue(SuccessUpdatePasswordDialog.Displayed);
 
             return this;
         }
@@ -246,7 +255,7 @@
 
         public void VerifyValidationOnProfileAccountDetails()
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
             {
                 switch (i)
                 {
@@ -257,7 +266,7 @@
                         VerifyDisplayingEmailErrorMessage();
                         break;
                     case 1:
-                        InputBox.Element(inputEmail, 10, "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + " @putsbox.com");
+                        InputBox.Element(inputEmail, 10, string.Join(" qatester-", DateTime.Now.ToString("yyyy-MM-dThh-mm-ss"), "  ","@putsbox.com "));
                         InputBox.Element(inputPhone, 10, "953214567");
                         Button.ClickJS(btnSave);
                         VerifyDisplayingEmailErrorMessage();

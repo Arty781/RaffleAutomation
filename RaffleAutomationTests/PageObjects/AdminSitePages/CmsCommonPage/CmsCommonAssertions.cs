@@ -15,8 +15,10 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Verify that dreamhome {0} created successfully")]
         public CmsCommon VerifyIsDreamhomeCreatedSuccessfully(string dreamhomeTitle)
         {
-            //Button.Click(btnLastPage);
-            WaitUntil.CustomElementIsVisible(Element.FindSpecificDreamhome(dreamhomeTitle), 60);
+            WaitUntil.CustomElementIsVisible(Pages.CmsDreamhome.titleAddedDreamhome, 25);
+            Element.Action(Keys.End);
+            Button.Click(btnLastPage);
+            WaitUntil.CustomElementIsVisible(Element.FindSpecificDreamhome(dreamhomeTitle));
             Assert.IsTrue(dreamhomeTitle == Element.FindSpecificDreamhome(dreamhomeTitle).Text);
             return this;
         }

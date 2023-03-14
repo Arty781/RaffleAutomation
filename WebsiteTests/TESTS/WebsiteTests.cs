@@ -220,15 +220,15 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Profile
                 .ClickEditPersonalDataBtn()
                 .EditPersonalData()
-                .VerifyDisplayingToaster();
+                .VerifyDisplayingSuccessfullToaster();
             Pages.Profile
                 .ClickEditPasswordBtn()
                 .EditPassword()
-                .VerifyDisplayingToaster();
+                .VerifyUpdatePasswordSuccessfullToaster();
             Pages.Profile
                 .ClickEditAccountBtn()
                 .EditAccountData()
-                .VerifyDisplayingToaster();
+                .VerifyDisplayingSuccessfullToaster();
 
             #region Postconditions
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
@@ -1052,7 +1052,6 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickPayNowBtn()
                 .ConfirmPurchaseStage();
             Pages.Basket
-                .VerifyUrl()
                 .VerifyErrorMessageIsDisplayed();
 
             #region Postconditions
@@ -1122,7 +1121,6 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickPayNowBtn()
                 .ConfirmPurchaseStage();
             Pages.Basket
-                .VerifyUrl()
                 .VerifyErrorMessageIsDisplayed();
 
             #region Postconditions
@@ -1192,7 +1190,6 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickPayNowBtn()
                 .ConfirmPurchaseStage();
             Pages.Basket
-                .VerifyUrl()
                 .VerifyErrorMessageIsDisplayed();
 
             #region Postconditions
@@ -1262,7 +1259,6 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickPayNowBtn()
                 .ConfirmPurchaseStage();
             Pages.Basket
-                .VerifyUrl()
                 .VerifyErrorMessageIsDisplayed();
 
             #region Postconditions
@@ -1332,7 +1328,6 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickPayNowBtn()
                 .ConfirmPurchaseStage();
             Pages.Basket
-                .VerifyUrl()
                 .VerifyErrorMessageIsDisplayed();
 
             #region Postconditions
@@ -1429,7 +1424,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("Client")]
         [AllureSubSuite("Payment")]
-        public void EditUserData()
+        public void VerifyValidationOnProfilePage()
         {
             #region Preconditions
             var response = SignUpRequest.RegisterNewUser();
@@ -1447,19 +1442,19 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyValidationOnProfilePersonalDetails();
             Pages.Profile
                 .EditPersonalData()
-                .VerifyDisplayingToaster();
+                .VerifyDisplayingSuccessfullToaster();
             Pages.Profile
                 .ClickEditPasswordBtn()
                 .VerifyValidationOnProfilePassword();
             Pages.Profile
                 .EditPassword()
-                .VerifyDisplayingToaster();
+                .VerifyUpdatePasswordSuccessfullToaster();
             Pages.Profile
                 .ClickEditAccountBtn()
                 .VerifyValidationOnProfileAccountDetails();
             Pages.Profile
                 .EditAccountData()
-                .VerifyDisplayingToaster();
+                .VerifyDisplayingSuccessfullToaster();
 
             #region Postconditions
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);

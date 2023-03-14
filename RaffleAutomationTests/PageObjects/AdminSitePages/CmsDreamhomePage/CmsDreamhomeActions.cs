@@ -4,6 +4,15 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class CmsDreamhome
     {
+       
+
+        [AllureStep("Open Dreamhome page")]
+        public CmsDreamhome OpenDreamhomePage()
+        {
+            Browser.Navigate(AdminEndpoints.DREAMHOME_PRIZES);
+            return this;
+        }
+
         [AllureStep("Click \"Add new dreamhome\" button")]
         public CmsDreamhome ClickAddDreamhomeBtn()
         {
@@ -13,6 +22,7 @@ namespace RaffleAutomationTests.PageObjects
         }
 
         #region General tab
+
         [AllureStep("Upload Dreamhome slider images")]
         public CmsDreamhome UploadImages()
         {
@@ -38,6 +48,33 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Remove Desktop Dreamhome slider images")]
+        public CmsDreamhome RemoveDesktopImages()
+        {
+            WaitUntil.WaitSomeInterval(15000);
+            WaitUntil.CustomElementIsVisible(btnDeleteImageDesktop.FirstOrDefault());
+            //Element.Action(Keys.End);
+            for (int i = 0; i < btnDeleteImageDesktop.Count - 1; i++)
+            {
+                Button.ClickJS(btnDeleteImageDesktop.FirstOrDefault());
+            }
+
+            return this;
+        }
+
+        [AllureStep("Remove Mobile Dreamhome slider images")]
+        public CmsDreamhome RemoveMobileImages()
+        {
+            WaitUntil.WaitSomeInterval(250);
+            WaitUntil.CustomElementIsVisible(btnDeleteImageMobile.FirstOrDefault());
+            for (int i = 0; i < btnDeleteImageMobile.Count - 1; i++)
+            {
+                Button.ClickJS(btnDeleteImageMobile.FirstOrDefault());
+            }
+
+            return this;
+        }
+
         [AllureStep("Enter Title")]
         public CmsDreamhome EnterTitle()
         {
@@ -57,33 +94,35 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Start date")]
         public CmsDreamhome EnterStartDate()
         {
+            var currentDate = DateTime.Now;
+
             for (int i = 0; i < inputStartDate.Count; i++)
             {
-                if (i == 0)
+                switch (i)
                 {
-                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("dd"));
-                }
-                else if (i == 1)
-                {
-                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("MM"));
-                }
-                else if (i == 2)
-                {
-                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("yyyy"));
-                }
-                else if (i == 3)
-                {
-                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("hh"));
-                }
-                else if (i == 4)
-                {
-                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("mm"));
-                }
-                else if (i == 5)
-                {
-                    InputBox.Element(inputStartDate[i], 5, DateTime.Now.ToString("ss"));
+                    case 0:
+                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("dd"));
+                        break;
+                    case 1:
+                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("MM"));
+                        break;
+                    case 2:
+                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("yyyy"));
+                        break;
+                    case 3:
+                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("hh"));
+                        break;
+                    case 4:
+                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("mm"));
+                        break;
+                    case 5:
+                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("ss"));
+                        break;
+                    default:
+                        break;
                 }
             }
+
             InputBox.Element(inputStartAmPm, 5, Keys.ArrowDown);
 
             return this;
@@ -92,33 +131,35 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Finish date")]
         public CmsDreamhome EnterFinishDate()
         {
+            var currentDate = DateTime.Now;
+
             for (int i = 0; i < inputFinishDate.Count; i++)
             {
-                if (i == 0)
+                switch (i)
                 {
-                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.ToString("dd"));
-                }
-                else if (i == 1)
-                {
-                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.ToString("MM"));
-                }
-                else if (i == 2)
-                {
-                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.AddYears(1).ToString("yyyy"));
-                }
-                else if (i == 3)
-                {
-                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.ToString("hh"));
-                }
-                else if (i == 4)
-                {
-                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.ToString("mm"));
-                }
-                else if (i == 5)
-                {
-                    InputBox.Element(inputFinishDate[i], 5, DateTime.Now.ToString("ss"));
+                    case 0:
+                        InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("dd"));
+                        break;
+                    case 1:
+                        InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("MM"));
+                        break;
+                    case 2:
+                        InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("yyyy"));
+                        break;
+                    case 3:
+                        InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("hh"));
+                        break;
+                    case 4:
+                        InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("mm"));
+                        break;
+                    case 5:
+                        InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("ss"));
+                        break;
+                    default:
+                        break;
                 }
             }
+
             InputBox.Element(inputFinishAmPm, 5, Keys.ArrowDown + Keys.ArrowDown);
 
             return this;
@@ -326,6 +367,7 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Set Discount Threshold")]
         public CmsDreamhome SetDiscountThreshold()
         {
             WaitUntil.CustomElementIsVisible(btnDiscountStepsToggle);
@@ -339,6 +381,7 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Add Tickets Bundles")]
         public CmsDreamhome AddTicketsBundles()
         {
             WaitUntil.CustomElementIsVisible(btnAddBundles);
@@ -346,21 +389,22 @@ namespace RaffleAutomationTests.PageObjects
             Button.Click(btnAddBundles);
             for (int i = 0; i < 4; i++)
             {
-                if (i == 0)
+                switch (i)
                 {
-                    InputBox.Element(inputBundles[i], 10, "5");
-                }
-                else if (i == 1)
-                {
-                    InputBox.Element(inputBundles[i], 10, "15");
-                }
-                else if (i == 2)
-                {
-                    InputBox.Element(inputBundles[i], 10, "20");
-                }
-                else if (i == 3)
-                {
-                    InputBox.Element(inputBundles[i], 10, "50");
+                    case 0:
+                        InputBox.Element(inputBundles[i], 10, "5");
+                        break;
+                    case 1:
+                        InputBox.Element(inputBundles[i], 10, "15");
+                        break;
+                    case 2:
+                        InputBox.Element(inputBundles[i], 10, "50");
+                        break;
+                    case 3:
+                        InputBox.Element(inputBundles[i], 10, "150");
+                        break;
+                    default:
+                        break;
                 }
 
             }
@@ -368,36 +412,91 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Set Discount Threshold")]
+        public CmsDreamhome SetFreeTickets()
+        {
+            WaitUntil.CustomElementIsVisible(btnFreeTicketsToggle);
+            Button.Click(btnFreeTicketsToggle);
+            for(int i = 0; i < 3; i++)
+            {
+                Button.Click(btnAddFreeTickets);
+            }
+            var (evenElements, oddElements) = EnterFreeTicktesData();
+            
+            InputBox.Element(inputDiscountThreshold.FirstOrDefault(), 10, "15");
+            InputBox.Element(inputDiscountValue.FirstOrDefault(), 10, "1.666666666666");
+            InputBox.Element(inputDiscountThreshold.LastOrDefault(), 10, "16");
+            InputBox.Element(inputDiscountValue.LastOrDefault(), 10, "2");
+            return this;
+        }
+
+        private void EnterFreeTicktesData()
+        {
+            List<IWebElement> allElements = inputFreeTickets.ToList(); // your original list of elements
+            List<IWebElement> evenElements = new List<IWebElement>();
+            List<IWebElement> oddElements = new List<IWebElement>();
+
+            for (int i = 0; i < allElements.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    evenElements.Add(allElements[i]);
+                }
+                else
+                {
+                    oddElements.Add(allElements[i]);
+                }
+            }
+
+            for (int i = 0; i < evenElements.Count; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        InputBox.Element(evenElements[i], 10, "5");
+                        break;
+                    case 1:
+                        InputBox.Element(evenElements[i], 10, "15");
+                        break;
+                    case 2:
+                        InputBox.Element(evenElements[i], 10, "50");
+                        break;
+                    case 3:
+                        InputBox.Element(evenElements[i], 10, "150");
+                        break;
+                }
+
+            }
+            for (int i = 0; i < oddElements.Count; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        InputBox.Element(oddElements[i], 10, "10");
+                        break;
+                    case 1:
+                        InputBox.Element(oddElements[i], 10, "35");
+                        break;
+                    case 2:
+                        InputBox.Element(oddElements[i], 10, "450");
+                        break;
+                    case 3:
+                        InputBox.Element(oddElements[i], 10, "1850");
+                        break;
+                }
+
+            }
+
+            return (evenElements, oddElements);
+        }
+
         #endregion
 
         public CmsDreamhome EditDreamHome(string dreamhomeTitle)
         {
-            WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(10))
-            {
-                PollingInterval = TimeSpan.FromMilliseconds(50)
-            };
-            try
-            {
-                wait.Until(e =>
-                {
-                    try
-                    {
-                        if (Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']"))
-                        != null && Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']")).Enabled)
-                        {
-                            var btnEditDreamhome = Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']"));
-                            btnEditDreamhome.Click();
-                            return true;
-                        }
-                        return false;
-                    }
-                    catch (Exception) { return false; }
-
-                });
-            }
-            catch (NoSuchElementException) { }
-            catch (StaleElementReferenceException) { }
-
+            WaitUntil.CustomElementIsVisible(Element.FindSpecificDreamhome(dreamhomeTitle));
+            var btnEditDreamhome = Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']"));
+            btnEditDreamhome.Click();
 
             return this;
         }

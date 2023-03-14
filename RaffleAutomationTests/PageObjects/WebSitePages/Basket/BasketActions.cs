@@ -120,45 +120,6 @@
             return this;
         }
 
-        public Basket VerifyUrl()
-        {
-            if (!Browser._Driver.Url.Contains($"{WebEndpoints.WEBSITE_HOST}"))
-            {
-                WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(10))
-                {
-                    PollingInterval = TimeSpan.FromMilliseconds(50)
-                };
-                try
-                {
-                    wait.Until(e =>
-                    {
-                        try
-                        {
-                            var url = Browser._Driver.Url;
-                            if (url.Contains("localhost"))
-                            {
-                                return true;
-                            }
-                            return false;
-                        }
-                        catch (Exception ex)
-                        {
-                            return false;
-                        }
-
-                    });
-                }
-                catch (NoSuchElementException) { }
-                catch (StaleElementReferenceException) { }
-
-                var url = Browser._Driver.Url.Replace("http://localhost:8000", WebEndpoints.WEBSITE_HOST);
-                Browser._Driver.Navigate().GoToUrl(url);
-
-                
-            }
-            return this;
-        }
-
         public Basket EnterEmail(string email)
         {
             WaitUntil.CustomElementIsVisible(inputEmail, 10);
