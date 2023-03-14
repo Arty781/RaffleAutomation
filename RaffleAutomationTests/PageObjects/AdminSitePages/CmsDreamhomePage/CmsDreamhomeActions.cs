@@ -421,7 +421,7 @@ namespace RaffleAutomationTests.PageObjects
             {
                 Button.Click(btnAddFreeTickets);
             }
-            var (evenElements, oddElements) = EnterFreeTicktesData();
+            EnterFreeTicktesData();
             
             InputBox.Element(inputDiscountThreshold.FirstOrDefault(), 10, "15");
             InputBox.Element(inputDiscountValue.FirstOrDefault(), 10, "1.666666666666");
