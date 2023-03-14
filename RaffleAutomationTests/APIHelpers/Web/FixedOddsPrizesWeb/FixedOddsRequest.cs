@@ -22,6 +22,7 @@
             var restDriver = new RestClient(ApiEndpoints.API);
             RestRequest request = new RestRequest("/api/fixedOdds", Method.Get);
             request.AddHeaders(headers: Headers.COMMON);
+            request.AddHeader("applicationid", "WppJsNsSvr");
 
             var response = restDriver.Execute(request);
             var content = response.Content;
@@ -39,6 +40,7 @@
             RestRequest? request = new RestRequest("/api/orders", Method.Post);
             request.AddHeaders(headers: Headers.COMMON);
             request.AddHeader("authorization", $"Bearer {SignIn.Token}");
+            request.AddHeader("applicationid", "WppJsNsSvr");
             request.AddJsonBody(RequestBuilder(fixedPrizesId[RandomHelper.RandomFPId(fixedPrizesId)]));
 
             var response = restDriver.Execute(request);

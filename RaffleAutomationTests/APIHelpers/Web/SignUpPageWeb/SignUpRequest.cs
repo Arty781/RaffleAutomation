@@ -8,11 +8,11 @@
             {
                 Name = Name.FirstName(),
                 Surname = Name.LastName(),
-                Password = "Qaz11111",
+                Password = Credentials.PASSWORD,
                 Email = "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com",
                 EmailCommunication = true,
                 Country = Country.COUNTRY_CODES[RandomHelper.RandomFPId(Country.COUNTRY_CODES)],
-                Phone = PhoneNumber.CellPhone(),
+                Phone = "953214567",
                 Notifications = new()
                 {
                     All = true,
@@ -64,6 +64,7 @@
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.LoadBodyFromString(JsonBody(), charset: "utf-8");
 
@@ -90,6 +91,7 @@
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.LoadBodyFromString(JsonBodyReferral(referralKey), charset: "utf-8");
 

@@ -9,6 +9,7 @@
             var restDriver = new RestClient(ApiEndpoints.API);
             RestRequest? request = new RestRequest("/api/orders", Method.Get);
             request.AddHeaders(headers: Headers.COMMON);
+            request.AddHeader("applicationid", "WppJsNsSvr");
 
 
             var r = restDriver.Execute(request);

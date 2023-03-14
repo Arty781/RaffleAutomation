@@ -1,4 +1,6 @@
-﻿namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
+﻿using System;
+
+namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
 {
     public class UsersRequest
     {
@@ -205,6 +207,7 @@
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
             req.LoadBodyFromString(JsonBody(email), charset: "utf-8");
@@ -231,6 +234,7 @@
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
             req.LoadBodyFromString(JsonBodyFilterUser(110, 10), charset: "utf-8");
@@ -251,6 +255,7 @@
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
             req.LoadBodyFromString(JsonBodyFilterUser(response.AllCount, usersCount), charset: "utf-8");
@@ -277,6 +282,7 @@
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
             req.LoadBodyFromString(JsonBody(), charset: "utf-8");
@@ -301,6 +307,7 @@
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
             req.LoadBodyFromString(JsonBodyAddRaffle(prizeId), charset: "utf-8");
@@ -327,6 +334,7 @@
                     ContentType = "application/json"
                 };
                 req.AddHeader("Connection", "Keep-Alive");
+                req.AddHeader("applicationid", "WppJsNsSvr");
                 req.AddHeader("accept-encoding", "gzip, deflate, br");
                 req.AddHeader("authorization", $"Bearer {token.Token}");
                 req.LoadBodyFromString(JsonBodyAddCredits(nowOrTomorrow, i), charset: "utf-8");
@@ -351,6 +359,7 @@
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
             req.LoadBodyFromString(JsonBodyRemovetickets(ordersIds), charset: "utf-8");
@@ -372,6 +381,7 @@
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
 
@@ -394,6 +404,7 @@
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
 

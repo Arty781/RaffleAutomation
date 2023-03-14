@@ -22,6 +22,7 @@
             RestRequest? request = new RestRequest("/api/orders", Method.Post);
             request.AddHeaders(headers: Headers.COMMON);
             request.AddHeader("authorization", $"Bearer {SignIn.Token}");
+            request.AddHeader("applicationid", "WppJsNsSvr");
             request.AddJsonBody(RequestBuilder(countdown.Id));
 
             var r = restDriver.Execute(request);
@@ -56,6 +57,7 @@
             RestRequest? request = new RestRequest("/api/orders", Method.Post);
             request.AddHeaders(headers: Headers.COMMON);
             request.AddHeader("authorization", $"Bearer {SignIn.Token}");
+            request.AddHeader("applicationid", "WppJsNsSvr");
             request.AddJsonBody(RequestBuilderWithError(countdown.Id, numOfTickets));
 
             var r = restDriver.Execute(request);

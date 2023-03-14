@@ -11,6 +11,7 @@
             };
 
             req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("applicationid", "WppJsNsSvr");
 
             Http http = new();
 
@@ -34,6 +35,7 @@
             };
 
             req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("applicationid", "WppJsNsSvr");
 
             Http http = new();
 

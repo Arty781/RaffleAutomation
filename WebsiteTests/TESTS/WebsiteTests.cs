@@ -25,7 +25,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyDisplayingParagraphs(actualTerms, actualPrivacy);
         }
 
-        
+
     }
 
     [TestFixture]
@@ -171,7 +171,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Common
                 .CloseCookiesPopUp();
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
-            for(int i = 0; i< 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Pages.Home
                 .AddTicketsToBasket(0);
@@ -180,7 +180,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 Pages.ThankYou
                     .VerifyThankYouPageIsDisplayed();
             }
-            
+
             Pages.ThankYou
                 .GoToActivationLink(email);
             Pages.Activate
@@ -218,12 +218,15 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD)
                 .VerifyIsSignIn();
             Pages.Profile
+                .ClickEditPersonalDataBtn()
                 .EditPersonalData()
                 .VerifyDisplayingToaster();
             Pages.Profile
+                .ClickEditPasswordBtn()
                 .EditPassword()
                 .VerifyDisplayingToaster();
             Pages.Profile
+                .ClickEditAccountBtn()
                 .EditAccountData()
                 .VerifyDisplayingToaster();
 
@@ -412,6 +415,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                     .OpenSignInPage();
             Pages.SignIn
                     .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
             Pages.Home
                     .OpenHomePage();
             Pages.Home
@@ -493,6 +498,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenSignInPage();
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
             Pages.Basket
                 .ClickCartBtn();
             double totalOrder = Pages.Basket.GetOrderTotal();
@@ -541,6 +548,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenSignInPage();
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
             Pages.Basket
                 .ClickCartBtn();
             double totalOrder = Pages.Basket.GetOrderTotal();
@@ -565,6 +574,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                     .OpenSignInPage();
                 Pages.SignIn
                     .EnterLoginAndPass(responseReferral.User.Email, Credentials.PASSWORD);
+                Pages.SignIn
+                .VerifyIsSignIn();
                 Pages.Basket
                     .ClickCartBtn();
                 double totalOrderReferral = Pages.Basket.GetOrderTotal();
@@ -1344,4 +1355,118 @@ namespace RaffleHouseAutomation.WebSiteTests
 
         #endregion
     }
+
+    [TestFixture]
+    [AllureNUnit]
+    public class Validation : TestBaseWeb
+    {
+        [Test, Category("Authorized")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Login")]
+        public void VerifyValidationOnSignInPage()
+        {
+            #region Preconditions
+            var response = SignUpRequest.RegisterNewUser();
+            
+            #endregion
+
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Header
+                .OpenSignInPage();
+            Pages.SignIn
+                .VerifyValidationOnSignIn(response);
+            Pages.SignIn
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
+
+            #region Postconditions
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            UsersRequest.DeleteUser(tokenAdmin, response.User.Id);
+            #endregion
+
+        }
+
+        [Test, Category("Authorized")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
+        public void VerifyValidationOnSignUpPage()
+        {
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Header
+                .OpenSignUpPage();
+            Pages.SignUp
+                .VerifyValidationOnSignUp();
+            Pages.SignUp
+                .EnterUserData();
+            string email = SignUp.GetEmail();
+            Pages.SignUp
+                .ClickSignUpBtn()
+                .VerifyEmail(email);
+
+            #region Postconditions
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var user = UsersRequest.GetUser(tokenAdmin, email);
+            UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
+            #endregion
+
+        }
+
+        [Test, Category("Authorized")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
+        public void EditUserData()
+        {
+            #region Preconditions
+            var response = SignUpRequest.RegisterNewUser();
+            #endregion
+
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Header
+                .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD)
+                .VerifyIsSignIn();
+            Pages.Profile
+                .ClickEditPersonalDataBtn()
+                .VerifyValidationOnProfilePersonalDetails();
+            Pages.Profile
+                .EditPersonalData()
+                .VerifyDisplayingToaster();
+            Pages.Profile
+                .ClickEditPasswordBtn()
+                .VerifyValidationOnProfilePassword();
+            Pages.Profile
+                .EditPassword()
+                .VerifyDisplayingToaster();
+            Pages.Profile
+                .ClickEditAccountBtn()
+                .VerifyValidationOnProfileAccountDetails();
+            Pages.Profile
+                .EditAccountData()
+                .VerifyDisplayingToaster();
+
+            #region Postconditions
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            UsersRequest.DeleteUser(tokenAdmin, response.User.Id);
+            #endregion
+
+        }
+    }
+
 }

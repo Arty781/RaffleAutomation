@@ -13,7 +13,6 @@ namespace RaffleAutomationTests.PageObjects
             InputBox.Element(inputLogin, 10, login);
             InputBox.Element(inputPassword, 10, password);
             Button.Click(btnSignIn);
-            WaitUntil.CustomElementIsVisible(Pages.Profile.titleProfile);
 
             return this;
         }

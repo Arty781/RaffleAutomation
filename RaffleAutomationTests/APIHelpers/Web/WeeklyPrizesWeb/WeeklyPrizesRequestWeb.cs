@@ -23,6 +23,7 @@
             var restDriver = new RestClient(ApiEndpoints.API);
             RestRequest? request = new RestRequest("/api/orders", Method.Post);
             request.AddHeaders(headers: Headers.COMMON);
+            request.AddHeader("applicationid", "WppJsNsSvr");
             request.AddHeader("authorization", $"Bearer {SignIn.Token}");
             request.AddJsonBody(RequestBuilder(prizeId.First().Id, numOfTickets));
 

@@ -47,6 +47,7 @@
                 Path = link
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
 
             Http http = new Http();
@@ -65,6 +66,7 @@
             {
                 Accept = "application/json"
             };
+            
             string url = String.Concat(ApiEndpoints.API_CHIL + "/api/users/password/reset");
             HttpResponse resp = http.PostJson2(url, "Application/json", JsonBody(token));
             if (http.LastStatus != 200)

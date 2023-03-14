@@ -11,6 +11,7 @@
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {SignIn.Token}");
             Http http = new();
@@ -34,6 +35,7 @@
             RestRequest? request = new RestRequest("/api/competitions/countdowns", Method.Get);
             request.AddHeaders(headers: Headers.COMMON);
             request.AddHeader("authorization", $"Bearer {SignIn.Token}");
+            request.AddHeader("applicationid", "WppJsNsSvr");
 
             var response = restDriver.Execute(request);
             var content = response.Content;
@@ -67,6 +69,7 @@
                 RestRequest? request = new RestRequest("/api/prizes/web", Method.Post);
                 request.AddHeaders(headers: Headers.COMMON);
                 request.AddHeader("authorization", $"Bearer {SignIn.Token}");
+                request.AddHeader("applicationid", "WppJsNsSvr");
                 request.AddJsonBody(RequestBuilder(WeeklyId, i));
 
                 var response = restDriver.Execute(request);

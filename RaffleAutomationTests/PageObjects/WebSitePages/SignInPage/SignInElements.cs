@@ -17,5 +17,11 @@
         [FindsBy(How = How.XPath, Using = "//span[contains(text(), 'Forgot password?')]")]
         public IWebElement btnForgotPassword;
 
+        [FindsBy(How = How.XPath, Using = "//label[contains(text(), 'Email')]/parent::div/p[@id='outlined-basic-helper-text']")]
+        public IWebElement textEmailErrorMessage;
+
+        [FindsBy(How = How.XPath, Using = "//label[contains(text(), 'Password')]/parent::div/p[@id='outlined-basic-helper-text']")]
+        public IWebElement textPasswordErrorMessage;
+
     }
 }

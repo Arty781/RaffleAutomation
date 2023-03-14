@@ -198,6 +198,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
 
@@ -223,6 +224,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
 
@@ -248,6 +250,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
 
@@ -274,6 +277,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
 
@@ -295,6 +299,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
 

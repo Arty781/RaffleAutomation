@@ -19,6 +19,7 @@
 
             var restDriver = new RestClient(ApiEndpoints.API);
             RestRequest? request = new RestRequest("/api/users/signin", Method.Post);
+            request.AddHeader("applicationid", "WppJsNsSvr");
             request.AddHeaders(headers: Headers.COMMON);
             request.AddJsonBody(RequestBuilder(login, password));
 

@@ -4,38 +4,32 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class Profile
     {
+        [AllureStep("Click Edit Personal data button")]
+        public Profile ClickEditPersonalDataBtn()
+        {
+            Button.ClickJS(btnEditPersonal);
+            return this;
+        }
+
+        [AllureStep("Click Edit Password button")]
+        public Profile ClickEditPasswordBtn()
+        {
+            Button.ClickJS(btnEditPassword);
+            return this;
+        }
+
+        [AllureStep("Click Edit Account button")]
+        public Profile ClickEditAccountBtn()
+        {
+            Button.ClickJS(btnEditAccount);
+            return this;
+        }
+
         [AllureStep("Edit Personal data")]
         public Profile EditPersonalData()
         {
-            Button.ClickJS(EditPersonalBtn);
-            InputBox.Element(FirstNameInput, 10, Name.FirstName());
-            InputBox.Element(LastNameInput, 10, Name.LastName());
-            Button.ClickJS(btnSave);
-            return this;
-        }
-
-        [AllureStep("Displayed error message")]
-        public Profile EnterFirstnameWithMore50Characters()
-        {
-            Button.ClickJS(EditPersonalBtn);
-            InputBox.Element(FirstNameInput, 10, Lorem.ParagraphByChars(51).Trim(' '));
-            InputBox.Element(LastNameInput, 10, Name.LastName());
-            Button.ClickJS(btnSave);
-            Assert.IsTrue(textErrorMessage.Displayed, "Error message is not displayed");
-            InputBox.Element(FirstNameInput, 10, Name.FirstName());
-            Button.ClickJS(btnSave);
-            return this;
-        }
-
-        [AllureStep("Displayed error message")]
-        public Profile EnterLastnameWithMore50Characters()
-        {
-            Button.ClickJS(EditPersonalBtn);
-            InputBox.Element(FirstNameInput, 10, Name.FirstName());
-            InputBox.Element(LastNameInput, 10, Lorem.ParagraphByChars(51).Trim(' '));
-            Button.ClickJS(btnSave);
-            Assert.IsTrue(textErrorMessage.Displayed, "Error message is not displayed");
-            InputBox.Element(LastNameInput, 10, Name.LastName());
+            InputBox.Element(inputFirstName, 10, Name.FirstName());
+            InputBox.Element(inputLastName, 10, Name.LastName());
             Button.ClickJS(btnSave);
             return this;
         }
@@ -43,10 +37,9 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Edit Password")]
         public Profile EditPassword()
         {
-            Button.ClickJS(EditPasswordBtn);
-            InputBox.Element(CurrentPasswordInput, 10, "Qaz11111");
-            InputBox.Element(NewPasswordInput, 10, "Qaz11111!");
-            InputBox.Element(ConfirmPasswordInput, 10, "Qaz11111!");
+            InputBox.Element(inputCurrentPassword, 10, "Qaz11111");
+            InputBox.Element(inputNewPassword, 10, "Qaz11111!");
+            InputBox.Element(inputConfirmPassword, 10, "Qaz11111!");
             Button.ClickJS(btnSave);
             return this;
         }
@@ -54,7 +47,6 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Edit Password")]
         public Profile EditAccountData()
         {
-            Button.ClickJS(btnEditAccount);
             WaitUntil.CustomElementIsVisible(btnSave);
             Element.Action(Keys.End);
             InputBox.Element(inputPhone, 10, "953214567");

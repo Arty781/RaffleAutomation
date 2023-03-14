@@ -8,25 +8,25 @@
         public IWebElement titleProfile;
 
         [FindsBy(How = How.XPath, Using = "//button[@data-edit='personal']")]
-        public IWebElement EditPersonalBtn;
+        public IWebElement btnEditPersonal;
 
         [FindsBy(How = How.Name, Using = "name")]
-        public IWebElement FirstNameInput;
+        public IWebElement inputFirstName;
 
         [FindsBy(How = How.Name, Using = "surname")]
-        public IWebElement LastNameInput;
+        public IWebElement inputLastName;
 
         [FindsBy(How = How.XPath, Using = "//button[@data-edit='password']")]
-        public IWebElement EditPasswordBtn;
+        public IWebElement btnEditPassword;
 
         [FindsBy(How = How.Name, Using = "oldPassword")]
-        public IWebElement CurrentPasswordInput;
+        public IWebElement inputCurrentPassword;
 
         [FindsBy(How = How.Name, Using = "newPassword")]
-        public IWebElement NewPasswordInput;
+        public IWebElement inputNewPassword;
 
         [FindsBy(How = How.Name, Using = "confirmPassword")]
-        public IWebElement ConfirmPasswordInput;
+        public IWebElement inputConfirmPassword;
 
         [FindsBy(How = How.XPath, Using = "//button[@data-edit='account']")]
         public IWebElement btnEditAccount;
@@ -37,11 +37,11 @@
         [FindsBy(How = How.Name, Using = "phone")]
         public IWebElement inputPhone;
 
-        [FindsBy(How = How.Name, Using = "country")]
-        public IWebElement inputCountry;
+        //[FindsBy(How = How.Name, Using = "country")]
+        //public IWebElement inputCountry;
 
-        [FindsBy(How = How.XPath, Using = "//div[@aria-haspopup='listbox']")]
-        public IWebElement cbbxCountry;
+        //[FindsBy(How = How.XPath, Using = "//div[@aria-haspopup='listbox']")]
+        //public IWebElement cbbxCountry;
 
         [FindsBy(How = How.XPath, Using = "//input[@value='emailCommunication']")]
         public IWebElement inputEmailCommunication;
@@ -57,6 +57,27 @@
 
         [FindsBy(How = How.Id, Using = "outlined-basic-helper-text")]
         public IWebElement textErrorMessage;
+
+        [FindsBy(How = How.XPath, Using = "//label[contains(text(), 'First name')]/parent::div/p[@id='outlined-basic-helper-text']")]
+        public IWebElement textFirstNameErrorMessage;
+
+        [FindsBy(How = How.XPath, Using = "//label[contains(text(), 'Last name')]/parent::div/p[@id='outlined-basic-helper-text']")]
+        public IWebElement textLastNameErrorMessage;
+
+        [FindsBy(How = How.XPath, Using = "//label[contains(text(), 'Email')]/parent::div/p[@id='outlined-basic-helper-text']")]
+        public IWebElement textEmailErrorMessage;
+
+        [FindsBy(How = How.XPath, Using = "//label[contains(text(), 'Phone')]/parent::div/p[@id='outlined-basic-helper-text']")]
+        public IWebElement textPhoneErrorMessage;
+
+        [FindsBy(How = How.XPath, Using = "//input[@name='oldPassword']/ancestor::label/div/p[@id='outlined-basic-helper-text']")]
+        public IWebElement textOldPasswordErrorMessage;
+
+        [FindsBy(How = How.XPath, Using = "//input[@name='newPassword']/ancestor::label/div/p[@id='outlined-basic-helper-text']")]
+        public IWebElement textNewPasswordErrorMessage;
+
+        [FindsBy(How = How.XPath, Using = "//input[@name='confirmPassword']/ancestor::label/div/p[@id='outlined-basic-helper-text']")]
+        public IWebElement textConfirmPasswordErrorMessage;
 
         #endregion
 
