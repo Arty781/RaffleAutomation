@@ -28,8 +28,7 @@ namespace RaffleAutomationTests.PageObjects
             WaitUntil.CustomElementIsVisible(Pages.CmsDreamhome.titleAddedDreamhome, 25);
             Element.Action(Keys.End);
             Button.Click(btnLastPage);
-            WaitUntil.CustomElementIsVisible(Element.FindSpecificUser(email));
-            Assert.IsTrue(email == Element.FindSpecificUser(email).Text);
+            WaitUntil.CustomElementIsVisible(Element.FindSpecificUser(email).btnEdit);
             return this;
         }
     }

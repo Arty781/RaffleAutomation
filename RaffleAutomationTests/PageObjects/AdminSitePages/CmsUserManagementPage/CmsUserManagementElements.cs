@@ -41,7 +41,7 @@
         [FindsBy(How = How.XPath, Using = "//span[text()='General']/parent::a")]
         public IWebElement tabGeneral;
 
-        [FindsBy(How = How.XPath, Using = "//span[text()='Security']/parent::a")]
+        [FindsBy(How = How.XPath, Using = "//span[text()='Security & Notifications']/parent::a")]
         public IWebElement tabSecurity;
 
         [FindsBy(How = How.XPath, Using = "//span[text()='Tickets']/parent::a")]

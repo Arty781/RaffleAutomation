@@ -128,6 +128,16 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Click \"Save\" button")]
+        public CmsCommon ClickSaveChangesBtn()
+        {
+            WaitUntil.WaitSomeInterval(150);
+            Button.ClickJS(btnSaveChanges);
+            WaitUntil.WaitSomeInterval(1000);
+
+            return this;
+        }
+
         [AllureStep("Click \"Cancel\" button")]
         public CmsCommon ClickCancelBtn()
         {

@@ -130,7 +130,7 @@ namespace RaffleAutomationTests.Helpers
             return _element;
         }
 
-        public static IWebElement FindSpecificUser(string email)
+        public static UserRowModel FindSpecificUser(string email)
         {
             WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(30))
             {
@@ -149,10 +149,31 @@ namespace RaffleAutomationTests.Helpers
             catch (NoSuchElementException) { }
             catch (StaleElementReferenceException) { }
 
-            var _element = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']"));
+            UserRowModel user = new()
+            {
+                Name = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr/td[1]")).Text,
+                Surname = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr/td[2]")).Text,
+                Email = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']")).Text,
+                Phone = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr/td[4]")).Text,
+                toggleStatus = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']")),
+                btnShow = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']")),
+                btnEdit = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Edit']")),
+                btnDelete = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/div"))
+            };
 
+            return user;
+        }
 
-            return _element;
+        public class UserRowModel
+        {
+            public string? Name { get; set; }
+            public string? Surname { get; set; }
+            public string? Email { get; set; }
+            public string? Phone { get; set; }
+            public IWebElement toggleStatus { get; set; }
+            public IWebElement btnShow { get; set; }
+            public IWebElement btnEdit { get; set;}
+            public IWebElement btnDelete { get; set;}
         }
 
         public static void Action(string key)
@@ -238,7 +259,7 @@ namespace RaffleAutomationTests.Helpers
             return ParseAllLinks(text).Link.First((PutsboxWrapper.Link x) => x.Name == value2).Url;
         }
 
-        public static string GetTextFromEmailWithValue(string domain, string value, int index)
+        public static string GetTextFromEmailWithValue(string domain, string value)
         {
             string value2 = value;
             Thread.Sleep(2000);

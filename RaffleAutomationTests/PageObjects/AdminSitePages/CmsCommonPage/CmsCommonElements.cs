@@ -48,8 +48,11 @@
 
         #region Save and Cancel btns
 
-        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Save')]/parent::button")]
+        [FindsBy(How = How.XPath, Using = "//span[text()='Save']/parent::button")]
         public IWebElement btnSave;
+
+        [FindsBy(How = How.XPath, Using = "//span[text()='Save Changes']/parent::button")]
+        public IWebElement btnSaveChanges;
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Cancel')]/parent::button")]
         public IWebElement btnCancel;
@@ -70,6 +73,13 @@
         [FindsBy(How = How.XPath, Using = "//div[@title='Last Page']")]
         public IWebElement btnLastPage;
 
+
+        #endregion
+
+        #region Alerts
+
+        [FindsBy(How = How.XPath, Using = "//div[@role='alert']/div")]
+        public IWebElement textAlertMessage;
 
         #endregion
 

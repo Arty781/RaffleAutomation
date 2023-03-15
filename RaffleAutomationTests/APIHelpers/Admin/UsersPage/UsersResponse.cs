@@ -1,5 +1,106 @@
 ﻿namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
 {
+    public class CreateUserCmsRequest
+    {
+        [JsonProperty("country")]
+        public string Country { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("surname")]
+        public string Surname { get; set; }
+
+        [JsonProperty("email")]
+        public string Email { get; set; }
+
+        [JsonProperty("phone")]
+        public string Phone { get; set; }
+
+        [JsonProperty("isBlocked")]
+        public bool IsBlocked { get; set; }
+    }
+
+    public class CreateUserResponse
+    {
+        [JsonProperty("isVerified")]
+        public bool IsVerified { get; set; }
+
+        [JsonProperty("freeEntries")]
+        public int FreeEntries { get; set; }
+
+        [JsonProperty("successfullReferralCount")]
+        public int SuccessfullReferralCount { get; set; }
+
+        [JsonProperty("totalTicketsBought")]
+        public int TotalTicketsBought { get; set; }
+
+        [JsonProperty("emailCommunication")]
+        public bool EmailCommunication { get; set; }
+
+        [JsonProperty("corporateNotification")]
+        public bool CorporateNotification { get; set; }
+
+        [JsonProperty("registerReferrals")]
+        public object[] RegisterReferrals { get; set; }
+
+        [JsonProperty("freeTickets")]
+        public int FreeTickets { get; set; }
+
+        [JsonProperty("isSocialRegistration")]
+        public bool IsSocialRegistration { get; set; }
+
+        [JsonProperty("isBlocked")]
+        public bool IsBlocked { get; set; }
+
+        [JsonProperty("notifications")]
+        public Notifications Notifications { get; set; }
+
+        [JsonProperty("mobileEntry")]
+        public bool MobileEntry { get; set; }
+
+        [JsonProperty("spentMobile")]
+        public int SpentMobile { get; set; }
+
+        [JsonProperty("spentMoney")]
+        public int SpentMoney { get; set; }
+
+        [JsonProperty("referralCredits")]
+        public int ReferralCredits { get; set; }
+
+        [JsonProperty("_id")]
+        public string Id { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("surname")]
+        public string Surname { get; set; }
+
+        [JsonProperty("email")]
+        public string Email { get; set; }
+
+        [JsonProperty("phone")]
+        public string Phone { get; set; }
+
+        [JsonProperty("referralKey")]
+        public string ReferralKey { get; set; }
+
+        [JsonProperty("country")]
+        public string Country { get; set; }
+
+        [JsonProperty("createdAt")]
+        public DateTime CreatedAt { get; set; }
+
+        [JsonProperty("updatedAt")]
+        public DateTime UpdatedAt { get; set; }
+
+        [JsonProperty("__v")]
+        public int V { get; set; }
+
+
+    }
+
     public class UsersRequestModel
     {
         [JsonProperty("filter")]

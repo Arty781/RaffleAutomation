@@ -7,8 +7,7 @@
             WaitUntil.CustomElementIsVisible(textTitleUserManagement, 25);
             Element.Action(Keys.End);
             Button.Click(Pages.CmsCommon.btnLastPage);
-            WaitUntil.CustomElementIsVisible(Element.FindSpecificUser(email));
-            Assert.IsTrue(email == Element.FindSpecificUser(email).Text);
+            WaitUntil.CustomElementIsVisible(Element.FindSpecificUser(email).btnEdit);
         }
     }
 }

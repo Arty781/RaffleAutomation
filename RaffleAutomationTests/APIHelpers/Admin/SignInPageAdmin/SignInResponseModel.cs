@@ -1,5 +1,14 @@
 ﻿namespace RaffleAutomationTests.APIHelpers.Admin
 {
+    public class SignInRequestModel
+    {
+        [JsonProperty("email")]
+        public string Email { get; set; }
+
+        [JsonProperty("password")]
+        public string Password { get; set; }
+    }
+
     public partial class SignInResponseModelAdmin
     {
         [JsonProperty("token")]

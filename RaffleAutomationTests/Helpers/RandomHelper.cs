@@ -11,10 +11,10 @@
             return randomNum;
         }
 
-        public static int RandomIntNumber(int num)
+        public static int RandomIntNumber(int maxNum)
         {
             Random r = new Random();
-            int genRand = r.Next(1, num);
+            int genRand = r.Next(1, maxNum);
 
             return genRand;
         }

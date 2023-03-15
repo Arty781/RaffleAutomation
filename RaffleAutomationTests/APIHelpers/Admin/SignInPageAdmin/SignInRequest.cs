@@ -3,30 +3,41 @@
     public class SignInRequestAdmin
     {
 
-        public static string SignIn(string login, string password)
+        private static string SignIn(string login, string password)
         {
-            string str = string.Format("{{" +
-                "\"email\"" + ":" + $"\"{login}\"" + "," +
-                "\"password\"" + ":" + $"\"{password}\"" + "}}");
-            return str;
+            SignInRequestModel str = new()
+            {
+                Email = login,
+                Password = password
+            };
+            return JsonConvert.SerializeObject(str);
         }
 
         public static SignInResponseModelAdmin? MakeAdminSignIn(string login, string password)
         {
+            HttpRequest req = new HttpRequest
+            {
+                HttpVerb = "POST",
+                Path = $"/api/users/cms/signin",
+                ContentType = "application/json"
+            };
+            req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
 
+            req.LoadBodyFromString(SignIn(login, password), charset: "utf-8");
 
-            var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest? request = new RestRequest("/api/users/cms/signin", Method.Post);
-            request.AddHeaders(headers: Headers.COMMON);
-            request.AddHeader("applicationid", "WppJsNsSvr");
-            request.AddJsonBody(SignIn(login, password));
+            Http http = new();
 
-            var response = restDriver.Execute(request);
-            var content = response.Content;
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Debug.WriteLine(http.LastErrorText);
+            }
+            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+            var response = JsonConvert.DeserializeObject<SignInResponseModelAdmin>(resp.BodyStr);
 
-            var token = JsonConvert.DeserializeObject<SignInResponseModelAdmin>(content);
-
-            return token;
+            return response;
         }
 
     }

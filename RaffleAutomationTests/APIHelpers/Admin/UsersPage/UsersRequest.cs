@@ -4,7 +4,21 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
 {
     public class UsersRequest
     {
-        public static string JsonBody(string email)
+        private static string JsonBodyCreateuser()
+        {
+            CreateUserCmsRequest str = new()
+            {
+                Country = Country.COUNTRY_CODES[RandomHelper.RandomIntNumber(Country.COUNTRY_CODES.Count)],
+                Name = Name.FirstName(),
+                Surname = Name.LastName(),
+                Phone = RandomHelper.RandomPhone(),
+                Email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"), "@putsbox.com"),
+                IsBlocked= false
+            };
+
+            return JsonConvert.SerializeObject(str);
+        }
+        private static string JsonBodyGetUser(string email)
         {
             UsersRequestModel requestModel = new()
             {
@@ -31,7 +45,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             return JsonConvert.SerializeObject(requestModel);
         }
 
-        public static string JsonBodyFilterUser(int pageCount, int usersCount)
+        private static string JsonBodyFilterUser(int pageCount, int usersCount)
         {
             var s = (pageCount / usersCount) * usersCount;
             var d = pageCount - s;
@@ -60,7 +74,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             return JsonConvert.SerializeObject(requestModel);
         }
 
-        public static string JsonBody()
+        private static string JsonBodyGetUserOrders()
         {
             UserOrdersRequestModel requestModel = new()
             {
@@ -87,7 +101,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             return JsonConvert.SerializeObject(requestModel);
         }
 
-        public static string JsonBodyAddRaffle(string prizeId)
+        private static string JsonBodyAddRaffle(string prizeId)
         {
             AddTicketsRequestModel requestModel = new()
             {
@@ -99,7 +113,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             return JsonConvert.SerializeObject(requestModel);
         }
 
-        public static string JsonBodyRemovetickets(OrdersResponseModel ordersIds)
+        private static string JsonBodyRemovetickets(OrdersResponseModel ordersIds)
         {
             DeleteOrdersRequestModel requestModel = new()
             {
@@ -109,7 +123,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             return JsonConvert.SerializeObject(requestModel);
         }
 
-        public static string JsonBodyAddCredits(string time, int i)
+        private static string JsonBodyAddCredits(string time, int i)
         {
             DateTime dateNow = DateTime.Now;
             DateTime dateTomorrow = DateTime.Now.AddDays(1);
@@ -198,6 +212,32 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             return JsonConvert.SerializeObject(requestModel);
         }
 
+        public static CreateUserResponse CreateUserOnCms(SignInResponseModelAdmin token)
+        {
+            HttpRequest req = new()
+            {
+                HttpVerb = "POST",
+                Path = $"api/users/cms",
+                ContentType = "application/json"
+            };
+            req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("authorization", $"Bearer {token.Token}");
+            req.LoadBodyFromString(JsonBodyCreateuser(), charset: "utf-8");
+
+            Http http = new();
+
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Debug.WriteLine(http.LastErrorText);
+            }
+            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+
+            var response = JsonConvert.DeserializeObject<CreateUserResponse?>(resp.BodyStr);
+            return response;
+        }
         public static UsersResponse? GetUser(SignInResponseModelAdmin token, string email)
         {
             HttpRequest req = new()
@@ -210,11 +250,11 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
-            req.LoadBodyFromString(JsonBody(email), charset: "utf-8");
+            req.LoadBodyFromString(JsonBodyGetUser(email), charset: "utf-8");
 
             Http http = new();
 
-            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
                 Debug.WriteLine(http.LastErrorText);
@@ -241,13 +281,14 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
 
             Http http = new();
 
-            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
                 Debug.WriteLine(http.LastErrorText);
             }
             Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
             var response = JsonConvert.DeserializeObject<UsersResponse>(resp.BodyStr);
+
             req = new()
             {
                 HttpVerb = "POST",
@@ -285,9 +326,9 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
-            req.LoadBodyFromString(JsonBody(), charset: "utf-8");
+            req.LoadBodyFromString(JsonBodyGetUserOrders(), charset: "utf-8");
             Http http = new();
-            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
                 Debug.WriteLine(http.LastErrorText);
@@ -312,7 +353,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             req.AddHeader("authorization", $"Bearer {token.Token}");
             req.LoadBodyFromString(JsonBodyAddRaffle(prizeId), charset: "utf-8");
             Http http = new();
-            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
                 Debug.WriteLine(http.LastErrorText);
@@ -339,7 +380,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
                 req.AddHeader("authorization", $"Bearer {token.Token}");
                 req.LoadBodyFromString(JsonBodyAddCredits(nowOrTomorrow, i), charset: "utf-8");
                 Http http = new();
-                HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+                HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
                 if (http.LastMethodSuccess != true)
                 {
                     Debug.WriteLine(http.LastErrorText);
@@ -364,7 +405,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
             req.AddHeader("authorization", $"Bearer {token.Token}");
             req.LoadBodyFromString(JsonBodyRemovetickets(ordersIds), charset: "utf-8");
             Http http = new();
-            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
                 Debug.WriteLine(http.LastErrorText);
@@ -387,7 +428,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
 
             Http http = new();
 
-            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
                 Debug.WriteLine(http.LastErrorText);
@@ -410,7 +451,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
 
             Http http = new();
 
-            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
                 Debug.WriteLine(http.LastErrorText);

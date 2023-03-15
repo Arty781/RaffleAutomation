@@ -24,12 +24,29 @@
             return this;
         }
 
-        [AllureStep("Go to activation link")]
-        public string GetPassword(string email)
+        public CmsUserManagement ClickEditUser(string email)
         {
-            var activateLink = PutsBox.GetTextFromEmailWithValue(email, "Your temporary password is: ", 1);
+            Button.Click(Element.FindSpecificUser(email).btnEdit);
+            return this;
+        }
 
-            return activateLink;
+        public CmsUserManagement OpenSecurityTab()
+        {
+            Button.Click(tabSecurity);
+            WaitUntil.CustomElementIsVisible(inputNewPassword);
+
+            return this;
+        }
+
+        public CmsUserManagement SetNewPassword()
+        {
+            InputBox.Element(inputNewPassword, 10, "Qaz11111");
+            InputBox.Element(inputConfirmPassword, 10, "Qaz11111");
+            Pages.CmsCommon.ClickSaveChangesBtn();
+            WaitUntil.CustomElementIsVisible(Pages.CmsCommon.textAlertMessage);
+            Assert.IsTrue("Password changed" == Pages.CmsCommon.textAlertMessage.Text, "Password is not changed");
+
+            return this;
         }
     }
 }

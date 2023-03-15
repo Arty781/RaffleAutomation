@@ -1,3 +1,6 @@
+using Allure.Commons;
+using NUnit.Allure.Attributes;
+using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,33 +14,32 @@ namespace RaffleHouseAutomation.AdminSiteTests
         [Test]
         public void Demo()
         {
-            var email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"), "@putsbox.com");
+            var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var userResponse = UsersRequest.CreateUserOnCms(token);
             Pages.CmsLogin
                 .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
                 .ClickSignInBtn();
             Pages.CmsCommon
                 .VerifyIsLoginSuccessfull();
             Pages.CmsUserManagement
-                .OpenUserManagement()
-                .ClickAddNewBtn()
-                .EnterUserData(email);
+                .OpenUserManagement();
+            Pages.CmsUserManagement
+                .SearchIsUserDisplayed(userResponse.Email);
+            Pages.CmsUserManagement
+                .ClickEditUser(userResponse.Email)
+                .EnterUserData(userResponse.Email);
             Pages.CmsCommon
                 .ClickSaveBtn();
             Pages.CmsUserManagement
-                .SearchIsUserDisplayed(email);
-            var password = Pages.CmsUserManagement.GetPassword(email);
-
-            Browser.Navigate(WebEndpoints.WEBSITE_HOST);
-            Pages.Common
-               .CloseCookiesPopUp();
-            Pages.Header
-               .OpenSignInPage();
-            Pages.SignIn
-                .EnterLoginAndPass(email, password);
-            Pages.SignIn
-                .VerifyIsSignIn();
+                .SearchIsUserDisplayed(userResponse.Email);
+            Pages.CmsUserManagement
+                .ClickEditUser(userResponse.Email)
+                .OpenSecurityTab()
+                .SetNewPassword();
         }
     }
+
+
 
 
 
@@ -215,6 +217,123 @@ namespace RaffleHouseAutomation.AdminSiteTests
     [AllureNUnit]
     public class AdminUserManagementTests : TestBaseAdmin
     {
+        [Test]
+        [Category("CMS Usermanagement")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("CMS")]
+        [AllureSubSuite("Usermanagement")]
+        public void CreateUserOnCmsAndLogin()
+        {
+            var email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"), "@putsbox.com");
+            Pages.CmsLogin
+                .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
+                .ClickSignInBtn();
+            Pages.CmsCommon
+                .VerifyIsLoginSuccessfull();
+            Pages.CmsUserManagement
+                .OpenUserManagement()
+                .ClickAddNewBtn()
+                .EnterUserData(email);
+            Pages.CmsCommon
+                .ClickSaveBtn();
+            Pages.CmsUserManagement
+                .SearchIsUserDisplayed(email);
+            var password = PutsBox.GetTextFromEmailWithValue(email, "Your temporary password is: ");
 
+            Browser.Navigate(WebEndpoints.WEBSITE_HOST);
+            Pages.Common
+               .CloseCookiesPopUp();
+            Pages.Header
+               .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(email, password);
+            Pages.SignIn
+                .VerifyIsSignIn();
+        }
+
+        [Test]
+        [Category("CMS Usermanagement")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("CMS")]
+        [AllureSubSuite("Usermanagement")]
+        public void EditUserOnCmsAndLogin()
+        {
+            var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var userResponse = UsersRequest.CreateUserOnCms(token);
+            Pages.CmsLogin
+                .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
+                .ClickSignInBtn();
+            Pages.CmsCommon
+                .VerifyIsLoginSuccessfull();
+            Pages.CmsUserManagement
+                .OpenUserManagement();
+            Pages.CmsUserManagement
+                .SearchIsUserDisplayed(userResponse.Email);
+            Pages.CmsUserManagement
+                .ClickEditUser(userResponse.Email)
+                .EnterUserData(userResponse.Email);
+            Pages.CmsCommon
+                .ClickSaveBtn();
+            Pages.CmsUserManagement
+                .SearchIsUserDisplayed(userResponse.Email);
+            Pages.CmsUserManagement
+                .ClickEditUser(userResponse.Email)
+                .OpenSecurityTab()
+                .SetNewPassword();
+            //var password = PutsBox.GetTextFromEmailWithValue(email, "Your temporary password is: ");
+
+            //Browser.Navigate(WebEndpoints.WEBSITE_HOST);
+            //Pages.Common
+            //   .CloseCookiesPopUp();
+            //Pages.Header
+            //   .OpenSignInPage();
+            //Pages.SignIn
+            //    .EnterLoginAndPass(email, password);
+            //Pages.SignIn
+            //    .VerifyIsSignIn();
+        }
+
+        [Test]
+        [Category("CMS Usermanagement")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("CMS")]
+        [AllureSubSuite("Usermanagement")]
+        public void DeleteUserOnCms()
+        {
+            var email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"), "@putsbox.com");
+            Pages.CmsLogin
+                .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
+                .ClickSignInBtn();
+            Pages.CmsCommon
+                .VerifyIsLoginSuccessfull();
+            Pages.CmsUserManagement
+                .OpenUserManagement()
+                .ClickAddNewBtn()
+                .EnterUserData(email);
+            Pages.CmsCommon
+                .ClickSaveBtn();
+            Pages.CmsUserManagement
+                .SearchIsUserDisplayed(email);
+            var password = PutsBox.GetTextFromEmailWithValue(email, "Your temporary password is: ");
+
+            Browser.Navigate(WebEndpoints.WEBSITE_HOST);
+            Pages.Common
+               .CloseCookiesPopUp();
+            Pages.Header
+               .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(email, password);
+            Pages.SignIn
+                .VerifyIsSignIn();
+        }
     }
 }
