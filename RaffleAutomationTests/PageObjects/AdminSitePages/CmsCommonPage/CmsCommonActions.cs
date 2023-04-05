@@ -150,6 +150,16 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Click \"Remove\" button")]
+        public CmsCommon ClickRemoveBtn()
+        {
+            WaitUntil.WaitSomeInterval(150);
+            Button.ClickJS(btnRemove);
+            WaitUntil.WaitSomeInterval(500);
+
+            return this;
+        }
+
         [AllureStep("Open \"Discount\" tab")]
         public CmsCommon OpenDiscountTab()
         {

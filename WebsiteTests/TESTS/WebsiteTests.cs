@@ -1,5 +1,8 @@
+using OpenQA.Selenium.Interactions;
+using RaffleAutomationTests.APIHelpers.Web.Subscriptions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RaffleHouseAutomation.WebSiteTests
 {
@@ -8,21 +11,91 @@ namespace RaffleHouseAutomation.WebSiteTests
     public class Demo : TestBaseWeb
     {
         [Test]
+        [Ignore("")]
         public void Demotest()
         {
+            #region Preconditions
+
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            List<long> bundles = new()
+            {
+                12,
+                62,
+                151,
+                154,
+                163
+            };
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 0.16666666, 0.01, bundles);
+
+            var response = SignUpRequest.RegisterNewUser();
+            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
+            var basketOrders = BasketRequest.GetBasketOrders(token);
+            BasketRequest.DeleteOrders(token, basketOrders);
+            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
+            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList.FirstOrDefault(), 12);
+            WaitUntil.WaitSomeInterval(250);
+
+            #endregion
+
             Pages.Common
                 .CloseCookiesPopUp();
-            Pages.Footer
-                .OpenTerms();
-            var actualTerms = Pages.TermsAndConditions.GetTextTerms();
             Pages.Header
-                .OpenHomePage(WebEndpoints.WEBSITE_HOST);
-            Pages.Footer
-                .OpenPrivacy();
-            var actualPrivacy = Pages.TermsAndConditions.GetTextPrivacy();
+                .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
+            Pages.Basket
+                .ClickCartBtn()
+                .ClickCheckoutNowBtn()
+                .EnterCardDetails()
+                .ClickPayNowBtn()
+                .WaitForTimeout();
+            Pages.Basket
+                .ClickCartBtn()
+                .ClickCheckoutNowBtn()
+                .EnterCardDetails()
+                .ClickPayNowBtn()
+                .ConfirmPurchaseStage();
+            Pages.Basket
+                .VerifyErrorMessageIsDisplayed();
+            bundles = new()
+            {
+                5,
+                15,
+                50,
+                150
+            };
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.66666666, 2, bundles);
+            Pages.Basket
+                .ClickCartBtn()
+                .ClickCheckoutNowBtn()
+                .EnterCardDetails()
+                .ClickPayNowBtn()
+                .ConfirmPurchaseStage();
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
 
-            Pages.TermsAndConditions
-                .VerifyDisplayingParagraphs(actualTerms, actualPrivacy);
+            #region Postconditions
+
+            bundles = new()
+            {
+                5,
+                15,
+                50,
+                150
+            };
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.66666666, 2, bundles);
+            var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
+            basketOrders = BasketRequest.GetBasketOrders(token);
+            BasketRequest.DeleteOrders(token, basketOrders);
+            UsersRequest.DeleteLastUser(tokenAdmin, users);
+
+            #endregion
         }
 
 
@@ -116,78 +189,6 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignUp
                 .ClickSignUpBtn()
                 .VerifyEmail(email);
-
-            #region Postconditions
-            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var user = UsersRequest.GetUser(tokenAdmin, email);
-            UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
-            #endregion
-
-        }
-
-        [Test, Category("Unauthorized")]
-        [AllureTag("Regression")]
-        [AllureOwner("Artem Sukharevskyi")]
-        [AllureSeverity(SeverityLevel.critical)]
-        [Author("Artem", "qatester91311@gmail.com")]
-        [AllureSuite("Client")]
-        [AllureSubSuite("Payment")]
-        public void ActivateNewUserFromEmail()
-        {
-            Pages.Common
-                .CloseCookiesPopUp();
-            string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
-            Pages.Home
-                .AddTicketsToBasket(0);
-            Pages.Basket
-                .MakeAPurchaseAsUnauthorizedUser(email);
-            Pages.ThankYou
-                .VerifyThankYouPageIsDisplayed();
-            Pages.ThankYou
-                .GoToActivationLink(email);
-            Pages.Activate
-                .ActivateUser(email);
-            Pages.Activate
-                .VerifySuccessfullActivation();
-
-
-            #region Postconditions
-            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var user = UsersRequest.GetUser(tokenAdmin, email);
-            UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
-            #endregion
-
-        }
-
-        [Test, Category("Unauthorized")]
-        [AllureTag("Regression")]
-        [AllureOwner("Artem Sukharevskyi")]
-        [AllureSeverity(SeverityLevel.critical)]
-        [Author("Artem", "qatester91311@gmail.com")]
-        [AllureSuite("Client")]
-        [AllureSubSuite("Payment")]
-        public void ActivateNewUserFromEmailAfterThreePayments()
-        {
-            Pages.Common
-                .CloseCookiesPopUp();
-            string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
-            for (int i = 0; i < 5; i++)
-            {
-                Pages.Home
-                .AddTicketsToBasket(0);
-                Pages.Basket
-                    .MakeAPurchaseAsUnauthorizedUser(email);
-                Pages.ThankYou
-                    .VerifyThankYouPageIsDisplayed();
-            }
-
-            Pages.ThankYou
-                .GoToActivationLink(email);
-            Pages.Activate
-                .ActivateUser(email);
-            Pages.Activate
-                .VerifySuccessfullActivation();
-
 
             #region Postconditions
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
@@ -323,6 +324,431 @@ namespace RaffleHouseAutomation.WebSiteTests
             #endregion
 
         }
+    }
+
+    [TestFixture]
+    [AllureNUnit]
+    public class Subscriptions : TestBaseWeb
+    {
+        [Test]
+        [Category("Subscriptions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Subscriptions")]
+        public void PurchaseTenPoundsSubscriptionAsUnauthorizedUser()
+        {
+            string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
+            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Basket
+                .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.FirstOrDefault().Id);
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed(); 
+            Pages.ThankYou
+                .GoToActivationLink(email);
+            Pages.Activate
+                .ActivateUser(email);
+            Pages.Activate
+                .VerifySuccessfullActivation();
+            Pages.Header
+               .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
+
+            var user = AppDbHelper.GetUserByEmail(email);
+            var subscriptionList = AppDbHelper.GetAllSubscriptionsByUserId(user);
+            foreach (var subscription in subscriptionList)
+            {
+                Assert.IsNotNull(subscription.Refference);
+                Assert.IsNotNull(subscription.CardSource);
+                Assert.IsNotNull(subscription.CheckoutId);
+            }
+        }
+
+        [Test]
+        [Category("Subscriptions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Subscriptions")]
+        public void PurchaseTwentyFivePoundsSubscriptionAsUnauthorizedUser()
+        {
+            string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
+            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Basket
+                .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.LastOrDefault().Id);
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+            Pages.ThankYou
+                .GoToActivationLink(email);
+            Pages.Activate
+                .ActivateUser(email);
+            Pages.Activate
+                .VerifySuccessfullActivation();
+            Pages.Header
+               .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
+        }
+
+        [Test]
+        [Category("Subscriptions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Subscriptions")]
+        public void PurchaseMultipleofSubscriptionAsUnauthorizedUser()
+        {
+            string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
+            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+
+            Pages.Common
+                .CloseCookiesPopUp();
+            for (int i = 0; i < 4; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        Pages.Basket
+                            .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.LastOrDefault().Id);
+                        Pages.ThankYou
+                            .VerifyThankYouPageIsDisplayed();
+                        break;
+                    case 1:
+                        Pages.Basket
+                            .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.FirstOrDefault().Id);
+                        Pages.ThankYou
+                            .VerifyThankYouPageIsDisplayed();
+                        break;
+                    case 2:
+                        Pages.Basket
+                            .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.FirstOrDefault().Id);
+                        Pages.ThankYou
+                            .VerifyThankYouPageIsDisplayed();
+                        break;
+                    case 3:
+                        Pages.Basket
+                            .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.LastOrDefault().Id);
+                        Pages.ThankYou
+                            .VerifyThankYouPageIsDisplayed();
+                        break;
+                }
+            }
+            Pages.Basket
+                .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.LastOrDefault().Id);
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+            Pages.ThankYou
+                .GoToActivationLink(email);
+            Pages.Activate
+                .ActivateUser(email);
+            Pages.Activate
+                .VerifySuccessfullActivation();
+            Pages.Header
+               .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
+
+            var user = AppDbHelper.GetUserByEmail(email);
+            var subscriptionList = AppDbHelper.GetAllSubscriptionsByUserId(user);
+            foreach (var subscription in subscriptionList)
+            {
+                Assert.IsNotNull(subscription.Refference);
+                Assert.IsNotNull(subscription.CardSource);
+                Assert.IsNotNull(subscription.CheckoutId);
+            }
+        }
+
+        [Test]
+        [Category("Subscriptions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Subscriptions")]
+        public void PurchaseTenPoundsSubscriptionAsAuthorizedUser()
+        {
+            var response = SignUpRequest.RegisterNewUser();
+            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Header
+               .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
+            Pages.Basket
+                .MakeAPurchaseSubscriptionAsAuthorizedUser(subscriptionsList.SubscriptionModels.FirstOrDefault().Id);
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
+            var user = AppDbHelper.GetUserByEmail(response.User.Email);
+            var subscriptionList = AppDbHelper.GetAllSubscriptionsByUserId(user);
+            foreach (var subscription in subscriptionList)
+            {
+                Assert.IsNotNull(subscription.Refference);
+                Assert.IsNotNull(subscription.CardSource);
+                Assert.IsNotNull(subscription.CheckoutId);
+            }
+        }
+
+        [Test]
+        [Category("Subscriptions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Subscriptions")]
+        public void PurchaseTwentyFivePoundsSubscriptionAsAuthorizedUser()
+        {
+            var response = SignUpRequest.RegisterNewUser();
+            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Header
+               .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
+            Pages.Basket
+                .MakeAPurchaseSubscriptionAsAuthorizedUser(subscriptionsList.SubscriptionModels.LastOrDefault().Id);
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
+            var user = AppDbHelper.GetUserByEmail(response.User.Email);
+            var subscriptionList = AppDbHelper.GetAllSubscriptionsByUserId(user);
+            foreach (var subscription in subscriptionList)
+            {
+                Assert.IsNotNull(subscription.Refference);
+                Assert.IsNotNull(subscription.CardSource);
+                Assert.IsNotNull(subscription.CheckoutId);
+            }
+        }
+
+        [Test]
+        [Category("Subscriptions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Subscriptions")]
+        public void PurchaseNormalTicketsAsSubscribedAuthorizedUser()
+        {
+            var response = SignUpRequest.RegisterNewUser();
+            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Header
+               .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
+            Pages.Basket
+                .MakeAPurchaseSubscriptionAsAuthorizedUser(subscriptionsList.SubscriptionModels.LastOrDefault().Id);
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
+            Pages.Home
+                .AddTicketsToBasket(2);
+            Pages.Basket
+                .MakeAPurchaseAsAuthorizedUser();
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
+            var user = AppDbHelper.GetUserByEmail(response.User.Email);
+            var subscriptionList = AppDbHelper.GetAllSubscriptionsByUserId(user);
+            foreach (var subscription in subscriptionList)
+            {
+                Assert.IsNotNull(subscription.Refference);
+                Assert.IsNotNull(subscription.CardSource);
+                Assert.IsNotNull(subscription.CheckoutId);
+            }
+        }
+
+        [Test]
+        [Category("Subscriptions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Subscriptions")]
+        public void PurchaseSubFromSubscriptionPageAsUnauthorizedUser()
+        {
+            string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
+            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Subscription
+                .OpenSubscriptionPage()
+                .AddTenSubscriptionToBasket();
+            Pages.Basket
+                .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.LastOrDefault().Id);
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+            Pages.ThankYou
+                .GoToActivationLink(email);
+            Pages.Activate
+                .ActivateUser(email);
+            Pages.Activate
+                .VerifySuccessfullActivation();
+            Pages.Header
+               .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
+        }
+
+        [Test]
+        [Category("Subscriptions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Subscriptions")]
+        public void VerifyTextsOnSubscriptionsPage()
+        {
+            Pages.Subscription
+                .OpenSubscriptionPage();
+            Pages.Common
+                .CloseCookiesPopUp();
+            Element.Action(Keys.End);
+            Pages.Subscription
+                .VerifyDisplayingH1()
+                .VerifyDisplayingH2()
+                .VerifyDisplayingH3()
+                .VerifyDisplayingParagraphs();
+        }
+
+
+    }
+
+
+    [TestFixture]
+    [AllureNUnit]
+    public class Payment : TestBaseWeb
+    {
+        [Test, Category("Unauthorized")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
+        public void ActivateNewUserFromEmail()
+        {
+            Pages.Common
+                .CloseCookiesPopUp();
+            string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
+            Pages.Home
+                .AddTicketsToBasket(0);
+            Pages.Basket
+                .MakeAPurchaseAsUnauthorizedUser(email);
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+            Pages.ThankYou
+                .GoToActivationLink(email);
+            Pages.Activate
+                .ActivateUser(email);
+            Pages.Activate
+                .VerifySuccessfullActivation();
+
+
+            #region Postconditions
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var user = UsersRequest.GetUser(tokenAdmin, email);
+            UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
+            #endregion
+
+        }
+
+        [Test, Category("Unauthorized")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
+        public void ActivateNewUserFromEmailAfterThreePayments()
+        {
+            Pages.Common
+                .CloseCookiesPopUp();
+            string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
+            for (int i = 0; i < 5; i++)
+            {
+                Pages.Home
+                .AddTicketsToBasket(0);
+                Pages.Basket
+                    .MakeAPurchaseAsUnauthorizedUser(email);
+                Pages.ThankYou
+                    .VerifyThankYouPageIsDisplayed();
+            }
+
+            Pages.ThankYou
+                .GoToActivationLink(email);
+            Pages.Activate
+                .ActivateUser(email);
+            Pages.Activate
+                .VerifySuccessfullActivation();
+
+
+            #region Postconditions
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var user = UsersRequest.GetUser(tokenAdmin, email);
+            UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
+            #endregion
+
+        }
 
         [Test, Category("Unauthorized")]
         [AllureTag("Regression")]
@@ -392,11 +818,6 @@ namespace RaffleHouseAutomation.WebSiteTests
 
         }
 
-    }
-    [TestFixture]
-    [AllureNUnit]
-    public class Payment : TestBaseWeb
-    {
         [Test]
         [Category("Payment")]
         [AllureTag("Regression")]

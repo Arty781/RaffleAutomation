@@ -61,7 +61,7 @@
             InputBox.Element(inputCardNumber, 15, "4242424242424242");
             Browser._Driver.SwitchTo().DefaultContent();
             Browser._Driver.SwitchTo().Frame(framePaymentExpiry);
-            InputBox.Element(inputExpiryDate, 15, DateTime.Now.AddYears(1).ToString("MM'/'yy"));
+            InputBox.Element(inputExpiryDate, 15, DateTime.Now.AddYears(2).ToString("MM'/'yy"));
             Browser._Driver.SwitchTo().DefaultContent();
             Browser._Driver.SwitchTo().Frame(framePaymentCvv);
             InputBox.Element(inputCvv, 15, "100");
@@ -88,7 +88,7 @@
             Browser._Driver.SwitchTo().Frame(frameCheckout);
             InputBox.Element(inputPasswordCheckout, 15, "Checkout1!");
             Button.Click(btnContinueCheckout);
-            WaitUntil.CustomElevemtIsInvisible(frameCheckout, 12000);
+            WaitUntil.CustomElevemtIsInvisible(frameCheckout, 120);
             Browser._Driver.SwitchTo().DefaultContent();
 
 
@@ -108,11 +108,11 @@
         [AllureStep("Confirm purchase")]
         public Basket WaitForTimeout()
         {
-            WaitUntil.WaitSomeInterval(10000);
-            WaitUntil.CustomElementIsVisible(frameCheckout);
+            WaitUntil.CustomElementIsVisible(frameCheckout, 30);
             Browser._Driver.SwitchTo().Frame(frameCheckout);
             inputPasswordCheckout.SendKeys("Checkout1!");
-            WaitUntil.CustomElevemtIsInvisible(frameCheckout, 12000);
+            Browser._Driver.SwitchTo().DefaultContent();
+            WaitUntil.CustomElevemtIsInvisible(frameCheckout, 720);
             Browser._Driver.SwitchTo().DefaultContent();
             WaitUntil.CustomElementIsVisible(btncheckOutNow, 120);
 
@@ -147,6 +147,39 @@
             EnterCardDetails();
             ClickPayNowBtn();
             ConfirmPurchaseStage();
+
+            return this;
+        }
+
+        [AllureStep("Make a purchase as unauthorized user")]
+        public Basket MakeAPurchaseSubscriptionAsUnauthorizedUser(string email, string subscriptionId)
+        {
+            GoToBasket(subscriptionId);
+            EnterEmail(email);
+            EnterCardDetails();
+            ClickPayNowBtn();
+            ConfirmPurchaseStage();
+
+            return this;
+        }
+
+        [AllureStep("Make a purchase as authorized user")]
+        public Basket MakeAPurchaseSubscriptionAsAuthorizedUser(string subscriptionId)
+        {
+            GoToBasket(subscriptionId);
+            EnterCardDetails();
+            ClickPayNowBtn();
+            ConfirmPurchaseStage();
+
+            return this;
+        }
+
+        [AllureStep("Make a purchase as authorized user")]
+        private Basket GoToBasket(string subscriptionId)
+        {
+            Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST + $"/subscriptions/{subscriptionId}/payment");
+            WaitUntil.WaitSomeInterval(10000);
+            Browser._Driver.Navigate().Refresh();
 
             return this;
         }

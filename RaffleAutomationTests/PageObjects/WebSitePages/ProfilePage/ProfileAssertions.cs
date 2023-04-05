@@ -266,7 +266,7 @@
                         VerifyDisplayingEmailErrorMessage();
                         break;
                     case 1:
-                        InputBox.Element(inputEmail, 10, string.Join(" qatester-", DateTime.Now.ToString("yyyy-MM-dThh-mm-ss"), "  ","@putsbox.com "));
+                        InputBox.Element(inputEmail, 10, string.Join(" qatester-", DateTime.Now.ToString("yyyy-MM-dThh-mm-ss"), "  ", "@putsbox.com "));
                         InputBox.Element(inputPhone, 10, "953214567");
                         Button.ClickJS(btnSave);
                         VerifyDisplayingEmailErrorMessage();

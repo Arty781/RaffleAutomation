@@ -23,9 +23,10 @@
             WaitUntil.CustomElementIsVisible(textLinkContactsFooter.FirstOrDefault());
             for (int i = 0; i < textLinkContactsFooter.Count; i++)
             {
-                Assert.IsTrue(textLinkContactsFooter[i].Text.ToLower() == FooterText.FOOTER_CONTACTS_LINKS[i].ToLower(), string.Concat("\"", textLinkContactsFooter[i].Text, "\"", " not matched with ", FooterText.FOOTER_CONTACTS_LINKS[i]));
+                string expectedLink = FooterText.FOOTER_CONTACTS_LINKS[i].ToLower();
+                string actualLink = textLinkContactsFooter[i].Text.ToLower();
+                Assert.AreEqual(expectedLink, actualLink, $"Not matched. Expected: \"{expectedLink}\". Actual: \"{actualLink}\"");
             }
-
 
             return this;
         }

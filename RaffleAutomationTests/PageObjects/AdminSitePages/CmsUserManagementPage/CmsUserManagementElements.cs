@@ -76,6 +76,9 @@
         [FindsBy(How = How.XPath, Using = "//span[text()='Add Ticket']/parent::button")]
         public IWebElement btnAddTicket;
 
+        [FindsBy(How = How.XPath, Using = "//span[text()='Add Tickets']/parent::button")]
+        public IWebElement btnAddTicketsInPopUp;
+
         [FindsBy(How = How.Name, Using = "competition")]
         public IWebElement cbbxCompetition;
 
@@ -102,6 +105,12 @@
 
         [FindsBy(How = How.XPath, Using = "//div[@role='dialog']//span[text()='Cancel']/parent::button")]
         public IWebElement btnCancelInPopup;
+
+        [FindsBy(How = How.XPath, Using = "//div/span[3]//h6[text()='No ']")]
+        public IWebElement textNoOrders;
+
+        [FindsBy(How = How.XPath, Using = "//div[text()='View Tickets']/ancestor::div[@class='MuiDialogContent-root']//table//td[6]")]
+        public IList<IWebElement> btnDeletePopUp;
 
 
         #endregion

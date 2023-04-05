@@ -17,13 +17,13 @@
         [FindsBy(How = How.XPath, Using = "//button[text()='OK']")]
         public IWebElement btnOk;
 
-        [FindsBy(How=How.Name, Using = "password")]
+        [FindsBy(How = How.Name, Using = "password")]
         public IWebElement inputPassword;
 
         [FindsBy(How = How.Name, Using = "confirmPassword")]
         public IWebElement inputConfirmPassword;
 
-        [FindsBy(How = How.XPath,Using = "//button[text()='Set new password']")]
+        [FindsBy(How = How.XPath, Using = "//button[text()='Set new password']")]
         public IWebElement btnSetNewPassword;
     }
 }

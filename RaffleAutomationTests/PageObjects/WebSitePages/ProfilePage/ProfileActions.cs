@@ -119,5 +119,53 @@ namespace RaffleAutomationTests.PageObjects
             WaitUntil.CustomElevemtIsInvisible(prizeName);
             return this;
         }
+
+        [AllureStep("Open Subscription in Profile")]
+        public Profile OpenSubscriptionInProfile()
+        {
+            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/profile/subscription");
+            WaitUntil.CustomElementIsVisible(titleSubscriptionProfile);
+            return this;
+        }
+
+        [AllureStep("Pause subscription")]
+        public Profile PauseSubscription()
+        {
+            Button.Click(btnDetails.FirstOrDefault());
+            Button.Click(inputPause.FirstOrDefault());
+            Button.Click(btnPausePopUp);
+            WaitUntil.CustomElementIsVisible(titleSubscriptionStatus.Where(t=>t.Text == "Paused Subscription").First());
+            return this;
+        }
+
+        [AllureStep("Unpause subscription")]
+        public Profile UnpauseSubscription()
+        {
+            Button.Click(btnDetails.FirstOrDefault());
+            Button.Click(inputPause.FirstOrDefault());
+            Button.Click(btnUnpausePopUp);
+            WaitUntil.CustomElementIsVisible(titleSubscriptionStatus.Where(t => t.Text == "Active Subscription").First());
+            return this;
+        }
+
+        [AllureStep("Pause subscription")]
+        public Profile CancelSubscription()
+        {
+            Button.Click(btnDetails.FirstOrDefault());
+            Button.Click(btnCancelSubscription.FirstOrDefault());
+            Button.Click(btnCancelPopUp);
+            WaitUntil.CustomElementIsVisible(titleSubscriptionStatus.Where(t => t.Text == "Cancelled Subscription").First());
+            return this;
+        }
+
+        [AllureStep("Unpause subscription")]
+        public Profile ReactivateSubscription()
+        {
+            Button.Click(btnDetails.FirstOrDefault());
+            Button.Click(btnReactivateSubscription.FirstOrDefault());
+            Button.Click(btnReactivatePopUp);
+            WaitUntil.CustomElementIsVisible(titleSubscriptionStatus.Where(t => t.Text == "Active Subscription").First());
+            return this;
+        }
     }
 }

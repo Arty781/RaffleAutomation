@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class Footer
     {

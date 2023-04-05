@@ -29,7 +29,7 @@ namespace RaffleAutomationTests.PageObjects
 
         public void VerifyValidationOnSignIn(SignUpResponse response)
         {
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 switch (i)
                 {
@@ -60,6 +60,6 @@ namespace RaffleAutomationTests.PageObjects
                 }
             }
         }
-        
+
     }
 }

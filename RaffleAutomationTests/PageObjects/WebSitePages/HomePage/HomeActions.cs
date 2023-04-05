@@ -98,7 +98,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("AddTickets")]
         public Home AddTicketsToBasket(int maxIterations)
         {
-            
+
             for (int i = 0; i <= maxIterations; i++)
             {
                 switch (i)

@@ -28,6 +28,7 @@ namespace ApiTests.BASE
         [TearDown]
         public static void TearDown()
         {
+            
             if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
             {
                 _ = TelegramHelper.SendMessage();

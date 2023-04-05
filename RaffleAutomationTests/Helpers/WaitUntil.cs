@@ -46,7 +46,7 @@
                 {
                     try
                     {
-                        if (element.Enabled == true)
+                        if (element != null && element.Enabled)
                         {
                             return false;
                         }

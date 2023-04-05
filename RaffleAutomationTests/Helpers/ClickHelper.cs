@@ -1,5 +1,6 @@
 ﻿using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
+using RaffleAutomationTests.PageObjects;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -132,7 +133,7 @@ namespace RaffleAutomationTests.Helpers
 
         public static UserRowModel FindSpecificUser(string email)
         {
-            WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(30))
+            WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(10))
             {
                 PollingInterval = TimeSpan.FromMilliseconds(100)
             };
@@ -172,8 +173,56 @@ namespace RaffleAutomationTests.Helpers
             public string? Phone { get; set; }
             public IWebElement toggleStatus { get; set; }
             public IWebElement btnShow { get; set; }
-            public IWebElement btnEdit { get; set;}
-            public IWebElement btnDelete { get; set;}
+            public IWebElement btnEdit { get; set; }
+            public IWebElement btnDelete { get; set; }
+        }
+
+        public static List<CompetitionRowModel> FindSpecificCompetitionRows(string competition)
+        {
+            List<CompetitionRowModel> listOfCompetitions = new();
+            WaitUntil.CustomElevemtIsInvisible(Pages.CmsUserManagement.textNoOrders);
+            WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(10))
+            {
+                PollingInterval = TimeSpan.FromMilliseconds(100)
+            };
+            try
+            {
+                wait.Until(e =>
+                {
+                    try { return Browser._Driver.FindElement(By.XPath($"//td[text()='{competition}']")).Enabled; }
+                    catch (NoSuchElementException) { return false; }
+                    catch (StaleElementReferenceException) { return false; }
+
+                });
+            }
+            catch (NoSuchElementException) { }
+            catch (StaleElementReferenceException) { }
+
+            foreach (var item in Browser._Driver.FindElements(By.XPath($"//td[text()='{competition}']/parent::tbody")))
+            {
+                CompetitionRowModel competitionRow = new();
+                competitionRow.Competition = item.FindElement(By.XPath($".//td[1]")).Text;
+                competitionRow.Product = item.FindElement(By.XPath($".//td[2]")).Text;
+                competitionRow.NumberOfTickets = item.FindElement(By.XPath($".//td[3]")).Text;
+                competitionRow.DrawDate = item.FindElement(By.XPath($".//td[4]")).Text;
+                competitionRow.btnShowtickets = item.FindElement(By.XPath($".//td[5]/div/*[1]"));
+                competitionRow.btnEditTickets = item.FindElement(By.XPath($".//td[5]/div/*[2]"));
+                competitionRow.btnDeleteTickets = item.FindElement(By.XPath($".//td[5]/div/*[3]/*"));
+                listOfCompetitions.Add(competitionRow);
+            }
+
+            return listOfCompetitions;
+        }
+
+        public class CompetitionRowModel
+        {
+            public string Competition { get; set; }
+            public string Product { get; set; }
+            public string NumberOfTickets { get; set; }
+            public string DrawDate { get; set; }
+            public IWebElement btnShowtickets { get; set; }
+            public IWebElement btnEditTickets { get; set; }
+            public IWebElement btnDeleteTickets { get; set; }
         }
 
         public static void Action(string key)

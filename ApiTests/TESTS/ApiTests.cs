@@ -1,4 +1,5 @@
 using ApiTests.BASE;
+using Chilkat;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
 using NUnit.Framework;
@@ -11,6 +12,7 @@ using RaffleAutomationTests.APIHelpers.Web.Basket;
 using RaffleAutomationTests.APIHelpers.Web.ForgotPasswordWeb;
 using RaffleAutomationTests.APIHelpers.Web.SignIn;
 using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
+using RaffleAutomationTests.APIHelpers.Web.Subscriptions;
 using RaffleAutomationTests.APIHelpers.Web.Weekly;
 using RaffleAutomationTests.Helpers;
 using RestSharp;
@@ -28,9 +30,18 @@ namespace API
         {
             #region Preconditions
 
-            var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var userResponse = UsersRequest.CreateUserOnCms(token);
-            
+            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+
+            //AppDbHelper.GetAllUsers();
+            var user = AppDbHelper.GetUserByEmail("qatester2023-04-5-10-20-08@putsbox.com");
+            List<DbModels.Subscriptions> subscriptionList = AppDbHelper.GetAllSubscriptionsByUserId(user);
+            foreach (var subscription in subscriptionList)
+            {
+                Assert.IsNotNull(subscription.Refference);
+                Assert.IsNotNull(subscription.CardSource);
+                Assert.IsNotNull(subscription.CheckoutId);
+            }
+
 
             #endregion
 

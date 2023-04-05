@@ -24,7 +24,7 @@
 
         #region Banner Secondary Section
 
-        [FindsBy(How = How.XPath, Using = "//h1")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='home-page-title-block']/h1")]
         public IWebElement textTitleBannerSecondary;
 
         [FindsBy(How = How.XPath, Using = "//h1/parent::div/p")]

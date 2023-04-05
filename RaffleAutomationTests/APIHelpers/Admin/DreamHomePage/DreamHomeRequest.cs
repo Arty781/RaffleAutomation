@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
+﻿namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
 {
     public class DreamHomeRequest
     {
@@ -57,7 +55,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
                 Title = response.Raffles.First().Title,
                 MetaTitle = response.Raffles.First().MetaTitle,
                 MetaDescription = response.Raffles.First().MetaDescription,
-                StepperCountdown= response.Raffles.First().StepperCountdown,
+                StepperCountdown = response.Raffles.First().StepperCountdown,
                 IsClosed = false
             };
             return JsonConvert.SerializeObject(req);
@@ -104,7 +102,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
                 MetaDescription = response.Raffles.First().MetaDescription,
                 StepperCountdown = response.Raffles.First().StepperCountdown,
                 IsClosed = true
-                
+
             };
             return JsonConvert.SerializeObject(req);
         }
@@ -276,7 +274,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
             req.AddHeader("authorization", $"Bearer {token.Token}");
 
             req.LoadBodyFromString(JsonBodyDeactivate(response), charset: "utf-8");
-            if(response != null)
+            if (response != null)
             {
                 Http http = new();
 
@@ -288,7 +286,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.DreamHomePage
                 }
                 Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
             }
-            
+
         }
 
         public static RaffleResponse? GetActiveDreamHome(SignInResponseModelAdmin token)

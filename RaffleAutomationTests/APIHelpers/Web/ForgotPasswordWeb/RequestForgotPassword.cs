@@ -11,7 +11,7 @@
             return JsonConvert.SerializeObject(req);
         }
 
-        private static string JsonBody(string token) 
+        private static string JsonBody(string token)
         {
             RequestReset request = new()
             {
@@ -66,7 +66,7 @@
             {
                 Accept = "application/json"
             };
-            
+
             string url = String.Concat(ApiEndpoints.API_CHIL + "/api/users/password/reset");
             HttpResponse resp = http.PostJson2(url, "Application/json", JsonBody(token));
             if (http.LastStatus != 200)

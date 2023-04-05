@@ -1,6 +1,4 @@
-﻿using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
-
-namespace RaffleAutomationTests.PageObjects
+﻿namespace RaffleAutomationTests.PageObjects
 {
     public partial class SignUp
     {

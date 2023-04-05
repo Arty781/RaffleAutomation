@@ -108,5 +108,52 @@
         public IList<IWebElement> prizePrice;
 
         #endregion
+
+        #region Subscriptions
+
+        [FindsBy(How = How.XPath, Using = "//h1[text()='My Subscription']")]
+        public IWebElement titleSubscriptionProfile;
+
+        [FindsBy(How = How.XPath, Using = "//div[contains(@class,'profile-subscription-card ')]//p[text()='Details']")]
+        public IList<IWebElement> btnDetails;
+
+        [FindsBy(How=How.XPath,Using = "//div[contains(@class,'profile-subscription-card ')]/div[contains(@class, 'header')]")]
+        public IList<IWebElement> titleSubscriptionStatus;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='select-charity-wrapper']/div")]
+        public IList<IWebElement> cbbxCharitySelector;
+
+        [FindsBy(How = How.XPath, Using = "//div[@role='presentation']/div/ul/li")]
+        public IList<IWebElement> listCharities;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='select-charity-wrapper']/div//input")]
+        public IList<IWebElement> inputCharity;
+
+        [FindsBy(How = How.Name, Using = "paused")]
+        public IList<IWebElement> inputPause;
+
+        [FindsBy(How = How.XPath, Using = "//button[text()='Cancel Subscription']")]
+        public IList<IWebElement> btnCancelSubscription;
+
+        [FindsBy(How = How.XPath, Using = "//button[text()='Reactivate Subscription']")]
+        public IList<IWebElement> btnReactivateSubscription;
+
+        [FindsBy(How = How.XPath, Using = "//button[text()='Pause']")]
+        public IWebElement btnPausePopUp;
+
+        [FindsBy(How = How.XPath, Using = "//button[text()='Unpause']")]
+        public IWebElement btnUnpausePopUp;
+
+        [FindsBy(How = How.XPath, Using = "//button[text()='Cancel']")]
+        public IWebElement btnCancelPopUp;
+
+        [FindsBy(How = How.XPath, Using = "//button[text()='Reactivate']")]
+        public IWebElement btnReactivatePopUp;
+
+        [FindsBy(How = How.XPath, Using = "//button[text()='Back']")]
+        public IWebElement btnBackPopUp;
+
+
+        #endregion
     }
 }

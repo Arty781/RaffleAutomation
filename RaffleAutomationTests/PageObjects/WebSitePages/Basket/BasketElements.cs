@@ -73,7 +73,7 @@
         [FindsBy(How = How.XPath, Using = "//button[@class='rafflebtn primary full-width']")]
         public IWebElement btncheckOutNow;
 
-        [FindsBy(How = How.Name, Using ="email")]
+        [FindsBy(How = How.Name, Using = "email")]
         public IWebElement inputEmail;
 
 

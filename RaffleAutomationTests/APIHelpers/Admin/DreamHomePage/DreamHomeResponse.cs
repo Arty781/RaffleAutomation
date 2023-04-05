@@ -268,7 +268,7 @@
 
     public class Raffles
     {
-        
+
         [JsonProperty("stepperCountdown")]
         public StepperCountdown StepperCountdown { get; set; }
 
@@ -363,7 +363,7 @@
         public long V { get; set; }
     }
 
-    
+
     public class StepperCountdown
     {
         [JsonProperty("isActive")]

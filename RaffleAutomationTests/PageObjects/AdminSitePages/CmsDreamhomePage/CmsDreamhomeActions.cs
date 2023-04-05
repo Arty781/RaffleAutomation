@@ -4,7 +4,7 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class CmsDreamhome
     {
-       
+
 
         [AllureStep("Open Dreamhome page")]
         public CmsDreamhome OpenDreamhomePage()
@@ -430,13 +430,13 @@ namespace RaffleAutomationTests.PageObjects
         {
             WaitUntil.CustomElementIsVisible(btnFreeTicketsToggle);
             Button.Click(btnFreeTicketsToggle);
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Button.Click(btnAddFreeTickets);
                 WaitUntil.WaitSomeInterval(250);
             }
             EnterFreeTicktesData();
-            
+
             return this;
         }
 

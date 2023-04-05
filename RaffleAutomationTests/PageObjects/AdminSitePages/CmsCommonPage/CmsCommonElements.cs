@@ -46,7 +46,7 @@
 
         #endregion
 
-        #region Save and Cancel btns
+        #region Save, Remove and Cancel btns
 
         [FindsBy(How = How.XPath, Using = "//span[text()='Save']/parent::button")]
         public IWebElement btnSave;
@@ -56,6 +56,9 @@
 
         [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Cancel')]/parent::button")]
         public IWebElement btnCancel;
+
+        [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Remove')]/parent::button")]
+        public IWebElement btnRemove;
 
         #endregion
 

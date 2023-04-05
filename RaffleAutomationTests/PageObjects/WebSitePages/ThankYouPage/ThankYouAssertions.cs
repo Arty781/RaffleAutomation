@@ -9,6 +9,6 @@
             Assert.IsTrue(titleThankYouPage.Enabled, "Thank You page is not displayed");
         }
 
-        
+
     }
 }

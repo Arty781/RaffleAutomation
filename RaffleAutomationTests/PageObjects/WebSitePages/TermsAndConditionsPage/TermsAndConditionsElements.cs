@@ -8,7 +8,7 @@
         [FindsBy(How = How.XPath, Using = "//div[@class='staff-content']/div[2]")]
         public IWebElement textPrivacy;
 
-        [FindsBy(How=How.XPath,Using ="//h1")]
+        [FindsBy(How = How.XPath, Using = "//h1")]
         public IWebElement titleTermsAndConditions;
     }
 }

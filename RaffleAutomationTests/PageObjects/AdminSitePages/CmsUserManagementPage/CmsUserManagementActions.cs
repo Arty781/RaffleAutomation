@@ -1,4 +1,6 @@
-﻿namespace RaffleAutomationTests.PageObjects
+﻿using static RaffleAutomationTests.Helpers.Element;
+
+namespace RaffleAutomationTests.PageObjects
 {
     public partial class CmsUserManagement
     {
@@ -6,7 +8,7 @@
         {
             Browser.Navigate(AdminEndpoints.USER_MANAGEMENT);
             return this;
-        } 
+        }
 
         public CmsUserManagement ClickAddNewBtn()
         {
@@ -22,6 +24,19 @@
             InputBox.Element(inputEmail, 10, email);
             InputBox.Element(inputPhone, 10, RandomHelper.RandomPhone());
             return this;
+        }
+
+        public Element.UserRowModel GetUserData()
+        {
+            WaitUntil.CustomElementIsVisible(inputFirstName);
+            Element.UserRowModel user = new()
+            {
+                Name = TextBox.GetAttribute(inputFirstName, "value"),
+                Surname = TextBox.GetAttribute(inputLastName, "value"),
+                Email = TextBox.GetAttribute(inputEmail, "value"),
+                Phone = TextBox.GetAttribute(inputPhone, "value"),
+            };
+            return user;
         }
 
         public CmsUserManagement ClickEditUser(string email)
@@ -48,5 +63,61 @@
 
             return this;
         }
+
+        public CmsUserManagement DeleteUser(string email)
+        {
+            Button.Click(Element.FindSpecificUser(email).btnDelete);
+            Pages.CmsCommon.ClickRemoveBtn();
+            WaitUntil.WaitSomeInterval();
+            return this;
+        }
+
+        public CmsUserManagement OpenTicketsTab()
+        {
+            Button.Click(tabTickets);
+            WaitUntil.WaitSomeInterval(1000);
+
+            return this;
+        }
+
+        public CmsUserManagement ClickAddTicketBtn()
+        {
+            Button.Click(btnAddTicket);
+            WaitUntil.CustomElementIsVisible(inputNumberOfTickets);
+
+            return this;
+        }
+
+        public CmsUserManagement AddTicketsToUser()
+        {
+            InputBox.Element(inputNumberOfTickets, 10, "10");
+            Button.Click(btnSaveInPopup);
+
+            return this;
+        }
+
+        public List<CompetitionRowModel> SelectTicketsDataByCompetition(string competition)
+        {
+            return FindSpecificCompetitionRows(competition);
+        }
+
+        public CmsUserManagement ClickEditTicketBtn(List<CompetitionRowModel> competitionRow)
+        {
+            Button.Click(competitionRow.FirstOrDefault().btnEditTickets);
+            Button.Click(btnAddTicketsInPopUp);
+            WaitUntil.CustomElementIsVisible(inputNumberOfTickets);
+
+            return this;
+        }
+
+        public CmsUserManagement ClickDeleteTicketBtn(List<CompetitionRowModel> competitionRow)
+        {
+            Button.Click(competitionRow.FirstOrDefault().btnDeleteTickets);
+            Pages.CmsCommon.ClickRemoveBtn();
+            WaitUntil.CustomElevemtIsInvisible(competitionRow.FirstOrDefault().btnDeleteTickets);
+
+            return this;
+        }
+
     }
 }

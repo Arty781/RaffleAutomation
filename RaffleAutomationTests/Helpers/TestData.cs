@@ -1,4 +1,13 @@
-﻿namespace RaffleAutomationTests.Helpers
+﻿using Allure.Commons;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
+using RaffleAutomationTests.APIHelpers.Web;
+using RaffleAutomationTests.PageObjects;
+using SharpCompress.Common;
+using static RaffleAutomationTests.Helpers.DbModels;
+
+namespace RaffleAutomationTests.Helpers
 {
 
 #if DEBUG || CHROME || FIREFOX || DEBUG_MOBILE
@@ -150,6 +159,7 @@
 
     public class HomeTexts
     {
+        public const string STEPPER_TITLE = "Win a £250,000 Early Bird Prize!";
         public static readonly string SECONDARY_BANNER_TITLE = "Win This Dream Home Worth More Than £2 Million";
         public static readonly string SECONDARY_BANNER_SUBTITLE = "Plus £1 million in early bird cash-prizes to be won by four lucky customers! Enter today for your chance to win.";
 
@@ -198,11 +208,68 @@
         };
         public static readonly string[] PARAGRAPHS_STEPS =
         {
-            "Select which ticket bundle you want to buy to win your Dream Home.",
+            "Select which ticket bundle you want to buy to win your Dream Home. ",
             "We will direct you to make an account to keep a record of your purchase. We'll also email you a receipt containing your ticket numbers.",
             "We'll make a donation to our charity partner and you can sit back and start dreaming! We always contact our winners by email & phone."
         };
 
+    }
+
+    public class SubscriptionTexts
+    {
+        public static readonly string TITLE_H1 = "Never Miss Your Chance To Dream Big And Do Good";
+        public static readonly List<string> TITLES_H2 = new()
+        {
+            "Subscription Benefits",
+            "How it Works",
+            "Frequently Asked Questions",
+            "Dream Big. Do Good",
+            string.Empty,
+            "As Seen In",
+            "Got A Question?"
+        };
+        public static readonly List<string> TITLES_H3 = new()
+        {
+            "Subscribe at any time",
+            "You’re all set",
+            "Peace of mind",
+            "Choose your charity every month",
+            "About Raffle House"
+        };
+        public static readonly List<string> PARAGRAPHS = new()
+        {
+            "Get triple the entries to all our Early Bird and multi-million pound Dream Home draws every single month. ",
+            "Dream Big and Do Good Every Single Month with a Raffle House Subscription",
+            "",
+            "If you want the peace of mind that you’ve always got your tickets to win our Early Bird Prizes or Dream Homes, our subscription options are the perfect solution. ",
+            "Subscribing to our competitions is quick and easy.",
+            "Get triple the usual entries into every single upcoming Early Bird and Dream Home draw",
+            "You’ll receive your subscription tickets at the beginning of every month.",
+            "Whenever a new Dream Home is announced, even if two are live at the same time, you’ll be automatically entered into both without having to make a new purchase.",
+            "Every month, you can choose to change where you want 10% of your payment to be donated to or keep your preferred charity. You can cancel at any time or even skip a month or two.",
+            "What’s the benefit of subscribing?",
+            "Not only will you always guarantee yourself tickets to win our Early Bird and Dream Home Prizes, but you’ll be also doing so with three times more tickets than a one-off purchase.",
+            "Where will I see my tickets?",
+            "We’ll email you your tickets when you first activate your subscription, and then at the beginning of every month we’ll confirm your new ticket numbers on your renewed subscription. You’ll also be able to find these in your account.",
+            "Can I choose a different charity each month?",
+            "Yes. In that same email you’ll receive at the beginning of the month, you can decide to switch your charitable giving or do nothing to keep it the same.",
+            "Are my tickets entered into all prize pools?",
+            "Yes. Your tickets will be entered into every single Early Bird Prize draw, as well as all Dream Home draws, as well as any other prize pools yet to be announced.",
+            "Can I cancel whenever I like?",
+            "Absolutely. Your tickets will remain valid for all upcoming Early Bird Prizes and the next Dream Home draw. You can manage your subscription from your account or our customer support team can help you.",
+            "I won’t lose any tickets even if I cancel my subscription?",
+            "That’s right. You’ll keep all of the tickets from the beginning of your subscription period to its end, and they’ll all remain valid for any upcoming Early Bird or Dream Home draws.",
+            "If I subscribe, can I still buy regular ticket bundles?",
+            "Yes. You’ll still have the option of buying regular ticket bundles, as well as taking advantage of any discounts or deals that we offer from time-to-time.",
+            "Every month, you’ll be able to choose from one of over 25 charities to donate to or keep your donation where it is.",
+            "Everyone has a cause that is near and dear to their hearts, and so we want you to be able to choose where 10% of your purchase goes to.",
+            "It’s time to dream big and do good.",
+            "",
+            "",
+            "",
+            "Contact Us"
+
+        };
     }
 
     public class Headers
@@ -210,7 +277,7 @@
         public static Dictionary<string, string> COMMON = new Dictionary<string, string>()
         {
             {"accept", "application/json, text/plain, */*" },
-            { "accept-encoding", "gzip, deflate, br"},
+            {"accept-encoding", "gzip, deflate, br"},
             {"content-type", "application/json" }
         };
 
@@ -397,6 +464,7 @@
         {
             "Home",
             "Winners",
+            "Subscription",
             "Login / Register",
             "Terms & Conditions",
             "Privacy Policy",
@@ -714,5 +782,689 @@
             "We encourage you to check the date of this Policy when you visit this Site for any updates or changes. We will notify you of any modified versions of this Policy that might materially affect the way we use or disclose your personal information.\r\n\r\n" +
             "Contact/address details\r\n" +
             "If you have any questions about this Privacy Policy, please contact us at: info@rafflehouse.com.";
+    }
+
+    public class Competitions
+    {
+        public const string DREAMHOME = "Dream home";
+        public const string WEEKLY = "Lifestyle";
+        public const string FIXED_ODDS = "Fixed Odds";
+    }
+
+    public class DbModels
+    {
+        #region Users Collection
+
+        [BsonIgnoreExtraElements]
+        public class User
+        {
+            [BsonElement("_id")]
+            public ObjectId Id { get; set; }
+
+            [BsonElement("isAdmin")]
+            public bool? IsAdmin { get; set; }
+
+            [BsonElement("isManager")]
+            public bool? IsManager { get; set; }
+
+            [BsonElement("isVerified")]
+            public bool? IsVerified { get; set; }
+
+            [BsonElement("freeEntries")]
+            public int? FreeEntries { get; set; }
+
+            [BsonElement("successfullReferralCount")]
+            public int? SuccessfullReferralCount { get; set; }
+
+            [BsonElement("totalTicketsBought")]
+            public int TotalTicketsBought { get; set; }
+
+            [BsonElement("emailCommunication")]
+            public bool EmailCommunication { get; set; }
+
+            [BsonElement("registerReferrals")]
+            public List<object> RegisterReferrals { get; set; }
+
+            [BsonElement("freeTickets")]
+            public int FreeTickets { get; set; }
+
+            [BsonElement("isSocialRegistration")]
+            public bool IsSocialRegistration { get; set; }
+
+            [BsonElement("IsBlocked")]
+            public bool isBlocked { get; set; }
+
+            [BsonElement("notifications")]
+            public Notification Notifications { get; set; }
+
+            [BsonElement("membership")]
+            public Memberships Membership { get; set; }
+
+            [BsonElement("spentMoney")]
+            public int SpentMoney { get; set; }
+
+            [BsonElement("name")]
+            public string? Name { get; set; }
+
+            [BsonElement("surname")]
+            public string? Surname { get; set; }
+
+            [BsonElement("email")]
+            public string Email { get; set; }
+
+            [BsonElement("password")]
+            public string? Password { get; set; }
+
+            [BsonElement("phone")]
+            public string? Phone { get; set; }
+
+            [BsonElement("country")]
+            public string? Country { get; set; }
+
+            [BsonElement("createdAt")]
+            public DateTimeOffset CreatedAt { get; set; }
+
+            [BsonElement("registerRaffle")]
+            public ObjectId RegisterRaffle { get; set; }
+
+            [BsonElement("referralKey")]
+            public string ReferralKey { get; set; }
+
+            [BsonElement("__v")]
+            public int V { get; set; }
+
+            [BsonElement("googleAccountId")]
+            public string? GoogleAccountId { get; set; }
+
+            [BsonElement("facebookAccountId")]
+            public string? FacebookAccountId { get; set; }
+
+            [BsonElement("neededSpend")]
+            public int? NeededSpend { get; set; }
+
+            [BsonElement("referralCredits")]
+            public int? ReferralCredits { get; set; }
+
+            [BsonElement("referredBy")]
+            public ObjectId? ReferredBy { get; set; }
+
+            [BsonElement("emailMarketingSentDate")]
+            public DateTimeOffset? EmailMarketingSentDate { get; set; }
+
+            [BsonElement("isEmailValid")]
+            public bool IsEmailValid { get; set; }
+
+            [BsonElement("boughtDHafterMailing")]
+            public bool? BoughtDHafterMailing { get; set; }
+
+            [BsonElement("updatedAt")]
+            public DateTimeOffset? UpdatedAt { get; set; }
+
+            [BsonElement("corporateNotification")]
+            public bool? CorporateNotification { get; set; }
+
+            [BsonElement("mobileEntry")]
+            public bool? MobileEntry { get; set; }
+
+            [BsonElement("spentMobile")]
+            public int? SpentMobile { get; set; }
+        }
+        public class Notification
+        {
+
+            public bool dreamHome { get; set; }
+            public bool lifestyle { get; set; }
+            public bool fixedOdds { get; set; }
+            public bool myCompetitions { get; set; }
+            public bool newPrizes { get; set; }
+            public bool all { get; set; }
+        }
+        public class Memberships
+        {
+            public int active { get; set; }
+            public int count { get; set; }
+        }
+
+        #endregion
+
+        #region Raffles Collection
+
+        [BsonIgnoreExtraElements]
+        public class Raffle
+        {
+            [BsonElement("__v")]
+            public int V { get; set; }
+
+            [BsonElement("_id")]
+            public ObjectId Id { get; set; }
+
+            [BsonElement("active")]
+            public bool Active { get; set; }
+
+            [BsonElement("createdAt")]
+            public DateTimeOffset CreatedAt { get; set; }
+
+            [BsonElement("creditsRates")]
+            public List<Object>? CreditsRates { get; set; }
+
+            [BsonElement("defaultTickets")]
+            public int DefaultTickets { get; set; }
+
+            [BsonElement("discountCategory")]
+            public string DiscountCategory { get; set; }
+
+            [BsonElement("discountRates")]
+            public List<DiscountRate> DiscountRates { get; set; }
+
+            [BsonElement("discountTicket")]
+            public DiscountTicket DiscountTicket { get; set; }
+
+            [BsonElement("endsAt")]
+            public DateTimeOffset EndsAt { get; set; }
+
+            [BsonElement("freeTicketsRates")]
+            public List<FreeTicketsRates> FreeTicketsRates { get; set; }
+
+            [BsonElement("isActiveDiscount")]
+            public bool IsActiveDiscount { get; set; }
+
+            [BsonElement("isClosed")]
+            public bool IsClosed { get; set; }
+
+            [BsonElement("isCreditsActive")]
+            public bool IsCreditsActive { get; set; }
+
+            [BsonElement("isDeleted")]
+            public bool IsDeleted { get; set; }
+
+            [BsonElement("isDiscountRates")]
+            public bool IsDiscountRates { get; set; }
+
+            [BsonElement("isFreeTicketsRates")]
+            public bool IsFreeTicketsRates { get; set; }
+
+            [BsonElement("isPopular")]
+            public bool IsPopular { get; set; }
+
+            [BsonElement("isRemoved")]
+            public bool IsRemoved { get; set; }
+
+            [BsonElement("isTrending")]
+            public bool IsTrending { get; set; }
+
+            [BsonElement("metaDescription")]
+            public string MetaDescription { get; set; }
+
+            [BsonElement("metaTitle")]
+            public string MetaTitle { get; set; }
+
+            [BsonElement("property")]
+            public ObjectId? Property { get; set; }
+
+            [BsonElement("startAt")]
+            public DateTimeOffset StartAt { get; set; }
+
+            [BsonElement("ticketPrice")]
+            public double TicketPrice { get; set; }
+
+            [BsonElement("ticketsBundles")]
+            public List<int> TicketsBundles { get; set; }
+
+            [BsonElement("title")]
+            public string Title { get; set; }
+
+            [BsonElement("updatedAt")]
+            public DateTimeOffset UpdatedAt { get; set; }
+
+            [BsonElement("name")]
+            public string? Name { get; set; }
+
+            [BsonElement("creditsEndDate")]
+            public DateTimeOffset? CreditsEndDate { get; set; }
+
+            [BsonElement("creditsStartDate")]
+            public DateTimeOffset? CreditsStartDate { get; set; }
+
+            [BsonElement("isCreditsPermanent")]
+            public bool? IsCreditsPermanent { get; set; }
+
+            [BsonElement("location")]
+            public string? Location { get; set; }
+
+            [BsonElement("completedAt")]
+            public string? CompletedAt { get; set; }
+
+            [BsonElement("quizType")]
+            public string? QuizType { get; set; }
+
+            [BsonElement("stepperCountdown")]
+            public StepperCountDown? StepperCountdown { get; set; }
+
+        }
+
+        public class CreditRate
+        {
+            [BsonElement("count")]
+            public double? Count { get; set; }
+
+            [BsonElement("percent")]
+            public int? Percent { get; set; }
+
+            [BsonElement("id")]
+            public string? Id { get; set; }
+        }
+
+        public class DiscountRate
+        {
+            [BsonElement("newPrice")]
+            public double? NewPrice { get; set; }
+
+            [BsonElement("percent")]
+            public double? Percent { get; set; }
+
+            [BsonElement("amountTickets")]
+            public int? AmountTickets { get; set; }
+        }
+
+        public class DiscountTicket
+        {
+            [BsonElement("newPrice")]
+            public double? NewPrice { get; set; }
+
+            [BsonElement("percent")]
+            public double? Percent { get; set; }
+        }
+
+        public class StepperCountDown
+        {
+            [BsonElement("isActive")]
+            public bool? IsActive { get; set; }
+
+            [BsonElement("title")]
+            public string? Title { get; set; }
+
+            [BsonElement("startAt")]
+            public DateTimeOffset? StartAt { get; set; }
+
+            [BsonElement("endsAt")]
+            public DateTimeOffset? EndsAt { get; set; }
+
+        }
+
+        public class FreeTicketsRates
+        {
+            [BsonElement("tickets")]
+            public int? Tickets { get; set; }
+
+            [BsonElement("extra")]
+            public int? Extra { get; set; }
+
+            [BsonElement("isShow")]
+            public bool? IsShow { get; set; }
+        }
+
+        [BsonIgnoreExtraElements]
+        public class Property
+        {
+            [BsonElement("__v")]
+            public int? V { get; set; }
+
+            [BsonElement("_id")]
+            public ObjectId Id { get; set; }
+
+            [BsonElement("badroomImage")]
+            public string? BadroomImage { get; set; }
+
+            [BsonElement("bathroomImage")]
+            public string? BathroomImage { get; set; }
+
+            [BsonElement("bathroomText")]
+            public string? BathroomText { get; set; }
+
+            [BsonElement("bedroomText")]
+            public string? BedroomText { get; set; }
+
+            [BsonElement("cardImage")]
+            public string? CardImage { get; set; }
+
+            [BsonElement("createdAt")]
+            public DateTimeOffset? CreatedAt { get; set; }
+
+            [BsonElement("description")]
+            public string? Description { get; set; }
+
+            [BsonElement("floorPlanImage")]
+            public string? FloorPlanImage { get; set; }
+
+            [BsonElement("galleryImages")]
+            public List<string>? GalleryImages { get; set; }
+
+            [BsonElement("galleryImagesMobile")]
+            public List<string>? GalleryImagesMobile { get; set; }
+
+            //[BsonElement("generalText")]
+            //public string? GeneralText { get; set; }
+
+            [BsonElement("heading")]
+            public string? Heading { get; set; }
+
+            [BsonElement("latitude")]
+            public double? Latitude { get; set; }
+
+            [BsonElement("location")]
+            public string? Location { get; set; }
+
+            [BsonElement("locationMapImage")]
+            public string? LocationMapImage { get; set; }
+
+            [BsonElement("longitude")]
+            public double? Longitude { get; set; }
+
+            [BsonElement("outspaceImage")]
+            public string? OutspaceImage { get; set; }
+
+            [BsonElement("ooutspaceText")]
+            public string? OoutspaceText { get; set; }
+
+            [BsonElement("overview")]
+            public List<Overview> Overview { get; set; }
+
+            [BsonElement("pixangleSource")]
+            public string? PixangleSource { get; set; }
+
+            [BsonElement("tourLink")]
+            public string? TourLink { get; set; }
+
+            [BsonElement("updatedAt")]
+            public DateTimeOffset? UpdatedAt { get; set; }
+
+            [BsonElement("address")]
+            public string? Address { get; set; }
+
+            [BsonElement("area")]
+            public string? Area { get; set; }
+
+            [BsonElement("bedroomCount")]
+            public dynamic? BedroomCount { get; set; }
+
+            [BsonElement("bathroomCount")]
+            public dynamic? BathroomCount { get; set; }
+
+            [BsonElement("outspaceCount")]
+            public dynamic? OutspaceCount { get; set; }
+
+            [BsonElement("outspaceText")]
+            public string? OutspaceText { get; set; }
+
+            [BsonElement("floorPlanText")]
+            public string? FloorPlanText { get; set; }
+
+            [BsonElement("threeDTourText")]
+            public string? ThreeDTourText { get; set; }
+
+            [BsonElement("areaText")]
+            public string? AreaText { get; set; }
+
+            [BsonElement("transportText")]
+            public string? TransportText { get; set; }
+
+            [BsonElement("amenitiesText")]
+            public string? AmenitiesText { get; set; }
+
+            [BsonElement("metroStations")]
+            public List<MetroStations>? MetroStations { get; set; }
+
+            [BsonElement("adress")]
+            public string? Adress { get; set; }
+
+            [BsonElement("propertyPrice")]
+            public dynamic? PropertyPrice { get; set; }
+
+            [BsonElement("tax")]
+            public dynamic? Tax { get; set; }
+
+            [BsonElement("freehold")]
+            public string? Freehold { get; set; }
+
+            [BsonElement("garden")]
+            public string? Garden { get; set; }
+
+            [BsonElement("energy")]
+            public string? Energy { get; set; }
+
+            
+            [BsonElement("GeneralText")]
+            public string? GeneralText { get; set; }
+
+        }
+
+        public class Overview
+        {
+            [BsonElement("title")]
+            public string? Title { get; set; }
+
+            [BsonElement("value")]
+            public string? Value { get; set; }
+
+            [BsonElement("icon")]
+            public string? Icon { get; set; }
+
+        }
+
+        public class MetroStations
+        {
+            [BsonElement("text")]
+            public string? Text { get; set; }
+
+            [BsonElement("title")]
+            public string? Title { get; set; }
+        }
+
+        #endregion
+
+        #region Competitions
+
+        [BsonIgnoreExtraElements]
+        public class Competitions
+        {
+            [BsonElement("__v")]
+            public int? V { get; set; }
+
+            [BsonElement("_id")]
+            public ObjectId Id { get; set; }
+
+            [BsonElement("competitionId")]
+            public string? CompetitionId { get; set; }
+
+            [BsonElement("competitionType")]
+            public string? CompetitionType { get; set; }
+
+            [BsonElement("endsAt")]
+            public DateTimeOffset EndsAt { get; set; }
+
+            [BsonElement("fixedOdds")]
+            public dynamic? FixedOdds { get; set; }
+
+            [BsonElement("isActive")]
+            public bool? IsActive { get; set; }
+
+            [BsonElement("prizes")]
+            public List<ObjectId>? Prizes { get; set; }
+
+            [BsonElement("startAt")]
+            public DateTimeOffset StartAt { get; set; }
+
+        }
+
+
+
+
+        #endregion
+
+        #region Subscriptions
+
+        [BsonIgnoreExtraElements]
+        public class Subscriptions
+        {
+            [BsonElement("__v")]
+            public int? V { get; set; }
+
+            [BsonElement("_id")]
+            public ObjectId? Id { get; set; }
+
+            [BsonElement("charity")]
+            public string? Charity { get; set; }
+
+            [BsonElement("checkoutId")]
+            public string? CheckoutId { get; set; }
+
+            [BsonElement("count")]
+            public int? Count { get; set; }
+
+            [BsonElement("createdAt")]
+            public DateTimeOffset? CreatedAt { get; set; }
+
+            [BsonElement("extra")]
+            public int? Extra { get; set; }
+
+            [BsonElement("numOfTickets")]
+            public int? NumOfTickets { get; set; }
+
+            [BsonElement("purchaseDate")]
+            public DateTimeOffset? PurchaseDate { get; set; }
+
+            [BsonElement("refference")]
+            public string? Refference { get; set; }
+
+            [BsonElement("status")]
+            public string? Status { get; set; }
+
+            [BsonElement("totalCost")]
+            public double? TotalCost { get; set; }
+
+            [BsonElement("user")]
+            public ObjectId? User { get; set; }
+
+            [BsonElement("pausedAt")]
+            public DateTimeOffset? PausedAt { get; set; }
+
+            [BsonElement("UpdatedAt")]
+            public DateTimeOffset? UpdatedAt { get; set; }
+
+            [BsonElement("cardSource")]
+            public string? CardSource { get; set; }
+
+            [BsonElement("nextPurchaseDate")]
+            public DateTimeOffset? NextPurchaseDate { get; set; }
+
+            [BsonElement("subscriptionModel")]
+            public ObjectId SubscriptionModel { get; set; }
+
+        }
+
+        [BsonIgnoreExtraElements]
+        public class SubscriptionsModels
+        {
+            [BsonElement("__v")]
+            public int? V { get; set; }
+
+            [BsonElement("_id")]
+            public ObjectId? Id { get; set; }
+
+            [BsonElement("totalCost")]
+            public int? TotalCost { get; set; }
+
+            [BsonElement("isActive")]
+            public bool? IsActive { get; set; }
+
+            [BsonElement("createdAt")]
+            public DateTimeOffset? CreatedAt { get; set; }
+
+            [BsonElement("numOfTickets")]
+            public int? NumOfTickets { get; set; }
+
+            [BsonElement("extra")]
+            public int? Extra { get; set; }
+
+        }
+
+        #endregion
+
+        #region Orders
+
+        [BsonIgnoreExtraElements]
+        public class Orders
+        {
+            [BsonElement("__v")]
+           public int? V { get; set; }
+
+            [BsonElement("_id")]
+           public ObjectId? Id { get; set; }
+
+            [BsonElement("appliedCredits")]
+           public List<AppliedCredits> AppliedCredits { get; set; }
+
+            [BsonElement("checkoutId")]
+           public string? CheckoutId { get; set; }
+
+            [BsonElement("competitionId")]
+           public ObjectId? CompetitionId { get; set; }
+
+            [BsonElement("createdAt")]
+           public DateTimeOffset? CreatedAt { get; set; }
+
+            [BsonElement("fixedOdds")]
+           public ObjectId? FixedOdds { get; set; }
+
+            [BsonElement("groupId")]
+           public string? GroupId { get; set; }
+
+            [BsonElement("isArchive")]
+           public bool IsArchive { get; set; }
+
+            [BsonElement("paymentStatus")]
+           public string? PaymentStatus { get; set; }
+
+            [BsonElement("selectedCharity")]
+           public string? SelectedCharity { get; set; }
+
+            [BsonElement("spentCredits")]
+           public int? SpentCredits { get; set; }
+
+            [BsonElement("tickets")]
+           public List<Tickets> Tickets { get; set; }
+
+            [BsonElement("totalCost")]
+           public int? TotalCost { get; set; }
+
+            [BsonElement("user")]
+            public ObjectId? User { get; set; }
+
+            [BsonElement("orderType")]
+            public string? OrderType { get; set; }
+        }
+
+        public class AppliedCredits
+        {
+            [BsonElement("creditId")]
+            public ObjectId? CreditId { get; set; }
+
+            [BsonElement("spentAmount")]
+            public double? SpentAmount { get; set; }
+        }
+
+        public class Tickets
+        {
+            [BsonElement("_id")]
+            public ObjectId? Id { get; set; }
+
+            [BsonElement("code")]
+            public string? Code { get; set; }
+
+            [BsonElement("bonus")]
+            public bool? Bonus { get; set; }
+        }
+
+        #endregion
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
+﻿namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
 {
     public class UsersRequest
     {
@@ -13,7 +11,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin.UsersPage
                 Surname = Name.LastName(),
                 Phone = RandomHelper.RandomPhone(),
                 Email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"), "@putsbox.com"),
-                IsBlocked= false
+                IsBlocked = false
             };
 
             return JsonConvert.SerializeObject(str);

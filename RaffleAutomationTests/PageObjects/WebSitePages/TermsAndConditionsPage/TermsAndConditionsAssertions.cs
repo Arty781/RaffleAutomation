@@ -5,10 +5,9 @@
         public TermsAndConditions VerifyDisplayingParagraphs(string actualTerms, string actualPrivacy)
         {
             WaitUntil.CustomElementIsVisible(titleTermsAndConditions);
-           
+
             Assert.Multiple(() =>
             {
-                var t = TermsConditions.TERMS;
                 Assert.That(actualTerms, Is.EqualTo(TermsConditions.TERMS), "Texts don't match");
                 Assert.That(TermsConditions.TERMS.Length, Is.EqualTo(actualTerms.Length), "Text length doesn't match");
 
@@ -23,7 +22,6 @@
                     Assert.Fail(errorMessage);
                 }
 
-                var p = TermsConditions.POLICY;
                 Assert.That(actualPrivacy, Is.EqualTo(TermsConditions.POLICY), "Texts don't match");
                 Assert.That(TermsConditions.POLICY.Length, Is.EqualTo(actualPrivacy.Length), "Text length doesn't match");
 

@@ -1,6 +1,7 @@
 using Allure.Commons;
 using NUnit.Allure.Attributes;
 using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
+using RaffleAutomationTests.APIHelpers.Web.Basket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
     public class DemoTest : TestBaseAdmin
     {
         [Test]
+        [Ignore("")]
         public void Demo()
         {
             var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
@@ -225,7 +227,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("CMS")]
         [AllureSubSuite("Usermanagement")]
-        public void CreateUserOnCmsAndLogin()
+        public void CreateUserOnCms()
         {
             var email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"), "@putsbox.com");
             Pages.CmsLogin
@@ -243,15 +245,13 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .SearchIsUserDisplayed(email);
             var password = PutsBox.GetTextFromEmailWithValue(email, "Your temporary password is: ");
 
-            Browser.Navigate(WebEndpoints.WEBSITE_HOST);
-            Pages.Common
-               .CloseCookiesPopUp();
-            Pages.Header
-               .OpenSignInPage();
-            Pages.SignIn
-                .EnterLoginAndPass(email, password);
-            Pages.SignIn
-                .VerifyIsSignIn();
+            #region PostConditions
+
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var users = UsersRequest.GetUser(tokenAdmin, email);
+            UsersRequest.DeleteLastUser(tokenAdmin, users);
+
+            #endregion
         }
 
         [Test]
@@ -262,10 +262,13 @@ namespace RaffleHouseAutomation.AdminSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("CMS")]
         [AllureSubSuite("Usermanagement")]
-        public void EditUserOnCmsAndLogin()
+        public void EditUserOnCms()
         {
+            #region Preconditions
             var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var userResponse = UsersRequest.CreateUserOnCms(token);
+            #endregion
+
             Pages.CmsLogin
                 .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
                 .ClickSignInBtn();
@@ -278,25 +281,25 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsUserManagement
                 .ClickEditUser(userResponse.Email)
                 .EnterUserData(userResponse.Email);
+            var userData = Pages.CmsUserManagement.GetUserData();
             Pages.CmsCommon
                 .ClickSaveBtn();
             Pages.CmsUserManagement
                 .SearchIsUserDisplayed(userResponse.Email);
             Pages.CmsUserManagement
+                .VerifyUserIsEdited(userData, userResponse.Email);
+            Pages.CmsUserManagement
                 .ClickEditUser(userResponse.Email)
                 .OpenSecurityTab()
                 .SetNewPassword();
-            //var password = PutsBox.GetTextFromEmailWithValue(email, "Your temporary password is: ");
 
-            //Browser.Navigate(WebEndpoints.WEBSITE_HOST);
-            //Pages.Common
-            //   .CloseCookiesPopUp();
-            //Pages.Header
-            //   .OpenSignInPage();
-            //Pages.SignIn
-            //    .EnterLoginAndPass(email, password);
-            //Pages.SignIn
-            //    .VerifyIsSignIn();
+            #region PostConditions
+
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var users = UsersRequest.GetUser(tokenAdmin, userResponse.Email);
+            UsersRequest.DeleteLastUser(tokenAdmin, users);
+
+            #endregion
         }
 
         [Test]
@@ -309,7 +312,11 @@ namespace RaffleHouseAutomation.AdminSiteTests
         [AllureSubSuite("Usermanagement")]
         public void DeleteUserOnCms()
         {
-            var email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"), "@putsbox.com");
+            #region Preconditions
+            var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var userResponse = UsersRequest.CreateUserOnCms(token);
+            #endregion
+
             Pages.CmsLogin
                 .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
                 .ClickSignInBtn();
@@ -317,23 +324,144 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .VerifyIsLoginSuccessfull();
             Pages.CmsUserManagement
                 .OpenUserManagement()
-                .ClickAddNewBtn()
-                .EnterUserData(email);
-            Pages.CmsCommon
-                .ClickSaveBtn();
+                .SearchIsUserDisplayed(userResponse.Email);
             Pages.CmsUserManagement
-                .SearchIsUserDisplayed(email);
-            var password = PutsBox.GetTextFromEmailWithValue(email, "Your temporary password is: ");
+                .DeleteUser(userResponse.Email);
+        }
 
-            Browser.Navigate(WebEndpoints.WEBSITE_HOST);
-            Pages.Common
-               .CloseCookiesPopUp();
-            Pages.Header
-               .OpenSignInPage();
-            Pages.SignIn
-                .EnterLoginAndPass(email, password);
-            Pages.SignIn
-                .VerifyIsSignIn();
+        [Test]
+        [Category("CMS Usermanagement")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("CMS")]
+        [AllureSubSuite("Usermanagement")]
+        public void AddDreamHomeTicketToUserOnCms()
+        {
+            #region Preconditions
+            var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var userResponse = UsersRequest.CreateUserOnCms(token);
+            #endregion
+
+            Pages.CmsLogin
+                .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
+                .ClickSignInBtn();
+            Pages.CmsCommon
+                .VerifyIsLoginSuccessfull();
+            Pages.CmsUserManagement
+                .OpenUserManagement();
+            Pages.CmsUserManagement
+                .SearchIsUserDisplayed(userResponse.Email);
+            Pages.CmsUserManagement
+                .ClickEditUser(userResponse.Email)
+                .OpenTicketsTab()
+                .ClickAddTicketBtn()
+                .AddTicketsToUser();
+            var competitionsList = Pages.CmsUserManagement.SelectTicketsDataByCompetition(Competitions.DREAMHOME);
+           
+
+
+            #region PostConditions
+
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var users = UsersRequest.GetUser(tokenAdmin, userResponse.Email);
+            UsersRequest.DeleteLastUser(tokenAdmin, users);
+
+            #endregion
+        }
+
+        [Test]
+        [Category("CMS Usermanagement")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("CMS")]
+        [AllureSubSuite("Usermanagement")]
+        public void EditDreamHomeTicketForUserOnCms()
+        {
+            #region Preconditions
+            var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var userResponse = UsersRequest.CreateUserOnCms(token);
+            #endregion
+
+            Pages.CmsLogin
+                .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
+                .ClickSignInBtn();
+            Pages.CmsCommon
+                .VerifyIsLoginSuccessfull();
+            Pages.CmsUserManagement
+                .OpenUserManagement();
+            Pages.CmsUserManagement
+                .SearchIsUserDisplayed(userResponse.Email);
+            Pages.CmsUserManagement
+                .ClickEditUser(userResponse.Email)
+                .OpenTicketsTab()
+                .ClickAddTicketBtn()
+                .AddTicketsToUser();
+            var competitionsList = Pages.CmsUserManagement.SelectTicketsDataByCompetition(Competitions.DREAMHOME);
+
+            Pages.CmsUserManagement
+                .ClickEditTicketBtn(competitionsList)
+                .AddTicketsToUser()
+                .VerifyTicketsIsAdded(competitionsList, Competitions.DREAMHOME);
+
+            #region PostConditions
+
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var users = UsersRequest.GetUser(tokenAdmin, userResponse.Email);
+            UsersRequest.DeleteLastUser(tokenAdmin, users);
+
+            #endregion
+        }
+
+        [Test]
+        [Category("CMS Usermanagement")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("CMS")]
+        [AllureSubSuite("Usermanagement")]
+        public void DeleteDreamHomeTicketForUserOnCms()
+        {
+            #region Preconditions
+            var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var userResponse = UsersRequest.CreateUserOnCms(token);
+            #endregion
+
+            Pages.CmsLogin
+                .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
+                .ClickSignInBtn();
+            Pages.CmsCommon
+                .VerifyIsLoginSuccessfull();
+            Pages.CmsUserManagement
+                .OpenUserManagement();
+            Pages.CmsUserManagement
+                .SearchIsUserDisplayed(userResponse.Email);
+            Pages.CmsUserManagement
+                .ClickEditUser(userResponse.Email)
+                .OpenTicketsTab()
+                .ClickAddTicketBtn()
+                .AddTicketsToUser();
+            var competitionsList = Pages.CmsUserManagement.SelectTicketsDataByCompetition(Competitions.DREAMHOME);
+
+            Pages.CmsUserManagement
+                .ClickEditTicketBtn(competitionsList)
+                .AddTicketsToUser()
+                .VerifyTicketsIsAdded(competitionsList, Competitions.DREAMHOME);
+            competitionsList = Pages.CmsUserManagement.SelectTicketsDataByCompetition(Competitions.DREAMHOME);
+            Pages.CmsUserManagement
+                .ClickDeleteTicketBtn(competitionsList);
+
+            #region PostConditions
+
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var users = UsersRequest.GetUser(tokenAdmin, userResponse.Email);
+            UsersRequest.DeleteLastUser(tokenAdmin, users);
+
+            #endregion
         }
     }
 }
