@@ -8,3 +8,4 @@ TASKKILL /IM "ICloudServices.exe" /F
 TASKKILL /IM "mDNSResponder.exe" /F F
 TASKKILL /IM "altserver.exe" /F 
 TASKKILL /IM "Screencast-O-Matic.exe" /F 
+TASKKILL /IM "chrome.exe" /F 

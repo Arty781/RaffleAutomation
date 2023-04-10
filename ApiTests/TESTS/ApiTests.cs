@@ -30,18 +30,10 @@ namespace API
         {
             #region Preconditions
 
-            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
 
-            //AppDbHelper.GetAllUsers();
-            var user = AppDbHelper.GetUserByEmail("qatester2023-04-5-10-20-08@putsbox.com");
-            List<DbModels.Subscriptions> subscriptionList = AppDbHelper.GetAllSubscriptionsByUserId(user);
-            foreach (var subscription in subscriptionList)
-            {
-                Assert.IsNotNull(subscription.Refference);
-                Assert.IsNotNull(subscription.CardSource);
-                Assert.IsNotNull(subscription.CheckoutId);
-            }
-
+            var users = AppDbHelper.Users.GetAllUsers();
+            //AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle);
 
             #endregion
 

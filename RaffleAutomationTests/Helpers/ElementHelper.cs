@@ -1,4 +1,6 @@
-﻿namespace RaffleAutomationTests.Helpers
+﻿using RaffleAutomationTests.PageObjects;
+
+namespace RaffleAutomationTests.Helpers
 {
     public class Elements
     {
@@ -32,6 +34,28 @@
                 jsi.ExecuteScript("window.scrollTo({0}, {1})", xPosition, yPosition);
             }
             catch (Exception) { }
+        }
+
+        [AllureStep("Go to activation link")]
+        public static void GoToActivationLink(string email)
+        {
+            var activateLink = PutsBox.GetLinkFromEmailWithValue(email, "Activate account");
+            Browser.Navigate(activateLink);
+        }
+
+        [AllureStep("Go to activation link")]
+        public static string GgetHtmlBody(string email)
+        {
+            var activateLink = PutsBox.GetHtmlFromEmail(email);
+
+            return activateLink;
+        }
+
+        [AllureStep("Clear email history")]
+        public static void ClearEmailHistory(string email)
+        {
+            PutsBox.ClearEmailHistory(email);
+
         }
     }
 }

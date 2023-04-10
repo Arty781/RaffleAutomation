@@ -4,13 +4,13 @@
     {
         public Activate EnterFirstName()
         {
-            InputBox.Element(inputFirstName, 10, Name.FirstName());
+            InputBox.Element(inputFirstName, 10, Name.FirstName().Replace("'",""));
             return this;
         }
 
         public Activate EnterLastName()
         {
-            InputBox.Element(inputLastName, 10, Name.LastName());
+            InputBox.Element(inputLastName, 10, Name.LastName().Replace("'", ""));
             return this;
         }
 

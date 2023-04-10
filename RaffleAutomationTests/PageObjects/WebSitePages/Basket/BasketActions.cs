@@ -178,7 +178,7 @@
         private Basket GoToBasket(string subscriptionId)
         {
             Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST + $"/subscriptions/{subscriptionId}/payment");
-            WaitUntil.WaitSomeInterval(10000);
+            WaitUntil.WaitSomeInterval(8000);
             Browser._Driver.Navigate().Refresh();
 
             return this;

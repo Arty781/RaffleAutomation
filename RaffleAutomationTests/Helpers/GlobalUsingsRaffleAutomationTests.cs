@@ -29,3 +29,4 @@ global using Telegram.Bot.Types;
 global using Telegram.Bot.Types.InputFiles;
 global using WebDriverManager;
 global using WebDriverManager.DriverConfigs.Impl;
+global using System.Text.RegularExpressions;

@@ -124,6 +124,7 @@ namespace RaffleAutomationTests.PageObjects
         public Profile OpenSubscriptionInProfile()
         {
             Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/profile/subscription");
+            Browser._Driver.Navigate().Refresh();
             WaitUntil.CustomElementIsVisible(titleSubscriptionProfile);
             return this;
         }
@@ -134,6 +135,7 @@ namespace RaffleAutomationTests.PageObjects
             Button.Click(btnDetails.FirstOrDefault());
             Button.Click(inputPause.FirstOrDefault());
             Button.Click(btnPausePopUp);
+            WaitUntil.WaitSomeInterval();
             WaitUntil.CustomElementIsVisible(titleSubscriptionStatus.Where(t=>t.Text == "Paused Subscription").First());
             return this;
         }
@@ -144,26 +146,29 @@ namespace RaffleAutomationTests.PageObjects
             Button.Click(btnDetails.FirstOrDefault());
             Button.Click(inputPause.FirstOrDefault());
             Button.Click(btnUnpausePopUp);
+            WaitUntil.WaitSomeInterval();
             WaitUntil.CustomElementIsVisible(titleSubscriptionStatus.Where(t => t.Text == "Active Subscription").First());
             return this;
         }
 
-        [AllureStep("Pause subscription")]
+        [AllureStep("Cancel subscription")]
         public Profile CancelSubscription()
         {
             Button.Click(btnDetails.FirstOrDefault());
             Button.Click(btnCancelSubscription.FirstOrDefault());
             Button.Click(btnCancelPopUp);
+            WaitUntil.WaitSomeInterval();
             WaitUntil.CustomElementIsVisible(titleSubscriptionStatus.Where(t => t.Text == "Cancelled Subscription").First());
             return this;
         }
 
-        [AllureStep("Unpause subscription")]
+        [AllureStep("Reactivate subscription")]
         public Profile ReactivateSubscription()
         {
             Button.Click(btnDetails.FirstOrDefault());
             Button.Click(btnReactivateSubscription.FirstOrDefault());
             Button.Click(btnReactivatePopUp);
+            WaitUntil.WaitSomeInterval();
             WaitUntil.CustomElementIsVisible(titleSubscriptionStatus.Where(t => t.Text == "Active Subscription").First());
             return this;
         }
