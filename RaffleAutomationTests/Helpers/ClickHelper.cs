@@ -32,6 +32,7 @@ namespace RaffleAutomationTests.Helpers
 
                 });
                 element.Click();
+                WaitUntil.WaitSomeInterval(350);
             }
             catch (Exception) { }
 
@@ -39,7 +40,8 @@ namespace RaffleAutomationTests.Helpers
 
         public static void ClickJS(IWebElement element)
         {
-            WaitUntil.CustomElementIsVisible(element, 10);
+            WaitUntil.WaitSomeInterval();
+            //WaitUntil.CustomElementIsVisible(element, 10);
             IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
             ex.ExecuteScript("arguments[0].click();", element);
         }

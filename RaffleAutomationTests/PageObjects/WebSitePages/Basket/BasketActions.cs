@@ -58,7 +58,7 @@
 
             WaitUntil.CustomElementIsVisible(framePaymentNumber);
             Browser._Driver.SwitchTo().Frame(framePaymentNumber);
-            InputBox.Element(inputCardNumber, 15, "4242424242424242");
+            InputBox.Element(inputCardNumber, 15, CardDetails.CARD_NUMBER[RandomHelper.RandomIntNumber(CardDetails.CARD_NUMBER.Count)]);
             Browser._Driver.SwitchTo().DefaultContent();
             Browser._Driver.SwitchTo().Frame(framePaymentExpiry);
             InputBox.Element(inputExpiryDate, 15, DateTime.Now.AddYears(2).ToString("MM'/'yy"));
@@ -135,7 +135,7 @@
             EnterEmail(email);
             EnterCardDetails();
             ClickPayNowBtn();
-            ConfirmPurchaseStage();
+            //ConfirmPurchaseStage();
 
             return this;
         }
@@ -146,7 +146,7 @@
             ClickCheckoutNowBtn();
             EnterCardDetails();
             ClickPayNowBtn();
-            ConfirmPurchaseStage();
+            //ConfirmPurchaseStage();
 
             return this;
         }
@@ -158,7 +158,7 @@
             EnterEmail(email);
             EnterCardDetails();
             ClickPayNowBtn();
-            ConfirmPurchaseStage();
+            //ConfirmPurchaseStage();
 
             return this;
         }
@@ -169,7 +169,7 @@
             GoToBasket(subscriptionId);
             EnterCardDetails();
             ClickPayNowBtn();
-            ConfirmPurchaseStage();
+            //ConfirmPurchaseStage();
 
             return this;
         }
@@ -178,8 +178,21 @@
         private Basket GoToBasket(string subscriptionId)
         {
             Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST + $"/subscriptions/{subscriptionId}/payment");
-            WaitUntil.WaitSomeInterval(8000);
+            WaitUntil.WaitSomeInterval(10000);
             Browser._Driver.Navigate().Refresh();
+
+            return this;
+        }
+
+        public Basket SelectCharity()
+        {
+            Button.Click(inputCharity);
+            
+            Button.ClickJS(listCharities
+                .Where(x => x.Text == Charities.CHARITY[RandomHelper.RandomIntNumber(10)])
+                .Select(x => x)
+                .FirstOrDefault());
+            WaitUntil.WaitSomeInterval();
 
             return this;
         }

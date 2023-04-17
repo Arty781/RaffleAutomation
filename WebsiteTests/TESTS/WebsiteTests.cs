@@ -1,5 +1,6 @@
 using OpenQA.Selenium.Interactions;
 using RaffleAutomationTests.APIHelpers.Web.Subscriptions;
+using RaffleAutomationTests.PageObjects.WebSitePages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,29 +12,12 @@ namespace RaffleHouseAutomation.WebSiteTests
     public class Demo : TestBaseWeb
     {
         [Test]
-        [Ignore("")]
+        
         public void Demotest()
         {
             #region Preconditions
 
-            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
-            List<long> bundles = new()
-            {
-                12,
-                62,
-                151,
-                154,
-                163
-            };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 0.16666666, 0.01, bundles);
-
             var response = SignUpRequest.RegisterNewUser();
-            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
-            var basketOrders = BasketRequest.GetBasketOrders(token);
-            BasketRequest.DeleteOrders(token, basketOrders);
-            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList.FirstOrDefault(), 12);
             WaitUntil.WaitSomeInterval(250);
 
             #endregion
@@ -46,34 +30,13 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
+            Pages.Subscription
+                .OpenSubscriptionPage()
+                .AddTenSubscriptionToBasket();
             Pages.Basket
-                .ClickCartBtn()
-                .ClickCheckoutNowBtn()
                 .EnterCardDetails()
-                .ClickPayNowBtn()
-                .WaitForTimeout();
-            Pages.Basket
-                .ClickCartBtn()
-                .ClickCheckoutNowBtn()
-                .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
-            Pages.Basket
-                .VerifyErrorMessageIsDisplayed();
-            bundles = new()
-            {
-                5,
-                15,
-                50,
-                150
-            };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.66666666, 2, bundles);
-            Pages.Basket
-                .ClickCartBtn()
-                .ClickCheckoutNowBtn()
-                .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
+                .SelectCharity()
+                .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
             Pages.Profile
@@ -82,18 +45,6 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             #region Postconditions
 
-            bundles = new()
-            {
-                5,
-                15,
-                50,
-                150
-            };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.66666666, 2, bundles);
-            var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
-            basketOrders = BasketRequest.GetBasketOrders(token);
-            BasketRequest.DeleteOrders(token, basketOrders);
-            UsersRequest.DeleteLastUser(tokenAdmin, users);
 
             #endregion
         }
@@ -441,6 +392,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                             .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.FirstOrDefault().Id);
                         Pages.ThankYou
                             .VerifyThankYouPageIsDisplayed();
+                        WaitUntil.WaitSomeInterval(120000);
                         break;
                     case 2:
                         Pages.Basket
@@ -507,8 +459,13 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
+            Pages.Subscription
+                .OpenSubscriptionPage()
+                .AddTenSubscriptionToBasket();
             Pages.Basket
-                .MakeAPurchaseSubscriptionAsAuthorizedUser(subscriptionsList.SubscriptionModels.FirstOrDefault().Id);
+                .EnterCardDetails()
+                .SelectCharity()
+                .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
             Pages.Profile
@@ -708,8 +665,13 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
+            Pages.Subscription
+                .OpenSubscriptionPage()
+                .AddTenSubscriptionToBasket();
             Pages.Basket
-                .MakeAPurchaseSubscriptionAsAuthorizedUser(subscriptionsList.SubscriptionModels.LastOrDefault().Id);
+                .EnterCardDetails()
+                .SelectCharity()
+                .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
             Pages.Profile
@@ -811,7 +773,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Subscriptions")]
         public void PrepareUserToNextPurchase()
         {
-            string email = "qatester91311@gmail.com"; //string.Concat("nextpurchase", DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss"), "@putsbox.com");
+            string email = string.Concat("nextpurchase", DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss"), "@putsbox.com");
             var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
 
             Pages.Common
@@ -848,7 +810,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 Assert.IsNotNull(subscription.CheckoutId);
             }
 
-            AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToNextPurchase(subscriptionList);
+            AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToNextPurchase(user);
         }
 
         [Test]
@@ -897,7 +859,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 Assert.IsNotNull(subscription.CardSource);
                 Assert.IsNotNull(subscription.CheckoutId);
             }
-            AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToUnpause(subscriptionList);
+            AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToUnpause(user);
         }
 
         [Test]
@@ -910,7 +872,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Subscriptions")]
         public void PrepareUserToSevenDaysPrior()
         {
-            string email = "qatester91311@gmail.com"; //string.Concat("sevendaysprior", DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss"), "@putsbox.com");
+            string email = string.Concat("sevendaysprior", DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss"), "@putsbox.com");
             var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
 
             Pages.Common
@@ -947,7 +909,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 Assert.IsNotNull(subscription.CardSource);
                 Assert.IsNotNull(subscription.CheckoutId);
             }
-            AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToSendEmail7DaysPrior(subscriptionList);
+            AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToSendEmail7DaysPrior(user);
         }
     }
 
@@ -975,7 +937,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
             var emailInitial = Elements.GgetHtmlBody(email);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.INITIAL);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.INITIAL_UNAUTH);
 
         }
 
@@ -1136,8 +1098,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 Assert.IsNotNull(subscription.CardSource);
                 Assert.IsNotNull(subscription.CheckoutId);
             }
-            var emailPause = Elements.GgetHtmlBody(user.LastOrDefault().Email);
-            ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.INITIAL);
+            var emailPause = Elements.GgetHtmlBody(user.Email);
+            ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.INITIAL_UNAUTH);
 
         }
 
@@ -1162,7 +1124,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 Assert.IsNotNull(subscription.CardSource);
                 Assert.IsNotNull(subscription.CheckoutId);
             }
-            var emailPause = Elements.GgetHtmlBody(user.FirstOrDefault().Email);
+            var emailPause = Elements.GgetHtmlBody(user.Email);
             ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.UNPAUSE);
 
         }
@@ -1187,7 +1149,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 Assert.IsNotNull(subscription.CardSource);
                 Assert.IsNotNull(subscription.CheckoutId);
             }
-            var emailPause = Elements.GgetHtmlBody(user.FirstOrDefault().Email);
+            var emailPause = Elements.GgetHtmlBody(user.Email);
             ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.UNPAUSE);
 
         }
@@ -1372,9 +1334,9 @@ namespace RaffleHouseAutomation.WebSiteTests
                     .SelectFirstBundleBtn();
             Pages.Basket
                 .ClickCheckoutNowBtn()
+                .SelectCharity()
                 .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
+                .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
         }
@@ -1408,7 +1370,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .VerifyIsSignIn();
             Pages.Home
-                .AddTicketsToBasket(2);
+                .AddTicketsToBasket(1);
             Pages.Basket
                 .MakeAPurchaseAsAuthorizedUser();
             Pages.ThankYou
@@ -1447,8 +1409,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Basket
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
+                .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
             for (int i = 0; i < 5; i++)
@@ -1636,8 +1597,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Basket
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
+                .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
             Pages.Profile
@@ -1682,8 +1642,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Basket
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
+                .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
             Pages.Profile
@@ -1990,8 +1949,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickCartBtn()
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
+                .ClickPayNowBtn();
             Pages.Basket
                 .VerifyErrorMessageIsDisplayed();
 
@@ -2059,8 +2017,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickCartBtn()
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
+                .ClickPayNowBtn();
             Pages.Basket
                 .VerifyErrorMessageIsDisplayed();
 
@@ -2128,8 +2085,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickCartBtn()
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
+                .ClickPayNowBtn();
             Pages.Basket
                 .VerifyErrorMessageIsDisplayed();
 
@@ -2197,8 +2153,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickCartBtn()
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
+                .ClickPayNowBtn();
             Pages.Basket
                 .VerifyErrorMessageIsDisplayed();
 
@@ -2266,8 +2221,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClickCartBtn()
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage();
+                .ClickPayNowBtn();
             Pages.Basket
                 .VerifyErrorMessageIsDisplayed();
 

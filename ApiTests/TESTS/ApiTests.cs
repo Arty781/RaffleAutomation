@@ -32,8 +32,16 @@ namespace API
 
             var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
 
-            var users = AppDbHelper.Users.GetAllUsers();
-            //AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle);
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@xitroo.com")).Select(x => x).ToList();
+            var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
+            foreach (var user in users)
+            {
+                AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToNextPurchase(user);
+            }
+
+            AppDbHelper.Orders.DeleteSubscriptionsOrders();
+            //var user = AppDbHelper.Users.GetOneUserByEmail("qatester91311@gmail.com");
+            //AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle, subscriptionsModel);
 
             #endregion
 
@@ -96,9 +104,11 @@ namespace API
         }
 
         [Test]
+        [Repeat(250)]
         public static void RegisterNewUser()
         {
             var response = SignUpRequest.RegisterNewUser();
+            //var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
         }
 
         [Test]

@@ -20,12 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChilkatDnCore" Version="9.50.93.1" />
+    <PackageReference Include="ChilkatDnCore" Version="9.50.94" />
     <PackageReference Include="DotNetSeleniumExtras.PageObjects.Core" Version="4.3.0" />
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
-    <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
-    <PackageReference Include="NuGet.Frameworks" Version="6.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.19.1" />
+    <PackageReference Include="NuGet.Frameworks" Version="6.5.0" />
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit.Allure" Version="1.2.0.1" />
     <PackageReference Include="NUnit.Allure.Steps" Version="1.0.7.1" />
@@ -37,7 +37,7 @@
     <PackageReference Include="PutsboxWrapper" Version="1.0.0" />
     <PackageReference Include="RestSharp" Version="108.0.3" />
     <PackageReference Include="RimuTec.Faker" Version="1.11.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="111.0.5563.6400" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="112.0.5615.4900" />
     <PackageReference Include="Telegram.Bot" Version="18.0.0" />
     <PackageReference Include="WebDriverManager" Version="2.16.2" />
   </ItemGroup>

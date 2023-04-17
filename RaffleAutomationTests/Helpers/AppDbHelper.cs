@@ -22,14 +22,51 @@ namespace RaffleAutomationTests.Helpers
 
                 return result;
             }
-            public static List<DbModels.User> GetUserByEmail(string email)
+            public static DbModels.User GetUserByEmail(string email)
+            {
+                var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
+                var database = client.GetDatabase("rafflehousedb_staging");
+                var collection = database.GetCollection<DbModels.User>("users");
+                var filter = Builders<DbModels.User>.Filter.Regex("email", new BsonRegularExpression(email));
+                var preresult = collection.Find(filter).ToList();
+                var result = preresult.LastOrDefault();
+                return result;
+            }
+
+            public static DbModels.User GetOneUserByEmail(string email)
             {
                 var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
                 var database = client.GetDatabase("rafflehousedb_staging");
                 var collection = database.GetCollection<DbModels.User>("users");
                 var filter = Builders<DbModels.User>.Filter.Regex("email", new BsonRegularExpression(email));
                 var result = collection.Find(filter).ToList();
-                return result;
+                return result.Select(x=>x).FirstOrDefault();
+            }
+
+            public static void DeleteUsersByUserId(List<DbModels.User> users)
+            {
+                var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
+                var database = client.GetDatabase("rafflehousedb_staging");
+                var collection = database.GetCollection<DbModels.User>("users");
+                for (int i = 0; i < 4000; i++)
+                {
+                    foreach (var user in users)
+                    {
+                        var filter = Builders<DbModels.User>.Filter.Eq("_id", new ObjectId(user.Id.ToString()));
+                        collection.DeleteMany(filter);
+                    }
+                }
+
+            }
+
+            public static void DeleteUsersByEmail(string email)
+            {
+                var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
+                var database = client.GetDatabase("rafflehousedb_staging");
+                var collection = database.GetCollection<DbModels.User>("users");
+                var filter = Builders<DbModels.User>.Filter.Eq("email", email);
+                        collection.DeleteMany(filter);
+
             }
         }
         
@@ -117,53 +154,67 @@ namespace RaffleAutomationTests.Helpers
                 return result;
             }
 
-            public static List<DbModels.Subscriptions> GetAllSubscriptionsByUserId(List<DbModels.User> user)
+            public static List<DbModels.SubscriptionsModels> GetAllSubscriptionModels()
             {
                 var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
                 var database = client.GetDatabase("rafflehousedb_staging");
-                var collection = database.GetCollection<DbModels.Subscriptions>("subscriptions");
-                var filter = Builders<DbModels.Subscriptions>.Filter.Eq("user", new ObjectId(user.LastOrDefault().Id.ToString())); ;
+                var collection = database.GetCollection<DbModels.SubscriptionsModels>("subscriptionmodels");
+                var filter = Builders<DbModels.SubscriptionsModels>.Filter.Empty;
                 var result = collection.Find(filter).ToList();
                 return result;
             }
 
-            public static void UpdateSubscriptionDateByIdToNextPurchase(List<DbModels.Subscriptions> subscriptions)
+            public static List<DbModels.Subscriptions> GetAllSubscriptionsByUserId(DbModels.User user)
             {
                 var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
                 var database = client.GetDatabase("rafflehousedb_staging");
                 var collection = database.GetCollection<DbModels.Subscriptions>("subscriptions");
-                var filterBuilder = Builders<DbModels.Subscriptions>.Filter;
-                var filter = filterBuilder.Eq("_id", new ObjectId($"{subscriptions.First().Id}"));
-                var updateBuilder = Builders<DbModels.Subscriptions>.Update;
-                var update = updateBuilder
-                    .Set("nextPurchaseDate", subscriptions.First().NextPurchaseDate.Value.AddMonths(-1));
-                collection.UpdateOneAsync(filter, update);
+                var filter = Builders<DbModels.Subscriptions>.Filter.Eq("user", new ObjectId(user.Id.ToString())); ;
+                var result = collection.Find(filter).ToList();
+                return result;
             }
-            public static void UpdateSubscriptionDateByIdToUnpause(List<DbModels.Subscriptions> subscriptions)
+
+            public static void UpdateSubscriptionDateByIdToNextPurchase(DbModels.User user)
             {
                 var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
                 var database = client.GetDatabase("rafflehousedb_staging");
                 var collection = database.GetCollection<DbModels.Subscriptions>("subscriptions");
                 var filterBuilder = Builders<DbModels.Subscriptions>.Filter;
-                var filter = filterBuilder.Eq("_id", new ObjectId($"{subscriptions.First().Id}"));
+                var filter = filterBuilder
+                    .Eq("user", new ObjectId(user.Id.ToString())) &
+                    (filterBuilder.Eq("status", "ACTIVE"));
                 var updateBuilder = Builders<DbModels.Subscriptions>.Update;
                 var update = updateBuilder
-                    .Set("pausedAt", subscriptions.First().PausedAt.Value.AddMonths(-1))
-                    .Set("pauseEnd", subscriptions.First().PauseEnd.Value.AddMonths(-1).AddDays(-1));                
-                collection.UpdateOneAsync(filter, update);
+                    .Set(u=>u.NextPurchaseDate, DateTime.Now.AddDays(-1));
+                collection.UpdateMany(filter, update);
             }
-            public static void UpdateSubscriptionDateByIdToSendEmail7DaysPrior(List<DbModels.Subscriptions> subscriptions)
+            public static void UpdateSubscriptionDateByIdToUnpause(DbModels.User user)
             {
                 var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
                 var database = client.GetDatabase("rafflehousedb_staging");
                 var collection = database.GetCollection<DbModels.Subscriptions>("subscriptions");
                 var filterBuilder = Builders<DbModels.Subscriptions>.Filter;
-                var filter = filterBuilder.Eq("_id", new ObjectId($"{subscriptions.First().Id}"));
+                var filter = filterBuilder.Eq(s => s.User, new ObjectId(user.Id.ToString())) &
+                    (filterBuilder.Eq(s=>s.Status, "PAUSED"));
                 var updateBuilder = Builders<DbModels.Subscriptions>.Update;
                 var update = updateBuilder
-                    .Set("pausedAt", subscriptions.First().PausedAt.Value.AddMonths(-1))
-                    .Set("pauseEnd", subscriptions.First().PauseEnd.Value.AddMonths(-1).AddDays(6));
-                collection.UpdateOneAsync(filter, update);
+                    .Set(s => s.PausedAt, DateTime.Now.AddMonths(-1))
+                    .Set(s => s.PauseEnd, DateTime.Now.AddMonths(-1).AddDays(-1));                
+                collection.UpdateMany(filter, update);
+            }
+            public static void UpdateSubscriptionDateByIdToSendEmail7DaysPrior(DbModels.User user)
+            {
+                var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
+                var database = client.GetDatabase("rafflehousedb_staging");
+                var collection = database.GetCollection<DbModels.Subscriptions>("subscriptions");
+                var filterBuilder = Builders<DbModels.Subscriptions>.Filter;
+                var filter = filterBuilder.Eq(s => s.User, new ObjectId(user.Id.ToString())) &
+                    (filterBuilder.Eq(s => s.Status, "PAUSED"));
+                var updateBuilder = Builders<DbModels.Subscriptions>.Update;
+                var update = updateBuilder
+                    .Set(s => s.PausedAt, DateTime.Now.AddMonths(-1))
+                    .Set(s => s.PauseEnd, DateTime.Now.AddMonths(-1).AddDays(6));
+                collection.UpdateMany(filter, update);
             }
 
         }
@@ -190,52 +241,58 @@ namespace RaffleAutomationTests.Helpers
                 return result;
             }
 
-            public static List<DbModels.Orders> GetAllSubscriptionOrdersByUserId(List<DbModels.User> user)
+            public static List<DbModels.Orders> GetAllSubscriptionOrdersByUserId(DbModels.User user)
             {
                 var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
                 var database = client.GetDatabase("rafflehousedb_staging");
                 var collection = database.GetCollection<DbModels.Orders>("orders");
                 var filterBuilder = Builders<DbModels.Orders>.Filter;
                 var filter = filterBuilder
-                    .Eq("user", new ObjectId(user.LastOrDefault().Id.ToString())) & (filterBuilder
+                    .Eq("user", new ObjectId(user.Id.ToString())) & (filterBuilder
                     .Eq("orderType", "SUBSCRIPTION"));
                 var result = collection.Find(filter).ToList();
                 return result;
+            }
+
+            public static void DeleteOrdersByUserId(List<DbModels.User> users)
+            {
+                var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
+                var database = client.GetDatabase("rafflehousedb_staging");
+                var collection = database.GetCollection<DbModels.Orders>("orders");
+                foreach(var user in users)
+                {
+                    var filter = Builders<DbModels.Orders>.Filter.Eq("user", new ObjectId(user.Id.ToString()));
+                    collection.DeleteMany(filter);
+                }
+                
+            }
+
+            public static void DeleteSubscriptionsOrders()
+            {
+                var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
+                var database = client.GetDatabase("rafflehousedb_staging");
+                var collection = database.GetCollection<DbModels.Orders>("orders");
+                var filter = Builders<DbModels.Orders>.Filter.Eq("orderType", "SUBSCRIPTION");
+                    collection.DeleteMany(filter);
+                
+
             }
         }
 
         public class Insert
         {
-            public static void InsertSubscriptionsToUsers(List<DbModels.User> users, List<DbModels.Raffle> raffle)
+            public static void InsertSubscriptionsToUsers(List<DbModels.User> users, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels)
             {
+                
                 var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
                 var database = client.GetDatabase("rafflehousedb_staging");
                 var collection = database.GetCollection<DbModels.SubscriptionsInsert>("subscriptions");
                 foreach (var user in users)
                 {
+                    int activeCount = RandomHelper.RandomIntNumber(20);
+                    int pauseCount = RandomHelper.RandomIntNumber(20);
                     var update = new List<DbModels.SubscriptionsInsert>()
                     {
-                        new DbModels.SubscriptionsInsert
-                        {      
-                        Status = "ACTIVE",
-                        Count= 1,
-                        Charity= "",
-                        IsReminderSent= false,
-                        CreatedAt = DateTimeOffset.Now.DateTime,
-                        TotalCost= 1000,
-                        NumOfTickets = 5,
-                        Extra= 40,
-                        SubscriptionModel= new ObjectId("642d5866f2d6b25c843fcc99"),
-                        Emails = new List<string>(),
-                        Raffle= raffle.FirstOrDefault().Id,
-                        User=  user.Id,
-                        Refference= "34e09474-3421-419c-ae4b-a15e061cb638",
-                        CardSource= "src_6mdyivrn3dvfocaqcbfd26vvai",
-                        CheckoutId= "pay_iqthq5m3ywp2locm3ypquslura",
-                        NextPurchaseDate = DateTimeOffset.Now.AddMonths(1).DateTime,
-                        PurchaseDate = DateTimeOffset.Now.DateTime
-
-                        },
                         new DbModels.SubscriptionsInsert
                         {
                         Status = "ACTIVE",
@@ -246,13 +303,13 @@ namespace RaffleAutomationTests.Helpers
                         TotalCost= 2500,
                         NumOfTickets = 15,
                         Extra= 135,
-                        SubscriptionModel= new ObjectId("642d58a7f2d6b25c843fcc9a"),
+                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
                         Emails = new List<string>(),
                         Raffle= raffle.FirstOrDefault().Id,
                         User= user.Id,
-                        Refference= "34e09474-3421-419c-ae4b-a15e061cb638",
-                        CardSource= "src_6mdyivrn3dvfocaqcbfd26vvai",
-                        CheckoutId= "pay_iqthq5m3ywp2locm3ypquslura",
+                        Refference= SubscriptionsCardDetails.REFFERENCE[activeCount],
+                        CardSource= SubscriptionsCardDetails.CARD_SOURCE[activeCount],
+                        CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[activeCount],
                         NextPurchaseDate = DateTimeOffset.Now.AddMonths(-1).DateTime,
                         PurchaseDate = DateTimeOffset.Now.DateTime
 
@@ -267,17 +324,53 @@ namespace RaffleAutomationTests.Helpers
                         TotalCost= 1000,
                         NumOfTickets = 5,
                         Extra= 40,
-                        SubscriptionModel= new ObjectId("642d5866f2d6b25c843fcc99"),
+                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
                         Emails = new List<string>(),
                         Raffle= raffle.FirstOrDefault().Id,
                         User=  user.Id,
-                        Refference= "34e09474-3421-419c-ae4b-a15e061cb638",
-                        CardSource= "src_6mdyivrn3dvfocaqcbfd26vvai",
-                        CheckoutId= "pay_iqthq5m3ywp2locm3ypquslura",
+                        Refference= SubscriptionsCardDetails.REFFERENCE[pauseCount],
+                        CardSource= SubscriptionsCardDetails.CARD_SOURCE[pauseCount],
+                        CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[pauseCount],
                         NextPurchaseDate = DateTimeOffset.Now.AddMonths(1).DateTime,
                         PurchaseDate = DateTimeOffset.Now.AddMonths(-1).DateTime,
                         PausedAt= DateTimeOffset.Now.AddMonths(-1).DateTime,
                         PauseEnd= DateTimeOffset.Now.AddMonths(-1).AddDays(-1).DateTime,
+
+                        }
+
+                    };
+
+                    collection.InsertMany(update);
+                }
+
+            }
+
+            public static void InsertSubscriptionsToUsers(DbModels.User user, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels)
+            {
+                var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
+                var database = client.GetDatabase("rafflehousedb_staging");
+                var collection = database.GetCollection<DbModels.SubscriptionsInsert>("subscriptions");
+                var update = new List<DbModels.SubscriptionsInsert>()
+                    {
+                        new DbModels.SubscriptionsInsert
+                        {
+                        Status = "ACTIVE",
+                        Count= 1,
+                        Charity= "",
+                        IsReminderSent= false,
+                        CreatedAt = DateTimeOffset.Now.DateTime,
+                        TotalCost= 2500,
+                        NumOfTickets = 15,
+                        Extra= 135,
+                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].ToString()),
+                        Emails = new List<string>(),
+                        Raffle= raffle.FirstOrDefault().Id,
+                        User= user.Id,
+                        Refference= SubscriptionsCardDetails.REFFERENCE[RandomHelper.RandomIntNumber(SubscriptionsCardDetails.REFFERENCE.Count)],
+                        CardSource= SubscriptionsCardDetails.CARD_SOURCE[RandomHelper.RandomIntNumber(SubscriptionsCardDetails.CARD_SOURCE.Count)],
+                        CheckoutId= SubscriptionsCardDetails.CARD_SOURCE[RandomHelper.RandomIntNumber(SubscriptionsCardDetails.CHECKOUT_ID.Count)],
+                        NextPurchaseDate = DateTimeOffset.Now.AddMonths(-1).DateTime,
+                        PurchaseDate = DateTimeOffset.Now.DateTime
 
                         },
                         new DbModels.SubscriptionsInsert
@@ -287,27 +380,27 @@ namespace RaffleAutomationTests.Helpers
                         Charity= "",
                         IsReminderSent= false,
                         CreatedAt = DateTimeOffset.Now.DateTime,
-                        TotalCost= 2500,
-                        NumOfTickets = 15,
-                        Extra= 135,
-                        SubscriptionModel= new ObjectId("642d58a7f2d6b25c843fcc9a"),
+                        TotalCost= 1000,
+                        NumOfTickets = 5,
+                        Extra= 40,
+                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].ToString()),
                         Emails = new List<string>(),
                         Raffle= raffle.FirstOrDefault().Id,
-                        User= user.Id,
-                        Refference= "34e09474-3421-419c-ae4b-a15e061cb638",
-                        CardSource= "src_6mdyivrn3dvfocaqcbfd26vvai",
-                        CheckoutId= "pay_iqthq5m3ywp2locm3ypquslura",
+                        User=  user.Id,
+                        Refference= SubscriptionsCardDetails.REFFERENCE[RandomHelper.RandomIntNumber(SubscriptionsCardDetails.REFFERENCE.Count)],
+                        CardSource= SubscriptionsCardDetails.CARD_SOURCE[RandomHelper.RandomIntNumber(SubscriptionsCardDetails.CARD_SOURCE.Count)],
+                        CheckoutId= SubscriptionsCardDetails.CARD_SOURCE[RandomHelper.RandomIntNumber(SubscriptionsCardDetails.CHECKOUT_ID.Count)],
                         NextPurchaseDate = DateTimeOffset.Now.AddMonths(1).DateTime,
-                        PurchaseDate = DateTimeOffset.Now.DateTime,
+                        PurchaseDate = DateTimeOffset.Now.AddMonths(-1).DateTime,
                         PausedAt= DateTimeOffset.Now.AddMonths(-1).DateTime,
-                        PauseEnd= DateTimeOffset.Now.AddMonths(-1).AddDays(6).DateTime,
+                        PauseEnd= DateTimeOffset.Now.AddMonths(-1).AddDays(-1).DateTime,
 
                         }
 
                     };
 
                     collection.InsertMany(update);
-                }
+                
 
             }
         }

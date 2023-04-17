@@ -23,11 +23,11 @@
         [FindsBy(How = How.XPath, Using = "//div[@class='itemPrice total-credit']/div[2]")]
         public IWebElement orderTotalVal;
 
-        [FindsBy(How = How.XPath, Using = "//label[@class='MuiFormControlLabel-root'][1]")]
-        public IWebElement selectCharityHomless;
+        [FindsBy(How = How.XPath, Using = "//input/ancestor::div[@class='select-wrapper']")]
+        public IWebElement inputCharity;
 
-        [FindsBy(How = How.XPath, Using = "//label[@class='MuiFormControlLabel-root'][2]")]
-        public IWebElement selectCharityWomen;
+        [FindsBy(How = How.XPath, Using = "//div[@id='menu-']//ul/li")]
+        public IList<IWebElement> listCharities;
 
         [FindsBy(How = How.XPath, Using = "//div[@class='age-control-section']/label//span/input")]
         public IWebElement ageControlSection;
