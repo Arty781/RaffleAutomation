@@ -1086,20 +1086,24 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Subscriptions")]
         public void VerifyNextPaymentSubscriptionEmailAfterRunScript()
         {
-            string email = "nextpurchase";
-            var user = AppDbHelper.Users.GetUserByEmail(email);
-            var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
-            var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(user);
-            Assert.That(ordersList.Count > 1, $"New order is not created, current subscription orders count is \"{ordersList.Count}\"");
-
-            foreach (var subscription in subscriptionList)
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            foreach (var user in users)
             {
-                Assert.IsNotNull(subscription.Refference);
-                Assert.IsNotNull(subscription.CardSource);
-                Assert.IsNotNull(subscription.CheckoutId);
+                var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
+                var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
+                var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
+                Assert.That(ordersList.Count >= 1, $"New order is not created, current subscription orders count is \"{ordersList.Count}\"");
+
+                foreach (var subscription in subscriptionList)
+                {
+                    Assert.IsNotNull(subscription.Refference);
+                    Assert.IsNotNull(subscription.CardSource);
+                    Assert.IsNotNull(subscription.CheckoutId);
+                }
+                var emailPause = Elements.GgetHtmlBody(user.Email);
+                ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.INITIAL_AUTH);
             }
-            var emailPause = Elements.GgetHtmlBody(user.Email);
-            ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.INITIAL_UNAUTH);
+            
 
         }
 
@@ -1113,19 +1117,22 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Subscriptions")]
         public void VerifyUnpauseSubscriptionEmailAfterRunScript()
         {
-            string email = "aftermonth";
-            var user = AppDbHelper.Users.GetUserByEmail(email);
-            var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
-            var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(user);
-            Assert.That(subscriptionList.LastOrDefault().Status == "ACTIVE", $"Subscription staus is not changed, the status is \"{subscriptionList.LastOrDefault().Status}\"");
-            foreach (var subscription in subscriptionList)
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            foreach (var user in users)
             {
-                Assert.IsNotNull(subscription.Refference);
-                Assert.IsNotNull(subscription.CardSource);
-                Assert.IsNotNull(subscription.CheckoutId);
+                var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
+                var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
+                var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
+                Assert.That(subscriptionList.LastOrDefault().Status == "ACTIVE", $"Subscription staus is not changed, the status is \"{subscriptionList.LastOrDefault().Status}\"");
+                foreach (var subscription in subscriptionList)
+                {
+                    Assert.IsNotNull(subscription.Refference);
+                    Assert.IsNotNull(subscription.CardSource);
+                    Assert.IsNotNull(subscription.CheckoutId);
+                }
+                var emailPause = Elements.GgetHtmlBody(user.Email);
+                ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.UNPAUSE);
             }
-            var emailPause = Elements.GgetHtmlBody(user.Email);
-            ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.UNPAUSE);
 
         }
 

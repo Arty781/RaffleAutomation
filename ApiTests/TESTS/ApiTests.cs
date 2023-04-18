@@ -185,5 +185,15 @@ namespace API
             AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle, subscriptionsModel);
             
         }
+
+        [Test]
+
+        public void RemoveSubscriptions()
+        {
+            
+            AppDbHelper.Subscriptions.DeleteSubscriptions();
+
+
+        }
     }
 }

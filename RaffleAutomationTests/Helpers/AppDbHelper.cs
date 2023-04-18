@@ -232,6 +232,16 @@ namespace RaffleAutomationTests.Helpers
 
             }
 
+            public static void DeleteSubscriptions()
+            {
+                var client = new MongoClient("mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging");
+                var database = client.GetDatabase("rafflehousedb_staging");
+                var collection = database.GetCollection<DbModels.Subscriptions>("subscriptions");
+                var filter = Builders<DbModels.Subscriptions>.Filter.Empty;
+                collection.DeleteMany(filter);
+
+            }
+
         }
         
         public class Orders
@@ -493,7 +503,7 @@ namespace RaffleAutomationTests.Helpers
                     SpentMoney = 0,
                     Name = Name.FirstName(),
                     Surname  = Name.LastName(),
-                    Email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss.fff"), "@putsbox.com"),
+                    Email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff"), "@putsbox.com"),
                     Password = "$2a$10$Gg.YWboloxu8Xq8uBXXVE.Zhbxc.fRAKLrUTYHDC.1gQP9yRrFi4a",
                     Phone = string.Empty,
                     Country = "Ukraine",
