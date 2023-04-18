@@ -1,0 +1,1 @@
+allure serve C:\Users\ARTY\Source\Repos\Arty781\RaffleAutomation\\allure-results

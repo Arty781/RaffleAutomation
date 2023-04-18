@@ -31,18 +31,13 @@ namespace API
             #region Preconditions
 
             var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
-
-            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@xitroo.com")).Select(x => x).ToList();
-            var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
-            foreach (var user in users)
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            foreach(var user in users)
             {
-                AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToNextPurchase(user);
-            }
-
-            AppDbHelper.Orders.DeleteSubscriptionsOrders();
-            //var user = AppDbHelper.Users.GetOneUserByEmail("qatester91311@gmail.com");
-            //AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle, subscriptionsModel);
-
+                AppDbHelper.Users.DeleteUsersByEmail(user.Email);
+            }            
+            AppDbHelper.Insert.InsertUser(raffle);
+            users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             #endregion
 
         }
@@ -52,7 +47,7 @@ namespace API
     [TestFixture]
     public class ApiTests : TestBaseApi
     {
-        
+
 
         [Test]
         public static void AddTicketsToBasket()
@@ -120,6 +115,75 @@ namespace API
             var token = RequestForgotPassword.GetResetLink(s).Substring(47);
             var reset = RequestForgotPassword.ResetPassword(token);
             Console.WriteLine(reset.Message);
+        }
+    }
+
+    [TestFixture]
+    public class DbApi : TestBaseApi
+    {
+        [Test]
+
+        public void RemoveSubscriptionsByUserId()
+        {
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            AppDbHelper.Subscriptions.DeleteSubscriptionsByUserId(users);
+
+
+        }
+
+        [Test]
+
+        public void RemoveSubscriptionsOrders()
+        {            
+            AppDbHelper.Orders.DeleteSubscriptionsOrders();
+        }
+
+        [Test]
+
+        public void InsertSubscriptionsByUsersEmail()
+        {
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@xitroo.com")).Select(x => x).ToList();
+            var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
+            AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle, subscriptionsModel);
+
+        }
+
+        [Test]
+
+        public void UpdateSubscriptionsToNextPurchase()
+        {
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@xitroo.com")).Select(x => x).ToList();            
+            foreach (var user in users)
+            {
+                AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToNextPurchase(user);
+            }
+
+        }
+
+        [Test]
+
+        public void DeleteUsersByEmail()
+        {
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            foreach (var user in users)
+            {
+                AppDbHelper.Users.DeleteUsersByEmail(user.Email);
+            }
+        }
+
+        [Test]
+        public void CreateUsersAndAddSubscription()
+        {
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
+            for (int i = 0; i < 20; i++)
+            {
+                AppDbHelper.Insert.InsertUser(raffle);
+            }
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle, subscriptionsModel);
+            
         }
     }
 }
