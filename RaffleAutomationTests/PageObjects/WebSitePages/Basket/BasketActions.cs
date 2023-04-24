@@ -187,11 +187,12 @@
         public Basket SelectCharity()
         {
             Button.Click(inputCharity);
-            
-            Button.ClickJS(listCharities
-                .Where(x => x.Text == Charities.CHARITY[RandomHelper.RandomIntNumber(10)])
+            WaitUntil.WaitSomeInterval(1000);
+            var charity = listCharities
+                .Where(x => x.Text == Charities.CHARITY[RandomHelper.RandomIntNumber(7)])
                 .Select(x => x)
-                .FirstOrDefault());
+                .FirstOrDefault();
+            Button.ClickJS(charity);
             WaitUntil.WaitSomeInterval();
 
             return this;

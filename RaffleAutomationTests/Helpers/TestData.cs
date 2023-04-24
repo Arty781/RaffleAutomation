@@ -47,6 +47,12 @@ namespace RaffleAutomationTests.Helpers
         public const string API = "https://staging-api.rafflehouse.com";
         public const string API_CHIL = "staging-api.rafflehouse.com";
     }
+
+    public class DbConnection
+    {
+        public const string DB_STAGING = "rafflehousedb_staging";
+        public const string DB_STAGING_CONNECTION_STRING = "mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging";
+    }
 #endif
 #if RELEASE || RELEASE_MOBILE
 
@@ -809,7 +815,7 @@ namespace RaffleAutomationTests.Helpers
         public class User
         {
             [BsonElement("_id")]
-            public ObjectId Id { get; set; }
+            public ObjectId? Id { get; set; }
 
             [BsonElement("isAdmin")]
             public bool? IsAdmin { get; set; }
@@ -827,31 +833,31 @@ namespace RaffleAutomationTests.Helpers
             public int? SuccessfullReferralCount { get; set; }
 
             [BsonElement("totalTicketsBought")]
-            public int TotalTicketsBought { get; set; }
+            public int? TotalTicketsBought { get; set; }
 
             [BsonElement("emailCommunication")]
-            public bool EmailCommunication { get; set; }
+            public bool? EmailCommunication { get; set; }
 
             [BsonElement("registerReferrals")]
-            public List<object> RegisterReferrals { get; set; }
+            public List<object>? RegisterReferrals { get; set; }
 
             [BsonElement("freeTickets")]
-            public int FreeTickets { get; set; }
+            public int? FreeTickets { get; set; }
 
             [BsonElement("isSocialRegistration")]
-            public bool IsSocialRegistration { get; set; }
+            public bool? IsSocialRegistration { get; set; }
 
-            [BsonElement("IsBlocked")]
-            public bool isBlocked { get; set; }
+            [BsonElement("isBlocked")]
+            public bool? IsBlocked { get; set; }
 
             [BsonElement("notifications")]
-            public Notification Notifications { get; set; }
+            public Notification? Notifications { get; set; }
 
             [BsonElement("membership")]
-            public Memberships Membership { get; set; }
+            public Memberships? Membership { get; set; }
 
             [BsonElement("spentMoney")]
-            public int SpentMoney { get; set; }
+            public int? SpentMoney { get; set; }
 
             [BsonElement("name")]
             public string? Name { get; set; }
@@ -860,7 +866,7 @@ namespace RaffleAutomationTests.Helpers
             public string? Surname { get; set; }
 
             [BsonElement("email")]
-            public string Email { get; set; }
+            public string? Email { get; set; }
 
             [BsonElement("password")]
             public string? Password { get; set; }
@@ -872,16 +878,16 @@ namespace RaffleAutomationTests.Helpers
             public string? Country { get; set; }
 
             [BsonElement("createdAt")]
-            public DateTimeOffset CreatedAt { get; set; }
+            public DateTimeOffset? CreatedAt { get; set; }
 
             [BsonElement("registerRaffle")]
-            public ObjectId RegisterRaffle { get; set; }
+            public ObjectId? RegisterRaffle { get; set; }
 
             [BsonElement("referralKey")]
-            public string ReferralKey { get; set; }
+            public string? ReferralKey { get; set; }
 
             [BsonElement("__v")]
-            public int V { get; set; }
+            public int? V { get; set; }
 
             [BsonElement("googleAccountId")]
             public string? GoogleAccountId { get; set; }
@@ -922,17 +928,17 @@ namespace RaffleAutomationTests.Helpers
         public class Notification
         {
 
-            public bool dreamHome { get; set; }
-            public bool lifestyle { get; set; }
-            public bool fixedOdds { get; set; }
-            public bool myCompetitions { get; set; }
-            public bool newPrizes { get; set; }
-            public bool all { get; set; }
+            public bool? dreamHome { get; set; }
+            public bool? lifestyle { get; set; }
+            public bool? fixedOdds { get; set; }
+            public bool? myCompetitions { get; set; }
+            public bool? newPrizes { get; set; }
+            public bool? all { get; set; }
         }
         public class Memberships
         {
-            public int active { get; set; }
-            public int count { get; set; }
+            public int? active { get; set; }
+            public int? count { get; set; }
         }
 
         #endregion
@@ -1399,7 +1405,7 @@ namespace RaffleAutomationTests.Helpers
             public bool? IsActive { get; set; }
 
             [BsonElement("createdAt")]
-            public DateTimeOffset? CreatedAt { get; set; }
+            public DateTime? CreatedAt { get; set; }
 
             [BsonElement("numOfTickets")]
             public int? NumOfTickets { get; set; }
@@ -1591,13 +1597,14 @@ namespace RaffleAutomationTests.Helpers
 
     public class SubscriptionEmailsTemplate
     {
-        public const string INITIAL_UNAUTH = "<html><head><style>@media screen and (max-width: 480px) {\n    .wrap-btn {\n        text-align: center;\n    }\n}\n\n.im {\n    color: #31323C !important;\n}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi \"Name\",</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Please see your Raffle House subscription receipt below. You will next be billed and issued tickets on the 1st of every month. You’ll also receive confirmation of your new tickets then.</p><table style=\"color:#31323C;border-spacing:10px;\"><tr><td style=\"font-weight:bold;\">Ticket Quantity</td><td></td></tr><tr><td style=\"font-weight:bold;\">Value</td><td></td></tr><tr><td style=\"font-weight:bold;\">Charitable Donation</td><td></td></tr><tr><td></td></tr></table>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Activate account</button></a></div>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your tickets have been securely saved to your account</p><div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">View tickets</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">As a subscriber, you can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
-        public const string INITIAL_AUTH = "<html><head><style>@media screen and (max-width: 480px) {\n    .wrap-btn {\n        text-align: center;\n    }\n}\n\n.im {\n    color: #31323C !important;\n}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi \"Name\",</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Please see your Raffle House subscription receipt below. You will next be billed and issued tickets on the 1st of every month. You’ll also receive confirmation of your new tickets then.</p><table style=\"color:#31323C;border-spacing:10px;\"><tr><td style=\"font-weight:bold;\">Ticket Quantity</td><td></td></tr><tr><td style=\"font-weight:bold;\">Value</td><td></td></tr><tr><td style=\"font-weight:bold;\">Charitable Donation</td><td></td></tr><tr><td></td></tr></table>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your tickets have been securely saved to your account</p><div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">View tickets</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">As a subscriber, you can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
+        public const string INITIAL_UNAUTH = "<html><head><style>@media screen and (max-width: 480px) {\n    .wrap-btn {\n        text-align: center;\n    }\n}\n\n.im {\n    color: #31323C !important;\n}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi \"Name\",</strong></p>\n<img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body><p style=\"color:#31323C;font:HK Grotesk;\">Welcome to the Raffle House subscription service. You're now doing good every single month! So sit back, and start dreaming big.\n<p style=\"color:#31323C;font:HK Grotesk;\">Please see your Raffle House subscription receipt below. You will next be billed and issued tickets on the 1st of every month. You’ll also receive confirmation of your new tickets then.</p>\n<table style=\"color:#31323C;border-spacing:10px;\"><tr><td style=\"font-weight:bold;\">Ticket Quantity</td><td></td></tr><tr><td style=\"font-weight:bold;\">Value</td><td></td></tr><tr><td style=\"font-weight:bold;\">Charitable Donation</td><td></td></tr><tr><td></td></tr></table>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Activate account</button></a></div>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your tickets have been securely saved to your account</p><div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">View tickets</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">As a subscriber, you can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p></html>\n";
+        public const string INITIAL_AUTH = "<html><head><style>@media screen and (max-width: 480px) {\n    .wrap-btn {\n        text-align: center;\n    }\n}\n\n.im {\n    color: #31323C !important;\n}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi \"Name\",</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Welcome to the Raffle House subscription service. You're now doing good every single month! So sit back, and start dreaming big.\n\nPlease see your Raffle House subscription receipt below. You will next be billed and issued tickets on the 1st of every month. You’ll also receive confirmation of your new tickets then.</p><table style=\"color:#31323C;border-spacing:10px;\"><tr><td style=\"font-weight:bold;\">Ticket Quantity</td><td></td></tr><tr><td style=\"font-weight:bold;\">Value</td><td></td></tr><tr><td style=\"font-weight:bold;\">Charitable Donation</td><td></td></tr><tr><td></td></tr></table>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your tickets have been securely saved to your account</p><div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">View tickets</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">As a subscriber, you can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
+        public const string MONTHLY_AUTH = "<html><head><style>@media screen and (max-width: 480px) {\n    .wrap-btn {\n        text-align: center;\n    }\n}\n\n.im {\n    color: #31323C !important;\n}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi \"Name\",</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Please see your Raffle House subscription receipt below. You will next be billed and issued tickets on the 1st of every month. You’ll also receive confirmation of your new tickets then.</p><table style=\"color:#31323C;border-spacing:10px;\"><tr><td style=\"font-weight:bold;\">Ticket Quantity</td><td></td></tr><tr><td style=\"font-weight:bold;\">Value</td><td></td></tr><tr><td style=\"font-weight:bold;\">Charitable Donation</td><td></td></tr><tr><td></td></tr></table>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your tickets have been securely saved to your account</p><div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">View tickets</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">As a subscriber, you can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
         public const string PAUSE = "<html><head><style>@media screen and (max-width: 480px) {\n    .wrap-btn {\n        text-align: center;\n    }\n}\n\n.im {\n    color: #31323C !important;\n}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi \"Name\",</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">You have successfully paused your Raffle House subscription. Your subscription will automatically reactivate on the 1st of the next month, following a full month’s pause.</p>\n<p style=\"color:#31323C;font:HK Grotesk;\">All tickets credited before the pause are still active for all draws in the current competition cycle and are securely saved to your account. You can view your tickets and manage your subscription from your account. </p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">My Account</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">You can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
         public const string UNPAUSE = "<html><head><style>@media screen and (max-width: 480px) {\n    .wrap-btn {\n        text-align: center;\n    }\n}\n\n.im {\n    color: #31323C !important;\n}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi \"Name\",</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your Raffle House subscription has been reactivated following your pause!</p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Please see your Raffle House subscription receipt below. You will next be billed and issued tickets on the 1st of every month. You’ll also receive confirmation of your new tickets then.</p><table style=\"color:#31323C;border-spacing:10px;\"><tr><td style=\"font-weight:bold;\">Ticket Quantity</td><td></td></tr><tr><td style=\"font-weight:bold;\">Value</td><td></td></tr><tr><td style=\"font-weight:bold;\">Charitable Donation</td><td></td></tr><tr><td></td></tr></table>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your tickets have been securely saved to your account</p><p style=\"color:#31323C;font:HK Grotesk;\">You can manage your subscription and view your active tickets in your account at any time!</p><div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">My Account</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">As a subscriber, you can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
         public const string CANCEL = "<html><head><style>@media screen and (max-width: 480px) {\n    .wrap-btn {\n        text-align: center;\n    }\n}\n\n.im {\n    color: #31323C !important;\n}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi \"Name\",</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">You have successfully cancelled your Raffle House subscription. Any tickets that you had prior to the cancellation will remain active for any upcoming draw in the current competition cycle.</p>\n<p style=\"color:#31323C;font:HK Grotesk;\">If you want to renew your subscription or view your active tickets, head to your account at any time.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">My Account</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">If you want to increase your chances to win, just hit the button below to buy more tickets.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
         public const string SEVEN_DAYS_BEFORE_UNPAUSE = "<html><head><style>@media screen and (max-width: 480px) {\n    .wrap-btn {\n        text-align: center;\n    }\n}\n\n.im {\n    color: #31323C !important;\n}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi \"Name\",</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your Raffle House subscription will automatically reactivate in 7 days, on the 1st of the next month, following your full month’s pause. You do not need to take any action to start dreaming big and doing good once more!\nAll tickets credited before the pause are still active for all draws in the current competition cycle and are securely saved to your account, as will all future tickets yet to be awarded. You can view your tickets and manage your subscription from your account.</p><table style=\"color:#31323C;border-spacing:10px;\"><tr><td style=\"font-weight:bold;\">Ticket Quantity</td><td></td></tr><tr><td style=\"font-weight:bold;\">Value</td><td></td></tr><tr><td style=\"font-weight:bold;\">Charitable Donation</td><td></td></tr><tr><td></td></tr></table>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your tickets have been securely saved to your account</p><p style=\"color:#31323C;font:HK Grotesk;\">You can manage your subscription and view your active tickets in your account at any time!</p><div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">View tickets</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">As a subscriber, you can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
-        public const string PURCHASE_FAILED = "<html><head><style>@media screen and (max-width: 480px) {\n    .wrap-btn {\n        text-align: center;\n    }\n}\n\n.im {\n    color: #31323C !important;\n}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi \"Name\",</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your Raffle House subscription payment has failed. This may be due to insufficient funds or your card’s expiry date. As a result, your tickets for this month have not been credited and your subscription has been cancelled.</p>\n<p style=\"color:#31323C;font:HK Grotesk;\">All tickets credited before the pause are still active for all draws in the current competition cycle and are securely saved to your account. You can view your tickets and manage your subscription from your account. </p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">My Account</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">You can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
+        public const string PURCHASE_FAILED = "<html><head><style>@media screen and (max-width: 480px) {\n    .wrap-btn {\n        text-align: center;\n    }\n}\n\n.im {\n    color: #31323C !important;\n}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi \"Name\",</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your Raffle House subscription payment has failed. This may be due to insufficient funds or your card’s expiry date. As a result, your tickets for this month have not been credited and your subscription has been cancelled.</p>\n<p style=\"color:#31323C;font:HK Grotesk;\">All tickets credited before the pause are still active for all draws in the current competition cycle and are securely saved to your account. You can view your tickets and manage your subscription from your account. </p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">My Account</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">You can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\">  T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
     }
 
     public class SubscriptionsCardDetails
@@ -1713,5 +1720,14 @@ namespace RaffleAutomationTests.Helpers
             "WWF"
 
         };
+    }
+
+    public class ErrorTotalCost
+    {
+        public const int ERROR_BAD_TRACK_DATA = 154;
+        public const int ERROR_SECURITY_VIOLATION = 163;
+        public const int ERROR_INVALID_TRANSACTION = 12;
+        public const int ERROR_RESTRICTED_CARD = 62;
+        public const int ERROR_INSUFIENT_FUNDS = 151;
     }
 }

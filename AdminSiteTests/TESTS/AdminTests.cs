@@ -195,6 +195,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
     public class AdminLifestyleTests : TestBaseAdmin
     {
         [Test]
+        [Ignore("Not actual")]
         public void ActivateLF()
         {
             Pages.CmsLogin

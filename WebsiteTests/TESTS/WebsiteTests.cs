@@ -12,6 +12,7 @@ namespace RaffleHouseAutomation.WebSiteTests
     public class Demo : TestBaseWeb
     {
         [Test]
+        [Ignore("Demo test")]
         
         public void Demotest()
         {
@@ -1101,7 +1102,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                     Assert.IsNotNull(subscription.CheckoutId);
                 }
                 var emailPause = Elements.GgetHtmlBody(user.Email);
-                ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.INITIAL_AUTH);
+                ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.MONTHLY_AUTH);
             }
             
 
@@ -1216,7 +1217,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             for (int i = 0; i < 5; i++)
             {
                 Pages.Home
-                .AddTicketsToBasket(0);
+                    .AddTicketsToBasket(0);
                 Pages.Basket
                     .MakeAPurchaseAsUnauthorizedUser(email);
                 Pages.ThankYou
@@ -1697,6 +1698,80 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList();
+        }
+
+        [Test]
+        [Category("Payment")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Payment")]
+        public void AddDreamHomeToBasketAndPurchaseSubscription()
+        {
+            var response = SignUpRequest.RegisterNewUser();
+            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
+            var basketOrders = BasketRequest.GetBasketOrders(token);
+            BasketRequest.DeleteOrders(token, basketOrders);
+            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
+            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+            Pages.Common
+                .CloseCookiesPopUp();
+            Pages.Header
+                .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn();
+            for (int i = 0; i <= 0; i++)
+            {
+                for (int q = 0; q < 1; q++)
+                {
+                    DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList.FirstOrDefault());
+                    WaitUntil.WaitSomeInterval(250);
+                }
+
+            }
+            Pages.Subscription
+                .OpenSubscriptionPage()
+                .AddTenSubscriptionToBasket();
+            Pages.Basket
+                .EnterCardDetails()
+                .SelectCharity()
+                .ClickPayNowBtn();
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
+            for (int i = 0; i <= 0; i++)
+            {
+                for (int q = 0; q < 1; q++)
+                {
+                    DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList.FirstOrDefault());
+                    WaitUntil.WaitSomeInterval(250);
+                }
+
+                Pages.Basket
+                    .ClickCartBtn();
+                Pages.Basket
+                    .MakeAPurchaseAsAuthorizedUser();
+                Pages.ThankYou
+                    .VerifyThankYouPageIsDisplayed();
+            }
+
+            Pages.Profile
+                .OpenMyTicketsCompetitions()
+                .OpenDreamHomeHistoryList();
+            var user = AppDbHelper.Users.GetUserByEmail(response.User.Email);
+            var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
+            foreach (var subscription in subscriptionList)
+            {
+                Assert.IsNotNull(subscription.Refference);
+                Assert.IsNotNull(subscription.CardSource);
+                Assert.IsNotNull(subscription.CheckoutId);
+            }
         }
 
     }

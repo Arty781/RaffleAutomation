@@ -9,7 +9,7 @@
                 Name = Name.FirstName(),
                 Surname = Name.LastName(),
                 Password = Credentials.PASSWORD,
-                Email = "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@xitroo.com",
+                Email = "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com",
                 EmailCommunication = true,
                 Country = Country.COUNTRY_CODES[RandomHelper.RandomFPId(Country.COUNTRY_CODES)],
                 Phone = "953214567",
