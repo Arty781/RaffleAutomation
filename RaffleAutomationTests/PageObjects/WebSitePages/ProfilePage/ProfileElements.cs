@@ -37,12 +37,6 @@
         [FindsBy(How = How.Name, Using = "phone")]
         public IWebElement inputPhone;
 
-        //[FindsBy(How = How.Name, Using = "country")]
-        //public IWebElement inputCountry;
-
-        //[FindsBy(How = How.XPath, Using = "//div[@aria-haspopup='listbox']")]
-        //public IWebElement cbbxCountry;
-
         [FindsBy(How = How.XPath, Using = "//input[@value='emailCommunication']")]
         public IWebElement inputEmailCommunication;
 

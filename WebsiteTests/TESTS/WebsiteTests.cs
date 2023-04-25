@@ -1479,7 +1479,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 var tokenReferral = SignInRequestWeb.MakeSignIn(responseReferral.User.Email, Credentials.PASSWORD);
                 var prizesListReferral = CountdownRequestWeb.GetDreamHomeCountdown(tokenReferral);
                 DreamHomeOrderRequestWeb.AddDreamhomeTickets(tokenReferral, prizesListReferral.FirstOrDefault());
-                WaitUntil.WaitSomeInterval(250);
+                
                 Pages.Header
                     .OpenSignInPage();
                 Pages.SignIn
@@ -1738,7 +1738,6 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .AddTenSubscriptionToBasket();
             Pages.Basket
                 .EnterCardDetails()
-                .SelectCharity()
                 .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();

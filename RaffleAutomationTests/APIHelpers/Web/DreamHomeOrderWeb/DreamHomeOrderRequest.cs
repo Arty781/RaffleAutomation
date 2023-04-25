@@ -1,8 +1,10 @@
-﻿namespace RaffleAutomationTests.APIHelpers.Web
+﻿using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
+
+namespace RaffleAutomationTests.APIHelpers.Web
 {
     public class DreamHomeOrderRequestWeb
     {
-        public static DreamHomeOrderRequestModel RequestBuilder(string id)
+        public static string RequestBuilder(string id)
         {
             DreamHomeOrderRequestModel req = new()
             {
@@ -11,34 +13,41 @@
                 PrizeId = id
             };
 
-            return req;
+            return JsonConvert.SerializeObject(req);
         }
 
         public static DreamHomeOrderResponseModelWeb? AddDreamhomeTickets(SignInResponseModelWeb SignIn, CountdownResponseModelDreamHomeWeb countdown)
         {
-
-
-            var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest? request = new RestRequest("/api/orders", Method.Post);
-            request.AddHeaders(headers: Headers.COMMON);
-            request.AddHeader("authorization", $"Bearer {SignIn.Token}");
-            request.AddHeader("applicationid", "WppJsNsSvr");
-            request.AddJsonBody(RequestBuilder(countdown.Id));
-
-            var r = restDriver.Execute(request);
-            if (r.IsSuccessStatusCode == false)
+            HttpRequest req = new()
             {
-                Debug.WriteLine(r.ErrorMessage);
+                HttpVerb = "POST",
+                Path = "/api/orders"
+               
+            };
+
+            req.AddHeader("connection", "Keep-Alive");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept", "application/json, text/plain, */*");
+            req.AddHeader("content-type", "application/json");
+            req.AddHeader("authorization", $"Bearer {SignIn.Token}");
+            req.LoadBodyFromString(RequestBuilder(countdown.Id), charset: "utf-8");
+
+            Http http = new Http();
+
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Console.WriteLine(http.LastErrorText);
             }
-            Debug.WriteLine(r.Content);
-            var content = r.Content;
+            var response = JsonConvert.DeserializeObject<DreamHomeOrderResponseModelWeb>(resp.BodyStr);
 
-            var response = JsonConvert.DeserializeObject<DreamHomeOrderResponseModelWeb>(content);
-
+            WaitUntil.WaitSomeInterval(250);
             return response;
+            
         }
 
-        private static DreamHomeOrderRequestModel RequestBuilderWithError(string id, int numOfTickets)
+        private static string RequestBuilderWithError(string id, int numOfTickets)
         {
             DreamHomeOrderRequestModel req = new()
             {
@@ -47,28 +56,32 @@
                 PrizeId = id
             };
 
-            return req;
+            return JsonConvert.SerializeObject(req);
         }
         public static DreamHomeOrderResponseModelWeb? AddDreamhomeTicketsForError(SignInResponseModelWeb SignIn, CountdownResponseModelDreamHomeWeb countdown, int numOfTickets)
         {
-
-
-            var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest? request = new RestRequest("/api/orders", Method.Post);
-            request.AddHeaders(headers: Headers.COMMON);
-            request.AddHeader("authorization", $"Bearer {SignIn.Token}");
-            request.AddHeader("applicationid", "WppJsNsSvr");
-            request.AddJsonBody(RequestBuilderWithError(countdown.Id, numOfTickets));
-
-            var r = restDriver.Execute(request);
-            if (r.IsSuccessStatusCode == false)
+            HttpRequest req = new()
             {
-                Debug.WriteLine(r.ErrorMessage);
-            }
-            Debug.WriteLine(r.Content);
-            var content = r.Content;
+                HttpVerb = "POST",
+                Path = "/api/orders",
+            };
 
-            var response = JsonConvert.DeserializeObject<DreamHomeOrderResponseModelWeb>(content);
+            req.AddHeader("connection", "Keep-Alive");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept", "application/json, text/plain, */*");
+            req.AddHeader("content-type", "application/json");
+            req.AddHeader("authorization", $"Bearer {SignIn.Token}");
+            req.LoadBodyFromString(RequestBuilderWithError(countdown.Id, numOfTickets), charset: "utf-8");
+
+            Http http = new Http();
+
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Console.WriteLine(http.LastErrorText);
+            }
+            var response = JsonConvert.DeserializeObject<DreamHomeOrderResponseModelWeb>(resp.BodyStr);
 
             return response;
         }

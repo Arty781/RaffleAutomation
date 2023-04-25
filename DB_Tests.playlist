@@ -1,0 +1,78 @@
+<Playlist Version="2.0">
+  <Rule Name="Includes" Match="Any">
+    <Rule Match="All">
+      <Property Name="Solution" />
+      <Rule Match="Any">
+        <Rule Match="All">
+          <Property Name="Project" Value="ApiTests" />
+          <Rule Match="Any">
+            <Rule Match="All">
+              <Property Name="Namespace" Value="API" />
+              <Rule Match="Any">
+                <Rule Match="All">
+                  <Property Name="Class" Value="DbApi" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="API.DbApi.CreateUsersAndAddSubscription" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="CreateUsersAndAddSubscription" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="API.DbApi.CreateUsersAndAddSubscriptionForFailPayment" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="CreateUsersAndAddSubscriptionForFailPayment" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="API.DbApi.DeleteUsersByEmail" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="DeleteUsersByEmail" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="API.DbApi.InsertSubscriptionsByUsersEmail" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="InsertSubscriptionsByUsersEmail" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="API.DbApi.RemoveSubscriptions" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="RemoveSubscriptions" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="API.DbApi.RemoveSubscriptionsByUserId" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="RemoveSubscriptionsByUserId" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="API.DbApi.RemoveSubscriptionsOrders" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="RemoveSubscriptionsOrders" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="API.DbApi.UpdateSubscriptionsToNextPurchase" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="UpdateSubscriptionsToNextPurchase" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="API.DbApi.AddUsers" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="AddUsers" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+              </Rule>
+            </Rule>
+          </Rule>
+        </Rule>
+      </Rule>
+    </Rule>
+  </Rule>
+</Playlist>

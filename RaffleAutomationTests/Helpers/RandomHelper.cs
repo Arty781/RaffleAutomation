@@ -5,9 +5,20 @@
         public static string RandomNumber()
         {
             Random r = new Random();
-            int genRand = r.Next(1, 100);
-            string randomNum = genRand.ToString();
+            int genRand = r.Next(1, 20);
+            string randomNum = string.Empty;
 
+            switch (genRand)
+            {
+                case 6:
+                    // Handle excluded numbers
+                    RandomNumber();
+                    break;
+                default:
+                    // Handle other numbers
+                    randomNum =  genRand.ToString();
+                    break;
+            }
             return randomNum;
         }
 

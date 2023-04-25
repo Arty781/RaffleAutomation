@@ -1,4 +1,5 @@
-﻿using Fizzler.Systems.HtmlAgilityPack;
+﻿using RestSharp;
+using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
 using RaffleAutomationTests.PageObjects;
 using System.Collections.ObjectModel;
@@ -41,7 +42,6 @@ namespace RaffleAutomationTests.Helpers
         public static void ClickJS(IWebElement element)
         {
             WaitUntil.WaitSomeInterval();
-            //WaitUntil.CustomElementIsVisible(element, 10);
             IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
             ex.ExecuteScript("arguments[0].click();", element);
         }

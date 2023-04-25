@@ -40,22 +40,6 @@
                     ScreenShotHelper.DeleteScreenShot(filePath);
                     break;
             }
-            //_clientM = new TelegramBotClient(token);
-
-            //string filePath = ScreenShotHelper.MakeScreenShot();
-            //FileStream stream = System.IO.File.OpenRead(filePath);
-            //var inputOnlineFile = new InputOnlineFile(stream, filePath);
-
-            //Message message1 = await _clientM.SendTextMessageAsync(
-            //    chatId: _id,
-            //    text: "The test-case \"" + TestContext.CurrentContext.Test.Name.ToString() +
-            //    "\" has failed" + "\n" + "\n" + TestContext.CurrentContext.Result.Message);
-
-            //Message message2 = await _clientM.SendPhotoAsync(
-            //    chatId: _id,
-            //    photo: inputOnlineFile
-            //    );
-            //ScreenShotHelper.DeleteScreenShot(filePath);
         }
 
     }

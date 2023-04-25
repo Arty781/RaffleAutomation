@@ -1,8 +1,10 @@
-﻿namespace RaffleAutomationTests.APIHelpers.Web.Weekly
+﻿using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
+
+namespace RaffleAutomationTests.APIHelpers.Web.Weekly
 {
     public class WeeklyPrizesRequestWeb
     {
-        public static CreateWeeklyPrizeOrderRequest RequestBuilder(string id, string number)
+        public static string RequestBuilder(string id, string number)
         {
             CreateWeeklyPrizeOrderRequest req = new()
             {
@@ -12,7 +14,7 @@
                 TotalCost = 10
             };
 
-            return req;
+            return JsonConvert.SerializeObject(req);
         }
 
 
@@ -20,16 +22,28 @@
         {
             List<Prize> prizeId = (from prize in WeeklyId.Prizes where (prize.Title == "2 Night Yoga Retreat") select prize).ToList();
 
-            var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest? request = new RestRequest("/api/orders", Method.Post);
-            request.AddHeaders(headers: Headers.COMMON);
-            request.AddHeader("applicationid", "WppJsNsSvr");
-            request.AddHeader("authorization", $"Bearer {SignIn.Token}");
-            request.AddJsonBody(RequestBuilder(prizeId.First().Id, numOfTickets));
+            HttpRequest req = new()
+            {
+                HttpVerb = "POST",
+                Path = "/api/orders",
+            };
 
-            var response = restDriver.Execute(request);
-            var content = response.Content;
-            var countdownResponse = JsonConvert.DeserializeObject<CreateWeeklyPrizeOrderResponse>(content);
+            req.AddHeader("connection", "Keep-Alive");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept", "application/json, text/plain, */*");
+            req.AddHeader("content-type", "application/json");
+            req.AddHeader("authorization", $"Bearer {SignIn.Token}");
+            req.LoadBodyFromString(RequestBuilder(prizeId.First().Id, numOfTickets), charset: "utf-8");
+
+            Http http = new Http();
+
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Console.WriteLine(http.LastErrorText);
+            }
+            var countdownResponse = JsonConvert.DeserializeObject<CreateWeeklyPrizeOrderResponse>(resp.BodyStr);
 
             return countdownResponse;
         }

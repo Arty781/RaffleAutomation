@@ -1,8 +1,10 @@
-﻿namespace RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb
+﻿using RaffleAutomationTests.APIHelpers.Web.Basket;
+
+namespace RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb
 {
     public class FixedOddsRequest
     {
-        public static CreateFixedOddsOrderRequest RequestBuilder(string id)
+        public static string RequestBuilder(string id)
         {
             CreateFixedOddsOrderRequest req = new()
             {
@@ -12,21 +14,32 @@
                 TotalCost = 10
             };
 
-            return req;
+            return JsonConvert.SerializeObject(req);
         }
 
         public static List<string>? GetFixedOddsPrizes()
         {
+            HttpRequest req = new()
+            {
+                HttpVerb = "GET",
+                Path = "/api/fixedOdds",
+            };
 
+            req.AddHeader("connection", "Keep-Alive");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept", "application/json, text/plain, */*");
+            req.AddHeader("content-type", "application/json");
 
-            var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest request = new RestRequest("/api/fixedOdds", Method.Get);
-            request.AddHeaders(headers: Headers.COMMON);
-            request.AddHeader("applicationid", "WppJsNsSvr");
+            Http http = new Http();
 
-            var response = restDriver.Execute(request);
-            var content = response.Content;
-            var countdownResponse = JsonConvert.DeserializeObject<GetFixedOddsOrderResponse>(content);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Console.WriteLine(http.LastErrorText);
+            }
+            var countdownResponse = JsonConvert.DeserializeObject<GetFixedOddsOrderResponse>(resp.BodyStr);
+
             return (from fixedPrize in countdownResponse.FixedOdds
                     where (fixedPrize.MaxTickets - fixedPrize.TicketsBought) > 0
                     select fixedPrize.Id).ToList();
@@ -34,18 +47,28 @@
 
         public static GetFixedOddsOrderResponse? AddFixedOddsPrizes(SignInResponseModelWeb SignIn, List<string> fixedPrizesId)
         {
+            HttpRequest req = new()
+            {
+                HttpVerb = "POST",
+                Path = "/api/orders",
+            };
 
+            req.AddHeader("connection", "Keep-Alive");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept", "application/json, text/plain, */*");
+            req.AddHeader("content-type", "application/json");
+            req.AddHeader("authorization", $"Bearer {SignIn.Token}");
+            req.LoadBodyFromString(RequestBuilder(fixedPrizesId[RandomHelper.RandomFPId(fixedPrizesId)]), charset: "utf-8");
 
-            var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest? request = new RestRequest("/api/orders", Method.Post);
-            request.AddHeaders(headers: Headers.COMMON);
-            request.AddHeader("authorization", $"Bearer {SignIn.Token}");
-            request.AddHeader("applicationid", "WppJsNsSvr");
-            request.AddJsonBody(RequestBuilder(fixedPrizesId[RandomHelper.RandomFPId(fixedPrizesId)]));
+            Http http = new Http();
 
-            var response = restDriver.Execute(request);
-            var content = response.Content;
-            var countdownResponse = JsonConvert.DeserializeObject<GetFixedOddsOrderResponse>(content);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Console.WriteLine(http.LastErrorText);
+            }
+            var countdownResponse = JsonConvert.DeserializeObject<GetFixedOddsOrderResponse>(resp.BodyStr);
 
             return countdownResponse;
         }

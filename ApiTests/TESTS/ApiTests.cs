@@ -1,23 +1,14 @@
 using ApiTests.BASE;
-using Chilkat;
-using Fizzler.Systems.HtmlAgilityPack;
-using HtmlAgilityPack;
 using NUnit.Framework;
-using PutsboxWrapper;
 using RaffleAutomationTests.APIHelpers.Admin;
-using RaffleAutomationTests.APIHelpers.Admin.DreamHomePage;
 using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
 using RaffleAutomationTests.APIHelpers.Web;
-using RaffleAutomationTests.APIHelpers.Web.Basket;
 using RaffleAutomationTests.APIHelpers.Web.ForgotPasswordWeb;
 using RaffleAutomationTests.APIHelpers.Web.SignIn;
 using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
 using RaffleAutomationTests.APIHelpers.Web.Subscriptions;
 using RaffleAutomationTests.APIHelpers.Web.Weekly;
 using RaffleAutomationTests.Helpers;
-using RestSharp;
-using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
 using static RaffleAutomationTests.Helpers.AppDbHelper;
 
 namespace API
@@ -40,13 +31,7 @@ namespace API
                     Console.WriteLine(subscription.User.ToString());
                 }
             }
-            //var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
-            //foreach(var user in users)
-            //{
-            //    AppDbHelper.Users.DeleteUsersByEmail(user.Email);
-            //}            
-            //AppDbHelper.Insert.InsertUser(raffle);
-            //users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+
             #endregion
 
         }
@@ -196,17 +181,28 @@ namespace API
         }
 
         [Test]
+        public void AddUsers()
+        {
+            var raffle = DreamHome.GetAciveRaffles();
+            for (int i = 0; i < 1; i++)
+            {
+                Insert.InsertUser(raffle);
+            }
+
+        }
+
+        [Test]
         public void CreateUsersAndAddSubscriptionForFailPayment()
         {
             #region Preconditions
 
             var email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff"), "@putsbox.com");
-            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
-            AppDbHelper.Insert.InsertSubscriptionModel(ErrorTotalCost.ERROR_BAD_TRACK_DATA);
+            var raffle = DreamHome.GetAciveRaffles();
+            Insert.InsertSubscriptionModel(ErrorTotalCost.ERROR_BAD_TRACK_DATA);
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
-            AppDbHelper.Insert.InsertUser(raffle, email);
+            Insert.InsertUser(raffle, email);
             var user = AppDbHelper.Users.GetUserByEmail(email);
-            AppDbHelper.Insert.InsertSubscriptionsToUserForFailPayment(user, raffle, subscriptionsModel);
+            Insert.InsertSubscriptionsToUserForFailPayment(user, raffle, subscriptionsModel);
             var userSub = AppDbHelper.Subscriptions.GetSubscriptionByUserId(user);
 
             #endregion

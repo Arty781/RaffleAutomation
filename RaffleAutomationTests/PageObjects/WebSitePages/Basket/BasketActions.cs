@@ -135,7 +135,6 @@
             EnterEmail(email);
             EnterCardDetails();
             ClickPayNowBtn();
-            //ConfirmPurchaseStage();
 
             return this;
         }
@@ -146,7 +145,6 @@
             ClickCheckoutNowBtn();
             EnterCardDetails();
             ClickPayNowBtn();
-            //ConfirmPurchaseStage();
 
             return this;
         }
@@ -158,7 +156,6 @@
             EnterEmail(email);
             EnterCardDetails();
             ClickPayNowBtn();
-            //ConfirmPurchaseStage();
 
             return this;
         }
@@ -169,8 +166,6 @@
             GoToBasket(subscriptionId);
             EnterCardDetails();
             ClickPayNowBtn();
-            //ConfirmPurchaseStage();
-
             return this;
         }
 

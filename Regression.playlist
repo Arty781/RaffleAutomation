@@ -1,0 +1,354 @@
+<Playlist Version="2.0">
+  <Rule Name="Includes" Match="Any">
+    <Rule Match="All">
+      <Property Name="Solution" />
+      <Rule Match="Any">
+        <Rule Match="All">
+          <Property Name="Project" Value="WebsiteTests" />
+          <Rule Match="Any">
+            <Rule Match="All">
+              <Property Name="Namespace" Value="RaffleHouseAutomation.WebSiteTests" />
+              <Rule Match="Any">
+                <Rule Match="All">
+                  <Property Name="Class" Value="Authorization" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Authorization.EditUserData" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="EditUserData" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Authorization.LoginByEmail" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="LoginByEmail" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Authorization.RegisterNewNonActivatedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="RegisterNewNonActivatedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Authorization.RegisterNewUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="RegisterNewUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Authorization.ResetPassword" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="ResetPassword" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Authorization.ResetPasswordAfterPaymentAsUnauthorized" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="ResetPasswordAfterPaymentAsUnauthorized" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+                <Rule Match="All">
+                  <Property Name="Class" Value="CheckingTextsOnPages" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.CheckingTextsOnPages.VerifiedDisplayingFooterElements" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifiedDisplayingFooterElements" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.CheckingTextsOnPages.VerifiedHomePage" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifiedHomePage" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.CheckingTextsOnPages.VerifyDisplayedCTACards" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyDisplayedCTACards" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.CheckingTextsOnPages.VerifyDisplayedWinners2019" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyDisplayedWinners2019" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.CheckingTextsOnPages.VerifyDisplayedWinners2020" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyDisplayedWinners2020" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.CheckingTextsOnPages.VerifyDisplayedWinners2021" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyDisplayedWinners2021" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.CheckingTextsOnPages.VerifyTextOfTermsAndConditions" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyTextOfTermsAndConditions" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.CheckingTextsOnPages.VerifyTextOnPostalPage" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyTextOnPostalPage" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+                <Rule Match="All">
+                  <Property Name="Class" Value="ErrorPaymentTests" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.ErrorPaymentTests.BadTrackDataError" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="BadTrackDataError" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.ErrorPaymentTests.InsufientFundsError" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="InsufientFundsError" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.ErrorPaymentTests.InvalidTransactionError" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="InvalidTransactionError" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.ErrorPaymentTests.RestrictedCardError" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="RestrictedCardError" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.ErrorPaymentTests.SecurityVioLationError" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="SecurityVioLationError" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+                <Rule Match="All">
+                  <Property Name="Class" Value="Payment" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.ActivateNewUserAfterPayment" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="ActivateNewUserAfterPayment" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.ActivateNewUserAfterThreePayments" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="ActivateNewUserAfterThreePayments" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.ActivateNewUserFromEmail" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="ActivateNewUserFromEmail" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.ActivateNewUserFromEmailAfterThreePayments" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="ActivateNewUserFromEmailAfterThreePayments" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.AddDreamHomeToBasketAndPurchaseSubscription" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="AddDreamHomeToBasketAndPurchaseSubscription" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.GetPurchaseDreamHome" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="GetPurchaseDreamHome" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.MakePurchaseWithDelayAndClosingTab" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="MakePurchaseWithDelayAndClosingTab" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.PurchaseDreamHome" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PurchaseDreamHome" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.PurchaseTicketsFromPageDiscount" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PurchaseTicketsFromPageDiscount" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.PurchaseTicketsFromWinAndDiscountPages" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PurchaseTicketsFromWinAndDiscountPages" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.PurchaseTicketsWin" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PurchaseTicketsWin" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.SignUpAddReferralsAndTicketsMakePurchase" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="SignUpAddReferralsAndTicketsMakePurchase" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Payment.SignUpAddTicketsMakePurchase" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="SignUpAddTicketsMakePurchase" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+                <Rule Match="All">
+                  <Property Name="Class" Value="SubscriptionsCommon" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsCommon.CancelSubscriptionAsAuthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="CancelSubscriptionAsAuthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsCommon.PauseSubscriptionAsAuthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PauseSubscriptionAsAuthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsCommon.PurchaseMultipleofSubscriptionAsUnauthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PurchaseMultipleofSubscriptionAsUnauthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsCommon.PurchaseNormalTicketsAsSubscribedAuthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PurchaseNormalTicketsAsSubscribedAuthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsCommon.PurchaseSubFromSubscriptionPageAsUnauthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PurchaseSubFromSubscriptionPageAsUnauthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsCommon.PurchaseTenPoundsSubscriptionAsAuthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PurchaseTenPoundsSubscriptionAsAuthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsCommon.PurchaseTenPoundsSubscriptionAsUnauthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PurchaseTenPoundsSubscriptionAsUnauthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsCommon.PurchaseTwentyFivePoundsSubscriptionAsAuthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PurchaseTwentyFivePoundsSubscriptionAsAuthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsCommon.PurchaseTwentyFivePoundsSubscriptionAsUnauthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="PurchaseTwentyFivePoundsSubscriptionAsUnauthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsCommon.UnpauseSubscriptionAsAuthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="UnpauseSubscriptionAsAuthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsCommon.VerifyTextsOnSubscriptionsPage" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyTextsOnSubscriptionsPage" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+                <Rule Match="All">
+                  <Property Name="Class" Value="SubscriptionsMailing" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsMailing.VerifyCancelSubscriptionEmailAsUnauthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyCancelSubscriptionEmailAsUnauthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsMailing.VerifyInitialSubscriptionEmailAsUnauthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyInitialSubscriptionEmailAsUnauthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsMailing.VerifyPauseSubscriptionEmailAsUnauthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyPauseSubscriptionEmailAsUnauthorizedUser" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.SubscriptionsMailing.VerifyUnpauseSubscriptionEmailAsUnauthorizedUser" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyUnpauseSubscriptionEmailAsUnauthorizedUser" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+                <Rule Match="All">
+                  <Property Name="Class" Value="Validation" />
+                  <Rule Match="Any">
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Validation.VerifyValidationOnProfilePage" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyValidationOnProfilePage" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Validation.VerifyValidationOnSignInPage" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyValidationOnSignInPage" />
+                      </Rule>
+                    </Rule>
+                    <Rule Match="All">
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="RaffleHouseAutomation.WebSiteTests.Validation.VerifyValidationOnSignUpPage" />
+                      <Rule Match="Any">
+                        <Property Name="DisplayName" Value="VerifyValidationOnSignUpPage" />
+                      </Rule>
+                    </Rule>
+                  </Rule>
+                </Rule>
+              </Rule>
+            </Rule>
+          </Rule>
+        </Rule>
+      </Rule>
+    </Rule>
+  </Rule>
+</Playlist>

@@ -812,7 +812,111 @@ namespace RaffleAutomationTests.Helpers
         #region Users Collection
 
         [BsonIgnoreExtraElements]
-        public class User
+        public class UserRequest
+        {
+            [BsonElement("_id")]
+            public ObjectId? Id { get; set; }
+
+            [BsonElement("isAdmin")]
+            public bool? IsAdmin { get; set; }
+
+            [BsonElement("isManager")]
+            public bool? IsManager { get; set; }
+
+            [BsonElement("isVerified")]
+            public bool? IsVerified { get; set; }
+
+            [BsonElement("freeEntries")]
+            public int? FreeEntries { get; set; }
+
+            [BsonElement("successfullReferralCount")]
+            public int? SuccessfullReferralCount { get; set; }
+
+            [BsonElement("totalTicketsBought")]
+            public int? TotalTicketsBought { get; set; }
+
+            [BsonElement("emailCommunication")]
+            public bool? EmailCommunication { get; set; }
+
+            [BsonElement("registerReferrals")]
+            public List<object>? RegisterReferrals { get; set; }
+
+            [BsonElement("freeTickets")]
+            public int? FreeTickets { get; set; }
+
+            [BsonElement("isSocialRegistration")]
+            public bool? IsSocialRegistration { get; set; }
+
+            [BsonElement("isBlocked")]
+            public bool? IsBlocked { get; set; }
+
+            [BsonElement("notifications")]
+            public Notification? Notifications { get; set; }
+
+            [BsonElement("spentMoney")]
+            public int? SpentMoney { get; set; }
+
+            [BsonElement("name")]
+            public string? Name { get; set; }
+
+            [BsonElement("surname")]
+            public string? Surname { get; set; }
+
+            [BsonElement("email")]
+            public string? Email { get; set; }
+
+            [BsonElement("password")]
+            public string? Password { get; set; }
+
+            [BsonElement("phone")]
+            public string? Phone { get; set; }
+
+            [BsonElement("country")]
+            public string? Country { get; set; }
+
+            [BsonElement("createdAt")]
+            public DateTime? CreatedAt { get; set; }
+
+            [BsonElement("registerRaffle")]
+            public ObjectId? RegisterRaffle { get; set; }
+
+            [BsonElement("referralKey")]
+            public string? ReferralKey { get; set; }
+
+            [BsonElement("neededSpend")]
+            public int? NeededSpend { get; set; }
+
+            [BsonElement("referralCredits")]
+            public int? ReferralCredits { get; set; }
+
+            [BsonElement("isEmailValid")]
+            public bool IsEmailValid { get; set; }
+
+            [BsonElement("updatedAt")]
+            public DateTime? UpdatedAt { get; set; }
+
+            [BsonElement("corporateNotification")]
+            public bool? CorporateNotification { get; set; }
+
+        }
+        public class Notification
+        {
+
+            public bool? dreamHome { get; set; }
+            public bool? lifestyle { get; set; }
+            public bool? fixedOdds { get; set; }
+            public bool? myCompetitions { get; set; }
+            public bool? newPrizes { get; set; }
+            public bool? all { get; set; }
+        }
+        public class Memberships
+        {
+            public int? active { get; set; }
+            public int? count { get; set; }
+        }
+
+        [BsonIgnoreExtraElements]
+        public class UserResponse
         {
             [BsonElement("_id")]
             public ObjectId? Id { get; set; }
@@ -924,21 +1028,6 @@ namespace RaffleAutomationTests.Helpers
 
             [BsonElement("spentMobile")]
             public int? SpentMobile { get; set; }
-        }
-        public class Notification
-        {
-
-            public bool? dreamHome { get; set; }
-            public bool? lifestyle { get; set; }
-            public bool? fixedOdds { get; set; }
-            public bool? myCompetitions { get; set; }
-            public bool? newPrizes { get; set; }
-            public bool? all { get; set; }
-        }
-        public class Memberships
-        {
-            public int? active { get; set; }
-            public int? count { get; set; }
         }
 
         #endregion

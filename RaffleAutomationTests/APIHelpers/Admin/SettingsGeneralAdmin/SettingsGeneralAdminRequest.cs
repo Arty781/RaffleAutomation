@@ -1,30 +1,44 @@
-﻿namespace RaffleAutomationTests.APIHelpers.Admin
+﻿using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
+
+namespace RaffleAutomationTests.APIHelpers.Admin
 {
     public class SettingsGeneralAdmin
     {
 
         public static string SignIn(string login, string password)
         {
-            string str = string.Format("{{" +
-                "\"email\"" + ":" + $"\"{login}\"" + "," +
-                "\"password\"" + ":" + $"\"{password}\"" + "}}");
-            return str;
+
+            SignInRequestModelWeb req = new()
+            {
+                Email = login,
+                Password = password
+            };
+            return JsonConvert.SerializeObject(req);
         }
 
         public static SettingsGeneralAdminResponseModel? MakeAdminSignIn(string login, string password)
         {
+            HttpRequest req = new()
+            {
+                HttpVerb = "POST",
+                Path = "/api/users/cms/signin",
+            };
 
+            req.AddHeader("connection", "Keep-Alive");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept", "application/json, text/plain, */*");
+            req.AddHeader("content-type", "application/json");
+            req.LoadBodyFromString(SignIn(login, password), charset: "utf-8");
 
-            var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest? request = new RestRequest("/api/users/cms/signin", Method.Post);
-            request.AddHeaders(headers: Headers.COMMON);
-            request.AddHeader("applicationid", "WppJsNsSvr");
-            request.AddJsonBody(SignIn(login, password));
+            Http http = new Http();
 
-            var response = restDriver.Execute(request);
-            var content = response.Content;
-
-            var token = JsonConvert.DeserializeObject<SettingsGeneralAdminResponseModel>(content);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Console.WriteLine(http.LastErrorText);
+            }
+            var token = JsonConvert.DeserializeObject<SettingsGeneralAdminResponseModel>(resp.BodyStr);
 
             return token;
         }

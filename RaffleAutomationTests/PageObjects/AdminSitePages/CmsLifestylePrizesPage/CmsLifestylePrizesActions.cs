@@ -8,20 +8,6 @@
             return this;
         }
 
-        //public CmsLifestylePrizes SetCategoyFilter()
-        //{
-        //    WaitUntil.CustomElementIsVisible(filterCategory);
-        //    filterCategory.Click();
-        //    foreach(var elem in filterCategoryItems)
-        //    {
-        //        if(elem.Text != "All" && elem.)
-        //    }
-
-        //    WaitUntil.WaitSomeInterval(2000);
-
-        //    return this;
-        //}
-
         public CmsLifestylePrizes SetRowsPerPageAs100()
         {
             WaitUntil.CustomElementIsVisible(rowPerPage);

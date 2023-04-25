@@ -1,32 +1,43 @@
-﻿namespace RaffleAutomationTests.APIHelpers.Web.SignIn
+﻿using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
+
+namespace RaffleAutomationTests.APIHelpers.Web.SignIn
 {
     public class SignInRequestWeb
     {
 
-        public static SignInRequestModelWeb RequestBuilder(string login, string password)
+        public static string RequestBuilder(string login, string password)
         {
             SignInRequestModelWeb req = new()
             {
                 Email = login,
                 Password = password
             };
-            return req;
+            return JsonConvert.SerializeObject(req);
         }
 
         public static SignInResponseModelWeb? MakeSignIn(string login, string password)
         {
+            HttpRequest req = new()
+            {
+                HttpVerb = "POST",
+                Path = "/api/users/signin",
+            };
 
+            req.AddHeader("connection", "Keep-Alive");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept", "application/json, text/plain, */*");
+            req.AddHeader("content-type", "application/json");
+            req.LoadBodyFromString(RequestBuilder(login, password), charset: "utf-8");
 
-            var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest? request = new RestRequest("/api/users/signin", Method.Post);
-            request.AddHeader("applicationid", "WppJsNsSvr");
-            request.AddHeaders(headers: Headers.COMMON);
-            request.AddJsonBody(RequestBuilder(login, password));
+            Http http = new Http();
 
-            var response = restDriver.Execute(request);
-            var content = response.Content;
-
-            var token = JsonConvert.DeserializeObject<SignInResponseModelWeb>(content);
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Console.WriteLine(http.LastErrorText);
+            }
+            var token = JsonConvert.DeserializeObject<SignInResponseModelWeb>(resp.BodyStr);
 
             return token;
         }

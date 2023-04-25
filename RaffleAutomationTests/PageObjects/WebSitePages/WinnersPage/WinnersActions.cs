@@ -4,7 +4,6 @@
     {
         public Winners ScrollToEndOfList(int winnerCount)
         {
-            //WaitUntil.CustomElementIsVisible(textWinnerTitle.FirstOrDefault());
             WaitUntil.WaitSomeInterval(2000);
             for (int i = 0; i < (winnerCount / 6); i++)
             {

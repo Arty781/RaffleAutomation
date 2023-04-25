@@ -1,4 +1,6 @@
-﻿namespace RaffleAutomationTests.APIHelpers.Web
+﻿using RaffleAutomationTests.APIHelpers.Web.FixedOddsPrizesWeb;
+
+namespace RaffleAutomationTests.APIHelpers.Web
 {
     public class CountdownRequestWeb
     {
@@ -29,22 +31,32 @@
 
         public static List<CompetitionResponseModelWeb>? GetWeeklyPrizesCompetitionId(SignInResponseModelWeb SignIn)
         {
+            HttpRequest req = new()
+            {
+                HttpVerb = "GET",
+                Path = $"/api/competitions/countdowns",
+                ContentType = "application/json"
+            };
+            req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("authorization", $"Bearer {SignIn.Token}");
 
+            Http http = new();
 
-            var restDriver = new RestClient(ApiEndpoints.API);
-            RestRequest? request = new RestRequest("/api/competitions/countdowns", Method.Get);
-            request.AddHeaders(headers: Headers.COMMON);
-            request.AddHeader("authorization", $"Bearer {SignIn.Token}");
-            request.AddHeader("applicationid", "WppJsNsSvr");
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            if (http.LastMethodSuccess != true)
+            {
+                Debug.WriteLine(http.LastErrorText);
+            }
+            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
 
-            var response = restDriver.Execute(request);
-            var content = response.Content;
-            var countdownResponse = JsonConvert.DeserializeObject<List<CompetitionResponseModelWeb>>(content);
+            var countdownResponse = JsonConvert.DeserializeObject<List<CompetitionResponseModelWeb>>(resp.BodyStr);
 
             return countdownResponse;
         }
 
-        public static WeeklyPrizesRequest RequestBuilder(string id, int i)
+        public static string RequestBuilder(string id, int i)
         {
             WeeklyPrizesRequest req = new()
             {
@@ -56,7 +68,7 @@
                 Id = id
             };
 
-            return req;
+            return JsonConvert.SerializeObject(req);
         }
 
 
@@ -65,18 +77,28 @@
             WeeklyPrizesResponseModelWeb? countdownResponse = null;
             for (int i = 0; i < 2; i++)
             {
-                var restDriver = new RestClient(ApiEndpoints.API);
-                RestRequest? request = new RestRequest("/api/prizes/web", Method.Post);
-                request.AddHeaders(headers: Headers.COMMON);
-                request.AddHeader("authorization", $"Bearer {SignIn.Token}");
-                request.AddHeader("applicationid", "WppJsNsSvr");
-                request.AddJsonBody(RequestBuilder(WeeklyId, i));
+                HttpRequest req = new()
+                {
+                    HttpVerb = "POST",
+                    Path = "/api/prizes/web",
+                };
 
-                var response = restDriver.Execute(request);
-                var content = response.Content;
-                countdownResponse = JsonConvert.DeserializeObject<WeeklyPrizesResponseModelWeb>(content);
+                req.AddHeader("connection", "Keep-Alive");
+                req.AddHeader("accept-encoding", "gzip, deflate, br");
+                req.AddHeader("applicationid", "WppJsNsSvr");
+                req.AddHeader("accept", "application/json, text/plain, */*");
+                req.AddHeader("content-type", "application/json");
+                req.AddHeader("authorization", $"Bearer {SignIn.Token}");
+                req.LoadBodyFromString(RequestBuilder(WeeklyId, i), charset: "utf-8");
 
+                Http http = new Http();
 
+                HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+                if (http.LastMethodSuccess != true)
+                {
+                    Console.WriteLine(http.LastErrorText);
+                }
+                countdownResponse = JsonConvert.DeserializeObject<WeeklyPrizesResponseModelWeb>(resp.BodyStr);
 
             }
 

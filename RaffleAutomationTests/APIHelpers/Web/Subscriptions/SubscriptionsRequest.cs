@@ -37,7 +37,7 @@ namespace RaffleAutomationTests.APIHelpers.Web.Subscriptions
             return response;
         }
 
-        public static void CheckStatusFor17Minutes(DbModels.Subscriptions userSub, DbModels.User user)
+        public static void CheckStatusFor17Minutes(DbModels.Subscriptions userSub, DbModels.UserResponse user)
         {
             DateTime startTime = DateTime.Now;
             int checkInterval = 60000; // in milliseconds

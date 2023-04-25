@@ -14,79 +14,79 @@ namespace RaffleAutomationTests.Helpers
     {
         public class Users
         {
-            public static List<DbModels.User> GetAllUsers()
+            public static List<DbModels.UserResponse> GetAllUsers()
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<DbModels.User>("users");
-                var filter = Builders<DbModels.User>.Filter.Empty;
+                var collection = database.GetCollection<DbModels.UserResponse>("users");
+                var filter = Builders<DbModels.UserResponse>.Filter.Empty;
                 var result = collection.Find(filter).ToList();
 
                 return result;
             }
-            public static List<DbModels.User> GetUserByEmailpattern(string emailPattern)
+            public static List<DbModels.UserResponse> GetUserByEmailpattern(string emailPattern)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<DbModels.User>("users");
-                var filter = Builders<DbModels.User>.Filter.Regex(u=>u.Email, new BsonRegularExpression(emailPattern));
+                var collection = database.GetCollection<DbModels.UserResponse>("users");
+                var filter = Builders<DbModels.UserResponse>.Filter.Regex(u=>u.Email, new BsonRegularExpression(emailPattern));
                 var result = collection.Find(filter).ToList();
                 return result;
             }
 
-            public static DbModels.User GetUserByEmail(string email)
+            public static DbModels.UserResponse GetUserByEmail(string email)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<DbModels.User>("users");
-                var filter = Builders<DbModels.User>.Filter.Regex(u => u.Email, new BsonRegularExpression(email));
+                var collection = database.GetCollection<DbModels.UserResponse>("users");
+                var filter = Builders<DbModels.UserResponse>.Filter.Regex(u => u.Email, new BsonRegularExpression(email));
                 var preresult = collection.Find(filter).ToList();
                 var result = preresult.LastOrDefault();
                 return result;
             }
 
-            public static DbModels.User GetOneUserByEmail(string email)
+            public static DbModels.UserResponse GetOneUserByEmail(string email)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<DbModels.User>("users");
-                var filter = Builders<DbModels.User>.Filter.Regex("email", new BsonRegularExpression(email));
+                var collection = database.GetCollection<DbModels.UserResponse>("users");
+                var filter = Builders<DbModels.UserResponse>.Filter.Regex("email", new BsonRegularExpression(email));
                 var result = collection.Find(filter).ToList();
                 return result.Select(x=>x).FirstOrDefault();
             }
 
-            public static DbModels.User GetUserById(string id)
+            public static DbModels.UserResponse GetUserById(string id)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<DbModels.User>("users");
-                var filter = Builders<DbModels.User>.Filter.Eq(u=>u.Id, new ObjectId(id));
+                var collection = database.GetCollection<DbModels.UserResponse>("users");
+                var filter = Builders<DbModels.UserResponse>.Filter.Eq(u=>u.Id, new ObjectId(id));
                 var result = collection.Find(filter).ToList();
                 return result.Select(x => x).FirstOrDefault();
             }
 
-            public static void UpdateUsers(List<DbModels.User> users)
+            public static void UpdateUsers(List<DbModels.UserResponse> users)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<DbModels.User>("users");
-                var filter = Builders<DbModels.User>.Filter.Empty;
-                var update = Builders<DbModels.User>.Update
+                var collection = database.GetCollection<DbModels.UserResponse>("users");
+                var filter = Builders<DbModels.UserResponse>.Filter.Empty;
+                var update = Builders<DbModels.UserResponse>.Update
                     .Set(u=>u.Email, string.Concat("test", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-ffff"), "@dot.co"))
                     .Set(u=>u.Phone, "000000000");
                 collection.UpdateMany(filter, update);
             }
 
-            public static void DeleteUsersByUserId(List<DbModels.User> users)
+            public static void DeleteUsersByUserId(List<DbModels.UserResponse> users)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<DbModels.User>("users");
+                var collection = database.GetCollection<DbModels.UserResponse>("users");
                 for (int i = 0; i < 4000; i++)
                 {
                     foreach (var user in users)
                     {
-                        var filter = Builders<DbModels.User>.Filter.Eq("_id", new ObjectId(user.Id.ToString()));
+                        var filter = Builders<DbModels.UserResponse>.Filter.Eq("_id", new ObjectId(user.Id.ToString()));
                         collection.DeleteMany(filter);
                     }
                 }
@@ -97,8 +97,8 @@ namespace RaffleAutomationTests.Helpers
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<DbModels.User>("users");
-                var filter = Builders<DbModels.User>.Filter.Eq("email", email);
+                var collection = database.GetCollection<DbModels.UserResponse>("users");
+                var filter = Builders<DbModels.UserResponse>.Filter.Eq("email", email);
                 collection.DeleteMany(filter);
 
             }
@@ -188,7 +188,7 @@ namespace RaffleAutomationTests.Helpers
                 return result;
             }
 
-            public static List<DbModels.Subscriptions> GetAllSubscriptionsByUserId(DbModels.User user)
+            public static List<DbModels.Subscriptions> GetAllSubscriptionsByUserId(DbModels.UserResponse user)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -198,7 +198,7 @@ namespace RaffleAutomationTests.Helpers
                 return result;
             }
 
-            public static DbModels.Subscriptions GetSubscriptionByUserId(DbModels.User user)
+            public static DbModels.Subscriptions GetSubscriptionByUserId(DbModels.UserResponse user)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -219,7 +219,7 @@ namespace RaffleAutomationTests.Helpers
                 return result;
             }
 
-            public static void UpdateSubscriptionDateByIdToNextPurchase(DbModels.User user)
+            public static void UpdateSubscriptionDateByIdToNextPurchase(DbModels.UserResponse user)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -233,7 +233,7 @@ namespace RaffleAutomationTests.Helpers
                     .Set(u=>u.NextPurchaseDate, DateTime.Now.AddDays(-1));
                 collection.UpdateMany(filter, update);
             }
-            public static void UpdateSubscriptionDateByIdToUnpause(DbModels.User user)
+            public static void UpdateSubscriptionDateByIdToUnpause(DbModels.UserResponse user)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -247,7 +247,7 @@ namespace RaffleAutomationTests.Helpers
                     .Set(s => s.PauseEnd, DateTime.Now.AddMonths(-1).AddDays(-1));                
                 collection.UpdateMany(filter, update);
             }
-            public static void UpdateSubscriptionDateByIdToSendEmail7DaysPrior(DbModels.User user)
+            public static void UpdateSubscriptionDateByIdToSendEmail7DaysPrior(DbModels.UserResponse user)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -262,7 +262,7 @@ namespace RaffleAutomationTests.Helpers
                 collection.UpdateMany(filter, update);
             }
 
-            public static void DeleteSubscriptionsByUserId(List<DbModels.User> users)
+            public static void DeleteSubscriptionsByUserId(List<DbModels.UserResponse> users)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -275,7 +275,7 @@ namespace RaffleAutomationTests.Helpers
 
             }
 
-            public static void DeleteSubscriptionsByUserId(DbModels.User user)
+            public static void DeleteSubscriptionsByUserId(DbModels.UserResponse user)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -318,7 +318,7 @@ namespace RaffleAutomationTests.Helpers
                 return result;
             }
 
-            public static List<DbModels.Orders> GetAllOrdersByUserId(List<DbModels.User> user)
+            public static List<DbModels.Orders> GetAllOrdersByUserId(List<DbModels.UserResponse> user)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -328,7 +328,7 @@ namespace RaffleAutomationTests.Helpers
                 return result;
             }
 
-            public static List<DbModels.Orders> GetAllSubscriptionOrdersByUserId(DbModels.User user)
+            public static List<DbModels.Orders> GetAllSubscriptionOrdersByUserId(DbModels.UserResponse user)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -341,7 +341,7 @@ namespace RaffleAutomationTests.Helpers
                 return result;
             }
 
-            public static void DeleteOrdersByUserId(List<DbModels.User> users)
+            public static void DeleteOrdersByUserId(List<DbModels.UserResponse> users)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -368,7 +368,7 @@ namespace RaffleAutomationTests.Helpers
 
         public class Insert
         {
-            public static void InsertSubscriptionsToUsers(List<DbModels.User> users, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels)
+            public static void InsertSubscriptionsToUsers(List<DbModels.UserResponse> users, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels)
             {
 
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
@@ -519,7 +519,7 @@ namespace RaffleAutomationTests.Helpers
 
             }
 
-            public static void InsertSubscriptionsToUsers(DbModels.User user, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels)
+            public static void InsertSubscriptionsToUsers(DbModels.UserResponse user, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -578,7 +578,7 @@ namespace RaffleAutomationTests.Helpers
 
             }
 
-            public static void InsertSubscriptionsToUserForFailPayment(DbModels.User user, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels)
+            public static void InsertSubscriptionsToUserForFailPayment(DbModels.UserResponse user, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -619,8 +619,8 @@ namespace RaffleAutomationTests.Helpers
                 
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<DbModels.User>("users");
-                var update = new DbModels.User()
+                var collection = database.GetCollection<DbModels.UserRequest>("users");
+                var update = new DbModels.UserRequest()
                 {
                     Id = ObjectId.GenerateNewId(),
                     IsAdmin = false,
@@ -657,9 +657,7 @@ namespace RaffleAutomationTests.Helpers
                     ReferralCredits = 0,
                     IsEmailValid = true,
                     UpdatedAt = DateTime.Now,
-                    CorporateNotification = true,
-                    MobileEntry  = false,
-                    SpentMobile = 0
+                    CorporateNotification = true
                 };
                 collection.InsertOne(update);
             }
@@ -669,8 +667,8 @@ namespace RaffleAutomationTests.Helpers
 
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<DbModels.User>("users");
-                var update = new DbModels.User()
+                var collection = database.GetCollection<DbModels.UserRequest>("users");
+                var update = new DbModels.UserRequest()
                 {
                     Id = ObjectId.GenerateNewId(),
                     IsAdmin = false,
@@ -707,9 +705,7 @@ namespace RaffleAutomationTests.Helpers
                     ReferralCredits = 0,
                     IsEmailValid = true,
                     UpdatedAt = DateTime.Now,
-                    CorporateNotification = true,
-                    MobileEntry = false,
-                    SpentMobile = 0
+                    CorporateNotification = true
                 };
                 collection.InsertOne(update);
             }
