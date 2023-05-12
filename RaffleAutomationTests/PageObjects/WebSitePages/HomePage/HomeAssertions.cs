@@ -2,6 +2,7 @@
 {
     public partial class Home
     {
+        [AllureStep("Verify Secondary Banner Title")]
         public Home VerifySecondaryBannerTitle()
         {
             Debug.WriteLine(textTitleBannerSecondary.Text);
@@ -9,7 +10,9 @@
 
             return this;
         }
-        public Home VerifySecondaryBannerSubitle()
+
+        [AllureStep("Verify Secondary Banner Subtitle")]
+        public Home VerifySecondaryBannerSubtitle()
         {
             Debug.WriteLine(textSubtitleBannerSecondary.Text);
             Assert.IsTrue(textSubtitleBannerSecondary.Text.ToLower() == HomeTexts.SECONDARY_BANNER_SUBTITLE.ToLower(), $"Texts are not matched. Expected \"{HomeTexts.SECONDARY_BANNER_SUBTITLE}\" but was \"{textSubtitleBannerSecondary.Text}\"");
@@ -17,6 +20,7 @@
             return this;
         }
 
+        [AllureStep("Verify Bottom Slider Title")]
         public Home VerifyBottomSliderTitle()
         {
             Debug.WriteLine(textBottomSliderTitle.Text);
@@ -24,6 +28,8 @@
 
             return this;
         }
+
+        [AllureStep("Verify Bottom Slider Subitle")]
         public Home VerifyBottomSliderSubitle()
         {
             Debug.WriteLine(textBottomSliderParagraph.FirstOrDefault().Text);
@@ -34,6 +40,7 @@
             return this;
         }
 
+        [AllureStep("Verify Info Block Titles")]
         public Home VerifyInfoBlockTitles()
         {
             for (int i = 0; i < HomeTexts.TITLES_INFO_BLOCKS.Count; i++)
@@ -47,6 +54,7 @@
             return this;
         }
 
+        [AllureStep("Verify Info Block Paragraphs")]
         public Home VerifyInfoBlockParagraphs()
         {
             for (int i = 0; i < 5; i++)
@@ -58,12 +66,15 @@
             return this;
         }
 
+        [AllureStep("Verify 'How It Works' Title")]
         public Home VerifyHowItWorksTitle()
         {
             Debug.WriteLine(textHowItWorksTitle.Text.ToLower());
             Assert.IsTrue(textHowItWorksTitle.Text.ToLower() == HomeTexts.HOW_IT_WORKS_TITLE.ToLower(), $"Texts are not matched. Expected \"{HomeTexts.HOW_IT_WORKS_TITLE}\" but was \"{textHowItWorksTitle.Text}\"");
             return this;
         }
+
+        [AllureStep("Verify 'How It Works' Paragraph")]
         public Home VerifyHowItWorksParagraph()
         {
             Debug.WriteLine(textHowItWorksParagraph.Text.ToLower());
@@ -71,6 +82,7 @@
             return this;
         }
 
+        [AllureStep("Verify 'How It Works Steps' Titles")]
         public Home VerifyHowItWorksStepsTitles()
         {
             for (int i = 0; i < 3; i++)
@@ -81,6 +93,7 @@
             return this;
         }
 
+        [AllureStep("Verify 'How It Works Steps' Paragraphs")]
         public Home VerifyHowItWorksStepsParagraphs()
         {
             for (int i = 0; i < 3; i++)

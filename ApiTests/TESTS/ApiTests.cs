@@ -9,6 +9,7 @@ using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
 using RaffleAutomationTests.APIHelpers.Web.Subscriptions;
 using RaffleAutomationTests.APIHelpers.Web.Weekly;
 using RaffleAutomationTests.Helpers;
+using Telegram.Bot.Types;
 using static RaffleAutomationTests.Helpers.AppDbHelper;
 
 namespace API
@@ -22,16 +23,12 @@ namespace API
         {
             #region Preconditions
 
-            var subscriptions = AppDbHelper.Subscriptions.GetAllSubscriptions();
-            foreach(var subscription in subscriptions)
-            {
-                var user = AppDbHelper.Users.GetUserById(subscription.User.ToString());
-                if(user == null)
-                {
-                    Console.WriteLine(subscription.User.ToString());
-                }
-            }
-
+            //var response = SignUpRequest.RegisterNewUser();
+            //var s = SubscriptionsRequest.GetEmailsCount(response.User.Email);
+            //SubscriptionsRequest.CheckEmailsCountFor17Minutes(s, response.User.Email);
+            //s = SubscriptionsRequest.GetEmailsCount(response.User.Email);
+            //string email = response.User.Email;
+            //Elements.GgetAllEmailData(email);
             #endregion
 
         }
@@ -159,11 +156,8 @@ namespace API
 
         public void DeleteUsersByEmail()
         {
-            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
-            foreach (var user in users)
-            {
-                AppDbHelper.Users.DeleteUsersByEmail(user.Email);
-            }
+            //var users = AppDbHelper.Users.GetUserByEmailpattern("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
+            Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
         }
 
         [Test]
@@ -197,17 +191,16 @@ namespace API
             #region Preconditions
 
             var email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff"), "@putsbox.com");
+
             var raffle = DreamHome.GetAciveRaffles();
             Insert.InsertSubscriptionModel(ErrorTotalCost.ERROR_BAD_TRACK_DATA);
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             Insert.InsertUser(raffle, email);
             var user = AppDbHelper.Users.GetUserByEmail(email);
             Insert.InsertSubscriptionsToUserForFailPayment(user, raffle, subscriptionsModel);
-            var userSub = AppDbHelper.Subscriptions.GetSubscriptionByUserId(user);
+            EmailVerificator.VerifyPurchaseFailedEmail(email);
 
             #endregion
-
-            SubscriptionsRequest.CheckStatusFor17Minutes(userSub, user);
 
             #region PostConditions
 

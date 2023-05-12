@@ -1,4 +1,5 @@
 ﻿using RaffleAutomationTests.PageObjects;
+using static RaffleAutomationTests.APIHelpers.Web.Subscriptions.SubsriptionsResponse;
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -49,6 +50,21 @@ namespace RaffleAutomationTests.Helpers
             var activateLink = PutsBox.GetHtmlFromEmail(email);
 
             return activateLink;
+        }
+
+        //[AllureStep("Go to activation link")]
+        public static string GgetHtmlBody(string email, string id)
+        {
+            var activateLink = PutsBox.GetHtmlFromEmail(email, id);
+
+            return activateLink;
+        }
+
+        //[AllureStep("Go to activation link")]
+        public static List<PutsboxEmail>? GgetAllEmailData(string email)
+        {
+            var emailsList = PutsBox.GetAllEmails(email);
+            return JsonConvert.DeserializeObject<List<PutsboxEmail>?>(emailsList);
         }
 
         [AllureStep("Clear email history")]

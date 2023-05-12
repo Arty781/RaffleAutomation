@@ -48,8 +48,8 @@ namespace RaffleAutomationTests.PageObjects
         public Profile EditAccountData()
         {
             WaitUntil.CustomElementIsVisible(btnSave);
-            InputBox.Element(inputEmail, 10, "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com");
-            InputBox.Element(inputPhone, 10, "953214567");
+            InputBox.Element(inputEmail, 10, DateTime.Now.ToString("yyyy-MM-dThh-mm-fff") + "@putsbox.com");
+            InputBox.Element(inputPhone, 10, RandomHelper.RandomPhone());
             Button.ClickJS(btnSave);
             return this;
         }
@@ -170,6 +170,68 @@ namespace RaffleAutomationTests.PageObjects
             Button.Click(btnReactivatePopUp);
             WaitUntil.WaitSomeInterval();
             WaitUntil.CustomElementIsVisible(titleSubscriptionStatus.Where(t => t.Text == "Active Subscription").First());
+            return this;
+        }
+
+        public Profile VerifyCancelationEmail(string email)
+        {
+            var emailsList = Elements.GgetAllEmailData(email);
+            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
+            emailsList = Elements.GgetAllEmailData(email);
+            var id = emailsList.Where(x => x.subject == "Subscription cancellation receipt").Select(q => q.id).FirstOrDefault();
+            var emailInitial = Elements.GgetHtmlBody(email, id);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.CANCEL);
+
+            
+
+            return this;
+        }
+
+        public Profile VerifyPauseEmail(string email)
+        {
+            var emailsList = Elements.GgetAllEmailData(email);
+            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
+            emailsList = Elements.GgetAllEmailData(email);
+            var id = emailsList.Where(x => x.subject == "Paused subscription").Select(q => q.id).FirstOrDefault();
+            var emailInitial = Elements.GgetHtmlBody(email, id);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.PAUSE);
+
+            return this;
+        }
+
+        public Profile VerifyInitialEmailAuth(string email)
+        {
+            var emailsList = Elements.GgetAllEmailData(email);
+            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
+            emailsList = Elements.GgetAllEmailData(email);
+            var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
+            var emailInitial = Elements.GgetHtmlBody(email, id);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.INITIAL_AUTH);
+
+            return this;
+        }
+
+        public Profile VerifyInitialEmailUnauth(string email)
+        {
+            var emailsList = Elements.GgetAllEmailData(email);
+            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
+            emailsList = Elements.GgetAllEmailData(email);
+            var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
+            var emailInitial = Elements.GgetHtmlBody(email, id);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.INITIAL_UNAUTH);
+
+            return this;
+        }
+
+        public Profile VerifyUnpauseEmail(string email)
+        {
+            var emailsList = Elements.GgetAllEmailData(email);
+            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
+            emailsList = Elements.GgetAllEmailData(email);
+            var id = emailsList.Where(x => x.subject == "Subscription pause reactivation").Select(q => q.id).FirstOrDefault();
+            var emailInitial = Elements.GgetHtmlBody(email, id);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.UNPAUSE);
+
             return this;
         }
     }

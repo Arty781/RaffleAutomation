@@ -248,6 +248,16 @@ namespace RaffleAutomationTests.Helpers
             string arg = email.Substring(0, email.IndexOf('@'));
             return $"https://preview.putsbox.com/p/{arg}/last.html";
         }
+        private static string GetHtmlUrl(string email, string id)
+        {
+            string arg = email.Substring(0, email.IndexOf('@'));
+            return $"https://preview.putsbox.com/p/{arg}/{id}.html";
+        }
+        private static string GetHtmlUrlToInspect(string email)
+        {
+            string arg = email.Substring(0, email.IndexOf('@'));
+            return $"https://putsbox.com/{arg}/inspect";
+        }
         private static string GetJsonUrl(string email)
         {
             string arg = email.Substring(0, email.IndexOf('@'));
@@ -311,6 +321,20 @@ namespace RaffleAutomationTests.Helpers
             return client.ExecuteGetAsync(request).Result.Content;
         }
 
+        private static string GetHtmlContent(string email, string id)
+        {
+            RestClient client = new RestClient(GetHtmlUrl(email, id));
+            RestRequest request = new RestRequest("");
+            return client.ExecuteGetAsync(request).Result.Content;
+        }
+
+        private static string GetEmailContent(string email)
+        {
+            RestClient client = new RestClient(GetHtmlUrlToInspect(email));
+            RestRequest request = new RestRequest("");
+            return client.ExecuteGetAsync(request).Result.Content;
+        }
+
         private static void ClearRequest(string email)
         {
             RestClient client = new RestClient(ClearHistory(email));
@@ -365,6 +389,34 @@ namespace RaffleAutomationTests.Helpers
 
             string text = Decode(htmlContent);
             return text;
+        }
+
+        public static string GetHtmlFromEmail(string domain, string id)
+        {
+            Thread.Sleep(2000);
+            string htmlContent = GetHtmlContent(domain, id);
+            if (htmlContent.Contains("Not Found"))
+            {
+                Thread.Sleep(2000);
+                htmlContent = GetHtmlContent(domain, id);
+            }
+
+            string text = Decode(htmlContent);
+            return text;
+        }
+
+        public static string GetAllEmails(string domain)
+        {
+            Thread.Sleep(2000);
+            string htmlContent = GetEmailContent(domain);
+            if (htmlContent.Contains("Not Found"))
+            {
+                Thread.Sleep(2000);
+                htmlContent = GetEmailContent(domain);
+            }
+
+            string text = Decode(htmlContent);
+            return htmlContent;
         }
 
         public static void ClearEmailHistory(string domain)

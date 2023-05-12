@@ -4,6 +4,7 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class Home
     {
+        [AllureStep("Open Home page")]
         public Home OpenHomePage(string url)
         {
             Browser._Driver.Navigate().GoToUrl(url);
@@ -12,6 +13,7 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Switching Slider Images")]
         public Home SwitchingSliderImages()
         {
             for (int i = 0; i < 3; i++)
@@ -25,6 +27,7 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Open Floor Plan")]
         public Home OpenFloorPlan()
         {
             Button.Click(tbsSlider[1]);
@@ -32,12 +35,14 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Open Map")]
         public Home OpenMap()
         {
             Button.Click(tbsSlider[2]);
             Assert.IsTrue(imgMap.Enabled);
             return this;
         }
+
 
         [AllureStep("Open Dreamhome product page")]
         public Home OpenHomePage()
@@ -48,6 +53,7 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Open dreamhome Ticket Selector")]
         public Home OpenDreamTicketSelector()
         {
             Button.ClickJS(btnDreamTicketSelector);

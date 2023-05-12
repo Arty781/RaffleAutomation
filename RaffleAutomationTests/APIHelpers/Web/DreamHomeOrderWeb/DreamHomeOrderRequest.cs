@@ -41,7 +41,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
                 Console.WriteLine(http.LastErrorText);
             }
             var response = JsonConvert.DeserializeObject<DreamHomeOrderResponseModelWeb>(resp.BodyStr);
-
+            Assert.That(response.Message, Is.EqualTo("Order created!"), "Order is not created");
             WaitUntil.WaitSomeInterval(250);
             return response;
             

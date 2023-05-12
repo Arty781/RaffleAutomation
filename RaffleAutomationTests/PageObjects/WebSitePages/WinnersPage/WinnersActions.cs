@@ -2,6 +2,7 @@
 {
     public partial class Winners
     {
+        [AllureStep("Scroll To End Of List")]
         public Winners ScrollToEndOfList(int winnerCount)
         {
             WaitUntil.WaitSomeInterval(2000);
@@ -12,6 +13,7 @@
             return this;
         }
 
+        [AllureStep("Filter Winners By Year")]
         public Winners FilterWinnersByYear(int yearNum)
         {
             WaitUntil.CustomElementIsVisible(filterYearSelector.LastOrDefault());

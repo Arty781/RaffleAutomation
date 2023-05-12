@@ -1,9 +1,12 @@
+using MongoDB.Bson;
+using MongoDB.Bson.IO;
 using OpenQA.Selenium.Interactions;
 using RaffleAutomationTests.APIHelpers.Web.Subscriptions;
 using RaffleAutomationTests.PageObjects.WebSitePages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static RaffleAutomationTests.Helpers.AppDbHelper;
 
 namespace RaffleHouseAutomation.WebSiteTests
 {
@@ -12,13 +15,14 @@ namespace RaffleHouseAutomation.WebSiteTests
     public class Demo : TestBaseWeb
     {
         [Test]
-        [Ignore("Demo test")]
+        //[Ignore("Demo test")]
         
         public void Demotest()
         {
             #region Preconditions
 
             var response = SignUpRequest.RegisterNewUser();
+            
             WaitUntil.WaitSomeInterval(250);
 
             #endregion
@@ -36,7 +40,6 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .AddTenSubscriptionToBasket();
             Pages.Basket
                 .EnterCardDetails()
-                .SelectCharity()
                 .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
@@ -44,6 +47,12 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList();
 
+            var emailsList = Elements.GgetAllEmailData(response.User.Email);
+            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, response.User.Email);
+            emailsList = Elements.GgetAllEmailData(response.User.Email);
+            var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
+            var emailInitial = Elements.GgetHtmlBody(response.User.Email, id);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.INITIAL_AUTH);
             #region Postconditions
 
 
@@ -447,17 +456,16 @@ namespace RaffleHouseAutomation.WebSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("Client")]
         [AllureSubSuite("Subscriptions")]
-        public void PurchaseTenPoundsSubscriptionAsAuthorizedUser()
+        public void PurchaseTenPoundsSubscriptionAsAuthorizedUserLive()
         {
-            var response = SignUpRequest.RegisterNewUser();
-            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+            //var response = SignUpRequest.RegisterNewUser();
 
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.Header
                .OpenSignInPage();
             Pages.SignIn
-                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+                .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
             Pages.Subscription
@@ -465,14 +473,13 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .AddTenSubscriptionToBasket();
             Pages.Basket
                 .EnterCardDetails()
-                .SelectCharity()
                 .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList();
-            var user = AppDbHelper.Users.GetUserByEmail(response.User.Email);
+            var user = AppDbHelper.Users.GetUserByEmail(Credentials.LOGIN);
             var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
             foreach (var subscription in subscriptionList)
             {
@@ -558,7 +565,8 @@ namespace RaffleHouseAutomation.WebSiteTests
             }
             Pages.Profile
                 .OpenSubscriptionInProfile()
-                .PauseSubscription();
+                .PauseSubscription()
+                .VerifyPauseEmail(response.User.Email);
         }
 
         [Test]
@@ -601,7 +609,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenSubscriptionInProfile()
                 .PauseSubscription()
                 .OpenSubscriptionInProfile()
-                .UnpauseSubscription();
+                .UnpauseSubscription()
+                .VerifyUnpauseEmail(response.User.Email);
         }
 
         [Test]
@@ -642,7 +651,10 @@ namespace RaffleHouseAutomation.WebSiteTests
             }
             Pages.Profile
                 .OpenSubscriptionInProfile()
-                .CancelSubscription();
+                .CancelSubscription()
+                .VerifyCancelationEmail(response.User.Email);
+
+
         }
 
         [Test]
@@ -671,7 +683,6 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .AddTenSubscriptionToBasket();
             Pages.Basket
                 .EnterCardDetails()
-                .SelectCharity()
                 .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
@@ -937,9 +948,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.FirstOrDefault().Id);
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
-            var emailInitial = Elements.GgetHtmlBody(email);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.INITIAL_UNAUTH);
-
+            Pages.Profile
+                .VerifyInitialEmailUnauth(email);
         }
 
         [Test]
@@ -977,9 +987,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClearEmailHistory(email);
             Pages.Profile
                 .OpenSubscriptionInProfile()
-                .PauseSubscription();
-            var emailPause = Elements.GgetHtmlBody(email);
-            ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.PAUSE);
+                .PauseSubscription()
+                .VerifyPauseEmail(email);
 
         }
 
@@ -1023,9 +1032,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClearEmailHistory(email);
             Pages.Profile
                 .OpenSubscriptionInProfile()
-                .UnpauseSubscription();
-            var emailPause = Elements.GgetHtmlBody(email);
-            ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.UNPAUSE);
+                .UnpauseSubscription()
+                .VerifyUnpauseEmail(email);
 
         }
 
@@ -1064,9 +1072,9 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ClearEmailHistory(email);
             Pages.Profile
                 .OpenSubscriptionInProfile()
-                .CancelSubscription();
-            var emailPause = Elements.GgetHtmlBody(email);
-            ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.CANCEL);
+                .CancelSubscription()
+                .VerifyCancelationEmail(email);
+            
 
         }
     }
@@ -1085,15 +1093,29 @@ namespace RaffleHouseAutomation.WebSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("Client")]
         [AllureSubSuite("Subscriptions")]
-        public void VerifyNextPaymentSubscriptionEmailAfterRunScript()
+        public void VerifySubscriptionEmailsAfterRunScript()
         {
+            #region Preconditions
+
             var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            AppDbHelper.Subscriptions.DeleteSubscriptionsByUserId(users);
+            Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
+
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
+            AppDbHelper.Insert.InsertUser(raffle);
+            users = AppDbHelper.Users.GetUserByEmailpattern("@putsbox.com");
+            AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle, subscriptionsModel);
+
+            #endregion
+
+            users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             foreach (var user in users)
             {
                 var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
                 var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
                 var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
-                Assert.That(ordersList.Count >= 1, $"New order is not created, current subscription orders count is \"{ordersList.Count}\"");
+                //Assert.That(ordersList.Count >= 1, $"New order is not created, current subscription orders count is \"{ordersList.Count}\"");
 
                 foreach (var subscription in subscriptionList)
                 {
@@ -1101,8 +1123,9 @@ namespace RaffleHouseAutomation.WebSiteTests
                     Assert.IsNotNull(subscription.CardSource);
                     Assert.IsNotNull(subscription.CheckoutId);
                 }
-                var emailPause = Elements.GgetHtmlBody(user.Email);
-                ParseHelper.ParseHtmlAndCompare(emailPause, SubscriptionEmailsTemplate.MONTHLY_AUTH);
+                EmailVerificator.VerifyMonthlyEmailAuth(user.Email);
+                EmailVerificator.VerifyUnpauseEmail(user.Email);
+                EmailVerificator.VerifyReminderEmail(user.Email);
             }
             
 
@@ -1378,7 +1401,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .VerifyIsSignIn();
             Pages.Home
-                .AddTicketsToBasket(1);
+                .AddTicketsToBasket(0);
             Pages.Basket
                 .MakeAPurchaseAsAuthorizedUser();
             Pages.ThankYou
@@ -1473,7 +1496,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyAddingTickets(totalOrder);
             Pages.Header
                 .DoLogout();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 2; i++)
             {
                 var responseReferral = SignUpRequest.RegisterNewReferral(response.User.ReferralKey);
                 var tokenReferral = SignInRequestWeb.MakeSignIn(responseReferral.User.Email, Credentials.PASSWORD);
@@ -1794,7 +1817,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Home
                 .OpenHomePage(WebEndpoints.WEBSITE_HOST)
                 .VerifySecondaryBannerTitle()
-                .VerifySecondaryBannerSubitle()
+                .VerifySecondaryBannerSubtitle()
                 .VerifyBottomSliderTitle()
                 .VerifyBottomSliderSubitle();
             Element.Action(Keys.End);

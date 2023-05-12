@@ -98,7 +98,7 @@ namespace RaffleAutomationTests.Helpers
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
                 var collection = database.GetCollection<DbModels.UserResponse>("users");
-                var filter = Builders<DbModels.UserResponse>.Filter.Eq("email", email);
+                var filter = Builders<DbModels.UserResponse>.Filter.Regex(u => u.Email, new BsonRegularExpression(email));
                 collection.DeleteMany(filter);
 
             }
@@ -488,27 +488,6 @@ namespace RaffleAutomationTests.Helpers
                         PurchaseDate = DateTimeOffset.Now.AddMonths(-1).DateTime,
                         PausedAt= DateTimeOffset.Now.AddMonths(-1).DateTime,
                         PauseEnd= DateTimeOffset.Now.AddHours(24).DateTime,
-
-                        },
-                        new SubscriptionsInsert
-                        {
-                        Status = "ACTIVE",
-                        Count= 1,
-                        Charity= "",
-                        IsReminderSent= false,
-                        CreatedAt = DateTimeOffset.Now.DateTime,
-                        TotalCost= 2500,
-                        NumOfTickets = 15,
-                        Extra= 135,
-                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
-                        Emails = new List<string>(),
-                        Raffle= raffle.FirstOrDefault().Id,
-                        User= user.Id,
-                        Refference= SubscriptionsCardDetails.REFFERENCE[activeCount],
-                        CardSource= SubscriptionsCardDetails.CARD_SOURCE[activeCount],
-                        CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[activeCount],
-                        NextPurchaseDate = DateTimeOffset.Now.DateTime,
-                        PurchaseDate = DateTimeOffset.Now.AddMinutes(20).DateTime
 
                         },
 

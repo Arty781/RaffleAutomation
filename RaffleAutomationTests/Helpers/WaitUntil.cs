@@ -61,5 +61,28 @@
 
         }
 
+        public static void CustomCheckoutIsDisplayed(int sec = 10)
+        {
+            System.Threading.Tasks.Task.Delay(TimeSpan.FromMilliseconds(150)).Wait();
+            WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(sec));
+            wait.IgnoreExceptionTypes(typeof(NoSuchElementException), typeof(StaleElementReferenceException));
+
+            wait.Until(driver =>
+            {
+                try
+                {
+                    if (driver.Url.Contains("checkout.com/sessions-interceptor"))
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                catch
+                {
+                    return false;
+                }
+            });
+        }
+
     }
 }

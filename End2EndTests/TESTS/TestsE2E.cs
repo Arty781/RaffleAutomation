@@ -1,5 +1,6 @@
 ﻿using Allure.Commons;
 using NUnit.Allure.Attributes;
+using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
 
 namespace End2EndTests.TESTS
 {
@@ -168,7 +169,7 @@ namespace End2EndTests.TESTS
             Pages.Header
                .OpenSignInPage();
             Pages.SignIn
-                .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn();
             Pages.Home
@@ -180,6 +181,15 @@ namespace End2EndTests.TESTS
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList();
+
+            #endregion
+
+            #region PostConditions
+
+            var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
+            basketOrders = BasketRequest.GetBasketOrders(token);
+            BasketRequest.DeleteOrders(token, basketOrders);
+            UsersRequest.DeleteLastUser(tokenAdmin, users);
 
             #endregion
         }

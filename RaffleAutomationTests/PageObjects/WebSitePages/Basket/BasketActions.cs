@@ -71,6 +71,25 @@
             return this;
         }
 
+        //[AllureStep("Enter card details")]
+        //public Basket EnterCardDetailsLive()
+        //{
+
+        //    WaitUntil.CustomElementIsVisible(framePaymentNumber);
+        //    Browser._Driver.SwitchTo().Frame(framePaymentNumber);
+        //    InputBox.Element(inputCardNumber, 15, "5373010046212228");
+        //    Browser._Driver.SwitchTo().DefaultContent();
+        //    Browser._Driver.SwitchTo().Frame(framePaymentExpiry);
+        //    InputBox.Element(inputExpiryDate, 15, "07/26");
+        //    Browser._Driver.SwitchTo().DefaultContent();
+        //    Browser._Driver.SwitchTo().Frame(framePaymentCvv);
+        //    InputBox.Element(inputCvv, 15, "937");
+        //    Browser._Driver.SwitchTo().DefaultContent();
+        //    WaitUntil.CustomElementIsVisible(btnPay, 5);
+
+        //    return this;
+        //}
+
         [AllureStep("Click Pay Now button")]
         public Basket ClickPayNowBtn()
         {
@@ -184,7 +203,7 @@
             Button.Click(inputCharity);
             WaitUntil.WaitSomeInterval(1000);
             var charity = listCharities
-                .Where(x => x.Text == Charities.CHARITY[RandomHelper.RandomIntNumber(7)])
+                .Where(x => x.Text == Charities.CHARITY[RandomHelper.RandomCharityNumber(7)])
                 .Select(x => x)
                 .FirstOrDefault();
             Button.ClickJS(charity);

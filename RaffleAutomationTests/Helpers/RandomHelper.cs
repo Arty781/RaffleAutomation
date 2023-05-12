@@ -30,6 +30,14 @@
             return genRand;
         }
 
+        public static int RandomCharityNumber(int maxNum)
+        {
+            Random r = new Random();
+            int genRand = r.Next(3, maxNum);
+
+            return genRand;
+        }
+
         public static int RandomWPId(WeeklyPrizesResponseModelWeb content)
         {
             Random r = new Random();
@@ -59,7 +67,7 @@
         {
             Random random = new Random();
             const string chars = "0123456789";
-            return new string(Enumerable.Repeat(chars, 9)
+            return new string(Enumerable.Repeat(chars, 10)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
