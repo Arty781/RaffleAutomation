@@ -11,11 +11,20 @@
             return this;
         }
 
+        [AllureStep("Get Order count")]
+        public int GetOrderCount()
+        {
+            WaitUntil.CustomElementIsVisible(orderTotalVal);
+            int total = textPrice.Count;
+
+            return total;
+        }
+
         [AllureStep("Get Order Total")]
         public double GetOrderTotal()
         {
             WaitUntil.CustomElementIsVisible(orderTotalVal);
-            double total = double.Parse(orderTotalVal.Text.Trim('£'));
+            double total = double.Parse(orderTotalVal.Text.Substring(1));
 
             return total;
         }

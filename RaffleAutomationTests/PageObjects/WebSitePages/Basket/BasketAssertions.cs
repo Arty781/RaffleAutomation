@@ -4,7 +4,7 @@
     {
         public Basket VerifyUrl()
         {
-            //WaitUntil.CustomCheckoutIsDisplayed();
+            WaitUntil.CustomCheckoutIsDisplayed();
             string expectedUrl = $"{WebEndpoints.WEBSITE_HOST}";
             string currentUrl = Browser._Driver.Url;
 

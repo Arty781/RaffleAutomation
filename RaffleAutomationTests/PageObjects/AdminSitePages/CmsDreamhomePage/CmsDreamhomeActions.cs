@@ -107,29 +107,29 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Start date")]
         public CmsDreamhome EnterStartDate()
         {
-            var currentDate = DateTime.Now;
+            var startDate = DateTime.Now.AddMonths(-5).Date;
 
             for (int i = 0; i < inputStartDate.Count; i++)
             {
                 switch (i)
                 {
                     case 0:
-                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("dd"));
+                        InputBox.Element(inputStartDate[i], 5, startDate.ToString("dd"));
                         break;
                     case 1:
-                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("MM"));
+                        InputBox.Element(inputStartDate[i], 5, startDate.ToString("MM"));
                         break;
                     case 2:
-                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("yyyy"));
+                        InputBox.Element(inputStartDate[i], 5, startDate.ToString("yyyy"));
                         break;
                     case 3:
-                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("hh"));
+                        InputBox.Element(inputStartDate[i], 5, startDate.ToString("hh"));
                         break;
                     case 4:
-                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("mm"));
+                        InputBox.Element(inputStartDate[i], 5, startDate.ToString("mm"));
                         break;
                     case 5:
-                        InputBox.Element(inputStartDate[i], 5, currentDate.ToString("ss"));
+                        InputBox.Element(inputStartDate[i], 5, startDate.ToString("ss"));
                         break;
                     default:
                         break;
@@ -144,7 +144,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Finish date")]
         public CmsDreamhome EnterFinishDate()
         {
-            var currentDate = DateTime.Now;
+            var currentDate = DateTime.Now.AddMonths(5).Date;
 
             for (int i = 0; i < inputFinishDate.Count; i++)
             {
@@ -157,7 +157,7 @@ namespace RaffleAutomationTests.PageObjects
                         InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("MM"));
                         break;
                     case 2:
-                        InputBox.Element(inputFinishDate[i], 5, currentDate.AddYears(1).ToString("yyyy"));
+                        InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("yyyy"));
                         break;
                     case 3:
                         InputBox.Element(inputFinishDate[i], 5, currentDate.ToString("hh"));

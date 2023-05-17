@@ -4,6 +4,7 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class SignIn
     {
+        [AllureStep("Verify Is Sign In")]
         public SignIn VerifyIsSignIn()
         {
             WaitUntil.CustomElementIsVisible(Pages.Profile.titleProfile);
@@ -11,6 +12,7 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Verify Displaying Email Error Message")]
         public SignIn VerifyDisplayingEmailErrorMessage()
         {
             WaitUntil.WaitSomeInterval(250);
@@ -19,6 +21,7 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Verify Displaying Password Error Message")]
         public SignIn VerifyDisplayingPasswordErrorMessage()
         {
             WaitUntil.WaitSomeInterval(250);
@@ -26,7 +29,7 @@ namespace RaffleAutomationTests.PageObjects
             Assert.IsTrue(textPasswordErrorMessage.Displayed, "Password error message is not displayed");
             return this;
         }
-
+        [AllureStep("Verify Validation On SignIn")]
         public void VerifyValidationOnSignIn(SignUpResponse response)
         {
             for (int i = 0; i < 5; i++)
@@ -42,18 +45,22 @@ namespace RaffleAutomationTests.PageObjects
                         VerifyDisplayingEmailErrorMessage();
                         break;
                     case 2:
+                        EnterLoginAndPass(response.User.Email.Replace(".com", ""), Credentials.PASSWORD);
+                        VerifyDisplayingEmailErrorMessage();
+                        break;
+                    case 3:
                         EnterLoginAndPass(response.User.Email, "");
                         VerifyDisplayingPasswordErrorMessage();
                         break;
-                    case 3:
+                    case 4:
                         EnterLoginAndPass(response.User.Email, "qwertyzaq");
                         VerifyDisplayingPasswordErrorMessage();
                         break;
-                    case 4:
+                    case 5:
                         EnterLoginAndPass(response.User.Email, "123456789");
                         VerifyDisplayingPasswordErrorMessage();
                         break;
-                    case 5:
+                    case 6:
                         EnterLoginAndPass(response.User.Email, "Qaz1");
                         VerifyDisplayingPasswordErrorMessage();
                         break;

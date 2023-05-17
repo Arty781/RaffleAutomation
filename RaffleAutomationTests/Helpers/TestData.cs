@@ -3,7 +3,9 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
 using RaffleAutomationTests.APIHelpers.Web;
+using RaffleAutomationTests.APIHelpers.Web.Basket;
 using RaffleAutomationTests.PageObjects;
+using RimuTec.Faker;
 using SharpCompress.Common;
 using static RaffleAutomationTests.Helpers.DbModels;
 
@@ -119,26 +121,26 @@ namespace RaffleAutomationTests.Helpers
         public const string RAFFLE_FLOOR_PLAN = @"UploadImages\RaffleFloorPlan.jpg";
         public const string RAFFLE_LOCATION_MAP = @"UploadImages\RaffleLocationMap.jpg";
         public const string RAFFLE_OUTSPACE = @"UploadImages\RaffleOutspace.jpg";
-        public const string RAFFLE_DESKTOP_1 = @"UploadImages\Desktop\DreamHomeImage1.jpg";
-        public const string RAFFLE_DESKTOP_2 = @"UploadImages\Desktop\DreamHomeImage2.jpg";
-        public const string RAFFLE_DESKTOP_3 = @"UploadImages\Desktop\DreamHomeImage3.jpg";
-        public const string RAFFLE_DESKTOP_4 = @"UploadImages\Desktop\DreamHomeImage4.jpg";
-        public const string RAFFLE_DESKTOP_5 = @"UploadImages\Desktop\DreamHomeImage5.jpg";
-        public const string RAFFLE_DESKTOP_6 = @"UploadImages\Desktop\DreamHomeImage6.jpg";
-        public const string RAFFLE_DESKTOP_7 = @"UploadImages\Desktop\DreamHomeImage7.jpg";
-        public const string RAFFLE_DESKTOP_8 = @"UploadImages\Desktop\DreamHomeImage8.jpg";
-        public const string RAFFLE_DESKTOP_9 = @"UploadImages\Desktop\DreamHomeImage9.jpg";
+        public const string RAFFLE_DESKTOP_1 = @"UploadImages\Desktop\DreamHomeImage01.jpg";
+        public const string RAFFLE_DESKTOP_2 = @"UploadImages\Desktop\DreamHomeImage02.jpg";
+        public const string RAFFLE_DESKTOP_3 = @"UploadImages\Desktop\DreamHomeImage03.jpg";
+        public const string RAFFLE_DESKTOP_4 = @"UploadImages\Desktop\DreamHomeImage04.jpg";
+        public const string RAFFLE_DESKTOP_5 = @"UploadImages\Desktop\DreamHomeImage05.jpg";
+        public const string RAFFLE_DESKTOP_6 = @"UploadImages\Desktop\DreamHomeImage06.jpg";
+        public const string RAFFLE_DESKTOP_7 = @"UploadImages\Desktop\DreamHomeImage07.jpg";
+        public const string RAFFLE_DESKTOP_8 = @"UploadImages\Desktop\DreamHomeImage08.jpg";
+        public const string RAFFLE_DESKTOP_9 = @"UploadImages\Desktop\DreamHomeImage09.jpg";
         public const string RAFFLE_DESKTOP_10 = @"UploadImages\Desktop\DreamHomeImage10.jpg";
         public const string RAFFLE_DESKTOP_11 = @"UploadImages\Desktop\DreamHomeImage11.jpg";
-        public const string RAFFLE_MOBILE_1 = @"UploadImages\Mobile\DreamHomeImage1.jpg";
-        public const string RAFFLE_MOBILE_2 = @"UploadImages\Mobile\DreamHomeImage2.jpg";
-        public const string RAFFLE_MOBILE_3 = @"UploadImages\Mobile\DreamHomeImage3.jpg";
-        public const string RAFFLE_MOBILE_4 = @"UploadImages\Mobile\DreamHomeImage4.jpg";
-        public const string RAFFLE_MOBILE_5 = @"UploadImages\Mobile\DreamHomeImage5.jpg";
-        public const string RAFFLE_MOBILE_6 = @"UploadImages\Mobile\DreamHomeImage6.jpg";
-        public const string RAFFLE_MOBILE_7 = @"UploadImages\Mobile\DreamHomeImage7.jpg";
-        public const string RAFFLE_MOBILE_8 = @"UploadImages\Mobile\DreamHomeImage8.jpg";
-        public const string RAFFLE_MOBILE_9 = @"UploadImages\Mobile\DreamHomeImage9.jpg";
+        public const string RAFFLE_MOBILE_1 = @"UploadImages\Mobile\DreamHomeImage01.jpg";
+        public const string RAFFLE_MOBILE_2 = @"UploadImages\Mobile\DreamHomeImage02.jpg";
+        public const string RAFFLE_MOBILE_3 = @"UploadImages\Mobile\DreamHomeImage03.jpg";
+        public const string RAFFLE_MOBILE_4 = @"UploadImages\Mobile\DreamHomeImage04.jpg";
+        public const string RAFFLE_MOBILE_5 = @"UploadImages\Mobile\DreamHomeImage05.jpg";
+        public const string RAFFLE_MOBILE_6 = @"UploadImages\Mobile\DreamHomeImage06.jpg";
+        public const string RAFFLE_MOBILE_7 = @"UploadImages\Mobile\DreamHomeImage07.jpg";
+        public const string RAFFLE_MOBILE_8 = @"UploadImages\Mobile\DreamHomeImage08.jpg";
+        public const string RAFFLE_MOBILE_9 = @"UploadImages\Mobile\DreamHomeImage09.jpg";
         public const string RAFFLE_MOBILE_10 = @"UploadImages\Mobile\DreamHomeImage10.jpg";
         public const string RAFFLE_MOBILE_11 = @"UploadImages\Mobile\DreamHomeImage11.jpg";
     }
@@ -1065,7 +1067,7 @@ namespace RaffleAutomationTests.Helpers
             public DiscountTicket DiscountTicket { get; set; }
 
             [BsonElement("endsAt")]
-            public DateTimeOffset EndsAt { get; set; }
+            public DateTime? EndsAt { get; set; }
 
             [BsonElement("freeTicketsRates")]
             public List<FreeTicketsRates> FreeTicketsRates { get; set; }
@@ -1107,7 +1109,7 @@ namespace RaffleAutomationTests.Helpers
             public ObjectId? Property { get; set; }
 
             [BsonElement("startAt")]
-            public DateTimeOffset StartAt { get; set; }
+            public DateTime? StartAt { get; set; }
 
             [BsonElement("ticketPrice")]
             public double TicketPrice { get; set; }
@@ -1337,7 +1339,7 @@ namespace RaffleAutomationTests.Helpers
             [BsonElement("energy")]
             public string? Energy { get; set; }
 
-            
+
             [BsonElement("GeneralText")]
             public string? GeneralText { get; set; }
 
@@ -1372,33 +1374,74 @@ namespace RaffleAutomationTests.Helpers
         [BsonIgnoreExtraElements]
         public class Competitions
         {
-            [BsonElement("__v")]
-            public int? V { get; set; }
+            public class PrizesLF
+            {
+                [BsonElement("__v")]
+                public int? V { get; set; }
 
-            [BsonElement("_id")]
-            public ObjectId Id { get; set; }
+                [BsonElement("_id")]
+                public ObjectId Id { get; set; }
 
-            [BsonElement("competitionId")]
-            public string? CompetitionId { get; set; }
+                [BsonElement("competitionId")]
+                public string? CompetitionId { get; set; }
 
-            [BsonElement("competitionType")]
-            public string? CompetitionType { get; set; }
+                [BsonElement("competitionType")]
+                public string? CompetitionType { get; set; }
 
-            [BsonElement("endsAt")]
-            public DateTimeOffset EndsAt { get; set; }
+                [BsonElement("endsAt")]
+                public DateTimeOffset EndsAt { get; set; }
 
-            [BsonElement("fixedOdds")]
-            public dynamic? FixedOdds { get; set; }
+                [BsonElement("fixedOdds")]
+                public dynamic? FixedOdds { get; set; }
 
-            [BsonElement("isActive")]
-            public bool? IsActive { get; set; }
+                [BsonElement("isActive")]
+                public bool? IsActive { get; set; }
 
-            [BsonElement("prizes")]
-            public List<ObjectId>? Prizes { get; set; }
+                [BsonElement("prizes")]
+                public List<ObjectId>? Prizes { get; set; }
 
-            [BsonElement("startAt")]
-            public DateTimeOffset StartAt { get; set; }
+                [BsonElement("startAt")]
+                public DateTimeOffset StartAt { get; set; }
+            }
 
+            public class Raffle
+            {
+                [BsonElement("_id")]
+                public ObjectId Id { get; set; }
+
+                [BsonElement("isActive")]
+                public bool? IsActive { get; set; }
+
+                [BsonElement("startAt")]
+                public DateTime? StartAt { get; set; }
+
+                [BsonElement("endsAt")]
+                public DateTime? EndsAt { get; set; }
+
+                [BsonElement("competitionType")]
+                public string? CompetitionType { get; set; }
+
+                [BsonElement("dreamHome")]
+                public ObjectId? DreamHome { get; set; }
+
+                [BsonElement("competitionId")]
+                public string? CompetitionId { get; set; }
+
+                [BsonElement("createdAt")]
+                public DateTime? CreatedAt { get; set; }
+
+                [BsonElement("updatedAt")]
+                public DateTime? UpdatedAt { get; set; }
+
+                [BsonElement("__v")]
+                public int? V { get; set; }
+
+                [BsonElement("fixedOdds")]
+                public dynamic? FixedOdds { get; set; }
+
+                [BsonElement("prizes")]
+                public dynamic? Prizes { get; set; }
+            }
         }
 
 
@@ -1507,7 +1550,7 @@ namespace RaffleAutomationTests.Helpers
         [BsonIgnoreExtraElements]
         public class SubscriptionsInsert
         {
-            
+
             [BsonElement("charity")]
             public string? Charity { get; set; }
 
@@ -1604,46 +1647,46 @@ namespace RaffleAutomationTests.Helpers
         public class Orders
         {
             [BsonElement("__v")]
-           public int? V { get; set; }
+            public int? V { get; set; }
 
             [BsonElement("_id")]
-           public ObjectId? Id { get; set; }
+            public ObjectId? Id { get; set; }
 
             [BsonElement("appliedCredits")]
-           public List<AppliedCredits> AppliedCredits { get; set; }
+            public List<AppliedCredits> AppliedCredits { get; set; }
 
             [BsonElement("checkoutId")]
-           public string? CheckoutId { get; set; }
+            public string? CheckoutId { get; set; }
 
             [BsonElement("competitionId")]
-           public ObjectId? CompetitionId { get; set; }
+            public ObjectId? CompetitionId { get; set; }
 
             [BsonElement("createdAt")]
-           public DateTimeOffset? CreatedAt { get; set; }
+            public DateTimeOffset? CreatedAt { get; set; }
 
             [BsonElement("fixedOdds")]
-           public ObjectId? FixedOdds { get; set; }
+            public ObjectId? FixedOdds { get; set; }
 
             [BsonElement("groupId")]
-           public string? GroupId { get; set; }
+            public string? GroupId { get; set; }
 
             [BsonElement("isArchive")]
-           public bool IsArchive { get; set; }
+            public bool IsArchive { get; set; }
 
             [BsonElement("paymentStatus")]
-           public string? PaymentStatus { get; set; }
+            public string? PaymentStatus { get; set; }
 
             [BsonElement("selectedCharity")]
-           public string? SelectedCharity { get; set; }
+            public string? SelectedCharity { get; set; }
 
             [BsonElement("spentCredits")]
-           public int? SpentCredits { get; set; }
+            public int? SpentCredits { get; set; }
 
             [BsonElement("tickets")]
-           public List<Tickets> Tickets { get; set; }
+            public List<Tickets> Tickets { get; set; }
 
             [BsonElement("totalCost")]
-           public int? TotalCost { get; set; }
+            public int? TotalCost { get; set; }
 
             [BsonElement("user")]
             public ObjectId? User { get; set; }
@@ -1835,4 +1878,20 @@ namespace RaffleAutomationTests.Helpers
         public string created_at { get; set; }
 
     }
+
+    public class WebMOdels
+    {
+        public class Profile
+        {
+            public class OrderHistory
+            {
+                public string PRIZE { get; set; }
+                public string PURCHASE_DATE { get; set; }
+                public int NUM_TICKETS { get; set; }
+                public int PRICE { get; set; }
+            }
+        }
+    }
+
+
 }

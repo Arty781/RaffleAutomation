@@ -21,15 +21,11 @@ namespace API
 
         public void Demo()
         {
-            #region Preconditions
-
-            //var response = SignUpRequest.RegisterNewUser();
-            //var s = SubscriptionsRequest.GetEmailsCount(response.User.Email);
-            //SubscriptionsRequest.CheckEmailsCountFor17Minutes(s, response.User.Email);
-            //s = SubscriptionsRequest.GetEmailsCount(response.User.Email);
-            //string email = response.User.Email;
-            //Elements.GgetAllEmailData(email);
-            #endregion
+            List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Where(x => x.IsClosed == true).Select(x => x).ToList();
+            dreamhomeList.Reverse();
+            DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, -3600, 3600, -1440, 80);
+            
 
         }
     }
@@ -118,8 +114,6 @@ namespace API
         {
             var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             AppDbHelper.Subscriptions.DeleteSubscriptionsByUserId(users);
-
-
         }
 
         [Test]
@@ -156,7 +150,6 @@ namespace API
 
         public void DeleteUsersByEmail()
         {
-            //var users = AppDbHelper.Users.GetUserByEmailpattern("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
             Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
         }
 
@@ -223,6 +216,19 @@ namespace API
             AppDbHelper.Subscriptions.DeleteSubscriptions();
 
 
+        }
+
+        [Test]
+
+        public void UpdateDreamhome()
+        {
+            List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Where(x => x.IsClosed == true).Select(x => x).ToList();
+            DreamHome.DeactivateDreamHome(activeDreamhomeList);            
+            dreamhomeList.Reverse();
+            DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, -3600, 3600, -1440, 80);
+            
+            
         }
     }
 }

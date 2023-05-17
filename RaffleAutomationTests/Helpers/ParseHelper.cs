@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 
 using System.Threading.Tasks;
+using static RaffleAutomationTests.Helpers.WebMOdels.Profile;
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -161,6 +162,49 @@ namespace RaffleAutomationTests.Helpers
             ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.PURCHASE_FAILED);
 
         }
+
+    }
+
+    public class OrderHistoryVerificator
+    {
+        private static List<OrderHistory> SplitIntoRows(List<IWebElement> inputList, int elementsPerRow, int maxRows, out int totalPriceSum)
+        {
+            List<OrderHistory> historyList = new List<OrderHistory>();
+            int sum= 0;
+            int numRows = Math.Min(maxRows, inputList.Count / elementsPerRow); // Calculate the actual number of rows to include
+            for (int i = 0; i < numRows * elementsPerRow; i += elementsPerRow)
+            {
+                IWebElement prizeElement = inputList[i];
+                IWebElement purchaseDateElement = inputList[i + 1];
+                IWebElement numTicketsElement = inputList[i + 2];
+                IWebElement priceElement = inputList[i + 3];
+
+                OrderHistory item = new OrderHistory()
+                {
+                    PRIZE = prizeElement.Text,
+                    PURCHASE_DATE = purchaseDateElement.Text,
+                    NUM_TICKETS = int.Parse(numTicketsElement.Text),
+                    PRICE = int.Parse(priceElement.Text.Substring(1))
+                };
+                sum += item.PRICE; // Accumulate the price
+                historyList.Add(item);
+            }
+
+            totalPriceSum= sum;
+
+            return historyList;
+        }
+
+        public static List<OrderHistory> GetOrderHistory(List<IWebElement> inputList, int maxRows, out int totalPriceSum)
+        {
+            
+            List<OrderHistory> result = SplitIntoRows(inputList, 4, maxRows, out int sum);
+            totalPriceSum= sum;
+
+            return result;
+        
+        }
+
 
     }
 }

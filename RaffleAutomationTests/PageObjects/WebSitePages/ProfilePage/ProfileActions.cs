@@ -35,16 +35,16 @@ namespace RaffleAutomationTests.PageObjects
         }
 
         [AllureStep("Edit Password")]
-        public Profile EditPassword()
+        public Profile EditPassword(string currentPass = "Qaz11111", string newPass = "Qaz11111!", string confirmPass = "Qaz11111!")
         {
-            InputBox.Element(inputCurrentPassword, 10, "Qaz11111");
-            InputBox.Element(inputNewPassword, 10, "Qaz11111!");
-            InputBox.Element(inputConfirmPassword, 10, "Qaz11111!");
+            InputBox.Element(inputCurrentPassword, 10, currentPass);
+            InputBox.Element(inputNewPassword, 10, newPass);
+            InputBox.Element(inputConfirmPassword, 10, confirmPass);
             Button.ClickJS(btnSave);
             return this;
         }
 
-        [AllureStep("Edit Password")]
+        [AllureStep("Edit Account Data")]
         public Profile EditAccountData()
         {
             WaitUntil.CustomElementIsVisible(btnSave);
@@ -70,6 +70,20 @@ namespace RaffleAutomationTests.PageObjects
             Button.Click(listDreamHomeHistory);
             WaitUntil.CustomElementIsVisible(prizeName);
             WaitUntil.WaitSomeInterval(1000);
+            return this;
+        }
+
+        [AllureStep("Scroll To End Of List")]
+        public Profile ScrollToEndOfHistoryList(int countOrders)
+        {
+            WaitUntil.CustomElementIsVisible(prizeName);
+            for (int i = 0; i < countOrders; i++)
+            {
+                IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)Browser._Driver;
+                string script = "arguments[0].scrollTop += 500;";
+                jsExecutor.ExecuteScript(script, listHistory);
+                WaitUntil.WaitSomeInterval(250);
+            }
             return this;
         }
 

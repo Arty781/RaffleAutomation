@@ -2,6 +2,7 @@
 {
     public partial class Profile
     {
+        [AllureStep("Verify Displaying Successfull Toaster")]
         public Profile VerifyDisplayingSuccessfullToaster()
         {
             WaitUntil.WaitSomeInterval(350);
@@ -11,6 +12,7 @@
             return this;
         }
 
+        [AllureStep("Verify Update Password Successfull Toaster")]
         public Profile VerifyUpdatePasswordSuccessfullToaster()
         {
             WaitUntil.WaitSomeInterval(350);
@@ -20,14 +22,17 @@
             return this;
         }
 
-        public Profile VerifyAddingTickets(double price)
+        [AllureStep("Verify Adding Tickets")]
+        public void VerifyAddingTickets(double price, int countOrders)
         {
             WaitUntil.CustomElementIsVisible(prizePrice.Last());
-            Assert.AreEqual(price, double.Parse(prizePrice.First().Text.Trim('£')));
+            OrderHistoryVerificator.GetOrderHistory(prizePrice.ToList(), countOrders, out int totalPriceSum);
 
-            return this;
+            Assert.AreEqual(price, (double)totalPriceSum, $"Order total is not matched. Expected {price}, but was {(double)totalPriceSum}");
+
         }
 
+        [AllureStep("Verify Displaying First Name Error Message")]
         public void VerifyDisplayingFirstNameErrorMessage()
         {
             WaitUntil.WaitSomeInterval(250);
@@ -35,6 +40,7 @@
             Assert.IsTrue(textFirstNameErrorMessage.Displayed, "First name error message is not displayed");
         }
 
+        [AllureStep("Verify Displaying Last Name Error Message")]
         public void VerifyDisplayingLastNameErrorMessage()
         {
             WaitUntil.WaitSomeInterval(250);
@@ -42,6 +48,7 @@
             Assert.IsTrue(textLastNameErrorMessage.Displayed, "Last name error message is not displayed");
         }
 
+        [AllureStep("Verify Displaying Email Error Message")]
         public void VerifyDisplayingEmailErrorMessage()
         {
             WaitUntil.WaitSomeInterval(250);
@@ -49,6 +56,7 @@
             Assert.IsTrue(textEmailErrorMessage.Displayed, "Email error message is not displayed");
         }
 
+        [AllureStep("Verify Displaying Phone Error Message")]
         public void VerifyDisplayingPhoneErrorMessage()
         {
             WaitUntil.WaitSomeInterval(250);
@@ -56,6 +64,7 @@
             Assert.IsTrue(textPhoneErrorMessage.Displayed, "Phone error message is not displayed");
         }
 
+        [AllureStep("Verify Displaying Old Password ErrorMessage")]
         public void VerifyDisplayingOldPasswordErrorMessage()
         {
             WaitUntil.WaitSomeInterval(250);
@@ -63,6 +72,7 @@
             Assert.IsTrue(textOldPasswordErrorMessage.Displayed, "Old Password error message is not displayed");
         }
 
+        [AllureStep("Verify Displaying New Password Error Message")]
         public void VerifyDisplayingNewPasswordErrorMessage()
         {
             WaitUntil.WaitSomeInterval(250);
@@ -70,6 +80,7 @@
             Assert.IsTrue(textNewPasswordErrorMessage.Displayed, "New Password error message is not displayed");
         }
 
+        [AllureStep("Verify Displaying Confirm Password Error Message")]
         public void VerifyDisplayingConfirmPasswordErrorMessage()
         {
             WaitUntil.WaitSomeInterval(250);
@@ -77,6 +88,7 @@
             Assert.IsTrue(textConfirmPasswordErrorMessage.Displayed, "Confirm Password error message is not displayed");
         }
 
+        [AllureStep("Verify Validation On Profile Personal Details")]
         public void VerifyValidationOnProfilePersonalDetails()
         {
             for (int i = 0; i < 9; i++)
@@ -99,7 +111,7 @@
                         break;
                     case 2:
                         WaitUntil.CustomElementIsVisible(inputFirstName);
-                        InputBox.Element(inputFirstName, 10, "qtweqweqwueyqwyfeasdasgdjadasdasdasgdjadasdasdasgdjadasda"); //51 characters
+                        InputBox.Element(inputFirstName, 10, "qtweqweqwueyqwyfeasdasgdjadasdasdasgdjadasdasdasgdjadasda"); //more than 50 characters
                         InputBox.Element(inputLastName, 10, Name.LastName());
                         Button.ClickJS(btnSave);
                         VerifyDisplayingFirstNameErrorMessage();
@@ -135,7 +147,7 @@
                     case 7:
                         WaitUntil.CustomElementIsVisible(inputFirstName);
                         InputBox.Element(inputFirstName, 10, Name.FirstName());
-                        InputBox.Element(inputLastName, 10, "qtweqweqwueyqwyfeasdasgdjadasdasdasgdjadasdasdasgdjadasda"); //51 characters
+                        InputBox.Element(inputLastName, 10, "qtweqweqwueyqwyfeasdasgdjadasdasdasgdjadasdasdasgdjadasda"); //more than 50 characters
                         Button.ClickJS(btnSave);
                         VerifyDisplayingLastNameErrorMessage();
                         break;
@@ -158,6 +170,7 @@
             }
         }
 
+        [AllureStep("Verify Validation On Profile Password")]
         public void VerifyValidationOnProfilePassword()
         {
             for (int i = 0; i < 11; i++)
@@ -195,14 +208,14 @@
                     case 4:
                         InputBox.Element(inputCurrentPassword, 10, "Qaz11111");
                         InputBox.Element(inputNewPassword, 10, "");
-                        InputBox.Element(inputConfirmPassword, 10, "Qaz11111!");
+                        InputBox.Element(inputConfirmPassword, 10, "");
                         Button.ClickJS(btnSave);
                         VerifyDisplayingNewPasswordErrorMessage();
                         break;
                     case 5:
                         InputBox.Element(inputCurrentPassword, 10, "Qaz11111");
                         InputBox.Element(inputNewPassword, 10, "Qaz11");
-                        InputBox.Element(inputConfirmPassword, 10, "Qaz11111!");
+                        InputBox.Element(inputConfirmPassword, 10, "Qaz11");
                         Button.ClickJS(btnSave);
                         VerifyDisplayingNewPasswordErrorMessage();
                         break;
@@ -253,6 +266,7 @@
             }
         }
 
+        [AllureStep("Verify Validation On Profile Account Details")]
         public void VerifyValidationOnProfileAccountDetails()
         {
             for (int i = 0; i < 5; i++)

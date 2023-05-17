@@ -174,6 +174,86 @@ namespace RaffleAutomationTests.Helpers
                     .Set("discountRates.1.percent", 0).Set("discountRates.1.newPrice", 2);
                 collection.UpdateOne(filter, update);
             }
+
+            public static void ActivateOneClosedDreamHome(List<DbModels.Raffle> raffle, int addHoursStartFisrtDH, int addHoursEndFisrtDH)
+            {
+                for (int i = 0; i < 1; i++)
+                {
+                    if (i == 0)
+                    {
+                        var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                        var database = client.GetDatabase(DbConnection.DB_STAGING);
+                        var collection = database.GetCollection<DbModels.Raffle>("raffles");
+                        var filter = Builders<DbModels.Raffle>.Filter.Eq(r => r.Id, raffle[i].Id);
+                        var update = Builders<DbModels.Raffle>.Update
+                            .Set(r => r.StartAt, DateTime.Now.AddHours(addHoursStartFisrtDH))
+                            .Set(r => r.EndsAt, DateTime.Now.AddHours(addHoursEndFisrtDH))
+                            .Set(r => r.IsClosed, false)
+                            .Set(r => r.Active, true);
+
+                        collection.UpdateOne(filter, update);
+                        Competitions.ActivateRafflesComp(raffle[i]);
+                    }
+                }
+                
+            }
+
+            public static void ActivateTwoClosedDreamHome(List<DbModels.Raffle> raffle, int addHoursStartFisrtDH, int addHoursEndFisrtDH, int addHoursStartSecondDH, int addHoursEndSecondDH)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    if (i == 0)
+                    {
+                        var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                        var database = client.GetDatabase(DbConnection.DB_STAGING);
+                        var collection = database.GetCollection<DbModels.Raffle>("raffles");
+                        var filter = Builders<DbModels.Raffle>.Filter.Eq(r => r.Id, raffle[i].Id);
+                        var update = Builders<DbModels.Raffle>.Update
+                            .Set(r => r.StartAt, DateTime.Now.AddHours(addHoursStartFisrtDH))
+                            .Set(r => r.EndsAt, DateTime.Now.AddHours(addHoursEndFisrtDH))
+                            .Set(r => r.IsClosed, false)
+                            .Set(r => r.Active, true);
+
+                        collection.UpdateOne(filter, update);
+                        Competitions.ActivateRafflesComp(raffle[i]);
+                    }
+                    if (i == 1)
+                    {
+                        var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                        var database = client.GetDatabase(DbConnection.DB_STAGING);
+                        var collection = database.GetCollection<DbModels.Raffle>("raffles");
+                        var filter = Builders<DbModels.Raffle>.Filter.Eq(r => r.Id, raffle[i].Id);
+                        var update = Builders<DbModels.Raffle>.Update
+                            .Set(r => r.StartAt, DateTime.Now.AddHours(addHoursStartSecondDH))
+                            .Set(r => r.EndsAt, DateTime.Now.AddHours(addHoursEndSecondDH))
+                            .Set(r => r.IsClosed, false)
+                            .Set(r => r.Active, true);
+
+                        collection.UpdateOne(filter, update);
+                        Competitions.ActivateRafflesComp(raffle[i]);
+                    }
+
+                }
+
+            }
+
+            public static void DeactivateDreamHome(List<DbModels.Raffle> raffles)
+            {
+                foreach (var raffle in raffles)
+                {
+                    var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                    var database = client.GetDatabase(DbConnection.DB_STAGING);
+                    var collection = database.GetCollection<DbModels.Raffle>("raffles");
+                    var filter = Builders<DbModels.Raffle>.Filter.Eq(r => r.Id, raffle.Id);
+                    var update = Builders<DbModels.Raffle>.Update
+                        .Set(r => r.IsClosed, true)
+                        .Set(r => r.Active, false);
+
+                    collection.UpdateOne(filter, update);
+                    Competitions.DeactivateRafflesComp(raffle);
+                }
+                
+            }
         }
         
         public class Subscriptions
@@ -392,7 +472,7 @@ namespace RaffleAutomationTests.Helpers
                         Extra= 135,
                         SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
                         Emails = new List<string>(),
-                        Raffle= raffle.FirstOrDefault().Id,
+                        Raffle= raffle.LastOrDefault().Id,
                         User= user.Id,
                         Refference= SubscriptionsCardDetails.REFFERENCE[activeCount],
                         CardSource= SubscriptionsCardDetails.CARD_SOURCE[activeCount],
@@ -434,14 +514,14 @@ namespace RaffleAutomationTests.Helpers
                         Extra= 40,
                         SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
                         Emails = new List<string>(),
-                        Raffle= raffle.FirstOrDefault().Id,
+                        Raffle= raffle.LastOrDefault().Id,
                         User=  user.Id,
                         Refference= SubscriptionsCardDetails.REFFERENCE[pauseCount],
                         CardSource= SubscriptionsCardDetails.CARD_SOURCE[pauseCount],
                         CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[pauseCount],
                         NextPurchaseDate = DateTimeOffset.Now.AddMonths(1).DateTime,
                         PurchaseDate = DateTimeOffset.Now.AddMonths(-1).DateTime,
-                        PausedAt= DateTimeOffset.Now.AddMonths(-1).DateTime,
+                        PausedAt= DateTimeOffset.Now.AddHours(-720).DateTime,
                         PauseEnd= DateTimeOffset.Now.AddHours(-24).DateTime,
 
                         },
@@ -457,14 +537,14 @@ namespace RaffleAutomationTests.Helpers
                         Extra= 135,
                         SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
                         Emails = new List<string>(),
-                        Raffle= raffle.FirstOrDefault().Id,
+                        Raffle= raffle.LastOrDefault().Id,
                         User=  user.Id,
                         Refference= SubscriptionsCardDetails.REFFERENCE[pauseCount],
                         CardSource= SubscriptionsCardDetails.CARD_SOURCE[pauseCount],
                         CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[pauseCount],
-                        NextPurchaseDate = DateTimeOffset.Now.AddMonths(-1).DateTime,
+                        NextPurchaseDate = DateTimeOffset.Now.AddHours(-720).DateTime,
                         PurchaseDate = DateTimeOffset.Now.AddMonths(-2).DateTime,
-                        PausedAt= DateTimeOffset.Now.AddMonths(-1).DateTime,
+                        PausedAt= DateTimeOffset.Now.AddHours(-720).DateTime,
                         PauseEnd= DateTimeOffset.Now.AddHours(168).DateTime
                         },
                         new SubscriptionsInsert
@@ -484,9 +564,9 @@ namespace RaffleAutomationTests.Helpers
                         Refference= SubscriptionsCardDetails.REFFERENCE[pauseCount],
                         CardSource= SubscriptionsCardDetails.CARD_SOURCE[pauseCount],
                         CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[pauseCount],
-                        NextPurchaseDate = DateTimeOffset.Now.AddMonths(1).DateTime,
-                        PurchaseDate = DateTimeOffset.Now.AddMonths(-1).DateTime,
-                        PausedAt= DateTimeOffset.Now.AddMonths(-1).DateTime,
+                        NextPurchaseDate = DateTimeOffset.Now.AddHours(720).DateTime,
+                        PurchaseDate = DateTimeOffset.Now.AddHours(-720).DateTime,
+                        PausedAt= DateTimeOffset.Now.AddHours(-720).DateTime,
                         PauseEnd= DateTimeOffset.Now.AddHours(24).DateTime,
 
                         },
@@ -707,7 +787,48 @@ namespace RaffleAutomationTests.Helpers
             }
         }
         
+        public class Competitions
+        {
+            public static List<DbModels.Competitions.Raffle> GetAllRafflesComp(DbModels.Raffle raffle)
+            {
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collection = database.GetCollection<DbModels.Competitions.Raffle>("competitions");
+                var filterBuilder = Builders<DbModels.Competitions.Raffle>.Filter;
+                var filter = filterBuilder.Eq(r => r.CompetitionType, "DREAMHOME") &
+                    (filterBuilder.Eq(r => r.DreamHome, raffle.Id));
+                var result = collection.Find(filter).ToList();
+                return result;
+            }
 
+            public static void DeactivateRafflesComp(DbModels.Raffle raffle)
+            {
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collection = database.GetCollection<DbModels.Competitions.Raffle>("competitions");
+                var filterBuilder = Builders<DbModels.Competitions.Raffle>.Filter;
+                var filter = filterBuilder.Eq(r => r.CompetitionType, "DREAMHOME") &
+                    (filterBuilder.Eq(r => r.DreamHome, raffle.Id));
+                var updateBuilder = Builders<DbModels.Competitions.Raffle>.Update;
+                var update = updateBuilder
+                    .Set(c => c.IsActive, false);
+                collection.UpdateMany(filter, update);
+            }
+
+            public static void ActivateRafflesComp(DbModels.Raffle raffle)
+            {
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collection = database.GetCollection<DbModels.Competitions.Raffle>("competitions");
+                var filterBuilder = Builders<DbModels.Competitions.Raffle>.Filter;
+                var filter = filterBuilder.Eq(r => r.CompetitionType, "DREAMHOME") &
+                    (filterBuilder.Eq(r => r.DreamHome, raffle.Id));
+                var updateBuilder = Builders<DbModels.Competitions.Raffle>.Update;
+                var update = updateBuilder
+                    .Set(c => c.IsActive, true);
+                collection.UpdateMany(filter, update);
+            }
+        }
         
 
         

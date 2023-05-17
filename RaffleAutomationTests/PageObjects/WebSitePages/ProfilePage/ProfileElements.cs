@@ -98,8 +98,11 @@
         [FindsBy(How = How.XPath, Using = "//table[@class='historyAreaTable']/tbody/tr/td[3]")]
         public IWebElement prizeTickets;
 
-        [FindsBy(How = How.XPath, Using = "//table[@class='historyAreaTable']/tbody/tr/td[4]")]
+        [FindsBy(How = How.XPath, Using = "//table[@class='historyAreaTable']/tbody/tr/td")]
         public IList<IWebElement> prizePrice;
+
+        [FindsBy(How=How.Id, Using = "history-accordion-droplist")]
+        public IWebElement listHistory;
 
         #endregion
 

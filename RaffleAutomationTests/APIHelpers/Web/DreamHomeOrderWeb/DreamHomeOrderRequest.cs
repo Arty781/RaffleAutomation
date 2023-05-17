@@ -4,7 +4,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
 {
     public class DreamHomeOrderRequestWeb
     {
-        public static string RequestBuilder(string id)
+        private static string RequestBuilder(string id)
         {
             DreamHomeOrderRequestModel req = new()
             {

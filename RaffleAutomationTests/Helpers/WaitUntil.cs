@@ -71,7 +71,7 @@
             {
                 try
                 {
-                    if (driver.Url.Contains("checkout.com/sessions-interceptor"))
+                    if (driver.Url.Contains("/pending/?cko-session-id="))
                     {
                         return true;
                     }

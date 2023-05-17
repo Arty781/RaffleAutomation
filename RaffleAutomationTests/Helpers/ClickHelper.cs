@@ -234,6 +234,14 @@ namespace RaffleAutomationTests.Helpers
             actions.Perform();
             WaitUntil.WaitSomeInterval(700);
         }
+
+        public static void Action(string key, IWebElement element)
+        {
+            Actions actions = new(Browser._Driver);
+            element.SendKeys(key);
+            actions.Perform();
+            WaitUntil.WaitSomeInterval(700);
+        }
     }
 
     public class PutsBox
