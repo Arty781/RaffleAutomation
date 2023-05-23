@@ -1,6 +1,7 @@
 using ApiTests.BASE;
 using NUnit.Framework;
 using RaffleAutomationTests.APIHelpers.Admin;
+using RaffleAutomationTests.APIHelpers.Admin.DreamHomePage;
 using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
 using RaffleAutomationTests.APIHelpers.Web;
 using RaffleAutomationTests.APIHelpers.Web.ForgotPasswordWeb;
@@ -103,6 +104,22 @@ namespace API
             var reset = RequestForgotPassword.ResetPassword(token);
             Console.WriteLine(reset.Message);
         }
+
+        [Test]
+        public static void EditTwoDreamhome()
+        {
+            //Delete all subscritions and test users 
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            AppDbHelper.Subscriptions.DeleteSubscriptionsByUserId(users);
+            Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
+
+            //Edit raffles
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, 720, -1);
+            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, false, 50, -7920);
+        }
     }
 
     [TestFixture]
@@ -114,6 +131,16 @@ namespace API
         {
             var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             AppDbHelper.Subscriptions.DeleteSubscriptionsByUserId(users);
+        }
+
+        [Test]
+
+        public void RemoveOrdersAndSubscriptionsByUserId()
+        {
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            AppDbHelper.Subscriptions.DeleteSubscriptionsByUserId(users);
+            AppDbHelper.Orders.DeleteOrdersByUserId(users);
+            Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
         }
 
         [Test]
@@ -185,13 +212,13 @@ namespace API
 
             var email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff"), "@putsbox.com");
 
-            var raffle = DreamHome.GetAciveRaffles();
+            var raffle = DreamHome.GetAciveRaffles().FirstOrDefault();
             Insert.InsertSubscriptionModel(ErrorTotalCost.ERROR_BAD_TRACK_DATA);
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             Insert.InsertUser(raffle, email);
             var user = AppDbHelper.Users.GetUserByEmail(email);
             Insert.InsertSubscriptionsToUserForFailPayment(user, raffle, subscriptionsModel);
-            EmailVerificator.VerifyPurchaseFailedEmail(email);
+            EmailVerificator.VerifyPurchaseFailedEmail(email, user.Name);
 
             #endregion
 
@@ -220,15 +247,32 @@ namespace API
 
         [Test]
 
-        public void UpdateDreamhome()
+        public void UpdateTwoActiveDreamhomes()
         {
+            int addFirstStartHours = -3600;
+            int addFirstEndHours = 360;
+            int addSecondStartHours = -1740;
+            int addSecondEndHours = 1780;
+
             List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
             List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Where(x => x.IsClosed == true).Select(x => x).ToList();
-            DreamHome.DeactivateDreamHome(activeDreamhomeList);            
+            DreamHome.DeactivateDreamHome(activeDreamhomeList);
             dreamhomeList.Reverse();
-            DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, -3600, 3600, -1440, 80);
-            
-            
+            DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours, addSecondStartHours, addSecondEndHours);
+        }
+
+        [Test]
+
+        public void UpdateOneActiveDreamhome()
+        {
+            int addFirstStartHours = -3600;
+            int addFirstEndHours = 3600;
+
+            List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Where(x => x.IsClosed == true).Select(x => x).ToList();
+            DreamHome.DeactivateDreamHome(activeDreamhomeList);
+            dreamhomeList.Reverse();
+            DreamHome.ActivateOneClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours);
         }
     }
 }

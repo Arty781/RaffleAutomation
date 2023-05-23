@@ -91,7 +91,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Enter Title")]
         public CmsDreamhome EnterTitle()
         {
-            InputBox.Element(inputTitle, 5, "Dream New flat " + DateTime.UtcNow.ToString("dd-MMMM-yyyy' 'HH-mm-ss"));
+            InputBox.Element(inputTitle, 5, "Dream New flat " + Company.Name());
 
             return this;
         }

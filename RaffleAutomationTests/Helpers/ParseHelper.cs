@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using RaffleAutomationTests.PageObjects.WebSitePages;
+using RimuTec.Faker;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,10 @@ namespace RaffleAutomationTests.Helpers
             string result = Regex.Replace(html, pattern, "<a href=" + "\"" + "link with token" + "\"", RegexOptions.IgnoreCase);
             pattern = "src=\"(.+?)\"";
             result = Regex.Replace(result, pattern, "src=" + "\"" + "link with token" + "\"", RegexOptions.IgnoreCase);
-            pattern = "<td>(.+?)</td>";
-            result = Regex.Replace(result, pattern, "<td>" + "</td>", RegexOptions.IgnoreCase);
-            pattern = "<strong>Hi(.+?),";
-            result = Regex.Replace(result, pattern, "<strong>Hi \"Name\",", RegexOptions.IgnoreCase);
+            //pattern = "<td>(.+?)</td>";
+            //result = Regex.Replace(result, pattern, "<td>" + "</td>", RegexOptions.IgnoreCase);
+            //pattern = "<strong>Hi(.+?),";
+            //result = Regex.Replace(result, pattern, "<strong>Hi \"Name\",", RegexOptions.IgnoreCase);
 
             return result;
         }
@@ -74,84 +75,83 @@ namespace RaffleAutomationTests.Helpers
 
     public class EmailVerificator
     {
-        public static void VerifyInitialEmailAuth(string email)
+        public static void VerifyInitialEmailAuth(string email, string name, int quantity, double value, string charity)
         {
             var emailsList = Elements.GgetAllEmailData(email);
             SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
             emailsList = Elements.GgetAllEmailData(email);
             var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
             var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.INITIAL_AUTH);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.InitialAuth(name, quantity, value, charity));
 
         }
 
-        public static void VerifyInitialEmailUnauth(string email)
+        public static void VerifyInitialEmailUnauth(string email, string name, int quantity, double value, string charity)
         {
             var emailsList = Elements.GgetAllEmailData(email);
             SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
             emailsList = Elements.GgetAllEmailData(email);
             var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
             var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.INITIAL_UNAUTH);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.InitialUnauth(name, quantity, value, charity));
 
         }
 
-        public static void VerifyMonthlyEmailAuth(string email)
+        public static void VerifyMonthlyEmailAuth(string email, string name, int quantity, double value, string charity)
         {
             var emailsList = Elements.GgetAllEmailData(email);
             SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
             emailsList = Elements.GgetAllEmailData(email);
             var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
             var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.MONTHLY_AUTH);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.MonthlyAuth(name, quantity, value, charity));
 
         }
 
-        public static void VerifyCancelationEmail(string email)
+        public static void VerifyCancelationEmail(string email, string name)
         {
             var emailsList = Elements.GgetAllEmailData(email);
             SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
             emailsList = Elements.GgetAllEmailData(email);
             var id = emailsList.Where(x => x.subject == "Subscription cancellation receipt").Select(q => q.id).FirstOrDefault();
             var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.CANCEL);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.Cancel(name));
 
         }
 
-        public static void VerifyPauseEmail(string email)
+        public static void VerifyPauseEmail(string email, string name)
         {
             var emailsList = Elements.GgetAllEmailData(email);
             SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
             emailsList = Elements.GgetAllEmailData(email);
             var id = emailsList.Where(x => x.subject == "Paused subscription").Select(q => q.id).FirstOrDefault();
             var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.PAUSE);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.Pause(name));
 
         }
 
-        public static void VerifyUnpauseEmail(string email)
+        public static void VerifyUnpauseEmail(string email, string name, int quantity, double value, string charity)
         {
             var emailsList = Elements.GgetAllEmailData(email);
             SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
             emailsList = Elements.GgetAllEmailData(email);
             var id = emailsList.Where(x => x.subject == "Subscription pause reactivation").Select(q => q.id).FirstOrDefault();
             var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.UNPAUSE);
-
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.Unpause(name, quantity, value, charity));
         }
 
-        public static void VerifyReminderEmail(string email)
+        public static void VerifyReminderEmail(string email,string name)
         {
             var emailsList = Elements.GgetAllEmailData(email);
             SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
             emailsList = Elements.GgetAllEmailData(email);
             var id = emailsList.Where(x => x.subject == "Subscription pause reminder").Select(q => q.id).FirstOrDefault();
             var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.SEVEN_DAYS_BEFORE_UNPAUSE);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.SevenDaysBeforeUnpause(name));
 
         }
 
-        public static void VerifyPurchaseFailedEmail(string email)
+        public static void VerifyPurchaseFailedEmail(string email, string name)
         {
             WaitUntil.WaitSomeInterval();
             var emailsList = Elements.GgetAllEmailData(email);
@@ -159,7 +159,7 @@ namespace RaffleAutomationTests.Helpers
             emailsList = Elements.GgetAllEmailData(email);
             var id = emailsList.Where(x => x.subject == "Failed subscription payment").Select(q => q.id).FirstOrDefault();
             var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.PURCHASE_FAILED);
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.PurchaseFailed(name));
 
         }
 
@@ -171,7 +171,12 @@ namespace RaffleAutomationTests.Helpers
         {
             List<OrderHistory> historyList = new List<OrderHistory>();
             int sum= 0;
-            int numRows = Math.Min(maxRows, inputList.Count / elementsPerRow); // Calculate the actual number of rows to include
+            int numRows = inputList.Count / elementsPerRow;
+            if (numRows < maxRows)
+            {
+                throw new Exception("Not enough rows available.");
+            }
+            numRows = Math.Min(maxRows, numRows); // Calculate the actual number of rows to include
             for (int i = 0; i < numRows * elementsPerRow; i += elementsPerRow)
             {
                 IWebElement prizeElement = inputList[i];
@@ -197,14 +202,13 @@ namespace RaffleAutomationTests.Helpers
 
         public static List<OrderHistory> GetOrderHistory(List<IWebElement> inputList, int maxRows, out int totalPriceSum)
         {
-            
             List<OrderHistory> result = SplitIntoRows(inputList, 4, maxRows, out int sum);
             totalPriceSum= sum;
 
             return result;
-        
         }
 
 
     }
+
 }

@@ -22,5 +22,8 @@
 
         [FindsBy(How = How.XPath, Using = "//div[@class='buttons']/button")]
         public IList<IWebElement> btnSubscribeNowSelector;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='info']/p[@class='price']")]
+        public IList<IWebElement> textPrice;
     }
 }

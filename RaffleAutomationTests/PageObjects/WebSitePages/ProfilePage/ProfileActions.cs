@@ -1,5 +1,8 @@
 ﻿
 
+using RimuTec.Faker;
+using static RaffleAutomationTests.Helpers.AppDbHelper;
+
 namespace RaffleAutomationTests.PageObjects
 {
     public partial class Profile
@@ -187,66 +190,71 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
-        public Profile VerifyCancelationEmail(string email)
+        public Profile VerifyCancelationEmail(string email, string name)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
-            emailsList = Elements.GgetAllEmailData(email);
-            var id = emailsList.Where(x => x.subject == "Subscription cancellation receipt").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.CANCEL);
-
-            
+            EmailVerificator.VerifyCancelationEmail(email, name);
 
             return this;
         }
 
-        public Profile VerifyPauseEmail(string email)
+        public Profile VerifyPauseEmail(string email, string name)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
-            emailsList = Elements.GgetAllEmailData(email);
-            var id = emailsList.Where(x => x.subject == "Paused subscription").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.PAUSE);
+            EmailVerificator.VerifyPauseEmail(email, name);
 
             return this;
         }
 
-        public Profile VerifyInitialEmailAuth(string email)
+        public Profile VerifyUnpauseEmail(string email, string name, int quantity, double value, string charity)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
-            emailsList = Elements.GgetAllEmailData(email);
-            var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.INITIAL_AUTH);
+            EmailVerificator.VerifyUnpauseEmail(email, name, quantity, value, charity);
 
             return this;
         }
 
-        public Profile VerifyInitialEmailUnauth(string email)
+        public Profile VerifyInitialEmailAuth(string email, string name, int quantity, double value, string charity)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
-            emailsList = Elements.GgetAllEmailData(email);
-            var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.INITIAL_UNAUTH);
+            EmailVerificator.VerifyInitialEmailAuth(email, name, quantity, value, charity);
 
             return this;
         }
 
-        public Profile VerifyUnpauseEmail(string email)
+        public Profile VerifyInitialEmailUnauth(string email, string name, int quantity, double value, string charity)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
-            emailsList = Elements.GgetAllEmailData(email);
-            var id = emailsList.Where(x => x.subject == "Subscription pause reactivation").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.UNPAUSE);
+            EmailVerificator.VerifyInitialEmailUnauth(email, name, quantity, value, charity);
 
             return this;
         }
+
+        public Profile WaitUntilScriptRuning()
+        {
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            foreach (var user in users)
+            {
+                var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
+                var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
+                var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
+                //Assert.That(ordersList.Count >= 1, $"New order is not created, current subscription orders count is \"{ordersList.Count}\"");
+
+                foreach (var subscription in subscriptionList)
+                {
+                    Assert.IsNotNull(subscription.Refference);
+                    Assert.IsNotNull(subscription.CardSource);
+                    Assert.IsNotNull(subscription.CheckoutId);
+                }
+                EmailVerificator.VerifyMonthlyEmailAuth(user.Email,
+                                    user.Name,
+                                    (int)(subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.Extra).First()),
+                                    (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.TotalCost / 100).First(),
+                                    "None Selected");
+                EmailVerificator.VerifyUnpauseEmail(user.Email,
+                                    user.Name,
+                                    (int)(subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.Extra).First()),
+                                    (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.TotalCost / 100).First(),
+                                    "None Selected");
+            }
+
+            return this;
+        }
+
     }
 }

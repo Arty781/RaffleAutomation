@@ -5,11 +5,23 @@ namespace RaffleAutomationTests.PageObjects
     public partial class SignIn
     {
         [AllureStep("Verify Is Sign In")]
-        public SignIn VerifyIsSignIn()
+        public SignIn VerifyIsSignIn(out string name)
         {
             WaitUntil.CustomElementIsVisible(Pages.Profile.titleProfile);
             Assert.IsTrue(Pages.Profile.inputFirstName.Displayed);
+            WaitUntil.WaitSomeInterval();
+            name = Pages.Profile.inputFirstName.GetAttribute("value");
             return this;
+        }
+
+        [AllureStep("Verify Is Sign In")]
+        public string GetFirstName()
+        {
+            WaitUntil.CustomElementIsVisible(Pages.Profile.titleProfile);
+            Assert.IsTrue(Pages.Profile.inputFirstName.Displayed);
+            WaitUntil.WaitSomeInterval();
+            string name = Pages.Profile.inputFirstName.GetAttribute("value");
+            return name;
         }
 
         [AllureStep("Verify Displaying Email Error Message")]

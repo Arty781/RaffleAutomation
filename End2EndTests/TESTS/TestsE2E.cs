@@ -69,7 +69,7 @@ namespace End2EndTests.TESTS
             #endregion
 
             #region Make payment on Web
-
+            string name = "";
             var response = SignUpRequest.RegisterNewUser();
             var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
             var basketOrders = BasketRequest.GetBasketOrders(token);
@@ -83,7 +83,7 @@ namespace End2EndTests.TESTS
             Pages.SignIn
                 .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn();
+                .VerifyIsSignIn(out name);
             Pages.Home
                 .AddTicketsToBasket(2);
             Pages.Basket
@@ -158,6 +158,7 @@ namespace End2EndTests.TESTS
 
             #region Make payment on Web
 
+            string name = "";
             var response = SignUpRequest.RegisterNewUser();
             var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
             var basketOrders = BasketRequest.GetBasketOrders(token);
@@ -171,7 +172,7 @@ namespace End2EndTests.TESTS
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn();
+                .VerifyIsSignIn(out name);
             Pages.Home
                 .AddTicketsToBasket(2);
             Pages.Basket

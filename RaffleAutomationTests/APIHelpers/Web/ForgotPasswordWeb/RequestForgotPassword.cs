@@ -21,6 +21,16 @@
             return JsonConvert.SerializeObject(request);
         }
 
+        private static string JsonBody(string token, string pass)
+        {
+            RequestReset request = new()
+            {
+                Password = pass,
+                Token = token
+            };
+            return JsonConvert.SerializeObject(request);
+        }
+
         public static ResponseForgotPassword? ForgotPassword(string email)
         {
             Http http = new()
@@ -69,6 +79,24 @@
 
             string url = String.Concat(ApiEndpoints.API_CHIL + "/api/users/password/reset");
             HttpResponse resp = http.PostJson2(url, "Application/json", JsonBody(token));
+            if (http.LastStatus != 200)
+            {
+                Debug.WriteLine(http.LastErrorText);
+            }
+            var content = JsonConvert.DeserializeObject<ResponseResetPassword>(resp.BodyStr);
+
+            return content;
+        }
+
+        public static ResponseResetPassword? ResetPassword(string token, string password)
+        {
+            Http http = new()
+            {
+                Accept = "application/json"
+            };
+
+            string url = String.Concat(ApiEndpoints.API_CHIL + "/api/users/password/reset");
+            HttpResponse resp = http.PostJson2(url, "Application/json", JsonBody(token, password));
             if (http.LastStatus != 200)
             {
                 Debug.WriteLine(http.LastErrorText);
