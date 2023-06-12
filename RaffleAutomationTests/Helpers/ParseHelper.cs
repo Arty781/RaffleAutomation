@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 
 using System.Threading.Tasks;
-using static RaffleAutomationTests.Helpers.WebMOdels.Profile;
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -188,9 +187,9 @@ namespace RaffleAutomationTests.Helpers
 
     public class OrderHistoryVerificator
     {
-        private static List<OrderHistory> SplitIntoRows(List<IWebElement> inputList, int elementsPerRow, int maxRows, out int totalPriceSum)
+        private static List<WebMOdels.Profile.OrderHistory> SplitIntoRows(List<IWebElement> inputList, int elementsPerRow, int maxRows, out int totalPriceSum)
         {
-            List<OrderHistory> historyList = new List<OrderHistory>();
+            List<WebMOdels.Profile.OrderHistory> historyList = new();
             int sum= 0;
             int numRows = inputList.Count / elementsPerRow;
             if (numRows < maxRows)
@@ -205,7 +204,7 @@ namespace RaffleAutomationTests.Helpers
                 IWebElement numTicketsElement = inputList[i + 2];
                 IWebElement priceElement = inputList[i + 3];
 
-                OrderHistory item = new OrderHistory()
+                WebMOdels.Profile.OrderHistory item = new()
                 {
                     PRIZE = prizeElement.Text,
                     PURCHASE_DATE = purchaseDateElement.Text,
@@ -221,9 +220,9 @@ namespace RaffleAutomationTests.Helpers
             return historyList;
         }
 
-        public static List<OrderHistory> GetOrderHistory(List<IWebElement> inputList, int maxRows, out int totalPriceSum)
+        public static List<WebMOdels.Profile.OrderHistory> GetOrderHistory(List<IWebElement> inputList, int maxRows, out int totalPriceSum)
         {
-            List<OrderHistory> result = SplitIntoRows(inputList, 4, maxRows, out int sum);
+            List<WebMOdels.Profile.OrderHistory> result = SplitIntoRows(inputList, 4, maxRows, out int sum);
             totalPriceSum= sum;
 
             return result;

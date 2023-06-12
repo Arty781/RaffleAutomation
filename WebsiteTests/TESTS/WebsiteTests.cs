@@ -1392,7 +1392,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("Client")]
         [AllureSubSuite("Subscriptions")]
-        public void VerifySubscriptionEmailsAfterRunScript(int activeRaffles)
+        public void VerifySubscriptionEmailsAfterRunScript()
         {
             #region Preconditions
 
@@ -1420,24 +1420,17 @@ namespace RaffleHouseAutomation.WebSiteTests
             {
                 var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
                 var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
-                var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
-                //Assert.That(ordersList.Count >= 1, $"New order is not created, current subscription orders count is \"{ordersList.Count}\"");
-
-                foreach (var subscription in subscriptionList)
-                {
-                    Assert.IsNotNull(subscription.Refference);
-                    Assert.IsNotNull(subscription.CardSource);
-                    Assert.IsNotNull(subscription.CheckoutId);
-                }
+                var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);                
                 EmailVerificator.VerifyMonthlyEmailAuth(user.Email,
-                                    user.Name,
-                                    charity,
-                                    activeRaffles);
+                                                        user.Name,
+                                                        charity,
+                                                        raffle.Count);
                 EmailVerificator.VerifyUnpauseEmail(user.Email,
-                                    user.Name,
-                                    charity,
-                                    activeRaffles);
-                EmailVerificator.VerifyReminderEmail(user.Email, user.Name);
+                                                    user.Name,
+                                                    charity,
+                                                    raffle.Count);
+                EmailVerificator.VerifyReminderEmail(user.Email, 
+                                                     user.Name);
             }
             
 

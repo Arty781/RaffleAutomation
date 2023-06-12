@@ -35,35 +35,36 @@
             }
         }
 
-        public class ForceCloseDriver
+        
+    }
+    public class ForceCloseDriver
+    {
+        public static string CreateBatFile()
         {
-            public static string CreateBatFile()
+            string path = Browser.RootPathReport() + "_!CloseOpenWith.bat";
+            string forceCloseAppList = string.Format(
+                "TASKKILL" + " /IM " + "\"OpenWith.exe\"" + " /F " + "\n" +
+                "TASKKILL" + " /IM " + "\"chromedriver.exe\"" + " /F " + "\n" +
+                "TASKKILL" + " /IM " + "\"java.exe\"" + " /F " + "\n" +
+                "TASKKILL" + " /IM " + "\"node.exe\"" + " /F " + "\n" +
+                "TASKKILL" + " /IM " + "\"AppleMobileDeviceService.exe\"" + " /F " + "\n" +
+                "TASKKILL" + " /IM " + "\"APSDaemon.exe\"" + " /F " + "\n" +
+                "TASKKILL" + " /IM " + "\"ICloudServices.exe\"" + " /F " + "\n" +
+                "TASKKILL" + " /IM " + "\"mDNSResponder.exe\"" + " /F " + "F" + "\n" +
+                "TASKKILL" + " /IM " + "\"altserver.exe\"" + " /F " + "\n" +
+                "TASKKILL" + " /IM " + "\"Screencast-O-Matic.exe\"" + " /F " + "\n"
+                );
+            FileInfo fileInf = new(path);
+            if (fileInf.Exists == true)
             {
-                string path = Browser.RootPathReport() + "_!CloseOpenWith.bat";
-                string forceCloseAppList = string.Format(
-                    "TASKKILL" + " /IM " + "\"OpenWith.exe\"" + " /F " + "\n" +
-                    "TASKKILL" + " /IM " + "\"chromedriver.exe\"" + " /F " + "\n" +
-                    "TASKKILL" + " /IM " + "\"java.exe\"" + " /F " + "\n" +
-                    "TASKKILL" + " /IM " + "\"node.exe\"" + " /F " + "\n" +
-                    "TASKKILL" + " /IM " + "\"AppleMobileDeviceService.exe\"" + " /F " + "\n" +
-                    "TASKKILL" + " /IM " + "\"APSDaemon.exe\"" + " /F " + "\n" +
-                    "TASKKILL" + " /IM " + "\"ICloudServices.exe\"" + " /F " + "\n" +
-                    "TASKKILL" + " /IM " + "\"mDNSResponder.exe\"" + " /F " + "F" + "\n" +
-                    "TASKKILL" + " /IM " + "\"altserver.exe\"" + " /F " + "\n" +
-                    "TASKKILL" + " /IM " + "\"Screencast-O-Matic.exe\"" + " /F " + "\n"
-                    );
-                FileInfo fileInf = new(path);
-                if (fileInf.Exists == true)
-                {
-                    fileInf.Delete();
-                }
-                using (FileStream fstream = new($"{path}", FileMode.OpenOrCreate))
-                {
-                    byte[] array = Encoding.Default.GetBytes(forceCloseAppList);
-                    fstream.Write(array, 0, array.Length);
-                }
-                return path;
+                fileInf.Delete();
             }
+            using (FileStream fstream = new($"{path}", FileMode.OpenOrCreate))
+            {
+                byte[] array = Encoding.Default.GetBytes(forceCloseAppList);
+                fstream.Write(array, 0, array.Length);
+            }
+            return path;
         }
     }
 }

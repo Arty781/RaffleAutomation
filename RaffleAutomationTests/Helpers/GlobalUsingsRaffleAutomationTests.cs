@@ -32,3 +32,4 @@ global using System.Text.RegularExpressions;
 global using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
 global using RaffleAutomationTests.APIHelpers.Web.Subscriptions;
 global using RaffleAutomationTests.APIHelpers.Web.Weekly;
+global using HtmlAgilityPack;
