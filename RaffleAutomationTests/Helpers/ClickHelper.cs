@@ -455,26 +455,22 @@ namespace RaffleAutomationTests.Helpers
         }
 
         [AllureStep("Go to activation link")]
-        public static string GgetHtmlBody(string email)
+        public static void GgetHtmlBody(string email, out string emailInitial)
         {
-            var activateLink = PutsBox.GetHtmlFromEmail(email);
-
-            return activateLink;
+            emailInitial = PutsBox.GetHtmlFromEmail(email);
         }
 
         //[AllureStep("Go to activation link")]
-        public static string GgetHtmlBody(string email, string id)
+        public static void GgetHtmlBody(string email, string id, out string emailInitial)
         {
-            var activateLink = PutsBox.GetHtmlFromEmail(email, id);
-
-            return activateLink;
+            emailInitial = PutsBox.GetHtmlFromEmail(email, id);
         }
 
         //[AllureStep("Go to activation link")]
-        public static List<PutsboxEmail>? GgetAllEmailData(string email)
+        public static void GgetAllEmailData(string email, out List<PutsboxEmail>? emailList)
         {
-            var emailsList = PutsBox.GetAllEmails(email);
-            return JsonConvert.DeserializeObject<List<PutsboxEmail>?>(emailsList);
+            PutsBox.GetAllEmails(email, out string emailsList);
+            emailList = JsonConvert.DeserializeObject<List<PutsboxEmail>?>(emailsList);
         }
 
         [AllureStep("Clear email history")]

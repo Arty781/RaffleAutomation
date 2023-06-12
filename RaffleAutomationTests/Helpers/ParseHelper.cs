@@ -177,7 +177,7 @@ namespace RaffleAutomationTests.Helpers
 
     public class OrderHistoryVerificator
     {
-        private static List<OrderHistory> SplitIntoRows(List<IWebElement> inputList, int elementsPerRow, int maxRows, out int totalPriceSum)
+        private static List<WebMOdels.Profile.OrderHistory> SplitIntoRows(IList<IWebElement> inputList, int elementsPerRow, int maxRows, out int totalPriceSum)
         {
             List<WebMOdels.Profile.OrderHistory> historyList = new();
             int sum= 0;
@@ -210,7 +210,7 @@ namespace RaffleAutomationTests.Helpers
             return historyList;
         }
 
-        public static List<OrderHistory> GetOrderHistory(List<IWebElement> inputList, int maxRows, out int totalPriceSum)
+        public static List<WebMOdels.Profile.OrderHistory> GetOrderHistory(IList<IWebElement> inputList, int maxRows, out int totalPriceSum)
         {
             List<WebMOdels.Profile.OrderHistory> result = SplitIntoRows(inputList, 4, maxRows, out int sum);
             totalPriceSum= sum;
