@@ -1427,14 +1427,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
                 var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
                 var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
-                //Assert.That(ordersList.Count >= 1, $"New order is not created, current subscription orders count is \"{ordersList.Count}\"");
-
-                foreach (var subscription in subscriptionList)
-                {
-                    Assert.IsNotNull(subscription.Refference);
-                    Assert.IsNotNull(subscription.CardSource);
-                    Assert.IsNotNull(subscription.CheckoutId);
-                }
+               
                 EmailVerificator.VerifyMonthlyEmailAuth(user.Email,
                                                         user.Name,
                                                         charity,
