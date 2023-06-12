@@ -65,7 +65,7 @@ namespace RaffleAutomationTests.PageObjects
         public Home SelectFirstBundleBtn()
         {
             WaitUntil.WaitSomeInterval(500);
-            Button.Click(btnBundles[0]);
+            Button.Click(btnBundles.FirstOrDefault());
             WaitUntil.WaitSomeInterval(2000);
 
             return this;

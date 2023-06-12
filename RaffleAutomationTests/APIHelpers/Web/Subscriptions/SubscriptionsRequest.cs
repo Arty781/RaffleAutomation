@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Newtonsoft.Json.Linq;
 using HtmlAgilityPack;
+using System.Linq;
 
 namespace RaffleAutomationTests.APIHelpers.Web.Subscriptions
 {
@@ -99,16 +100,16 @@ namespace RaffleAutomationTests.APIHelpers.Web.Subscriptions
         public static void CheckEmailsCountFor17Minutes(List<PutsboxEmail>? userEmails, string email)
         {
             DateTime startTime = DateTime.Now;
-            int checkInterval = 60000; // in milliseconds
+            int checkInterval = 30000; // in milliseconds
             bool statusChanged = false;
             int minutes = 35;
 
             while (DateTime.Now - startTime < TimeSpan.FromMinutes(minutes)) // loop for 15 minutes
             {
-                if (userEmails.Count <= 1)
+                if (userEmails.Count <= 1 && userEmails.Any(x => x != null && x.subject.Contains("How many stars would you give")))
                 {
                     Thread.Sleep(checkInterval); // wait for 60 seconds before checking again
-                    userEmails = Elements.GgetAllEmailData(email);
+                    Elements.GgetAllEmailData(email, out userEmails);
                 }
                 else
                 {
@@ -117,7 +118,6 @@ namespace RaffleAutomationTests.APIHelpers.Web.Subscriptions
                     break; // exit the loop since the status has changed
                 }
             }
-
             if (!statusChanged)
             {
                 throw new Exception($"Subscription status did not change within {minutes} minutes.");

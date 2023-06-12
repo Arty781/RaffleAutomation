@@ -88,9 +88,9 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
-        public CmsUserManagement AddTicketsToUser()
+        public CmsUserManagement AddTicketsToUser(int numOfTickets)
         {
-            InputBox.Element(inputNumberOfTickets, 10, "10");
+            InputBox.Element(inputNumberOfTickets, 10, $"{numOfTickets}");
             Button.Click(btnSaveInPopup);
 
             return this;

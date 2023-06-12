@@ -26,7 +26,7 @@
         public void VerifyAddingTickets(double price, int countOrders)
         {
             WaitUntil.CustomElementIsVisible(prizePrice.Last());
-            OrderHistoryVerificator.GetOrderHistory(prizePrice.ToList(), countOrders, out int totalPriceSum);
+            OrderHistoryVerificator.GetOrderHistory(prizePrice, countOrders, out int totalPriceSum);
 
             Assert.AreEqual(price, (double)totalPriceSum, $"Order total is not matched. Expected {price}, but was {(double)totalPriceSum}");
 

@@ -11,9 +11,11 @@
             return this;
         }
 
-        public PageDiscountPage SelectTicketBundle(int bundleNumber)
+        public PageDiscountPage SelectTicketBundle(out string bundleprice)
         {
-            Button.ClickJS(btnTicketBundles[bundleNumber]);
+            int num = RandomHelper.RandomIntNumber(3);
+            bundleprice = Pages.WinRafflePage.textTicketBundlePrice[num].Text;
+            Button.ClickJS(btnTicketBundles[num]);
             WaitUntil.CustomElementIsVisible(Pages.Basket.btncheckOutNow);
 
             return this;

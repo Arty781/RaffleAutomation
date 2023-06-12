@@ -21,7 +21,7 @@ namespace End2EndTests.TESTS
             #region Preconditions
 
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? closeEarlier);
             DreamHomeRequest.DeactivateDreamHome(tokenAdmin, dreamResponse);
 
             #endregion
@@ -110,7 +110,7 @@ namespace End2EndTests.TESTS
             #region Preconditions
 
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? closeEarlier);
             DreamHomeRequest.DeactivateDreamHome(tokenAdmin, dreamResponse);
 
             #endregion

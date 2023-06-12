@@ -66,9 +66,17 @@
         public static string RandomPhone()
         {
             Random random = new Random();
-            const string chars = "0123456789";
-            return new string(Enumerable.Repeat(chars, 10)
+            const string firstChar = "123456789";  // Allowed characters for the first digit
+            const string chars = "0123456789";     // Allowed characters for the rest of the digits
+
+            // Generate the first digit
+            string firstDigit = firstChar[random.Next(firstChar.Length)].ToString();
+
+            // Generate the rest of the digits
+            string restOfDigits = new string(Enumerable.Repeat(chars, 9)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            return firstDigit + restOfDigits;
         }
 
         public static string RandomPhone(int charNum)

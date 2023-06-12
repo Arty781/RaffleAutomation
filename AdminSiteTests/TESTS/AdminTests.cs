@@ -26,14 +26,14 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsUserManagement
                 .OpenUserManagement();
             Pages.CmsUserManagement
-                .SearchIsUserDisplayed(userResponse.Email);
+                .SearchUser(userResponse.Email);
             Pages.CmsUserManagement
                 .ClickEditUser(userResponse.Email)
                 .EnterUserData(userResponse.Email);
             Pages.CmsCommon
                 .ClickSaveBtn();
             Pages.CmsUserManagement
-                .SearchIsUserDisplayed(userResponse.Email);
+                .SearchUser(userResponse.Email);
             Pages.CmsUserManagement
                 .ClickEditUser(userResponse.Email)
                 .OpenSecurityTab()
@@ -96,7 +96,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             #region Preconditions
 
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             DreamHomeRequest.DeactivateDreamHome(tokenAdmin, dreamResponse);
 
             #endregion
@@ -243,7 +243,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsCommon
                 .ClickSaveBtn();
             Pages.CmsUserManagement
-                .SearchIsUserDisplayed(email);
+                .SearchUser(email);
             var password = PutsBox.GetTextFromEmailWithValue(email, "Your temporary password is: ");
 
             #region PostConditions
@@ -278,7 +278,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsUserManagement
                 .OpenUserManagement();
             Pages.CmsUserManagement
-                .SearchIsUserDisplayed(userResponse.Email);
+                .SearchUser(userResponse.Email);
             Pages.CmsUserManagement
                 .ClickEditUser(userResponse.Email)
                 .EnterUserData(userResponse.Email);
@@ -286,7 +286,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsCommon
                 .ClickSaveBtn();
             Pages.CmsUserManagement
-                .SearchIsUserDisplayed(userResponse.Email);
+                .SearchUser(userResponse.Email);
             Pages.CmsUserManagement
                 .VerifyUserIsEdited(userData, userResponse.Email);
             Pages.CmsUserManagement
@@ -325,7 +325,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .VerifyIsLoginSuccessfull();
             Pages.CmsUserManagement
                 .OpenUserManagement()
-                .SearchIsUserDisplayed(userResponse.Email);
+                .SearchUser(userResponse.Email);
             Pages.CmsUserManagement
                 .DeleteUser(userResponse.Email);
         }
@@ -341,8 +341,10 @@ namespace RaffleHouseAutomation.AdminSiteTests
         public void AddDreamHomeTicketToUserOnCms()
         {
             #region Preconditions
+
             var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var userResponse = UsersRequest.CreateUserOnCms(token);
+            int numOftickets = 10;
             #endregion
 
             Pages.CmsLogin
@@ -353,12 +355,12 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsUserManagement
                 .OpenUserManagement();
             Pages.CmsUserManagement
-                .SearchIsUserDisplayed(userResponse.Email);
+                .SearchUser(userResponse.Email);
             Pages.CmsUserManagement
                 .ClickEditUser(userResponse.Email)
                 .OpenTicketsTab()
                 .ClickAddTicketBtn()
-                .AddTicketsToUser();
+                .AddTicketsToUser(numOftickets);
             var competitionsList = Pages.CmsUserManagement.SelectTicketsDataByCompetition(Competitions.DREAMHOME);
            
 
@@ -385,6 +387,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             #region Preconditions
             var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var userResponse = UsersRequest.CreateUserOnCms(token);
+            int numOftickets = 10;
             #endregion
 
             Pages.CmsLogin
@@ -395,18 +398,18 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsUserManagement
                 .OpenUserManagement();
             Pages.CmsUserManagement
-                .SearchIsUserDisplayed(userResponse.Email);
+                .SearchUser(userResponse.Email);
             Pages.CmsUserManagement
                 .ClickEditUser(userResponse.Email)
                 .OpenTicketsTab()
                 .ClickAddTicketBtn()
-                .AddTicketsToUser();
+                .AddTicketsToUser(numOftickets);
             var competitionsList = Pages.CmsUserManagement.SelectTicketsDataByCompetition(Competitions.DREAMHOME);
 
             Pages.CmsUserManagement
                 .ClickEditTicketBtn(competitionsList)
-                .AddTicketsToUser()
-                .VerifyTicketsIsAdded(competitionsList, Competitions.DREAMHOME);
+                .AddTicketsToUser(numOftickets)
+                .VerifyTicketsIsAdded(competitionsList, Competitions.DREAMHOME, numOftickets);
 
             #region PostConditions
 
@@ -430,6 +433,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             #region Preconditions
             var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var userResponse = UsersRequest.CreateUserOnCms(token);
+            int numOftickets = 10;
             #endregion
 
             Pages.CmsLogin
@@ -440,18 +444,18 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsUserManagement
                 .OpenUserManagement();
             Pages.CmsUserManagement
-                .SearchIsUserDisplayed(userResponse.Email);
+                .SearchUser(userResponse.Email);
             Pages.CmsUserManagement
                 .ClickEditUser(userResponse.Email)
                 .OpenTicketsTab()
                 .ClickAddTicketBtn()
-                .AddTicketsToUser();
+                .AddTicketsToUser(numOftickets);
             var competitionsList = Pages.CmsUserManagement.SelectTicketsDataByCompetition(Competitions.DREAMHOME);
 
             Pages.CmsUserManagement
                 .ClickEditTicketBtn(competitionsList)
-                .AddTicketsToUser()
-                .VerifyTicketsIsAdded(competitionsList, Competitions.DREAMHOME);
+                .AddTicketsToUser(numOftickets)
+                .VerifyTicketsIsAdded(competitionsList, Competitions.DREAMHOME, numOftickets);
             competitionsList = Pages.CmsUserManagement.SelectTicketsDataByCompetition(Competitions.DREAMHOME);
             Pages.CmsUserManagement
                 .ClickDeleteTicketBtn(competitionsList);

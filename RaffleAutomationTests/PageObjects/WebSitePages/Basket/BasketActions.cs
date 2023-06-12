@@ -12,21 +12,21 @@
         }
 
         [AllureStep("Get Order count")]
-        public int GetOrderCount()
+        public Basket GetOrderCount(out int countOrders)
         {
             WaitUntil.CustomElementIsVisible(orderTotalVal);
-            int total = textPrice.Count;
-
-            return total;
+            WaitUntil.WaitSomeInterval(500);
+            countOrders = textPrice.Count;
+            return this;
         }
 
         [AllureStep("Get Order Total")]
-        public double GetOrderTotal()
+        public Basket GetOrderTotal(out double total)
         {
             WaitUntil.CustomElementIsVisible(orderTotalVal);
-            double total = double.Parse(orderTotalVal.Text.Substring(1));
-
-            return total;
+            WaitUntil.WaitSomeInterval(500);
+            total = double.Parse(orderTotalVal.Text.Substring(1));
+            return this;
         }
 
         [AllureStep("Click Add More button")]

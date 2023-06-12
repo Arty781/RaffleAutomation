@@ -11,7 +11,8 @@
         {
             WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(seconds))
             {
-                PollingInterval = TimeSpan.FromMilliseconds(50)
+                PollingInterval = TimeSpan.FromMilliseconds(50),
+                Message = $"Element is not visible after {seconds} sec"
             };
             try
             {

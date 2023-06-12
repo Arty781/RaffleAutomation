@@ -74,99 +74,91 @@ namespace RaffleAutomationTests.Helpers
 
     public class EmailVerificator
     {
+        public static List<PutsboxEmail>? emailsList = null;
+
         public static void VerifyInitialEmailAuth(string email, string name, string charity)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var user = AppDbHelper.Users.GetUserByEmail(email);
             var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
             var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
             var quantity = (int)(sub.NumOfTickets + sub.Extra);
             var value = (double)sub.TotalCost / 100;
-            emailsList = Elements.GgetAllEmailData(email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
+            Elements.GgetHtmlBody(email, id, out string emailInitial);
             ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.InitialAuth(name, quantity, value, charity));
 
         }
 
         public static void VerifyInitialEmailUnauth(string email, string name, string charity, int activeRaffles)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var user = AppDbHelper.Users.GetUserByEmail(email);
             var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
             var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
             var quantity = (int)(sub.NumOfTickets + sub.Extra);
             var value = (double)sub.TotalCost / 100;
-            emailsList = Elements.GgetAllEmailData(email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
+            Elements.GgetHtmlBody(email, id, out string emailInitial);
             ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.InitialUnauth(name, quantity * activeRaffles, value, charity));
 
         }
 
         public static void VerifyMonthlyEmailAuth(string email, string name, string charity, int activeRaffles)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var user = AppDbHelper.Users.GetUserByEmail(email);
             var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
             var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
             var quantity = (int)(sub.NumOfTickets + sub.Extra);
             var value = (double)sub.TotalCost / 100;
-            emailsList = Elements.GgetAllEmailData(email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
+            Elements.GgetHtmlBody(email, id, out string emailInitial);
             ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.MonthlyAuth(name, quantity * activeRaffles, value, charity));
 
         }
 
         public static void VerifyCancelationEmail(string email, string name)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
-            emailsList = Elements.GgetAllEmailData(email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription cancellation receipt").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
+            Elements.GgetHtmlBody(email, id, out string emailInitial);
             ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.Cancel(name));
 
         }
 
         public static void VerifyPauseEmail(string email, string name)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
-            emailsList = Elements.GgetAllEmailData(email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Paused subscription").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
+            Elements.GgetHtmlBody(email, id, out string emailInitial);
             ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.Pause(name));
 
         }
 
         public static void VerifyUnpauseEmail(string email, string name, string charity, int activeRaffles)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var user = AppDbHelper.Users.GetUserByEmail(email);
             var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
             var sub = subscriptionList.Where(x => x.Status == "ACTIVE" && x.PausedAt == null).Select(x => x).First();
             var quantity = (int)(sub.NumOfTickets + sub.Extra);
             var value = (double)sub.TotalCost / 100;
             var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(user);
-            emailsList = Elements.GgetAllEmailData(email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription pause reactivation").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
+            Elements.GgetHtmlBody(email, id, out string emailInitial);
             ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.Unpause(name, quantity * activeRaffles, value, charity));
         }
 
         public static void VerifyReminderEmail(string email,string name)
         {
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
-            emailsList = Elements.GgetAllEmailData(email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription pause reminder").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
+            Elements.GgetHtmlBody(email, id, out string emailInitial);
             ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.SevenDaysBeforeUnpause(name));
 
         }
@@ -174,11 +166,9 @@ namespace RaffleAutomationTests.Helpers
         public static void VerifyPurchaseFailedEmail(string email, string name)
         {
             WaitUntil.WaitSomeInterval();
-            var emailsList = Elements.GgetAllEmailData(email);
-            SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, email);
-            emailsList = Elements.GgetAllEmailData(email);
+            Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Failed subscription payment").Select(q => q.id).FirstOrDefault();
-            var emailInitial = Elements.GgetHtmlBody(email, id);
+            Elements.GgetHtmlBody(email, id, out string emailInitial);
             ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.PurchaseFailed(name));
 
         }
@@ -187,7 +177,7 @@ namespace RaffleAutomationTests.Helpers
 
     public class OrderHistoryVerificator
     {
-        private static List<WebMOdels.Profile.OrderHistory> SplitIntoRows(List<IWebElement> inputList, int elementsPerRow, int maxRows, out int totalPriceSum)
+        private static List<OrderHistory> SplitIntoRows(List<IWebElement> inputList, int elementsPerRow, int maxRows, out int totalPriceSum)
         {
             List<WebMOdels.Profile.OrderHistory> historyList = new();
             int sum= 0;
@@ -220,7 +210,7 @@ namespace RaffleAutomationTests.Helpers
             return historyList;
         }
 
-        public static List<WebMOdels.Profile.OrderHistory> GetOrderHistory(List<IWebElement> inputList, int maxRows, out int totalPriceSum)
+        public static List<OrderHistory> GetOrderHistory(List<IWebElement> inputList, int maxRows, out int totalPriceSum)
         {
             List<WebMOdels.Profile.OrderHistory> result = SplitIntoRows(inputList, 4, maxRows, out int sum);
             totalPriceSum= sum;

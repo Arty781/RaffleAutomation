@@ -16,13 +16,13 @@ namespace ApiTests.BASE
 
         public void SetUp()
         {
-
+            
         }
 
         [OneTimeTearDown]
         public static void OneTimeTearDown()
         {
-
+            
         }
 
         [TearDown]

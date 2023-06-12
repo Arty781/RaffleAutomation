@@ -4,7 +4,7 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class CmsUserManagement
     {
-        public void SearchIsUserDisplayed(string email)
+        public void SearchUser(string email)
         {
             WaitUntil.CustomElementIsVisible(textTitleUserManagement, 25);
             Element.Action(Keys.End);
@@ -24,12 +24,12 @@ namespace RaffleAutomationTests.PageObjects
             });
         }
 
-        public void VerifyTicketsIsAdded(List<CompetitionRowModel> competitionList, string competition)
+        public void VerifyTicketsIsAdded(List<CompetitionRowModel> competitionList, string competition, int numOfTickets)
         {
             WaitUntil.WaitSomeInterval();
             Assert.Multiple(() =>
             {
-                Assert.That(int.Parse(SelectTicketsDataByCompetition(competition).FirstOrDefault().NumberOfTickets), Is.EqualTo(int.Parse(competitionList.FirstOrDefault().NumberOfTickets) + 10), string.Concat("Competition doesn't match!", $" Expected: {int.Parse(competitionList.FirstOrDefault().NumberOfTickets) + 10} but was {SelectTicketsDataByCompetition(competition).FirstOrDefault().NumberOfTickets}"));
+                Assert.That(int.Parse(SelectTicketsDataByCompetition(competition).FirstOrDefault().NumberOfTickets), Is.EqualTo(int.Parse(competitionList.FirstOrDefault().NumberOfTickets) + numOfTickets), string.Concat("Competition doesn't match!", $" Expected: {int.Parse(competitionList.FirstOrDefault().NumberOfTickets) + numOfTickets} but was {SelectTicketsDataByCompetition(competition).FirstOrDefault().NumberOfTickets}"));
 
             });
         }

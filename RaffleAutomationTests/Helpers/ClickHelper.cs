@@ -13,30 +13,9 @@ namespace RaffleAutomationTests.Helpers
         public static void Click(IWebElement element)
         {
             WaitUntil.WaitSomeInterval(300);
-            WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(10))
-            {
-                PollingInterval = TimeSpan.FromMilliseconds(50)
-            };
-            try
-            {
-                wait.Until(e =>
-                {
-                    try
-                    {
-                        if (element != null && element.Enabled)
-                        {
-                            return true;
-                        }
-                        return false;
-                    }
-                    catch (Exception) { return false; }
-
-                });
-                element.Click();
-                WaitUntil.WaitSomeInterval(350);
-            }
-            catch (Exception) { }
-
+            WaitUntil.CustomElementIsVisible(element);
+            element.Click();
+            
         }
 
         public static void ClickJS(IWebElement element)
@@ -249,7 +228,7 @@ namespace RaffleAutomationTests.Helpers
         private static string ClearHistory(string email)
         {
             string arg = email.Substring(0, email.IndexOf('@'));
-            return $"https://preview.putsbox.com/p/{arg}/last.html";
+            return $"https://putsbox.com/{arg}/clear";
         }
         private static string GetHtmlUrl(string email)
         {
@@ -347,6 +326,7 @@ namespace RaffleAutomationTests.Helpers
         {
             RestClient client = new RestClient(ClearHistory(email));
             RestRequest request = new RestRequest("");
+            client.ExecuteGetAsync(request);
         }
 
         public static string GetLinkFromEmailWithValue(string domain, string value)
@@ -413,18 +393,15 @@ namespace RaffleAutomationTests.Helpers
             return text;
         }
 
-        public static string GetAllEmails(string domain)
+        public static void GetAllEmails(string domain, out string htmlContent)
         {
             Thread.Sleep(2000);
-            string htmlContent = GetEmailContent(domain);
+            htmlContent = GetEmailContent(domain);
             if (htmlContent.Contains("Not Found"))
             {
                 Thread.Sleep(2000);
                 htmlContent = GetEmailContent(domain);
             }
-
-            string text = Decode(htmlContent);
-            return htmlContent;
         }
 
         public static void ClearEmailHistory(string domain)

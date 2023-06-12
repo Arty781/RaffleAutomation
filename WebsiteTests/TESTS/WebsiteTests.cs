@@ -1,3 +1,4 @@
+using ApiTests.BASE;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using OpenQA.Selenium.Interactions;
@@ -816,7 +817,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             int addSecondEndHours = 1780;
 
             List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
-            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Where(x => x.IsClosed == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Distinct(new ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
             DreamHome.DeactivateDreamHome(activeDreamhomeList);
             dreamhomeList.Reverse();
             DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours, addSecondStartHours, addSecondEndHours);
@@ -881,7 +882,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             int addSecondEndHours = -80;
 
             List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
-            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Where(x => x.IsClosed == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Distinct(new ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
             DreamHome.DeactivateDreamHome(activeDreamhomeList);
             dreamhomeList.Reverse();
             DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours, addSecondStartHours, addSecondEndHours);
@@ -945,7 +946,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             int addFirstEndHours = 360;
 
             List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
-            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Where(x => x.IsClosed == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Distinct(new ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
             DreamHome.DeactivateDreamHome(activeDreamhomeList);
             dreamhomeList.Reverse();
             DreamHome.ActivateOneClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours);
@@ -1010,7 +1011,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             int addSecondEndHours = -80;
 
             List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
-            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Where(x => x.IsClosed == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Distinct(new ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
             DreamHome.DeactivateDreamHome(activeDreamhomeList);
             dreamhomeList.Reverse();
             DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours, addSecondStartHours, addSecondEndHours);
@@ -1068,9 +1069,11 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Subscriptions")]
         public void PrepareUserToNextPurchase()
         {
-            string name = "";
-            string email = string.Concat("nextpurchase", DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss"), "@putsbox.com");
+            string name = string.Empty;
+            string email = string.Concat("nextpurchase", DateTime.Now.ToString("yyyy-MM-d-hh-mm-ss"), "@putsbox.com");
             var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            var charity = "None Selected";
 
             Pages.Common
                 .CloseCookiesPopUp();
@@ -1098,15 +1101,18 @@ namespace RaffleHouseAutomation.WebSiteTests
             
             Pages.Profile
                 .OpenSubscriptionInProfile();
-            var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
-            foreach (var subscription in subscriptionList)
-            {
-                Assert.IsNotNull(subscription.Refference);
-                Assert.IsNotNull(subscription.CardSource);
-                Assert.IsNotNull(subscription.CheckoutId);
-            }
-
+            AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
             AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToNextPurchase(user);
+            Elements.ClearEmailHistory(user.Email);
+            Elements.GgetAllEmailData(user.Email, out List<PutsboxEmail>? emailsList);
+            var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
+            var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
+            var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
+            var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
+            EmailVerificator.VerifyMonthlyEmailAuth(user.Email,
+                                                    user.Name,
+                                                    charity,
+                                                    raffle.Count);
         }
 
         [Test]
@@ -1380,8 +1386,8 @@ namespace RaffleHouseAutomation.WebSiteTests
 
     [TestFixture]
     [AllureNUnit]
-    public class CheckingEmailAfterScriptRunning 
-    { 
+    public class CheckingEmailAfterScriptRunning : TestBaseApi
+    {
 
 
         [Test]
@@ -1396,7 +1402,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         {
             #region Preconditions
 
-            string name = "";
+            string name = string.Empty;
             var charity = "None Selected";
             int nextPurchaseDate = -100;
             int purchaseDate = 0;
@@ -1420,7 +1426,15 @@ namespace RaffleHouseAutomation.WebSiteTests
             {
                 var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
                 var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
-                var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);                
+                var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
+                //Assert.That(ordersList.Count >= 1, $"New order is not created, current subscription orders count is \"{ordersList.Count}\"");
+
+                foreach (var subscription in subscriptionList)
+                {
+                    Assert.IsNotNull(subscription.Refference);
+                    Assert.IsNotNull(subscription.CardSource);
+                    Assert.IsNotNull(subscription.CheckoutId);
+                }
                 EmailVerificator.VerifyMonthlyEmailAuth(user.Email,
                                                         user.Name,
                                                         charity,
@@ -1456,7 +1470,7 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             //Edit raffles
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             var raffle = DreamHome.GetAciveRaffles();
             
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, -170, 720);
@@ -1502,7 +1516,7 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             //Edit raffles
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             var raffle = DreamHome.GetAciveRaffles();
 
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, -170, 720);
@@ -1547,7 +1561,7 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             //Edit raffles
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
             var charity = "None Selected";
             int nextPurchaseDate = -100;
@@ -1564,8 +1578,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             foreach (var user in users)
             {
-                var emailsList = Elements.GgetAllEmailData(user.Email);
-                SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, user.Email);
+                Elements.GgetAllEmailData(user.Email, out List<PutsboxEmail>? emailsList);
                 var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
                 var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
                 var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
@@ -1604,7 +1617,7 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             //Edit raffles
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
             var charity = "None Selected";
             int nextPurchaseDate = -100;
@@ -1621,18 +1634,11 @@ namespace RaffleHouseAutomation.WebSiteTests
             users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             foreach (var user in users)
             {
-                var emailsList = Elements.GgetAllEmailData(user.Email);
-                SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, user.Email);
+                Elements.GgetAllEmailData(user.Email, out List<PutsboxEmail>? emailsList);
                 var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
                 var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
                 var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
                 var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
-                foreach (var subscription in subscriptionList)
-                {
-                    Assert.IsNotNull(subscription.Refference);
-                    Assert.IsNotNull(subscription.CardSource);
-                    Assert.IsNotNull(subscription.CheckoutId);
-                }
                 EmailVerificator.VerifyMonthlyEmailAuth(user.Email,
                                                         user.Name,
                                                         charity,
@@ -1666,9 +1672,9 @@ namespace RaffleHouseAutomation.WebSiteTests
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
             Pages.Home
                 .AddTicketsToBasket(0);
-            int countOrders = Pages.Basket.GetOrderCount();
-            double totalOrder = Pages.Basket.GetOrderTotal();
             Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder)
                 .MakeAPurchaseAsUnauthorizedUser(email);
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
@@ -1695,6 +1701,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var user = UsersRequest.GetUser(tokenAdmin, email);
             UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
             #endregion
 
         }
@@ -1733,6 +1740,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var user = UsersRequest.GetUser(tokenAdmin, email);
             UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
             #endregion
 
         }
@@ -1752,8 +1760,10 @@ namespace RaffleHouseAutomation.WebSiteTests
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
             Pages.Home
                 .AddTicketsToBasket(0);
-            int countOrders = Pages.Basket.GetOrderCount();
-            double totalOrder = Pages.Basket.GetOrderTotal();
+            Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder);
+            
             Pages.Basket
                 .MakeAPurchaseAsUnauthorizedUser(email);
             Pages.ThankYou
@@ -1782,6 +1792,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var user = UsersRequest.GetUser(tokenAdmin, email);
             UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
             #endregion
 
         }
@@ -1801,8 +1812,10 @@ namespace RaffleHouseAutomation.WebSiteTests
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
             Pages.Home
                 .AddTicketsToBasket(2);
-            int countOrders = Pages.Basket.GetOrderCount();
-            double totalOrder = Pages.Basket.GetOrderTotal();
+            Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder);
+            
             Pages.Basket
                 .MakeAPurchaseAsUnauthorizedUser(email);
             Pages.ThankYou
@@ -1830,6 +1843,8 @@ namespace RaffleHouseAutomation.WebSiteTests
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var user = UsersRequest.GetUser(tokenAdmin, email);
             UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
+
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
             #endregion
 
         }
@@ -1867,11 +1882,12 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Home
                     .OpenDreamTicketSelector()
                     .SelectFirstBundleBtn();
-            int countOrders = Pages.Basket.GetOrderCount();
-            double totalOrder = Pages.Basket.GetOrderTotal();
+            Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder);
+            
             Pages.Basket
                 .ClickCheckoutNowBtn()
-                .SelectCharity()
                 .EnterCardDetails()
                 .ClickPayNowBtn();
             Pages.ThankYou
@@ -1881,6 +1897,12 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenDreamHomeHistoryList()
                 .ScrollToEndOfHistoryList(countOrders)
                 .VerifyAddingTickets(totalOrder, countOrders);
+
+            #region Postconditions
+
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
+
+            #endregion
         }
 
         [Test]
@@ -1897,7 +1919,7 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             string name = "";
             List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
-            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Where(x => x.IsClosed == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Distinct(new ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
             DreamHome.DeactivateDreamHome(activeDreamhomeList);
             dreamhomeList.Reverse();
             DreamHome.ActivateOneClosedDreamHome(dreamhomeList, -3600, 3600);
@@ -1918,8 +1940,10 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyIsSignIn(out name);
             Pages.Home
                 .AddTicketsToBasket(0);
-            int countOrders = Pages.Basket.GetOrderCount();
-            double totalOrder = Pages.Basket.GetOrderTotal();
+            Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder);
+            
             Pages.Basket
                 .MakeAPurchaseAsAuthorizedUser();
             Pages.ThankYou
@@ -1928,7 +1952,13 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
                 .ScrollToEndOfHistoryList(countOrders)
-                .VerifyAddingTickets(totalOrder, countOrders); ;
+                .VerifyAddingTickets(totalOrder, countOrders);
+
+            #region Postconditions
+
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
+
+            #endregion
         }
 
         [Test]
@@ -1942,14 +1972,14 @@ namespace RaffleHouseAutomation.WebSiteTests
         public void PurchaseTwoActiveDreamHome()
         {
             #region Update two active dreamhomes
-            string name = "";
+            string name = string.Empty;
             int addFirstStartHours = -3600;
             int addFirstEndHours = 3600;
             int addSecondStartHours = -1740;
             int addSecondEndHours = 80;
 
             List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
-            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Where(x => x.IsClosed == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Distinct(new ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
             DreamHome.DeactivateDreamHome(activeDreamhomeList);
             dreamhomeList.Reverse();
             DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours, addSecondStartHours, addSecondEndHours);
@@ -1970,8 +2000,10 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyIsSignIn(out name);
             Pages.Home
                 .AddTicketsToBasket(0);
-            int countOrders = Pages.Basket.GetOrderCount();
-            double totalOrder = Pages.Basket.GetOrderTotal();
+            Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder);
+            
             Pages.Basket
                 .MakeAPurchaseAsAuthorizedUser();
             Pages.ThankYou
@@ -1980,7 +2012,13 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
                 .ScrollToEndOfHistoryList(countOrders)
-                .VerifyAddingTickets(totalOrder, countOrders); ;
+                .VerifyAddingTickets(totalOrder, countOrders);
+
+            #region Postconditions
+
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
+
+            #endregion
         }
 
         [Test]
@@ -2009,8 +2047,10 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn();
-            int countOrders = Pages.Basket.GetOrderCount();
-            double totalOrder = Pages.Basket.GetOrderTotal();
+            Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder);
+            
             Pages.Basket
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
@@ -2028,9 +2068,9 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ScrollToEndOfHistoryList(countOrders)
                 .VerifyAddingTickets(totalOrder, countOrders);
             Pages.Basket
-                .ClickCartBtn();
-            countOrders = Pages.Basket.GetOrderCount();
-            totalOrder = Pages.Basket.GetOrderTotal();
+                .ClickCartBtn()
+                .GetOrderCount(out countOrders)
+                .GetOrderTotal(out totalOrder);
             Pages.Basket
                 .MakeAPurchaseAsAuthorizedUser();
             Pages.ThankYou
@@ -2040,6 +2080,12 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenDreamHomeHistoryList()
                 .ScrollToEndOfHistoryList(countOrders)
                 .VerifyAddingTickets(totalOrder, countOrders);
+
+            #region Postconditions
+
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
+
+            #endregion
         }
 
         [Test]
@@ -2068,8 +2114,10 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn();
-            int countOrders = Pages.Basket.GetOrderCount();
-            double totalOrder = Pages.Basket.GetOrderTotal();
+            Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder);
+
             Pages.Basket
                 .MakeAPurchaseAsAuthorizedUser();
             Pages.ThankYou
@@ -2094,10 +2142,9 @@ namespace RaffleHouseAutomation.WebSiteTests
                 Pages.SignIn
                 .VerifyIsSignIn(out name);
                 Pages.Basket
-                    .ClickCartBtn();
-                countOrders = Pages.Basket.GetOrderCount();
-                double totalOrderReferral = Pages.Basket.GetOrderTotal();
-                Pages.Basket
+                    .ClickCartBtn()
+                    .GetOrderCount(out countOrders)
+                    .GetOrderTotal(out double totalOrderReferral)
                     .MakeAPurchaseAsAuthorizedUser();
                 Pages.ThankYou
                     .VerifyThankYouPageIsDisplayed();
@@ -2107,6 +2154,12 @@ namespace RaffleHouseAutomation.WebSiteTests
                     .VerifyAddingTickets(totalOrderReferral, countOrders);
                 Pages.Header
                     .DoLogout();
+
+                #region Postconditions
+
+                AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
+
+                #endregion
             }
         }
 
@@ -2144,8 +2197,10 @@ namespace RaffleHouseAutomation.WebSiteTests
 
                 Pages.Basket
                     .ClickCartBtn();
-                int countOrders = Pages.Basket.GetOrderCount();
-                double totalOrder = Pages.Basket.GetOrderTotal();
+                Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder);
+
                 Pages.Basket
                     .MakeAPurchaseAsAuthorizedUser();
                 Pages.ThankYou
@@ -2160,6 +2215,12 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList();
+
+            #region Postconditions
+
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
+
+            #endregion
         }
 
         [Test, Category("Payment")]
@@ -2171,7 +2232,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void PurchaseTicketsFromWinAndDiscountPages()
         {
-            string name = "";
+            string name = string.Empty;
             var response = SignUpRequest.RegisterNewUser();
             var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
             var basketOrders = BasketRequest.GetBasketOrders(token);
@@ -2179,22 +2240,11 @@ namespace RaffleHouseAutomation.WebSiteTests
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
             Pages.Common
                 .CloseCookiesPopUp();
-            for (int i = 0; i <= 0; i++)
-            {
-                for (int q = 0; q < RandomHelper.RandomIntNumber(2); q++)
-                {
-                    DreamHomeOrderRequestWeb.AddDreamhomeTickets(token, prizesList.FirstOrDefault());
-                    WaitUntil.WaitSomeInterval(250);
-                }
-            }
+            DreamHomeOrderRequestWeb
+                .AddDreamhomeTickets(token, prizesList.FirstOrDefault());
             Pages.PageDiscountPage
-                .OpenPageDiscount();
-
-            int bundleNumber = RandomHelper.RandomIntNumber(3);
-            string bunlePrice = Pages.PageDiscountPage.textTicketBundlePrice[bundleNumber].Text;
-
-            Pages.PageDiscountPage
-                .SelectTicketBundle(bundleNumber)
+                .OpenPageDiscount()
+                .SelectTicketBundle(out string bunlePrice)
                 .VerifyPriceOfAddedOrder(bunlePrice);
             Pages.Header
                 .OpenSignInPage();
@@ -2203,13 +2253,8 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .VerifyIsSignIn(out name);
             Pages.WinRafflePage
-                .OpenWinRaffle();
-
-            int bundleWinNumber = RandomHelper.RandomIntNumber(3);
-            string bunleWinPrice = Pages.WinRafflePage.textTicketBundlePrice[bundleWinNumber].Text;
-
-            Pages.WinRafflePage
-                .SelectTicketBundle(bundleWinNumber)
+                .OpenWinRaffle()
+                .SelectTicketBundle(out string bunleWinPrice)
                 .VerifyPriceOfAddedOrder(bunleWinPrice);
             Pages.Header
                 .OpenSignInPage();
@@ -2219,9 +2264,9 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn();
-            int countOrders = Pages.Basket.GetOrderCount();
-            double totalOrder = Pages.Basket.GetOrderTotal();
             Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder)
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
                 .ClickPayNowBtn();
@@ -2231,7 +2276,13 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
                 .ScrollToEndOfHistoryList(countOrders)
-                .VerifyAddingTickets(totalOrder, countOrders); ;
+                .VerifyAddingTickets(totalOrder, countOrders);
+
+            #region Postconditions
+
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
+
+            #endregion
         }
 
         [Test, Category("Payment")]
@@ -2253,13 +2304,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .CloseCookiesPopUp();
 
             Pages.WinRafflePage
-                .OpenWinRaffle();
-
-            int bundleWinNumber = RandomHelper.RandomIntNumber(3);
-            string bunleWinPrice = Pages.WinRafflePage.textTicketBundlePrice[bundleWinNumber].Text;
-
-            Pages.WinRafflePage
-                .SelectTicketBundle(bundleWinNumber)
+                .OpenWinRaffle()
+                .SelectTicketBundle(out string bunleWinPrice)
                 .VerifyPriceOfAddedOrder(bunleWinPrice);
             Pages.Header
                 .OpenSignInPage();
@@ -2268,10 +2314,9 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .VerifyIsSignIn(out name);
             Pages.Basket
-                .ClickCartBtn();
-            int countOrders = Pages.Basket.GetOrderCount();
-            double totalOrder = Pages.Basket.GetOrderTotal();
-            Pages.Basket
+                .ClickCartBtn()
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder)
                 .ClickCheckoutNowBtn()
                 .EnterCardDetails()
                 .ClickPayNowBtn();
@@ -2281,7 +2326,13 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
                 .ScrollToEndOfHistoryList(countOrders)
-                .VerifyAddingTickets(totalOrder, countOrders); ;
+                .VerifyAddingTickets(totalOrder, countOrders);
+
+            #region Postconditions
+
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
+
+            #endregion
         }
 
         [Test, Category("Payment")]
@@ -2302,13 +2353,8 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.PageDiscountPage
-                .OpenPageDiscount();
-
-            int bundleNumber = RandomHelper.RandomIntNumber(3);
-            string bunlePrice = Pages.PageDiscountPage.textTicketBundlePrice[bundleNumber].Text;
-
-            Pages.PageDiscountPage
-                .SelectTicketBundle(bundleNumber)
+                .OpenPageDiscount()
+                .SelectTicketBundle(out string bunlePrice)
                 .VerifyPriceOfAddedOrder(bunlePrice);
             Pages.Header
                 .OpenSignInPage();
@@ -2318,8 +2364,10 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn();
-            int countOrders = Pages.Basket.GetOrderCount();
-            double totalOrder = Pages.Basket.GetOrderTotal();
+            Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder);
+
             Pages.Basket
                 .MakeAPurchaseAsAuthorizedUser();
             Pages.ThankYou
@@ -2328,7 +2376,13 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
                 .ScrollToEndOfHistoryList(countOrders)
-                .VerifyAddingTickets(totalOrder, countOrders); ;
+                .VerifyAddingTickets(totalOrder, countOrders);
+
+            #region Postconditions
+
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
+
+            #endregion
         }
 
         [Test]
@@ -2405,6 +2459,12 @@ namespace RaffleHouseAutomation.WebSiteTests
                 Assert.IsNotNull(subscription.CardSource);
                 Assert.IsNotNull(subscription.CheckoutId);
             }
+
+            #region Postconditions
+
+            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
+
+            #endregion
         }
 
     }
@@ -2631,7 +2691,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             #region Preconditions
             string name = "";
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             List<long> bundles = new()
             {
                 12,
@@ -2640,7 +2700,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 154,
                 163
             };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 0.16666666, 0.01, bundles);
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 0.16666666, 0.01, bundles);
 
             var response = SignUpRequest.RegisterNewUser();
             var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
@@ -2677,7 +2737,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 50,
                 150
             };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.66666666, 2, bundles);
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 1.66666666, 2, bundles);
             var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
             basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
@@ -2699,7 +2759,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             #region Preconditions
             string name = "";
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             List<long> bundles = new()
             {
                 12,
@@ -2708,7 +2768,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 154,
                 163
             };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 0.16666666, 0.01, bundles);
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 0.16666666, 0.01, bundles);
 
             var response = SignUpRequest.RegisterNewUser();
             var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
@@ -2745,7 +2805,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 50,
                 150
             };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.66666666, 2, bundles);
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 1.66666666, 2, bundles);
             var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
             basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
@@ -2766,9 +2826,9 @@ namespace RaffleHouseAutomation.WebSiteTests
         {
             #region Preconditions
 
-            string name = "";
+            string name = string.Empty;
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             List<long> bundles = new()
             {
                 12,
@@ -2777,7 +2837,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 154,
                 163
             };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 0.16666666, 0.01, bundles);
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 0.16666666, 0.01, bundles);
 
             var response = SignUpRequest.RegisterNewUser();
             var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
@@ -2814,7 +2874,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 50,
                 150
             };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.66666666, 2, bundles);
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 1.66666666, 2, bundles);
             var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
             basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
@@ -2836,7 +2896,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             #region Preconditions
             string name = "";
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             List<long> bundles = new()
             {
                 12,
@@ -2845,7 +2905,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 154,
                 163
             };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 0.16666666, 0.01, bundles);
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 0.16666666, 0.01, bundles);
 
             var response = SignUpRequest.RegisterNewUser();
             var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
@@ -2882,7 +2942,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 50,
                 150
             };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.66666666, 2, bundles);
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 1.66666666, 2, bundles);
             var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
             basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
@@ -2904,7 +2964,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             #region Preconditions
             string name = "";
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             List<long> bundles = new()
             {
                 12,
@@ -2913,7 +2973,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 154,
                 163
             };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 0.16666666, 0.01, bundles);
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 0.16666666, 0.01, bundles);
 
             var response = SignUpRequest.RegisterNewUser();
             var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
@@ -2950,7 +3010,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 50,
                 150
             };
-            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, dreamResponse, 1.66666666, 2, bundles);
+            DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 1.66666666, 2, bundles);
             var users = UsersRequest.GetUser(tokenAdmin, response.User.Email);
             basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);

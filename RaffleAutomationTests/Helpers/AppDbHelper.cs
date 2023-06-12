@@ -4,16 +4,36 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 using Newtonsoft.Json.Bson;
 using System.Text.RegularExpressions;
-using static RaffleAutomationTests.Helpers.DbModels;
 
 namespace RaffleAutomationTests.Helpers
 {
+    public class ItemNameEqualityComparer : IEqualityComparer<DbModels.Raffle>
+    {
+        public bool Equals(DbModels.Raffle x, DbModels.Raffle y)
+        {
+            // Compare the "Name" property of the items for equality
+            return x.Title == y.Title;
+        }
 
+        public int GetHashCode(DbModels.Raffle obj)
+        {
+            // Generate a hash code based on the "Name" property
+            return obj.Title.GetHashCode();
+        }
+    }
 
     public class AppDbHelper
     {
         public class Users
         {
+            public static void DeleteTestUserData(string email)
+            {
+                var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains(email)).Select(x => x).ToList();
+                AppDbHelper.Subscriptions.DeleteSubscriptionsByUserId(users);
+                AppDbHelper.Orders.DeleteOrdersByUserId(users);
+                Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
+            }
+
             public static List<DbModels.UserResponse> GetAllUsers()
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
@@ -106,6 +126,7 @@ namespace RaffleAutomationTests.Helpers
         
         public class DreamHome
         {
+
             public static List<DbModels.Raffle> GetAllRaffles()
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
@@ -275,6 +296,18 @@ namespace RaffleAutomationTests.Helpers
                 var collection = database.GetCollection<DbModels.Subscriptions>("subscriptions");
                 var filter = Builders<DbModels.Subscriptions>.Filter.Eq(s=>s.User, user.Id);
                 var result = collection.Find(filter).ToList();
+
+                foreach (var subscription in result)
+                {
+                    Assert.Multiple(() =>
+                    {
+                        Assert.IsNotNull(subscription.Refference);
+                        Assert.IsNotNull(subscription.CardSource);
+                        Assert.IsNotNull(subscription.CheckoutId);
+                    });
+
+                }
+
                 return result;
             }
 
@@ -476,13 +509,13 @@ namespace RaffleAutomationTests.Helpers
 
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<SubscriptionsInsert>("subscriptions");
+                var collection = database.GetCollection<DbModels.SubscriptionsInsert>("subscriptions");
                 foreach (var user in users)
                 {
                     int pauseCount = RandomHelper.RandomIntNumber(20);
-                    var update = new List<SubscriptionsInsert>()
+                    var update = new List<DbModels.SubscriptionsInsert>()
                     {
-                        new SubscriptionsInsert
+                        new DbModels.SubscriptionsInsert
                         {
                         Status = "PAUSED",
                         Count= 1,
@@ -517,13 +550,13 @@ namespace RaffleAutomationTests.Helpers
 
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collectionActive = database.GetCollection<SubscriptionsActiveInsert>("subscriptions");
+                var collectionActive = database.GetCollection<DbModels.SubscriptionsActiveInsert>("subscriptions");
                 foreach (var user in users)
                 {
                     int activeCount = RandomHelper.RandomIntNumber(20);                   
-                    var updateActive = new List<SubscriptionsActiveInsert>()
+                    var updateActive = new List<DbModels.SubscriptionsActiveInsert>()
                     {
-                        new SubscriptionsActiveInsert
+                        new DbModels.SubscriptionsActiveInsert
                         {
                         Status = "ACTIVE",
                         Count= 1,
@@ -665,7 +698,7 @@ namespace RaffleAutomationTests.Helpers
                     FreeTickets = 0,
                     IsSocialRegistration =false,
                     IsBlocked = false,
-                    Notifications = new Notification()
+                    Notifications = new DbModels.Notification()
                     {
                         all= true,
                         dreamHome= true,
@@ -713,7 +746,7 @@ namespace RaffleAutomationTests.Helpers
                     FreeTickets = 0,
                     IsSocialRegistration = false,
                     IsBlocked = false,
-                    Notifications = new Notification()
+                    Notifications = new DbModels.Notification()
                     {
                         all = true,
                         dreamHome = true,
@@ -761,7 +794,7 @@ namespace RaffleAutomationTests.Helpers
                     FreeTickets = 0,
                     IsSocialRegistration = false,
                     IsBlocked = false,
-                    Notifications = new Notification()
+                    Notifications = new DbModels.Notification()
                     {
                         all = true,
                         dreamHome = true,
@@ -793,7 +826,7 @@ namespace RaffleAutomationTests.Helpers
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
-                var collection = database.GetCollection<SubscriptionsModels>("subscriptionmodels");
+                var collection = database.GetCollection<DbModels.SubscriptionsModels>("subscriptionmodels");
                 var insert = new DbModels.SubscriptionsModels()
                 {
                     Id = ObjectId.GenerateNewId(),

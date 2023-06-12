@@ -2,19 +2,19 @@
 {
     public class DreamHomeRequest
     {
-        private static string JsonBody(RaffleResponse response, double priceWithDiscount, double priceWithoutDiscount, List<long> bundles)
+        private static string JsonBody(Raffles response, double priceWithDiscount, double priceWithoutDiscount, List<long> bundles)
         {
             DreamHomeRequestModel req = new()
             {
-                Active = response.Raffles.First().Active,
-                IsActiveDiscount = response.Raffles.First().IsActiveDiscount,
-                IsPopular = response.Raffles.First().IsPopular,
-                IsTrending = response.Raffles.First().IsTrending,
-                EndsAt = response.Raffles.First().EndsAt.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
-                StartAt = response.Raffles.First().StartAt.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
+                Active = response.Active,
+                IsActiveDiscount = response.IsActiveDiscount,
+                IsPopular = response.IsPopular,
+                IsTrending = response.IsTrending,
+                EndsAt = response.EndsAt.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
+                StartAt = response.StartAt.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
                 TicketPrice = priceWithoutDiscount,
-                DefaultTickets = response.Raffles.First().DefaultTickets,
-                IsDiscountRates = response.Raffles.First().IsDiscountRates,
+                DefaultTickets = response.DefaultTickets,
+                IsDiscountRates = response.IsDiscountRates,
                 CreditsRates = new List<CreditsRate>()
                 {
                     new CreditsRate()
@@ -24,10 +24,10 @@
                         Percent = 30
                     }
                 },
-                CreditsEndDate = response.Raffles.First().CreditsEndDate.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
-                CreditsStartDate = response.Raffles.First().CreditsStartDate.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
-                IsCreditsActive = response.Raffles.First().IsCreditsActive,
-                IsCreditsPermanent = response.Raffles.First().IsCreditsPermanent,
+                CreditsEndDate = response.CreditsEndDate.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
+                CreditsStartDate = response.CreditsStartDate.ToString("yyyy-MM-dd'T'hh:mm:ss'.000Z'"),
+                IsCreditsActive = response.IsCreditsActive,
+                IsCreditsPermanent = response.IsCreditsPermanent,
                 DiscountRates = new List<DiscountRate>()
                 {
                     new DiscountRate()
@@ -48,14 +48,14 @@
                     Percent = 1,
                     NewPrice = 1
                 },
-                DiscountCategory = response.Raffles.First().DiscountCategory,
+                DiscountCategory = response.DiscountCategory,
                 FreeTicketsRates = Array.Empty<string>(),
-                IsFreeTicketsRates = response.Raffles.First().IsFreeTicketsRates,
+                IsFreeTicketsRates = response.IsFreeTicketsRates,
                 TicketsBundles = bundles,
-                Title = response.Raffles.First().Title,
-                MetaTitle = response.Raffles.First().MetaTitle,
-                MetaDescription = response.Raffles.First().MetaDescription,
-                StepperCountdown = response.Raffles.First().StepperCountdown,
+                Title = response.Title,
+                MetaTitle = response.MetaTitle,
+                MetaDescription = response.MetaDescription,
+                StepperCountdown = response.StepperCountdown,
                 IsClosed = false
             };
             return JsonConvert.SerializeObject(req);
@@ -366,12 +366,12 @@
             return JsonConvert.SerializeObject(req);
         }
 
-        public static void EditTiketPriceInDreamHome(SignInResponseModelAdmin token, RaffleResponse response, double priceWithDiscount, double priceWithoutDiscount, List<long> bundles)
+        public static void EditTiketPriceInDreamHome(SignInResponseModelAdmin token, Raffles response, double priceWithDiscount, double priceWithoutDiscount, List<long> bundles)
         {
             HttpRequest req = new HttpRequest
             {
                 HttpVerb = "PUT",
-                Path = $"/api/raffles/{response.Raffles.First().Id}",
+                Path = $"/api/raffles/{response.Id}",
                 ContentType = "application/json"
             };
             req.AddHeader("Connection", "Keep-Alive");
@@ -466,7 +466,7 @@
 
         }
 
-        public static RaffleResponse? GetActiveDreamHome(SignInResponseModelAdmin token)
+        public static RaffleResponse? GetActiveDreamHome(SignInResponseModelAdmin token, out Raffles? closeEarlier)
         {
             HttpRequest req = new()
             {
@@ -489,6 +489,8 @@
             Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
 
             var response = JsonConvert.DeserializeObject<RaffleResponse?>(resp.BodyStr);
+            closeEarlier = response.Raffles.OrderBy(item => item.EndsAt)
+                             .FirstOrDefault();
             return response;
         }
 
