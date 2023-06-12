@@ -22,11 +22,21 @@ namespace API
 
         public void Demo()
         {
-            List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
-            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Where(x => x.IsClosed == true).Select(x => x).ToList();
-            dreamhomeList.Reverse();
-            DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, -3600, 3600, -1440, 80);
-            
+            var charity = "None Selected";
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            foreach (var user in users)
+            {
+                var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
+                var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
+                var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
+                //Assert.That(ordersList.Count >= 1, $"New order is not created, current subscription orders count is \"{ordersList.Count}\"");
+                //var quantity = (int)(subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.Extra).First());
+                //var value = (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.TotalCost / 100).First();
+                var quantity1 = (int)(subscriptionList.Where(x => x.Status == "ACTIVE" && x.Emails.First().Type == "pause-reactivate-email").Select(x => x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.Emails.First().Type == "pause-reactivate-email").Select(x => x.Extra).First());
+                var value1 = (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.Emails.First().Type == "pause-reactivate-email").Select(x => x.TotalCost / 100).First();
+                
+            }
+
 
         }
     }
@@ -154,10 +164,16 @@ namespace API
 
         public void InsertSubscriptionsByUsersEmail()
         {
+            var charity = "None Selected";
+            int nextPurchaseDate = -100;
+            int purchaseDate = 0;
+            int pausedAt = -720;
+            int pauseEnd = -24;
             var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
             var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@xitroo.com")).Select(x => x).ToList();
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
-            AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle, subscriptionsModel);
+            AppDbHelper.Insert.InsertPauseSubscriptionToUser(users, raffle, subscriptionsModel, charity, nextPurchaseDate, purchaseDate, pausedAt, pauseEnd);
+            AppDbHelper.Insert.InsertActiveSubscriptionToUser(users, raffle, subscriptionsModel, charity, nextPurchaseDate, purchaseDate);
 
         }
 
@@ -183,6 +199,11 @@ namespace API
         [Test]
         public void CreateUsersAndAddSubscription()
         {
+            var charity = "None Selected";
+            int nextPurchaseDate = -100;
+            int purchaseDate = 0;
+            int pausedAt = -720;
+            int pauseEnd = -24;
             var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             for (int i = 0; i < 1; i++)
@@ -190,8 +211,9 @@ namespace API
                 AppDbHelper.Insert.InsertUser(raffle);
             }
             var users = AppDbHelper.Users.GetUserByEmailpattern("@putsbox.com");
-            AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle, subscriptionsModel);
-            
+            AppDbHelper.Insert.InsertPauseSubscriptionToUser(users, raffle, subscriptionsModel, charity, nextPurchaseDate, purchaseDate, pausedAt, pauseEnd);
+            AppDbHelper.Insert.InsertActiveSubscriptionToUser(users, raffle, subscriptionsModel, charity, nextPurchaseDate, purchaseDate);
+
         }
 
         [Test]

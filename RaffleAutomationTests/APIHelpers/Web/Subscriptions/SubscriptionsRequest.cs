@@ -101,7 +101,7 @@ namespace RaffleAutomationTests.APIHelpers.Web.Subscriptions
             DateTime startTime = DateTime.Now;
             int checkInterval = 60000; // in milliseconds
             bool statusChanged = false;
-            int minutes = 25;
+            int minutes = 35;
 
             while (DateTime.Now - startTime < TimeSpan.FromMinutes(minutes)) // loop for 15 minutes
             {

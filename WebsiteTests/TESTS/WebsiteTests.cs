@@ -51,7 +51,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList();
 
-            EmailVerificator.VerifyInitialEmailAuth(response.User.Email, name, quantity, value, charity);
+            EmailVerificator.VerifyInitialEmailAuth(response.User.Email, name, charity);
+
             #region Postconditions
 
 
@@ -592,6 +593,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             var response = SignUpRequest.RegisterNewUser();
             var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
             string name = "";
+            var raffle = DreamHome.GetAciveRaffles();
 
             Pages.Common
                 .CloseCookiesPopUp();
@@ -622,10 +624,9 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenSubscriptionInProfile()
                 .UnpauseSubscription()
                 .VerifyUnpauseEmail(response.User.Email,
-                                    name, 
-                                    (int)(subscriptionsList.SubscriptionModels.LastOrDefault().NumOfTickets + subscriptionsList.SubscriptionModels.LastOrDefault().Extra),
-                                    (double)subscriptionsList.SubscriptionModels.LastOrDefault().TotalCost,
-                                    "");
+                                    name,
+                                    "None Selected",
+                                    raffle.Count);
         }
 
         [Test]
@@ -1042,7 +1043,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .VerifyIsSignIn(out name);
             Pages.Profile
-                .WaitUntilScriptRuning()
+                .WaitUntilScriptRuning(activeDreamhomeList.Count)
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
                 .ScrollToEndOfHistoryList(1)
@@ -1222,7 +1223,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("Client")]
         [AllureSubSuite("Subscriptions")]
-        public void VerifyInitialSubscriptionEmailAsUnauthorizedUser()
+        public void VerifyInitialSubscriptionEmailAsUnauthorizedUser(int activeRaffles)
         {
             string name = "";
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
@@ -1239,7 +1240,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                                     name,
                                     (int)(subscriptionsList.SubscriptionModels.FirstOrDefault().NumOfTickets + subscriptionsList.SubscriptionModels.FirstOrDefault().Extra),
                                     (double)subscriptionsList.SubscriptionModels.FirstOrDefault().TotalCost,
-                                    "");
+                                    "None Selected",
+                                    activeRaffles);
         }
 
         [Test]
@@ -1296,6 +1298,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             string name = "";
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
             var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+            var raffle = DreamHome.GetAciveRaffles();
 
             Pages.Common
                 .CloseCookiesPopUp();
@@ -1327,9 +1330,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .UnpauseSubscription()
                 .VerifyUnpauseEmail(email,
                                     name,
-                                    (int)(subscriptionsList.SubscriptionModels.FirstOrDefault().NumOfTickets + subscriptionsList.SubscriptionModels.FirstOrDefault().Extra),
-                                    (double)subscriptionsList.SubscriptionModels.FirstOrDefault().TotalCost,
-                                    "");
+                                    "None Selected",
+                                    raffle.Count);
 
         }
 
@@ -1390,11 +1392,16 @@ namespace RaffleHouseAutomation.WebSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("Client")]
         [AllureSubSuite("Subscriptions")]
-        public void VerifySubscriptionEmailsAfterRunScript()
+        public void VerifySubscriptionEmailsAfterRunScript(int activeRaffles)
         {
             #region Preconditions
 
             string name = "";
+            var charity = "None Selected";
+            int nextPurchaseDate = -100;
+            int purchaseDate = 0;
+            int pausedAt = -720;
+            int pauseEnd = -24;
             var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             AppDbHelper.Subscriptions.DeleteSubscriptionsByUserId(users);
             Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
@@ -1403,7 +1410,8 @@ namespace RaffleHouseAutomation.WebSiteTests
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             AppDbHelper.Insert.InsertUser(raffle);
             users = AppDbHelper.Users.GetUserByEmailpattern("@putsbox.com");
-            AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle, subscriptionsModel);
+            AppDbHelper.Insert.InsertPauseSubscriptionToUser(users, raffle, subscriptionsModel, charity, nextPurchaseDate, purchaseDate, pausedAt, pauseEnd);
+            AppDbHelper.Insert.InsertActiveSubscriptionToUser(users, raffle, subscriptionsModel, charity, nextPurchaseDate, purchaseDate);
 
             #endregion
 
@@ -1423,14 +1431,12 @@ namespace RaffleHouseAutomation.WebSiteTests
                 }
                 EmailVerificator.VerifyMonthlyEmailAuth(user.Email,
                                     user.Name,
-                                    (int)(subscriptionList.Where(x=>x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x=>x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.Extra).First()),
-                                    (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.TotalCost/100).First(),
-                                    "");
+                                    charity,
+                                    activeRaffles);
                 EmailVerificator.VerifyUnpauseEmail(user.Email,
                                     user.Name,
-                                    (int)(subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.Extra).First()),
-                                    (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.TotalCost / 100).First(),
-                                    "");
+                                    charity,
+                                    activeRaffles);
                 EmailVerificator.VerifyReminderEmail(user.Email, user.Name);
             }
             
@@ -1445,7 +1451,99 @@ namespace RaffleHouseAutomation.WebSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("Client")]
         [AllureSubSuite("Subscriptions")]
-        public void VerifySubscriptionWithTwoRafflesActive()
+        public void VerifyPauseSubscriptionWithTwoRafflesActive()
+        {
+            #region Preconditions
+
+            //Delete all subscritions and test users 
+            var users = Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            Subscriptions.DeleteSubscriptionsByUserId(users);
+            Orders.DeleteOrdersByUserId(users);
+            Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
+
+            //Edit raffles
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var raffle = DreamHome.GetAciveRaffles();
+            
+            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, -170, 720);
+            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, false, -7920, 50);
+            var subscriptionsModel = Subscriptions.GetAllSubscriptionModels();
+            Insert.InsertUser(raffle);
+            users = Users.GetUserByEmailpattern("@putsbox.com");
+            var charity = "None Selected";
+            int nextPurchaseDate = 100;
+            int purchaseDate = 0;
+            int pausedAt = -720;
+            int pauseEnd = -24;
+            Insert.InsertPauseSubscriptionToUser(users, raffle, subscriptionsModel, charity, nextPurchaseDate, purchaseDate, pausedAt, pauseEnd);
+
+            #endregion
+
+            users = Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            foreach (var user in users)
+            {
+                EmailVerificator.VerifyUnpauseEmail(user.Email, user.Name, charity, raffle.Count);
+            }
+
+
+        }
+
+        [Test]
+        [Category("Subscriptions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Subscriptions")]
+        public void VerifyPauseSubscriptionWithTwoRafflesOneExpire()
+        {
+            #region Preconditions
+
+            //Delete all subscritions and test users 
+            var users = Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            Subscriptions.DeleteSubscriptionsByUserId(users);
+            Orders.DeleteOrdersByUserId(users);
+            Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
+
+            //Edit raffles
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var raffle = DreamHome.GetAciveRaffles();
+
+            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, -170, 720);
+            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, false, -7920, -50);
+            var subscriptionsModel = Subscriptions.GetAllSubscriptionModels();
+            Insert.InsertUser(raffle);
+            users = Users.GetUserByEmailpattern("@putsbox.com");
+            var charity = "None Selected";
+            int nextPurchaseDate = 100;
+            int purchaseDate = 0;
+            int pausedAt = -720;
+            int pauseEnd = -24;
+            Insert.InsertPauseSubscriptionToUser(users, raffle, subscriptionsModel, charity, nextPurchaseDate, purchaseDate, pausedAt, pauseEnd);
+
+            #endregion
+
+            users = Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            foreach (var user in users)
+            {
+                EmailVerificator.VerifyUnpauseEmail(user.Email, user.Name, charity, raffle.Count);
+            }
+
+
+        }
+
+        [Test]
+        [Category("Subscriptions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Subscriptions")]
+        public void VerifyActiveSubscriptionWithTwoRafflesActive()
         {
             #region Preconditions
 
@@ -1458,23 +1556,27 @@ namespace RaffleHouseAutomation.WebSiteTests
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
             var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
-            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, 720, -1);
-            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, false, 50, -7920);
+            var charity = "None Selected";
+            int nextPurchaseDate = -100;
+            int purchaseDate = 0;
+            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, -170, 720);
+            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, false, -7920, 50);
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             AppDbHelper.Insert.InsertUser(raffle);
             users = AppDbHelper.Users.GetUserByEmailpattern("@putsbox.com");
-            AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle, subscriptionsModel);
+            AppDbHelper.Insert.InsertActiveSubscriptionToUser(users, raffle, subscriptionsModel, charity, nextPurchaseDate, purchaseDate);
 
             #endregion
 
             users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             foreach (var user in users)
             {
+                var emailsList = Elements.GgetAllEmailData(user.Email);
+                SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, user.Email);
                 var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
                 var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
+                var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
                 var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
-                //Assert.That(ordersList.Count >= 1, $"New order is not created, current subscription orders count is \"{ordersList.Count}\"");
-
                 foreach (var subscription in subscriptionList)
                 {
                     Assert.IsNotNull(subscription.Refference);
@@ -1482,20 +1584,72 @@ namespace RaffleHouseAutomation.WebSiteTests
                     Assert.IsNotNull(subscription.CheckoutId);
                 }
                 EmailVerificator.VerifyMonthlyEmailAuth(user.Email,
-                                    user.Name,
-                                    (int)(subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.Extra).First()),
-                                    (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.TotalCost / 100).First(),
-                                    "");
-                EmailVerificator.VerifyUnpauseEmail(user.Email,
-                                    user.Name,
-                                    (int)(subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.Extra).First()),
-                                    (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.TotalCost / 100).First(),
-                                    "");
-                EmailVerificator.VerifyReminderEmail(user.Email, user.Name);
+                                                        user.Name,
+                                                        charity,
+                                                        raffle.Count);
             }
 
 
         }
+
+        [Test]
+        [Category("Subscriptions")]
+        [AllureTag("Regression")]
+        [AllureOwner("Artem Sukharevskyi")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [Author("Artem", "qatester91311@gmail.com")]
+        [AllureSuite("Client")]
+        [AllureSubSuite("Subscriptions")]
+        public void VerifyActiveSubscriptionWithTwoRafflesOneExpire()
+        {
+            #region Preconditions
+
+            //Delete all subscritions and test users 
+            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            AppDbHelper.Subscriptions.DeleteSubscriptionsByUserId(users);
+            Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
+
+            //Edit raffles
+            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin);
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            var charity = "None Selected";
+            int nextPurchaseDate = -100;
+            int purchaseDate = 0;
+            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, -170, 720);
+            DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, false, -7920, -50);
+            var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
+            AppDbHelper.Insert.InsertUser(raffle);
+            users = AppDbHelper.Users.GetUserByEmailpattern("@putsbox.com");
+            AppDbHelper.Insert.InsertActiveSubscriptionToUser(users, raffle, subscriptionsModel, charity, nextPurchaseDate, purchaseDate);
+
+            #endregion
+
+            users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
+            foreach (var user in users)
+            {
+                var emailsList = Elements.GgetAllEmailData(user.Email);
+                SubscriptionsRequest.CheckEmailsCountFor17Minutes(emailsList, user.Email);
+                var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
+                var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
+                var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
+                var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
+                foreach (var subscription in subscriptionList)
+                {
+                    Assert.IsNotNull(subscription.Refference);
+                    Assert.IsNotNull(subscription.CardSource);
+                    Assert.IsNotNull(subscription.CheckoutId);
+                }
+                EmailVerificator.VerifyMonthlyEmailAuth(user.Email,
+                                                        user.Name,
+                                                        charity,
+                                                        raffle.Count);
+            }
+
+
+        }
+
+
 
     }
 

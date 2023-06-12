@@ -61,7 +61,7 @@
             return JsonConvert.SerializeObject(req);
         }
 
-        private static string JsonBody(RaffleResponse response, bool first, int hoursEndsAt, int hoursStartAt)
+        private static string JsonBody(RaffleResponse response, bool first, int hoursStartAt, int hoursEndsAt)
         {
             DreamHomeRequestModel? req = null;
             if (first == true)
@@ -392,7 +392,7 @@
             Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
         }
 
-        public static void EditDreamHomeStartEndDate(SignInResponseModelAdmin token, RaffleResponse response, bool isFirst, int hoursEndsAt, int hoursStartAt)
+        public static void EditDreamHomeStartEndDate(SignInResponseModelAdmin token, RaffleResponse response, bool isFirst, int hoursStartAt, int hoursEndsAt)
         {
             HttpRequest req = new();
             if (isFirst == true)
@@ -408,7 +408,7 @@
                 req.AddHeader("accept-encoding", "gzip, deflate, br");
                 req.AddHeader("authorization", $"Bearer {token.Token}");
 
-                req.LoadBodyFromString(JsonBody(response, isFirst, hoursEndsAt, hoursStartAt), charset: "utf-8");
+                req.LoadBodyFromString(JsonBody(response, isFirst, hoursStartAt, hoursEndsAt), charset: "utf-8");
             }
             else
             {
@@ -423,7 +423,7 @@
                 req.AddHeader("accept-encoding", "gzip, deflate, br");
                 req.AddHeader("authorization", $"Bearer {token.Token}");
 
-                req.LoadBodyFromString(JsonBody(response, isFirst, hoursEndsAt, hoursStartAt), charset: "utf-8");
+                req.LoadBodyFromString(JsonBody(response, isFirst, hoursStartAt, hoursEndsAt), charset: "utf-8");
             }
 
             Http http = new();

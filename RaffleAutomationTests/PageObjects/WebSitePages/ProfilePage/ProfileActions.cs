@@ -204,28 +204,28 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
-        public Profile VerifyUnpauseEmail(string email, string name, int quantity, double value, string charity)
+        public Profile VerifyUnpauseEmail(string email, string name, string charity, int activeRaffles)
         {
-            EmailVerificator.VerifyUnpauseEmail(email, name, quantity, value, charity);
+            EmailVerificator.VerifyUnpauseEmail(email, name, charity, activeRaffles);
 
             return this;
         }
 
         public Profile VerifyInitialEmailAuth(string email, string name, int quantity, double value, string charity)
         {
-            EmailVerificator.VerifyInitialEmailAuth(email, name, quantity, value, charity);
+            EmailVerificator.VerifyInitialEmailAuth(email, name, charity);
 
             return this;
         }
 
-        public Profile VerifyInitialEmailUnauth(string email, string name, int quantity, double value, string charity)
+        public Profile VerifyInitialEmailUnauth(string email, string name, int quantity, double value, string charity, int activeRaffles)
         {
-            EmailVerificator.VerifyInitialEmailUnauth(email, name, quantity, value, charity);
+            EmailVerificator.VerifyInitialEmailUnauth(email, name, charity, activeRaffles);
 
             return this;
         }
 
-        public Profile WaitUntilScriptRuning()
+        public Profile WaitUntilScriptRuning(int activeRaffles)
         {
             var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             foreach (var user in users)
@@ -243,14 +243,12 @@ namespace RaffleAutomationTests.PageObjects
                 }
                 EmailVerificator.VerifyMonthlyEmailAuth(user.Email,
                                     user.Name,
-                                    (int)(subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.Extra).First()),
-                                    (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.TotalCost / 100).First(),
-                                    "None Selected");
+                                    "None Selected",
+                                    activeRaffles);
                 EmailVerificator.VerifyUnpauseEmail(user.Email,
                                     user.Name,
-                                    (int)(subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.Extra).First()),
-                                    (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.PauseEnd == null).Select(x => x.TotalCost / 100).First(),
-                                    "None Selected");
+                                    "None Selected",
+                                    activeRaffles);
             }
 
             return this;

@@ -471,7 +471,7 @@ namespace RaffleAutomationTests.Helpers
 
         public class Insert
         {
-            public static void InsertSubscriptionsToUsers(List<DbModels.UserResponse> users, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels)
+            public static void InsertPauseSubscriptionToUser(List<DbModels.UserResponse> users, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels, string charity, int nextPurchaseDate, int purchaseDate, int pausedAt, int pauseEnd)
             {
 
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
@@ -479,17 +479,57 @@ namespace RaffleAutomationTests.Helpers
                 var collection = database.GetCollection<SubscriptionsInsert>("subscriptions");
                 foreach (var user in users)
                 {
-                    int activeCount = RandomHelper.RandomIntNumber(20);
                     int pauseCount = RandomHelper.RandomIntNumber(20);
                     var update = new List<SubscriptionsInsert>()
                     {
                         new SubscriptionsInsert
                         {
+                        Status = "PAUSED",
+                        Count= 1,
+                        Charity= charity,
+                        IsReminderSent= false,
+                        CreatedAt = DateTime.Now,
+                        TotalCost= 2500,
+                        NumOfTickets = 15,
+                        Extra= 135,
+                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
+                        Emails = new List<string>(),
+                        Raffle= raffle.LastOrDefault().Id,
+                        User=  user.Id,
+                        Refference= SubscriptionsCardDetails.REFFERENCE[pauseCount],
+                        CardSource= SubscriptionsCardDetails.CARD_SOURCE[pauseCount],
+                        CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[pauseCount],
+                        NextPurchaseDate = DateTime.Now.AddHours(nextPurchaseDate),
+                        PurchaseDate = DateTime.Now.AddMonths(purchaseDate),
+                        PausedAt= DateTime.Now.AddHours(pausedAt),
+                        PauseEnd= DateTime.Now.AddHours(pauseEnd)
+                        }
+
+                    };
+
+                    collection.InsertMany(update);
+                }
+
+            }
+
+            public static void InsertActiveSubscriptionToUser(List<DbModels.UserResponse> users, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels, string charity, int nextPurchaseDate, int purchaseDate)
+            {
+
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collectionActive = database.GetCollection<SubscriptionsActiveInsert>("subscriptions");
+                foreach (var user in users)
+                {
+                    int activeCount = RandomHelper.RandomIntNumber(20);                   
+                    var updateActive = new List<SubscriptionsActiveInsert>()
+                    {
+                        new SubscriptionsActiveInsert
+                        {
                         Status = "ACTIVE",
                         Count= 1,
-                        Charity= Charities.CHARITY[RandomHelper.RandomCharityNumber(Charities.CHARITY.Count)],
+                        Charity= charity,
                         IsReminderSent= false,
-                        CreatedAt = DateTimeOffset.Now.DateTime,
+                        CreatedAt = DateTime.Now,
                         TotalCost= 2500,
                         NumOfTickets = 15,
                         Extra= 135,
@@ -500,82 +540,12 @@ namespace RaffleAutomationTests.Helpers
                         Refference= SubscriptionsCardDetails.REFFERENCE[activeCount],
                         CardSource= SubscriptionsCardDetails.CARD_SOURCE[activeCount],
                         CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[activeCount],
-                        NextPurchaseDate = DateTimeOffset.Now.AddHours(-720).DateTime,
-                        PurchaseDate = DateTimeOffset.Now.DateTime
-
-                        },
-                        new SubscriptionsInsert
-                        {
-                        Status = "PAUSED",
-                        Count= 1,
-                        Charity= "",
-                        IsReminderSent= false,
-                        CreatedAt = DateTimeOffset.Now.DateTime,
-                        TotalCost= 1000,
-                        NumOfTickets = 5,
-                        Extra= 40,
-                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
-                        Emails = new List<string>(),
-                        Raffle= raffle.LastOrDefault().Id,
-                        User=  user.Id,
-                        Refference= SubscriptionsCardDetails.REFFERENCE[pauseCount],
-                        CardSource= SubscriptionsCardDetails.CARD_SOURCE[pauseCount],
-                        CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[pauseCount],
-                        NextPurchaseDate = DateTimeOffset.Now.AddMonths(1).DateTime,
-                        PurchaseDate = DateTimeOffset.Now.AddMonths(-1).DateTime,
-                        PausedAt= DateTimeOffset.Now.AddHours(-720).DateTime,
-                        PauseEnd= DateTimeOffset.Now.AddHours(-24).DateTime,
-
-                        },
-                        new SubscriptionsInsert
-                        {
-                        Status = "PAUSED",
-                        Count= 1,
-                        Charity= "",
-                        IsReminderSent= false,
-                        CreatedAt = DateTimeOffset.Now.DateTime,
-                        TotalCost= 2500,
-                        NumOfTickets = 15,
-                        Extra= 135,
-                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
-                        Emails = new List<string>(),
-                        Raffle= raffle.LastOrDefault().Id,
-                        User=  user.Id,
-                        Refference= SubscriptionsCardDetails.REFFERENCE[pauseCount],
-                        CardSource= SubscriptionsCardDetails.CARD_SOURCE[pauseCount],
-                        CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[pauseCount],
-                        NextPurchaseDate = DateTimeOffset.Now.AddHours(-720).DateTime,
-                        PurchaseDate = DateTimeOffset.Now.AddMonths(-2).DateTime,
-                        PausedAt= DateTimeOffset.Now.AddHours(-720).DateTime,
-                        PauseEnd= DateTimeOffset.Now.AddHours(168).DateTime
-                        },
-                        new SubscriptionsInsert
-                        {
-                        Status = "PAUSED",
-                        Count= 1,
-                        Charity= "",
-                        IsReminderSent= false,
-                        CreatedAt = DateTimeOffset.Now.DateTime,
-                        TotalCost= 1000,
-                        NumOfTickets = 5,
-                        Extra= 40,
-                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
-                        Emails = new List<string>(),
-                        Raffle= raffle.FirstOrDefault().Id,
-                        User=  user.Id,
-                        Refference= SubscriptionsCardDetails.REFFERENCE[pauseCount],
-                        CardSource= SubscriptionsCardDetails.CARD_SOURCE[pauseCount],
-                        CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[pauseCount],
-                        NextPurchaseDate = DateTimeOffset.Now.AddHours(720).DateTime,
-                        PurchaseDate = DateTimeOffset.Now.AddHours(-720).DateTime,
-                        PausedAt= DateTimeOffset.Now.AddHours(-720).DateTime,
-                        PauseEnd= DateTimeOffset.Now.AddHours(24).DateTime,
-
-                        },
-
+                        NextPurchaseDate = DateTime.Now.AddHours(nextPurchaseDate),
+                        PurchaseDate = DateTime.Now.AddMonths(purchaseDate)
+                        }
                     };
 
-                    collection.InsertMany(update);
+                    collectionActive.InsertMany(updateActive);
                 }
 
             }
