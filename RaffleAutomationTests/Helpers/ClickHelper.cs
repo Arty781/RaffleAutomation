@@ -5,6 +5,8 @@ using RaffleAutomationTests.PageObjects;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Threading;
+using static RaffleAutomationTests.APIHelpers.Web.Subscriptions.SubsriptionsResponse;
+using System.Net.Http;
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -393,10 +395,11 @@ namespace RaffleAutomationTests.Helpers
             return text;
         }
 
-        public static void GetAllEmails(string domain, out string htmlContent)
+        public static void GetAllEmails(string domain, out List<PutsboxEmail>? emailList)
         {
             Thread.Sleep(2000);
-            htmlContent = GetEmailContent(domain);
+            var htmlContent = GetEmailContent(domain);
+            emailList = JsonConvert.DeserializeObject<List<PutsboxEmail>?>(htmlContent);
             if (htmlContent.Contains("Not Found"))
             {
                 Thread.Sleep(2000);
@@ -469,8 +472,9 @@ namespace RaffleAutomationTests.Helpers
         //[AllureStep("Go to activation link")]
         public static void GgetAllEmailData(string email, out List<PutsboxEmail>? emailList)
         {
-            PutsBox.GetAllEmails(email, out string emailsList);
-            emailList = JsonConvert.DeserializeObject<List<PutsboxEmail>?>(emailsList);
+            PutsBox.GetAllEmails(email, out emailList);
+            SubscriptionsRequest.CheckEmailsCountFor35Minutes(emailList, email);
+            PutsBox.GetAllEmails(email, out emailList);
         }
 
         [AllureStep("Clear email history")]

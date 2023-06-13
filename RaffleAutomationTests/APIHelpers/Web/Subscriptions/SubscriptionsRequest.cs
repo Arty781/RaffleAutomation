@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using HtmlAgilityPack;
 using System.Linq;
+using static RaffleAutomationTests.APIHelpers.Web.Subscriptions.SubsriptionsResponse;
 
 namespace RaffleAutomationTests.APIHelpers.Web.Subscriptions
 {
@@ -97,7 +98,7 @@ namespace RaffleAutomationTests.APIHelpers.Web.Subscriptions
             }
         }
 
-        public static void CheckEmailsCountFor17Minutes(List<PutsboxEmail>? userEmails, string email)
+        public static void CheckEmailsCountFor35Minutes(List<PutsboxEmail>? userEmails, string email)
         {
             DateTime startTime = DateTime.Now;
             int checkInterval = 30000; // in milliseconds
@@ -106,18 +107,24 @@ namespace RaffleAutomationTests.APIHelpers.Web.Subscriptions
 
             while (DateTime.Now - startTime < TimeSpan.FromMinutes(minutes)) // loop for 15 minutes
             {
-                if (userEmails.Count <= 1 && userEmails.Any(x => x != null && x.subject.Contains("How many stars would you give")))
+                switch (userEmails.Any(x => x != null && !x.subject.Contains("How many stars would you give")))
                 {
-                    Thread.Sleep(checkInterval); // wait for 60 seconds before checking again
-                    Elements.GgetAllEmailData(email, out userEmails);
+                    case false:
+                        Thread.Sleep(checkInterval); // wait for 30 seconds before checking again
+                        PutsBox.GetAllEmails(email, out userEmails);
+                        break;
+
+                    case true:
+                        statusChanged = true;
+                        Console.WriteLine("Email received");
+                        goto LoopExit; // exit the loop since the status has changed
+
                 }
-                else
-                {
-                    statusChanged = true;
-                    Console.WriteLine("Email received");
-                    break; // exit the loop since the status has changed
-                }
+
+            
             }
+            LoopExit:
+            // Continue with the rest of the code outside the switch statement            
             if (!statusChanged)
             {
                 throw new Exception($"Subscription status did not change within {minutes} minutes.");

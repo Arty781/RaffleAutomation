@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 using Newtonsoft.Json.Bson;
+using RaffleAutomationTests.APIHelpers.Admin.DreamHomePage;
 using System.Text.RegularExpressions;
 
 namespace RaffleAutomationTests.Helpers
@@ -275,6 +276,23 @@ namespace RaffleAutomationTests.Helpers
                 }
                 
             }
+
+            public static void DeactivateDreamHome(Raffles raffle)
+            {
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collection = database.GetCollection<DbModels.Raffle>("raffles");
+                var filter = Builders<DbModels.Raffle>.Filter.Eq(r => r.Id, ObjectId.Parse(raffle.Id));
+                var update = Builders<DbModels.Raffle>.Update
+                    .Set(r => r.IsClosed, true)
+                    .Set(r => r.Active, false);
+
+                collection.UpdateOne(filter, update);
+                Competitions.DeactivateRafflesComp(raffle);
+                Orders.DeactivateOrdersByDreamHome(raffle);
+
+
+            }
         }
         
         public class Subscriptions
@@ -500,11 +518,64 @@ namespace RaffleAutomationTests.Helpers
 
                 collection.UpdateMany(filter, update);
             }
+
+            public static void DeactivateOrdersByDreamHome(Raffles raffle)
+            {
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collection = database.GetCollection<DbModels.Orders>("orders");
+                var filter = Builders<DbModels.Orders>.Filter.Eq(o => o.Raffle, ObjectId.Parse(raffle.Id));
+                var update = Builders<DbModels.Orders>.Update
+                    .Set(o => o.IsArchive, true);
+
+                collection.UpdateMany(filter, update);
+            }
         }
 
         public class Insert
         {
             public static void InsertPauseSubscriptionToUser(List<DbModels.UserResponse> users, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels, string charity, int nextPurchaseDate, int purchaseDate, int pausedAt, int pauseEnd)
+            {
+
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collection = database.GetCollection<DbModels.SubscriptionsInsert>("subscriptions");
+                foreach (var user in users)
+                {
+                    int pauseCount = RandomHelper.RandomIntNumber(20);
+                    var update = new List<DbModels.SubscriptionsInsert>()
+                    {
+                        new DbModels.SubscriptionsInsert
+                        {
+                        Status = "PAUSED",
+                        Count= 1,
+                        Charity= charity,
+                        IsReminderSent= false,
+                        CreatedAt = DateTime.Now,
+                        TotalCost= 2500,
+                        NumOfTickets = 15,
+                        Extra= 135,
+                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
+                        Emails = new List<string>(),
+                        Raffle= raffle.LastOrDefault().Id,
+                        User=  user.Id,
+                        Refference= SubscriptionsCardDetails.REFFERENCE[pauseCount],
+                        CardSource= SubscriptionsCardDetails.CARD_SOURCE[pauseCount],
+                        CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[pauseCount],
+                        NextPurchaseDate = DateTime.Now.AddHours(nextPurchaseDate),
+                        PurchaseDate = DateTime.Now.AddMonths(purchaseDate),
+                        PausedAt= DateTime.Now.AddHours(pausedAt),
+                        PauseEnd= DateTime.Now.AddHours(pauseEnd)
+                        }
+
+                    };
+
+                    collection.InsertMany(update);
+                }
+
+            }
+
+            public static void InsertReminderSubscriptionToUser(List<DbModels.UserResponse> users, List<DbModels.Raffle> raffle, List<DbModels.SubscriptionsModels> subscriptionModels, string charity, int nextPurchaseDate, int purchaseDate, int pausedAt, int pauseEnd)
             {
 
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
@@ -553,6 +624,7 @@ namespace RaffleAutomationTests.Helpers
                 var collectionActive = database.GetCollection<DbModels.SubscriptionsActiveInsert>("subscriptions");
                 foreach (var user in users)
                 {
+                    int i = RandomHelper.RandomIntNumber(subscriptionModels.Count);
                     int activeCount = RandomHelper.RandomIntNumber(20);                   
                     var updateActive = new List<DbModels.SubscriptionsActiveInsert>()
                     {
@@ -563,12 +635,51 @@ namespace RaffleAutomationTests.Helpers
                         Charity= charity,
                         IsReminderSent= false,
                         CreatedAt = DateTime.Now,
-                        TotalCost= 2500,
-                        NumOfTickets = 15,
-                        Extra= 135,
-                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
+                        TotalCost= subscriptionModels[i].TotalCost,
+                        NumOfTickets = subscriptionModels[i].NumOfTickets,
+                        Extra= subscriptionModels[i].Extra,
+                        SubscriptionModel= new ObjectId(subscriptionModels[i].Id.ToString()),
                         Emails = new List<string>(),
                         Raffle= raffle.LastOrDefault().Id,
+                        User= user.Id,
+                        Refference= SubscriptionsCardDetails.REFFERENCE[activeCount],
+                        CardSource= SubscriptionsCardDetails.CARD_SOURCE[activeCount],
+                        CheckoutId= SubscriptionsCardDetails.CHECKOUT_ID[activeCount],
+                        NextPurchaseDate = DateTime.Now.AddHours(nextPurchaseDate),
+                        PurchaseDate = DateTime.Now.AddMonths(purchaseDate)
+                        }
+                    };
+
+                    collectionActive.InsertMany(updateActive);
+                }
+
+            }
+
+            public static void InsertActiveSubscriptionToUser(List<DbModels.UserResponse> users, Raffles raffle, List<DbModels.SubscriptionsModels> subscriptionModels, string charity, int nextPurchaseDate, int purchaseDate)
+            {
+
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collectionActive = database.GetCollection<DbModels.SubscriptionsActiveInsert>("subscriptions");
+                foreach (var user in users)
+                {
+                    int i = RandomHelper.RandomIntNumber(subscriptionModels.Count);
+                    int activeCount = RandomHelper.RandomIntNumber(20);
+                    var updateActive = new List<DbModels.SubscriptionsActiveInsert>()
+                    {
+                        new DbModels.SubscriptionsActiveInsert
+                        {
+                        Status = "ACTIVE",
+                        Count= 1,
+                        Charity= charity,
+                        IsReminderSent= false,
+                        CreatedAt = DateTime.Now,
+                        TotalCost= subscriptionModels[i].TotalCost,
+                        NumOfTickets = subscriptionModels[i].NumOfTickets,
+                        Extra= subscriptionModels[i].Extra,
+                        SubscriptionModel= new ObjectId(subscriptionModels[i].Id.ToString()),
+                        Emails = new List<string>(),
+                        Raffle= ObjectId.Parse(raffle.Id),
                         User= user.Id,
                         Refference= SubscriptionsCardDetails.REFFERENCE[activeCount],
                         CardSource= SubscriptionsCardDetails.CARD_SOURCE[activeCount],
@@ -774,6 +885,54 @@ namespace RaffleAutomationTests.Helpers
                 collection.InsertOne(update);
             }
 
+            public static void InsertUser(Raffles raffle)
+            {
+
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collection = database.GetCollection<DbModels.UserRequest>("users");
+                var update = new DbModels.UserRequest()
+                {
+                    Id = ObjectId.GenerateNewId(),
+                    IsAdmin = false,
+                    IsManager = false,
+                    IsVerified = true,
+                    FreeEntries = 0,
+                    SuccessfullReferralCount = 0,
+                    TotalTicketsBought = 0,
+                    EmailCommunication = true,
+                    RegisterReferrals = new List<object>(),
+                    FreeTickets = 0,
+                    IsSocialRegistration = false,
+                    IsBlocked = false,
+                    Notifications = new DbModels.Notification()
+                    {
+                        all = true,
+                        dreamHome = true,
+                        fixedOdds = true,
+                        lifestyle = true,
+                        myCompetitions = true,
+                        newPrizes = true
+                    },
+                    SpentMoney = 0,
+                    Name = Name.FirstName(),
+                    Surname = Name.LastName(),
+                    Email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff"), "@putsbox.com"),
+                    Password = "$2a$10$UT3uN3YZaIZSVPCFUSw.cezZLNTp4Jdz0MWVa..eubmSve1SKpcyS",
+                    Phone = string.Empty,
+                    Country = "Ukraine",
+                    CreatedAt = DateTime.Now,
+                    RegisterRaffle = ObjectId.Parse(raffle.Id),
+                    ReferralKey = Guid.NewGuid().ToString(),
+                    NeededSpend = 0,
+                    ReferralCredits = 0,
+                    IsEmailValid = true,
+                    UpdatedAt = DateTime.Now,
+                    CorporateNotification = true
+                };
+                collection.InsertOne(update);
+            }
+
             public static void InsertUser(DbModels.Raffle raffle, string email)
             {
 
@@ -862,6 +1021,20 @@ namespace RaffleAutomationTests.Helpers
                 var filterBuilder = Builders<DbModels.Competitions.Raffle>.Filter;
                 var filter = filterBuilder.Eq(r => r.CompetitionType, "DREAMHOME") &
                     (filterBuilder.Eq(r => r.DreamHome, raffle.Id));
+                var updateBuilder = Builders<DbModels.Competitions.Raffle>.Update;
+                var update = updateBuilder
+                    .Set(c => c.IsActive, false);
+                collection.UpdateMany(filter, update);
+            }
+
+            public static void DeactivateRafflesComp(Raffles raffle)
+            {
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collection = database.GetCollection<DbModels.Competitions.Raffle>("competitions");
+                var filterBuilder = Builders<DbModels.Competitions.Raffle>.Filter;
+                var filter = filterBuilder.Eq(r => r.CompetitionType, "DREAMHOME") &
+                    (filterBuilder.Eq(r => r.DreamHome, ObjectId.Parse(raffle.Id)));
                 var updateBuilder = Builders<DbModels.Competitions.Raffle>.Update;
                 var update = updateBuilder
                     .Set(c => c.IsActive, false);

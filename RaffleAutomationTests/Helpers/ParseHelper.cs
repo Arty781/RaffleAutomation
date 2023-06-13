@@ -54,7 +54,7 @@ namespace RaffleAutomationTests.Helpers
         public static void ParseHtmlAndCompare(string html, string template)
         {
             // Load HTML code into an HtmlDocument object
-            HtmlDocument htmlDoc = new HtmlDocument();
+            HtmlDocument htmlDoc = new();
             htmlDoc.LoadHtml(html);
 
             // Convert the modified HTML back to a string
@@ -117,7 +117,7 @@ namespace RaffleAutomationTests.Helpers
             Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
             Elements.GgetHtmlBody(email, id, out string emailInitial);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.MonthlyAuth(name, quantity * activeRaffles, value, charity));
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.MonthlyAuth(name, quantity /** activeRaffles*/, value, charity));
 
         }
 
@@ -151,7 +151,7 @@ namespace RaffleAutomationTests.Helpers
             Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription pause reactivation").Select(q => q.id).FirstOrDefault();
             Elements.GgetHtmlBody(email, id, out string emailInitial);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.Unpause(name, quantity * activeRaffles, value, charity));
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.Unpause(name, quantity /** activeRaffles*/, value, charity));
         }
 
         public static void VerifyReminderEmail(string email,string name)
