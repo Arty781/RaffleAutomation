@@ -126,7 +126,7 @@ namespace API
             //Edit raffles
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
-            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x=>x).ToList();
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, 720, -1);
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, false, 50, -7920);
         }
@@ -169,7 +169,7 @@ namespace API
             int purchaseDate = 0;
             int pausedAt = -720;
             int pauseEnd = -24;
-            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x=>x).ToList();
             var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@xitroo.com")).Select(x => x).ToList();
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             AppDbHelper.Insert.InsertPauseSubscriptionToUser(users, raffle, subscriptionsModel, charity, nextPurchaseDate, purchaseDate, pausedAt, pauseEnd);
@@ -204,7 +204,7 @@ namespace API
             int purchaseDate = 0;
             int pausedAt = -720;
             int pauseEnd = -24;
-            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x=>x).ToList();
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             for (int i = 0; i < 1; i++)
             {

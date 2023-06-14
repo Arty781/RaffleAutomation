@@ -117,7 +117,7 @@ namespace RaffleAutomationTests.Helpers
             Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
             Elements.GgetHtmlBody(email, id, out string emailInitial);
-            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.MonthlyAuth(name, quantity /** activeRaffles*/, value, charity));
+            ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.MonthlyAuth(name, quantity * activeRaffles, value, charity));
 
         }
 

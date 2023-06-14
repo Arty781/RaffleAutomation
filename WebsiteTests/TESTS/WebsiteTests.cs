@@ -1072,7 +1072,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             string name = string.Empty;
             string email = string.Concat("nextpurchase", DateTime.Now.ToString("yyyy-MM-d-hh-mm-ss"), "@putsbox.com");
             var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
-            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x=>x).ToList();
             var charity = "None Selected";
 
             Pages.Common
@@ -1402,6 +1402,17 @@ namespace RaffleHouseAutomation.WebSiteTests
         {
             #region Preconditions
 
+            int addFirstStartHours = -3600;
+            int addFirstEndHours = 360;
+            int addSecondStartHours = -1740;
+            int addSecondEndHours = 1780;
+
+            List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Distinct(new ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
+            DreamHome.DeactivateDreamHome(activeDreamhomeList);
+            dreamhomeList.Reverse();
+            DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours, addSecondStartHours, addSecondEndHours);
+
             string name = string.Empty;
             var charity = "None Selected";
             int nextPurchaseDate = -100;
@@ -1412,7 +1423,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
 
-            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x=>x).ToList();
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             AppDbHelper.Insert.InsertUser(raffle);
             users = AppDbHelper.Users.GetUserByEmailpattern("@putsbox.com");
@@ -1456,6 +1467,17 @@ namespace RaffleHouseAutomation.WebSiteTests
         {
             #region Preconditions
 
+            int addFirstStartHours = -3600;
+            int addFirstEndHours = 360;
+            int addSecondStartHours = -1740;
+            int addSecondEndHours = 1780;
+
+            List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Distinct(new ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
+            DreamHome.DeactivateDreamHome(activeDreamhomeList);
+            dreamhomeList.Reverse();
+            DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours, addSecondStartHours, addSecondEndHours);
+
             //Delete all subscritions and test users 
             var users = Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             Subscriptions.DeleteSubscriptionsByUserId(users);
@@ -1465,10 +1487,10 @@ namespace RaffleHouseAutomation.WebSiteTests
             //Edit raffles
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
-            var raffle = DreamHome.GetAciveRaffles();
             
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, -170, 720);
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, false, -7920, 50);
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x => x).ToList();
             var subscriptionsModel = Subscriptions.GetAllSubscriptionModels();
             Insert.InsertUser(raffle);
             users = Users.GetUserByEmailpattern("@putsbox.com");
@@ -1502,6 +1524,17 @@ namespace RaffleHouseAutomation.WebSiteTests
         {
             #region Preconditions
 
+            int addFirstStartHours = -3600;
+            int addFirstEndHours = 360;
+            int addSecondStartHours = -1740;
+            int addSecondEndHours = 1780;
+
+            List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Distinct(new ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
+            DreamHome.DeactivateDreamHome(activeDreamhomeList);
+            dreamhomeList.Reverse();
+            DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours, addSecondStartHours, addSecondEndHours);
+
             //Delete all subscritions and test users 
             var users = Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             Subscriptions.DeleteSubscriptionsByUserId(users);
@@ -1511,10 +1544,10 @@ namespace RaffleHouseAutomation.WebSiteTests
             //Edit raffles
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
-            var raffle = DreamHome.GetAciveRaffles();
-
+            
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, -170, 720);
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, false, -7920, -50);
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x => x).ToList();
             var subscriptionsModel = Subscriptions.GetAllSubscriptionModels();
             Insert.InsertUser(raffle);
             users = Users.GetUserByEmailpattern("@putsbox.com");
@@ -1566,12 +1599,13 @@ namespace RaffleHouseAutomation.WebSiteTests
             //Edit raffles
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
-            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            
             var charity = "None Selected";
             int nextPurchaseDate = -100;
             int purchaseDate = 0;
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, -170, 720);
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, false, -7920, 50);
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x => x).ToList();
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             AppDbHelper.Insert.InsertUser(raffle);
             users = AppDbHelper.Users.GetUserByEmailpattern("@putsbox.com");
@@ -1604,6 +1638,17 @@ namespace RaffleHouseAutomation.WebSiteTests
         {
             #region Preconditions
 
+            int addFirstStartHours = -3600;
+            int addFirstEndHours = 360;
+            int addSecondStartHours = -1740;
+            int addSecondEndHours = 1780;
+
+            List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
+            List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Distinct(new ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
+            DreamHome.DeactivateDreamHome(activeDreamhomeList);
+            dreamhomeList.Reverse();
+            DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours, addSecondStartHours, addSecondEndHours);
+
             //Delete all subscritions and test users 
             var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
             AppDbHelper.Subscriptions.DeleteSubscriptionsByUserId(users);
@@ -1612,12 +1657,12 @@ namespace RaffleHouseAutomation.WebSiteTests
             //Edit raffles
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
-            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
             var charity = "None Selected";
             int nextPurchaseDate = -100;
             int purchaseDate = 0;
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, true, -170, 720);
             DreamHomeRequest.EditDreamHomeStartEndDate(tokenAdmin, dreamResponse, false, -7920, -50);
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x => x).ToList();
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             AppDbHelper.Insert.InsertUser(raffle);
             users = AppDbHelper.Users.GetUserByEmailpattern("@putsbox.com");
@@ -1685,7 +1730,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             users = AppDbHelper.Users.GetUserByEmailpattern("@putsbox.com");
             AppDbHelper.Insert.InsertActiveSubscriptionToUser(users, raffleCloseEarlier, subscriptionsModel, charity, nextPurchaseDate, purchaseDate);
             DreamHome.DeactivateDreamHome(raffleCloseEarlier);
-            var raffle = AppDbHelper.DreamHome.GetAciveRaffles();
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x=>x).ToList();
 
             #endregion
 
