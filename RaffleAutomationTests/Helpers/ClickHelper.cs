@@ -210,6 +210,7 @@ namespace RaffleAutomationTests.Helpers
 
         public static void Action(string key)
         {
+            WaitUntil.WaitSomeInterval(700);
             Actions actions = new(Browser._Driver);
             actions.SendKeys(key);
             actions.Perform();
@@ -326,14 +327,16 @@ namespace RaffleAutomationTests.Helpers
 
         private static void ClearRequest(string email)
         {
-            RestClient client = new RestClient(ClearHistory(email));
-            RestRequest request = new RestRequest("");
-            client.ExecuteGetAsync(request);
+            Browser._Driver.Navigate().GoToUrl(GetHtmlUrlToInspect(email));
+            WaitUntil.CustomElementIsVisible(Pages.Putsbox.inputEmail);
+            Button.Click(Pages.Putsbox.btnClearHistory);
+            Elements.Alerts.AcceptAlert();
+            WaitUntil.CustomElementIsVisible(Pages.Putsbox.textNumberOfEmails);
+            Assert.AreEqual(0, int.Parse(Pages.Putsbox.textNumberOfEmails.Text));
         }
 
         public static string GetLinkFromEmailWithValue(string domain, string value)
         {
-            string value2 = value;
             Thread.Sleep(2000);
             string jsonContent = GetJsonContent(domain);
             if (jsonContent.Contains("Not Found"))
@@ -344,7 +347,7 @@ namespace RaffleAutomationTests.Helpers
 
             string text = Decode(jsonContent);
             GetBodyData(text);
-            return ParseAllLinks(text).Link.First((PutsboxWrapper.Link x) => x.Name == value2).Url;
+            return ParseAllLinks(text).Link.First((PutsboxWrapper.Link x) => x.Name == value).Url;
         }
 
         public static string GetTextFromEmailWithValue(string domain, string value)
@@ -411,6 +414,7 @@ namespace RaffleAutomationTests.Helpers
         {
             Thread.Sleep(2000);
             ClearRequest(domain);
+            
         }
 
 
@@ -482,6 +486,25 @@ namespace RaffleAutomationTests.Helpers
         {
             PutsBox.ClearEmailHistory(email);
 
+        }
+
+        public class Alerts
+        {
+            public static void AcceptAlert()
+            {
+                Thread.Sleep(1000);
+                IAlert alert = Browser._Driver.SwitchTo().Alert();
+                alert.Accept();
+                Browser._Driver.SwitchTo().DefaultContent();
+            }
+
+            public static void DismissAlert()
+            {
+                Thread.Sleep(1000);
+                IAlert alert = Browser._Driver.SwitchTo().Alert();
+                alert.Dismiss();
+                Browser._Driver.SwitchTo().DefaultContent();
+            }
         }
     }
 }

@@ -50,5 +50,6 @@ namespace RaffleAutomationTests.PageObjects
         public static ResetPassword ResetPassword => GetPage<ResetPassword>();
         public static TermsAndConditions TermsAndConditions => GetPage<TermsAndConditions>();
         public static Subscription Subscription => GetPage<Subscription>();
+        public static Putsbox Putsbox => GetPage<Putsbox>();
     }
 }

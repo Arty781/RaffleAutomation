@@ -696,6 +696,8 @@ namespace RaffleAutomationTests.Helpers
 
             public static void InsertSubscriptionsToUsers(DbModels.UserResponse user, DbModels.Raffle raffle, List<DbModels.SubscriptionsModels> subscriptionModels)
             {
+                int firstSub = RandomHelper.RandomIntNumber(subscriptionModels.Count);
+                int secondSub = RandomHelper.RandomIntNumber(subscriptionModels.Count);
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
                 var collection = database.GetCollection<DbModels.SubscriptionsInsert>("subscriptions");
@@ -708,10 +710,10 @@ namespace RaffleAutomationTests.Helpers
                         Charity= "",
                         IsReminderSent= false,
                         CreatedAt = DateTime.Now,
-                        TotalCost= 2500,
-                        NumOfTickets = 15,
-                        Extra= 135,
-                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
+                        TotalCost= subscriptionModels[firstSub].TotalCost,
+                        NumOfTickets = subscriptionModels[firstSub].NumOfTickets,
+                        Extra= subscriptionModels[firstSub].Extra,
+                        SubscriptionModel= new ObjectId(subscriptionModels[firstSub].Id.ToString()),
                         Emails = new List<string>(),
                         Raffle= raffle.Id,
                         User= user.Id,
@@ -729,10 +731,10 @@ namespace RaffleAutomationTests.Helpers
                         Charity= "",
                         IsReminderSent= false,
                         CreatedAt = DateTimeOffset.Now.DateTime,
-                        TotalCost= 1000,
-                        NumOfTickets = 5,
-                        Extra= 40,
-                        SubscriptionModel= new ObjectId(subscriptionModels[RandomHelper.RandomIntNumber(subscriptionModels.Count)].Id.ToString()),
+                        TotalCost= subscriptionModels[secondSub].TotalCost,
+                        NumOfTickets = subscriptionModels[secondSub].NumOfTickets,
+                        Extra= subscriptionModels[secondSub].Extra,
+                        SubscriptionModel= new ObjectId(subscriptionModels[secondSub].Id.ToString()),
                         Emails = new List<string>(),
                         Raffle= raffle.Id,
                         User=  user.Id,

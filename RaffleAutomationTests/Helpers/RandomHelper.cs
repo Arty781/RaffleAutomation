@@ -73,7 +73,7 @@
             string firstDigit = firstChar[random.Next(firstChar.Length)].ToString();
 
             // Generate the rest of the digits
-            string restOfDigits = new string(Enumerable.Repeat(chars, 9)
+            string restOfDigits = new(Enumerable.Repeat(chars, 9)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
 
             return firstDigit + restOfDigits;

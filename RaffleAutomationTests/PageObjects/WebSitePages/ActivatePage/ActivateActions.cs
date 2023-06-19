@@ -16,7 +16,7 @@
 
         public Activate EnterPhone()
         {
-            InputBox.Element(inputPhone, 10, PhoneNumber.CellPhone());
+            InputBox.Element(inputPhone, 10, RandomHelper.RandomPhone());
             return this;
         }
 

@@ -25,7 +25,7 @@
         [AllureStep("Verify Visibility Of Toaster")]
         public SignUp VerifyVisibilityOfToaster(string email)
         {
-            string s = Putsbox.GetLinkFromEmailWithValue(email, "Verify");
+            string s = PutsBox.GetLinkFromEmailWithValue(email, "Verify");
             Browser._Driver.Navigate().GoToUrl(s);
             WaitUntil.CustomElementIsVisible(toasterSuccessMessage);
 

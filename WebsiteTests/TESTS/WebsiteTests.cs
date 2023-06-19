@@ -21,43 +21,51 @@ namespace RaffleHouseAutomation.WebSiteTests
         
         public void Demotest()
         {
-            #region Preconditions
-            string name = "";
-            double value = 0;
-            int quantity = 0;
+            string name = string.Empty;
             var response = SignUpRequest.RegisterNewUser();
-            
-            WaitUntil.WaitSomeInterval(250);
-
-            #endregion
-
+            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
+            var basketOrders = BasketRequest.GetBasketOrders(token);
+            BasketRequest.DeleteOrders(token, basketOrders);
+            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
             Pages.Common
                 .CloseCookiesPopUp();
+            DreamHomeOrderRequestWeb
+                .AddDreamhomeTickets(token, prizesList.FirstOrDefault());
+            Pages.PageDiscountPage
+                .OpenPageDiscount()
+                .SelectTicketBundle(out string bunlePrice)
+                .VerifyPriceOfAddedOrder(bunlePrice);
             Pages.Header
                 .OpenSignInPage();
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn(out name);
-            Pages.Subscription
-                .OpenSubscriptionPage()
-                .AddTenSubscriptionToBasket(out value, out quantity);
-            string charity = string.Empty;
+            Pages.WinRafflePage
+                .OpenWinRaffle()
+                .SelectTicketBundle(out string bunleWinPrice)
+                .VerifyPriceOfAddedOrder(bunleWinPrice);
+            Pages.Header
+                .OpenSignInPage();
+            Pages.SignIn
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+            Pages.SignIn
+                .VerifyIsSignIn(out name);
             Pages.Basket
+                .ClickCartBtn();
+            Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder)
+                .ClickCheckoutNowBtn()
                 .EnterCardDetails()
                 .ClickPayNowBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
             Pages.Profile
                 .OpenMyTicketsCompetitions()
-                .OpenDreamHomeHistoryList();
-
-            EmailVerificator.VerifyInitialEmailAuth(response.User.Email, name, charity);
-
-            #region Postconditions
-
-
-            #endregion
+                .OpenDreamHomeHistoryList()
+                .ScrollToEndOfHistoryList(countOrders)
+                .VerifyAddingTickets(totalOrder, countOrders);
         }
 
 
@@ -888,9 +896,10 @@ namespace RaffleHouseAutomation.WebSiteTests
             DreamHome.ActivateTwoClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours, addSecondStartHours, addSecondEndHours);
             Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$"); //Delete all users except these emails
 
-            string name = "";
+            string name = string.Empty;
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
             var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions().SubscriptionModels.Where(x => x.TotalCost == 2500).Select(x => x).FirstOrDefault();
+            var activeRaffles = DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x => x).ToList();
 
             #endregion
 
@@ -917,16 +926,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
                 .ScrollToEndOfHistoryList(1)
-                .VerifyAddingTickets((double)subscriptionsList.TotalCost / 100, 1);
-
-            var user = AppDbHelper.Users.GetUserByEmail(email);
-            var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
-            foreach (var subscription in subscriptionList)
-            {
-                Assert.IsNotNull(subscription.Refference);
-                Assert.IsNotNull(subscription.CardSource);
-                Assert.IsNotNull(subscription.CheckoutId);
-            }
+                .VerifyAddingTickets((double)subscriptionsList.TotalCost / 100, activeRaffles.Count);
 
         }
 
@@ -952,9 +952,10 @@ namespace RaffleHouseAutomation.WebSiteTests
             DreamHome.ActivateOneClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours);
             Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$"); //Delete all users except these emails
 
-            string name = "";
+            string name = string.Empty;
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
             var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions().SubscriptionModels.Where(x => x.TotalCost == 2500).Select(x => x).FirstOrDefault();
+            var activeRaffles = DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x => x).ToList();
 
             #endregion
 
@@ -981,16 +982,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
                 .ScrollToEndOfHistoryList(1)
-                .VerifyAddingTickets((double)subscriptionsList.TotalCost / 100, 1);
-
-            var user = AppDbHelper.Users.GetUserByEmail(email);
-            var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
-            foreach (var subscription in subscriptionList)
-            {
-                Assert.IsNotNull(subscription.Refference);
-                Assert.IsNotNull(subscription.CardSource);
-                Assert.IsNotNull(subscription.CheckoutId);
-            }
+                .VerifyAddingTickets((double)subscriptionsList.TotalCost / 100, activeRaffles.Count);
         }
 
         [Test]
@@ -1022,15 +1014,15 @@ namespace RaffleHouseAutomation.WebSiteTests
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
             var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions().SubscriptionModels.Where(x => x.TotalCost == 2500).Select(x => x).FirstOrDefault();
 
-            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x=>x.EndsAt < DateTime.Now).Select(x=>x).FirstOrDefault();
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x=>x.EndsAt > DateTime.Now).Select(x=>x).ToList();
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             for (int i = 0; i < 1; i++)
             {
-                AppDbHelper.Insert.InsertUser(raffle, email);
+                AppDbHelper.Insert.InsertUser(raffle.FirstOrDefault(), email);
 
             }
             var users = AppDbHelper.Users.GetUserByEmailpattern("@putsbox.com").FirstOrDefault();
-            AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle, subscriptionsModel);
+            AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle.FirstOrDefault(), subscriptionsModel);
 
             #endregion
 
@@ -1044,177 +1036,15 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .VerifyIsSignIn(out name);
             Pages.Profile
-                .WaitUntilScriptRuning(activeDreamhomeList.Count)
+                .WaitUntilScriptRuning(raffle.Count)
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
                 .ScrollToEndOfHistoryList(1)
-                .VerifyAddingTickets((double)subscriptionsList.TotalCost / 100, 1);
+                .VerifyAddingTickets((double)subscriptionsList.TotalCost / 100, raffle.Count);
 
 
         }
 
-    }
-
-    [TestFixture]
-    [AllureNUnit]
-    public class PrepareForMailingSub : TestBaseWeb
-    {
-        [Test]
-        [Category("Subscriptions")]
-        [AllureTag("Regression")]
-        [AllureOwner("Artem Sukharevskyi")]
-        [AllureSeverity(SeverityLevel.critical)]
-        [Author("Artem", "qatester91311@gmail.com")]
-        [AllureSuite("Client")]
-        [AllureSubSuite("Subscriptions")]
-        public void PrepareUserToNextPurchase()
-        {
-            string name = string.Empty;
-            string email = string.Concat("nextpurchase", DateTime.Now.ToString("yyyy-MM-d-hh-mm-ss"), "@putsbox.com");
-            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
-            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x=>x).ToList();
-            var charity = "None Selected";
-
-            Pages.Common
-                .CloseCookiesPopUp();
-            Pages.Basket
-                .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.LastOrDefault().Id);
-            Pages.ThankYou
-                .VerifyThankYouPageIsDisplayed();
-            Elements
-                .GoToActivationLink(email);
-            Pages.Activate
-                .ActivateUser(email);
-            Pages.Activate
-                .VerifySuccessfullActivation();
-            Pages.Header
-               .OpenSignInPage();
-            Pages.SignIn
-                .EnterLoginAndPass(email, Credentials.PASSWORD);
-            Pages.SignIn
-                .VerifyIsSignIn(out name);
-            Pages.Profile
-                .OpenMyTicketsCompetitions()
-                .OpenDreamHomeHistoryList();
-
-            var user = AppDbHelper.Users.GetUserByEmail(email);
-            
-            Pages.Profile
-                .OpenSubscriptionInProfile();
-            AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
-            AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToNextPurchase(user);
-            Elements.ClearEmailHistory(user.Email);
-            Elements.GgetAllEmailData(user.Email, out List<PutsboxEmail>? emailsList);
-            var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
-            var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
-            var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
-            var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
-            EmailVerificator.VerifyMonthlyEmailAuth(user.Email,
-                                                    user.Name,
-                                                    charity,
-                                                    raffle.Count);
-        }
-
-        [Test]
-        [Category("Subscriptions")]
-        [AllureTag("Regression")]
-        [AllureOwner("Artem Sukharevskyi")]
-        [AllureSeverity(SeverityLevel.critical)]
-        [Author("Artem", "qatester91311@gmail.com")]
-        [AllureSuite("Client")]
-        [AllureSubSuite("Subscriptions")]
-        public void PrepareUserToUnpause()
-        {
-            string name = "";
-            string email = string.Concat("aftermonth", DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss"), "@putsbox.com");
-            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
-
-            Pages.Common
-                .CloseCookiesPopUp();
-            Pages.Basket
-                .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.FirstOrDefault().Id);
-            Pages.ThankYou
-                .VerifyThankYouPageIsDisplayed();
-            Elements
-                .GoToActivationLink(email);
-            Pages.Activate
-                .ActivateUser(email);
-            Pages.Activate
-                .VerifySuccessfullActivation();
-            Pages.Header
-               .OpenSignInPage();
-            Pages.SignIn
-                .EnterLoginAndPass(email, Credentials.PASSWORD);
-            Pages.SignIn
-                .VerifyIsSignIn(out name);
-            Pages.Profile
-                .OpenMyTicketsCompetitions()
-                .OpenDreamHomeHistoryList();
-
-            var user = AppDbHelper.Users.GetUserByEmail(email);
-            Pages.Profile
-                .OpenSubscriptionInProfile()
-                .PauseSubscription();
-            var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
-            foreach (var subscription in subscriptionList)
-            {
-                Assert.IsNotNull(subscription.Refference);
-                Assert.IsNotNull(subscription.CardSource);
-                Assert.IsNotNull(subscription.CheckoutId);
-            }
-            AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToUnpause(user);
-        }
-
-        [Test]
-        [Category("Subscriptions")]
-        [AllureTag("Regression")]
-        [AllureOwner("Artem Sukharevskyi")]
-        [AllureSeverity(SeverityLevel.critical)]
-        [Author("Artem", "qatester91311@gmail.com")]
-        [AllureSuite("Client")]
-        [AllureSubSuite("Subscriptions")]
-        public void PrepareUserToSevenDaysPrior()
-        {
-            string name = "";
-            string email = string.Concat("sevendaysprior", DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss"), "@putsbox.com");
-            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
-
-            Pages.Common
-                .CloseCookiesPopUp();
-            Pages.Basket
-                .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.FirstOrDefault().Id);
-            Pages.ThankYou
-                .VerifyThankYouPageIsDisplayed();
-            Elements
-                .GoToActivationLink(email);
-            Pages.Activate
-                .ActivateUser(email);
-            Pages.Activate
-                .VerifySuccessfullActivation();
-            Pages.Header
-               .OpenSignInPage();
-            Pages.SignIn
-                .EnterLoginAndPass(email, Credentials.PASSWORD);
-            Pages.SignIn
-                .VerifyIsSignIn(out name);
-            Pages.Profile
-                .OpenMyTicketsCompetitions()
-                .OpenDreamHomeHistoryList();
-
-            var user = AppDbHelper.Users.GetUserByEmail(email);
-            
-            Pages.Profile
-                .OpenSubscriptionInProfile()
-                .PauseSubscription();
-            var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
-            foreach (var subscription in subscriptionList)
-            {
-                Assert.IsNotNull(subscription.Refference);
-                Assert.IsNotNull(subscription.CardSource);
-                Assert.IsNotNull(subscription.CheckoutId);
-            }
-            AppDbHelper.Subscriptions.UpdateSubscriptionDateByIdToSendEmail7DaysPrior(user);
-        }
     }
 
     [TestFixture]
@@ -1229,25 +1059,26 @@ namespace RaffleHouseAutomation.WebSiteTests
         [Author("Artem", "qatester91311@gmail.com")]
         [AllureSuite("Client")]
         [AllureSubSuite("Subscriptions")]
-        public void VerifyInitialSubscriptionEmailAsUnauthorizedUser(int activeRaffles)
+        public void VerifyInitialSubscriptionEmailAsUnauthorizedUser()
         {
             string name = "";
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
-            var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
+            var subscription = SubscriptionsRequest.GetActiveSubscriptions().SubscriptionModels.FirstOrDefault();
+            var activeRaffles = DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x => x).ToList();
 
             Pages.Common
                 .CloseCookiesPopUp();
             Pages.Basket
-                .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscriptionsList.SubscriptionModels.FirstOrDefault().Id);
+                .MakeAPurchaseSubscriptionAsUnauthorizedUser(email, subscription.Id);
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
             Pages.Profile
                 .VerifyInitialEmailUnauth(email,
                                     name,
-                                    (int)(subscriptionsList.SubscriptionModels.FirstOrDefault().NumOfTickets + subscriptionsList.SubscriptionModels.FirstOrDefault().Extra),
-                                    (double)subscriptionsList.SubscriptionModels.FirstOrDefault().TotalCost,
+                                    (int)(subscription.NumOfTickets + subscription.Extra),
+                                    (double)subscription.TotalCost,
                                     "None Selected",
-                                    activeRaffles);
+                                    activeRaffles.Count);
         }
 
         [Test]
@@ -1282,8 +1113,6 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .EnterLoginAndPass(email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn(out name);
-            Elements
-                .ClearEmailHistory(email);
             Pages.Profile
                 .OpenSubscriptionInProfile()
                 .PauseSubscription()
@@ -1304,7 +1133,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             string name = "";
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
             var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions();
-            var raffle = DreamHome.GetAciveRaffles();
+            var raffle = DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x => x).ToList();
 
             Pages.Common
                 .CloseCookiesPopUp();
@@ -1318,19 +1147,17 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ActivateUser(email);
             Pages.Activate
                 .VerifySuccessfullActivation();
+            PutsBox
+                .ClearEmailHistory(email);
             Pages.Header
                .OpenSignInPage();
             Pages.SignIn
                 .EnterLoginAndPass(email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn(out name);
-            Elements
-                .ClearEmailHistory(email);
             Pages.Profile
                 .OpenSubscriptionInProfile()
                 .PauseSubscription();
-            Elements
-                .ClearEmailHistory(email);
             Pages.Profile
                 .OpenSubscriptionInProfile()
                 .UnpauseSubscription()
@@ -1367,14 +1194,14 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .ActivateUser(email);
             Pages.Activate
                 .VerifySuccessfullActivation();
+            PutsBox
+                .ClearEmailHistory(email);
             Pages.Header
                .OpenSignInPage();
             Pages.SignIn
                 .EnterLoginAndPass(email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn(out name);
-            Elements
-                .ClearEmailHistory(email);
             Pages.Profile
                 .OpenSubscriptionInProfile()
                 .CancelSubscription()
@@ -1926,9 +1753,9 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.Activate
                 .VerifySuccessfullActivation();
             Pages.Header
-                    .OpenSignInPage();
+                .OpenSignInPage();
             Pages.SignIn
-                    .EnterLoginAndPass(email, Credentials.PASSWORD);
+                .EnterLoginAndPass(email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn(out name);
             Pages.Profile
@@ -2379,7 +2206,7 @@ namespace RaffleHouseAutomation.WebSiteTests
 
             #region Postconditions
 
-            AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
+            //AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
 
             #endregion
         }
@@ -2394,33 +2221,32 @@ namespace RaffleHouseAutomation.WebSiteTests
         public void PurchaseTicketsWin()
         {
             string name = "";
-            var response = SignUpRequest.RegisterNewUser();
-            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
-            var basketOrders = BasketRequest.GetBasketOrders(token);
-            BasketRequest.DeleteOrders(token, basketOrders);
-            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
             Pages.Common
                 .CloseCookiesPopUp();
+            string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
 
             Pages.WinRafflePage
                 .OpenWinRaffle()
                 .SelectTicketBundle(out string bunleWinPrice)
                 .VerifyPriceOfAddedOrder(bunleWinPrice);
+            Pages.Basket
+                .GetOrderCount(out int countOrders)
+                .GetOrderTotal(out double totalOrder)
+                .MakeAPurchaseAsUnauthorizedUser(email);
+            Pages.ThankYou
+                .VerifyThankYouPageIsDisplayed();
+            Pages.ThankYou
+                .ClickActivateMyAccount();
+            Pages.Activate
+                .ActivateUser(email);
+            Pages.Activate
+                .VerifySuccessfullActivation();
             Pages.Header
                 .OpenSignInPage();
             Pages.SignIn
-                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
+                .EnterLoginAndPass(email, Credentials.PASSWORD);
             Pages.SignIn
                 .VerifyIsSignIn(out name);
-            Pages.Basket
-                .ClickCartBtn()
-                .GetOrderCount(out int countOrders)
-                .GetOrderTotal(out double totalOrder)
-                .ClickCheckoutNowBtn()
-                .EnterCardDetails()
-                .ClickPayNowBtn();
-            Pages.ThankYou
-                .VerifyThankYouPageIsDisplayed();
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
