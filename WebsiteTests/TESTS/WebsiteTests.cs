@@ -474,8 +474,8 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
                 .OpenSubscriptionInProfile()
-                .PauseSubscription();
-                //.VerifyPauseEmail(response.User.Email, name);
+                .PauseSubscription()
+                .VerifyPauseEmail(response.User.Email, name);
         }
 
         [Test]
@@ -511,11 +511,11 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenSubscriptionInProfile()
                 .PauseSubscription()
                 .OpenSubscriptionInProfile()
-                .UnpauseSubscription();
-                //.VerifyUnpauseEmail(response.User.Email,
-                //                    name,
-                //                    "None Selected",
-                //                    raffle.Count);
+                .UnpauseSubscription()
+                .VerifyUnpauseEmail(response.User.Email,
+                                    name,
+                                    "None Selected",
+                                    raffle.Count);
         }
 
         [Test]
