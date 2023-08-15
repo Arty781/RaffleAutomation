@@ -20,7 +20,7 @@ namespace RaffleAutomationTests.PageObjects
         public SignIn SwitchWindow()
         {
             WaitUntil.WaitSomeInterval(5);
-            Browser._Driver.SwitchTo().Window(Browser._Driver.WindowHandles.ToList().Last());
+            Browser.Driver.SwitchTo().Window(Browser.Driver.WindowHandles.ToList().Last());
             return this;
         }
 

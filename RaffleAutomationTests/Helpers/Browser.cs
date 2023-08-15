@@ -1,8 +1,10 @@
-﻿namespace RaffleAutomationTests.Helpers
+﻿using System.Threading;
+
+namespace RaffleAutomationTests.Helpers
 {
     public class Browser
     {
-        private static IWebDriver windowsDriver;
+        private static IWebDriver driver;
 
         public static void Initialize()
         {
@@ -10,63 +12,97 @@
 #if DEBUG || CHROME || RELEASE
             try
             {
+                var options = new ChromeOptions();
+                //options.AddArgument("--headless");
+                //options.AddArgument("--window-size=1920,1020");
                 new DriverManager().SetUpDriver(new ChromeConfig());
-                windowsDriver = new ChromeDriver();
-                Assert.NotNull(windowsDriver);
+                driver = new ChromeDriver(options);
+                Assert.NotNull(driver);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            windowsDriver.Manage().Window.Maximize();
-            windowsDriver.Manage().Cookies.DeleteAllCookies();
+            catch (Exception ex) { throw new ArgumentException(ex.Message); }
+            driver.Manage().Window.Maximize();
+            driver.Manage().Cookies.DeleteAllCookies();
 #endif
 #if FIREFOX
             try
             {
                 new DriverManager().SetUpDriver(new FirefoxConfig());
-                windowsDriver = new FirefoxDriver();
-                Assert.NotNull(windowsDriver);
+                driver = new FirefoxDriver();
+                Assert.NotNull(driver);
             }
             catch(Exception ex)
             {
                 Console.WriteLine( ex.Message);
             }
-            windowsDriver.Manage().Window.Maximize();
-            windowsDriver.Manage().Cookies.DeleteAllCookies();
+            driver.Manage().Window.Maximize();
+            driver.Manage().Cookies.DeleteAllCookies();
 #endif
 #if DEBUG_MOBILE || RELEASE_MOBILE
-            windowsDriver.Manage().Window.Size = new Size(390, 844);
-            windowsDriver.Manage().Cookies.DeleteAllCookies();
+            driver.Manage().Window.Size = new Size(390, 844);
+            driver.Manage().Cookies.DeleteAllCookies();
 #endif
         }
 
-        public static string RootPath()
-        {
-            string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\..\\"));
-            return mainpath;
-        }
-        public static string RootPathReport()
-        {
-            string mainpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\"));
-            return mainpath;
-        }
-        public static ISearchContext Driver => windowsDriver;
-        public static IWebDriver _Driver => windowsDriver;
-
-        public static void Close()
-        {
-            _Driver.Close();
-        }
-
-        public static void Quit()
-        {
-            _Driver.Quit();
-        }
-
+        public static string RootPath() => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\..\\"));
+        public static string RootPathReport() => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\"));
+        public static IWebDriver Driver => driver;
+        public static void Close() => Driver.Close();
+        public static void Quit() => Driver.Quit();
         public static void Navigate(string url)
         {
-            _Driver.Navigate().GoToUrl(url);
+            Driver.Navigate().GoToUrl(url);
+        }
+
+
+    }
+
+    public class ForceCloseDriver
+    {
+        public static string CreateBatFile()
+        {
+            string path = Browser.RootPathReport() + "_!CloseOpenWith.bat";
+            string forceCloseAppList = string.Format("echo off" +
+                "TASKKILL /F /IM \"OpenWith.exe\"\r\n" +
+                "TASKKILL /F /IM \"chromedriver.exe\"\r\n" +
+                "TASKKILL /F /IM \"java.exe\"\r\n" +
+                "TASKKILL /F /IM \"node.exe\"\r\n" +
+                "TASKKILL /F /IM \"AppleMobileDeviceService.exe\"\r\n" +
+                "TASKKILL /F /IM \"APSDaemon.exe\"\r\n" +
+                "TASKKILL /F /IM \"ICloudServices.exe\"\r\n" +
+                "TASKKILL /F /IM \"mDNSResponder.exe\"\r\n" +
+                "TASKKILL /F /IM \"altserver.exe\"\r\n" +
+                "TASKKILL /F /IM \"Screencast-O-Matic.exe\"" +
+                "pause"
+                );
+            FileInfo fileInf = new(path);
+            if (fileInf.Exists == true)
+            {
+                fileInf.Delete();
+            }
+            using StreamWriter writer = new(path, false, Encoding.UTF8);
+            writer.Write(forceCloseAppList);
+
+            return path;
+        }
+
+        public static void RemoveBatFile(string path)
+        {
+            FileInfo fileInf = new(path);
+            if (fileInf.Exists == true)
+            {
+                fileInf.Delete();
+            }
+        }
+
+        public static void ForeseClose()
+        {
+            string path = CreateBatFile();
+            Process process = new Process();
+            process.StartInfo.FileName = path;
+            process.Start();
+            process.Close();
+            Thread.Sleep(1000);
+            RemoveBatFile(path);
         }
     }
 }

@@ -16,6 +16,18 @@ namespace RaffleAutomationTests.APIHelpers.Web
             return JsonConvert.SerializeObject(req);
         }
 
+        private static string RequestBuilderWithError(string id, int numOfTickets)
+        {
+            DreamHomeOrderRequestModel req = new()
+            {
+                NumOfTickets = $"{numOfTickets}",
+                PrizeType = "raffle",
+                PrizeId = id
+            };
+
+            return JsonConvert.SerializeObject(req);
+        }
+
         public static DreamHomeOrderResponseModelWeb? AddDreamhomeTickets(SignInResponseModelWeb SignIn, CountdownResponseModelDreamHomeWeb countdown)
         {
             HttpRequest req = new()
@@ -38,7 +50,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Console.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             var response = JsonConvert.DeserializeObject<DreamHomeOrderResponseModelWeb>(resp.BodyStr);
             Assert.That(response.Message, Is.EqualTo("Order created!"), "Order is not created");
@@ -47,17 +59,6 @@ namespace RaffleAutomationTests.APIHelpers.Web
             
         }
 
-        private static string RequestBuilderWithError(string id, int numOfTickets)
-        {
-            DreamHomeOrderRequestModel req = new()
-            {
-                NumOfTickets = $"{numOfTickets}",
-                PrizeType = "raffle",
-                PrizeId = id
-            };
-
-            return JsonConvert.SerializeObject(req);
-        }
         public static DreamHomeOrderResponseModelWeb? AddDreamhomeTicketsForError(SignInResponseModelWeb SignIn, CountdownResponseModelDreamHomeWeb countdown, int numOfTickets)
         {
             HttpRequest req = new()
@@ -79,11 +80,22 @@ namespace RaffleAutomationTests.APIHelpers.Web
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Console.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             var response = JsonConvert.DeserializeObject<DreamHomeOrderResponseModelWeb>(resp.BodyStr);
 
             return response;
         }
+    
+        public static void MultipleAddDreamhomeTickets(SignInResponseModelWeb SignIn, CountdownResponseModelDreamHomeWeb countdown, int numOfRepetitions)
+        {
+            for(int i = 0; i<numOfRepetitions; i++)
+            {
+                AddDreamhomeTickets(SignIn, countdown);
+                WaitUntil.WaitSomeInterval(250);
+            }
+            
+        }
+    
     }
 }

@@ -4,7 +4,7 @@
     {
         public Subscription OpenSubscriptionPage()
         {
-            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/subscription");
+            Browser.Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/subscription");
             WaitUntil.CustomElementIsVisible(btnSubscribeNowTop);
             return this;
         }
@@ -21,10 +21,13 @@
             return this;
         }
 
-        public Subscription AddTwentyFiveSubscriptionToBasket()
+        public Subscription AddTwentyFiveSubscriptionToBasket(out double price, out int quantity)
         {
             Button.Click(btnSubscribeNowTop);
-            WaitUntil.CustomElementIsVisible(btnSubscribeNowSelector.LastOrDefault());
+            WaitUntil.CustomElevemtIsInvisible(Pages.Common.loader);
+            WaitUntil.CustomElementIsVisible(btnSubscribeNowSelector.Last());
+            price = double.Parse(textPrice.LastOrDefault().Text.Substring(1, 2));
+            quantity = int.Parse(btnSubscribeNowSelector.LastOrDefault().GetAttribute("value"));
             Button.Click(btnSubscribeNowSelector.LastOrDefault());
             WaitUntil.CustomElementIsVisible(Pages.Basket.framePaymentNumber);
             return this;

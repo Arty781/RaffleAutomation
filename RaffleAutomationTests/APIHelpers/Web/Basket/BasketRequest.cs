@@ -27,13 +27,18 @@ namespace RaffleAutomationTests.APIHelpers.Web.Basket
                         Accept = "application/json",
                         AuthToken = "Bearer " + SignIn.Token
                     };
-                    
+                    HttpRequest req = new()
+                    {
+                        HttpVerb = "DELETE",
+                        Path = "/api/orders",
+                    };
+                    req.AddHeader("Content-Type", "application/json");
+                    req.LoadBodyFromString(RequestBuilder(basketOrder.Id), "UTF-8");
 
-                    string url = String.Concat(ApiEndpoints.API_CHIL + "/api/orders");
-                    HttpResponse resp = http.PostJson2(url, "application/json", RequestBuilder(basketOrder.Id));
+                    HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
                     if (http.LastStatus != 200)
                     {
-                        Debug.WriteLine(http.LastErrorText);
+                        throw new ArgumentException(http.LastErrorText);
                     }
 
                 }
@@ -75,7 +80,7 @@ namespace RaffleAutomationTests.APIHelpers.Web.Basket
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Console.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             var countdownResponse = JsonConvert.DeserializeObject<GetBasketOrdersResponse>(resp.BodyStr);
 

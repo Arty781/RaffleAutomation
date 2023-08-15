@@ -25,10 +25,9 @@ namespace RaffleAutomationTests.APIHelpers.Web.Subscriptions
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
-
+            
             var response = JsonConvert.DeserializeObject<SubsriptionsResponse.Subscriptions> (resp.BodyStr);
             return response;
         }
@@ -49,7 +48,7 @@ namespace RaffleAutomationTests.APIHelpers.Web.Subscriptions
             HttpResponse resp = http.SynchronousRequest("putsbox.com", 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
 
             // Split the input string into event and data parts
@@ -116,7 +115,6 @@ namespace RaffleAutomationTests.APIHelpers.Web.Subscriptions
 
                     case true:
                         statusChanged = true;
-                        Console.WriteLine("Email received");
                         goto LoopExit; // exit the loop since the status has changed
 
                 }

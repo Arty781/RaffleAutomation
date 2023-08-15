@@ -9,7 +9,7 @@
         public void SetUp()
         {
             Browser.Initialize();
-            Browser._Driver.Navigate().GoToUrl(AdminEndpoints.ADMIN_HOST);
+            Browser.Driver.Navigate().GoToUrl(AdminEndpoints.ADMIN_HOST);
         }
 
     }

@@ -14,7 +14,6 @@ namespace RaffleAutomationTests.Helpers
     {
         public static void Click(IWebElement element)
         {
-            WaitUntil.WaitSomeInterval(300);
             WaitUntil.CustomElementIsVisible(element);
             element.Click();
             
@@ -23,15 +22,15 @@ namespace RaffleAutomationTests.Helpers
         public static void ClickJS(IWebElement element)
         {
             WaitUntil.WaitSomeInterval();
-            IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
+            IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser.Driver;
             ex.ExecuteScript("arguments[0].click();", element);
         }
 
         public static void ClickCountryJS(IWebElement element)
         {
-            var elem = Browser._Driver.FindElement(By.XPath($"//ul[@role='listbox']/li[contains(text(),'{Country.COUNTRY_CODES[RandomHelper.RandomFPId(Country.COUNTRY_CODES)]}')]"));
+            var elem = Browser.Driver.FindElement(By.XPath($"//ul[@role='listbox']/li[contains(text(),'{Country.COUNTRY_CODES[RandomHelper.RandomFPId(Country.COUNTRY_CODES)]}')]"));
             WaitUntil.CustomElementIsVisible(element, 10);
-            IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
+            IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser.Driver;
             ex.ExecuteScript("arguments[0].click();", elem);
         }
 
@@ -41,11 +40,12 @@ namespace RaffleAutomationTests.Helpers
     {
         public static IWebElement Element(IWebElement element, int seconds, string data)
         {
-            WaitUntil.WaitSomeInterval(250);
+           
             WaitUntil.CustomElementIsVisible(element, seconds);
             element.SendKeys(Keyss.Control() + "A" + Keys.Delete);
-            WaitUntil.WaitSomeInterval(250);
+            WaitUntil.WaitSomeInterval(150);
             element.SendKeys(data);
+            WaitUntil.WaitSomeInterval(350);
 
             return element;
         }
@@ -91,7 +91,7 @@ namespace RaffleAutomationTests.Helpers
     {
         public static IWebElement FindSpecificDreamhome(string titleDreamhome)
         {
-            WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(30))
+            WebDriverWait wait = new(Browser.Driver, TimeSpan.FromSeconds(30))
             {
                 PollingInterval = TimeSpan.FromMilliseconds(100)
             };
@@ -99,7 +99,7 @@ namespace RaffleAutomationTests.Helpers
             {
                 wait.Until(e =>
                 {
-                    try { return Browser._Driver.FindElement(By.XPath($"//tbody/tr/td[text()='{titleDreamhome}']")).Enabled; }
+                    try { return Browser.Driver.FindElement(By.XPath($"//tbody/tr/td[text()='{titleDreamhome}']")).Enabled; }
                     catch (NoSuchElementException) { return false; }
                     catch (StaleElementReferenceException) { return false; }
 
@@ -108,7 +108,7 @@ namespace RaffleAutomationTests.Helpers
             catch (NoSuchElementException) { }
             catch (StaleElementReferenceException) { }
 
-            var _element = Browser._Driver.FindElement(By.XPath($"//tbody/tr/td[text()='{titleDreamhome}']"));
+            var _element = Browser.Driver.FindElement(By.XPath($"//tbody/tr/td[text()='{titleDreamhome}']"));
 
 
             return _element;
@@ -116,7 +116,7 @@ namespace RaffleAutomationTests.Helpers
 
         public static UserRowModel FindSpecificUser(string email)
         {
-            WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(10))
+            WebDriverWait wait = new(Browser.Driver, TimeSpan.FromSeconds(10))
             {
                 PollingInterval = TimeSpan.FromMilliseconds(100)
             };
@@ -124,7 +124,7 @@ namespace RaffleAutomationTests.Helpers
             {
                 wait.Until(e =>
                 {
-                    try { return Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']")).Enabled; }
+                    try { return Browser.Driver.FindElement(By.XPath($"//td[text()='{email}']")).Enabled; }
                     catch (NoSuchElementException) { return false; }
                     catch (StaleElementReferenceException) { return false; }
 
@@ -135,14 +135,14 @@ namespace RaffleAutomationTests.Helpers
 
             UserRowModel user = new()
             {
-                Name = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr/td[1]")).Text,
-                Surname = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr/td[2]")).Text,
-                Email = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']")).Text,
-                Phone = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr/td[4]")).Text,
-                toggleStatus = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']")),
-                btnShow = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']")),
-                btnEdit = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Edit']")),
-                btnDelete = Browser._Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/div"))
+                Name = Browser.Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr/td[1]")).Text,
+                Surname = Browser.Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr/td[2]")).Text,
+                Email = Browser.Driver.FindElement(By.XPath($"//td[text()='{email}']")).Text,
+                Phone = Browser.Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr/td[4]")).Text,
+                toggleStatus = Browser.Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']")),
+                btnShow = Browser.Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']")),
+                btnEdit = Browser.Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Edit']")),
+                btnDelete = Browser.Driver.FindElement(By.XPath($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/div"))
             };
 
             return user;
@@ -164,7 +164,7 @@ namespace RaffleAutomationTests.Helpers
         {
             List<CompetitionRowModel> listOfCompetitions = new();
             WaitUntil.CustomElevemtIsInvisible(Pages.CmsUserManagement.textNoOrders);
-            WebDriverWait wait = new(Browser._Driver, TimeSpan.FromSeconds(10))
+            WebDriverWait wait = new(Browser.Driver, TimeSpan.FromSeconds(10))
             {
                 PollingInterval = TimeSpan.FromMilliseconds(100)
             };
@@ -172,7 +172,7 @@ namespace RaffleAutomationTests.Helpers
             {
                 wait.Until(e =>
                 {
-                    try { return Browser._Driver.FindElement(By.XPath($"//td[text()='{competition}']")).Enabled; }
+                    try { return Browser.Driver.FindElement(By.XPath($"//td[text()='{competition}']")).Enabled; }
                     catch (NoSuchElementException) { return false; }
                     catch (StaleElementReferenceException) { return false; }
 
@@ -181,7 +181,7 @@ namespace RaffleAutomationTests.Helpers
             catch (NoSuchElementException) { }
             catch (StaleElementReferenceException) { }
 
-            foreach (var item in Browser._Driver.FindElements(By.XPath($"//td[text()='{competition}']/parent::tbody")))
+            foreach (var item in Browser.Driver.FindElements(By.XPath($"//td[text()='{competition}']/parent::tbody")))
             {
                 CompetitionRowModel competitionRow = new();
                 competitionRow.Competition = item.FindElement(By.XPath($".//td[1]")).Text;
@@ -211,7 +211,7 @@ namespace RaffleAutomationTests.Helpers
         public static void Action(string key)
         {
             WaitUntil.WaitSomeInterval(700);
-            Actions actions = new(Browser._Driver);
+            Actions actions = new(Browser.Driver);
             actions.SendKeys(key);
             actions.Perform();
             WaitUntil.WaitSomeInterval(700);
@@ -219,7 +219,7 @@ namespace RaffleAutomationTests.Helpers
 
         public static void Action(string key, IWebElement element)
         {
-            Actions actions = new(Browser._Driver);
+            Actions actions = new(Browser.Driver);
             element.SendKeys(key);
             actions.Perform();
             WaitUntil.WaitSomeInterval(700);
@@ -301,33 +301,33 @@ namespace RaffleAutomationTests.Helpers
         {
             RestClient client = new RestClient(GetJsonUrl(email));
             RestRequest request = new RestRequest("");
-            return client.ExecuteGetAsync(request).Result.Content;
+            return client.ExecuteGetAsync(request).Result.Content ?? throw new Exception("Content is null.");
         }
 
         private static string GetHtmlContent(string email)
         {
             RestClient client = new RestClient(GetHtmlUrl(email));
             RestRequest request = new RestRequest("");
-            return client.ExecuteGetAsync(request).Result.Content;
+            return client.ExecuteGetAsync(request).Result.Content ?? throw new Exception("Content is null.");
         }
 
         private static string GetHtmlContent(string email, string id)
         {
             RestClient client = new RestClient(GetHtmlUrl(email, id));
             RestRequest request = new RestRequest("");
-            return client.ExecuteGetAsync(request).Result.Content;
+            return client.ExecuteGetAsync(request).Result.Content ?? throw new Exception("Content is null.");
         }
 
         private static string GetEmailContent(string email)
         {
             RestClient client = new RestClient(GetHtmlUrlToInspect(email));
             RestRequest request = new RestRequest("");
-            return client.ExecuteGetAsync(request).Result.Content;
+            return client.ExecuteGetAsync(request).Result.Content ?? throw new Exception("Content is null.");
         }
 
         private static void ClearRequest(string email)
         {
-            Browser._Driver.Navigate().GoToUrl(GetHtmlUrlToInspect(email));
+            Browser.Driver.Navigate().GoToUrl(GetHtmlUrlToInspect(email));
             WaitUntil.CustomElementIsVisible(Pages.Putsbox.inputEmail);
             Button.Click(Pages.Putsbox.btnClearHistory);
             Elements.Alerts.AcceptAlert();
@@ -347,7 +347,7 @@ namespace RaffleAutomationTests.Helpers
 
             string text = Decode(jsonContent);
             GetBodyData(text);
-            return ParseAllLinks(text).Link.First((PutsboxWrapper.Link x) => x.Name == value).Url;
+            return ParseAllLinks(text).Link.First((PutsboxWrapper.Link x) => x.Name == value).Url ?? throw new Exception("URL is null.");
         }
 
         public static string GetTextFromEmailWithValue(string domain, string value)
@@ -420,13 +420,23 @@ namespace RaffleAutomationTests.Helpers
 
     }
 
+    public class Xitroo
+    {
+        [FindsBy(How = How.XPath, Using = "//*[contains(text(),'qatester')]")]
+        public IWebElement nameTab;
+
+        [FindsBy(How = How.XPath, Using = "//tbody//td[1]")]
+        public IWebElement nameEmailSubject;
+
+
+    }
+
     public class Elements
     {
         public static void Click(IWebElement element)
         {
-            WaitUntil.WaitSomeInterval(350);
             WaitUntil.CustomElementIsVisible(element);
-            IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser._Driver;
+            IJavaScriptExecutor ex = (IJavaScriptExecutor)Browser.Driver;
             ex.ExecuteScript("arguments[0].click();", element);
 
         }
@@ -448,7 +458,7 @@ namespace RaffleAutomationTests.Helpers
         {
             try
             {
-                IJavaScriptExecutor jsi = (IJavaScriptExecutor)Browser._Driver;
+                IJavaScriptExecutor jsi = (IJavaScriptExecutor)Browser.Driver;
                 jsi.ExecuteScript("window.scrollTo({0}, {1})", xPosition, yPosition);
             }
             catch (Exception) { }
@@ -493,17 +503,17 @@ namespace RaffleAutomationTests.Helpers
             public static void AcceptAlert()
             {
                 Thread.Sleep(1000);
-                IAlert alert = Browser._Driver.SwitchTo().Alert();
+                IAlert alert = Browser.Driver.SwitchTo().Alert();
                 alert.Accept();
-                Browser._Driver.SwitchTo().DefaultContent();
+                Browser.Driver.SwitchTo().DefaultContent();
             }
 
             public static void DismissAlert()
             {
                 Thread.Sleep(1000);
-                IAlert alert = Browser._Driver.SwitchTo().Alert();
+                IAlert alert = Browser.Driver.SwitchTo().Alert();
                 alert.Dismiss();
-                Browser._Driver.SwitchTo().DefaultContent();
+                Browser.Driver.SwitchTo().DefaultContent();
             }
         }
     }

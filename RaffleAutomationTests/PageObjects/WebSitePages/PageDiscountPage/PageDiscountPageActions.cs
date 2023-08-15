@@ -4,7 +4,7 @@
     {
         public PageDiscountPage OpenPageDiscount()
         {
-            Browser._Driver.Navigate().GoToUrl(WebEndpoints.PAGE_DISCOUNT);
+            Browser.Driver.Navigate().GoToUrl(WebEndpoints.PAGE_DISCOUNT);
             WaitUntil.WaitSomeInterval(1000);
             Element.Action(Keys.End);
             WaitUntil.CustomElementIsVisible(btnTicketBundles.FirstOrDefault(), 10);

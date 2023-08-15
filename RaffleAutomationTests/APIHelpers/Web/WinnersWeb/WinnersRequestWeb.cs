@@ -18,10 +18,9 @@
             HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
-
+            
             var response = JsonConvert.DeserializeObject<WinnerResponse>(resp.BodyStr);
             return response;
         }
@@ -42,10 +41,9 @@
             HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
-
+            
             var response = JsonConvert.DeserializeObject<WinnerResponse>(resp.BodyStr);
             return response;
         }

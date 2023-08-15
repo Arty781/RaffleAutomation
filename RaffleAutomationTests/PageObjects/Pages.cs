@@ -11,7 +11,7 @@ namespace RaffleAutomationTests.PageObjects
         private static T GetPage<T>() where T : new()
         {
             var page = new T();
-            IWebDriver driver = Browser._Driver;
+            IWebDriver driver = Browser.Driver;
             PageFactory.InitElements(driver, page);
 
             return page;

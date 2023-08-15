@@ -7,6 +7,7 @@ using RaffleAutomationTests.APIHelpers.Web.Basket;
 using RaffleAutomationTests.PageObjects;
 using RimuTec.Faker;
 using SharpCompress.Common;
+using System;
 using static RaffleAutomationTests.Helpers.DbModels;
 
 namespace RaffleAutomationTests.Helpers
@@ -54,6 +55,9 @@ namespace RaffleAutomationTests.Helpers
     {
         public const string DB_STAGING = "rafflehousedb_staging";
         public const string DB_STAGING_CONNECTION_STRING = "mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging";
+
+        public const string DB_LIVE = "rafflehousedb";
+        public const string DB_LIVE_CONNECTION_STRING = "mongodb+srv://root:2312Hanford2312!@rafflehouse2.iwzre.mongodb.net/rafflehousedb";
     }
 #endif
 #if RELEASE || RELEASE_MOBILE
@@ -279,7 +283,7 @@ namespace RaffleAutomationTests.Helpers
             "That’s right. You’ll keep all of the tickets from the beginning of your subscription period to its end, and they’ll all remain valid for any upcoming Early Bird or Dream Home draws.",
             "If I subscribe, can I still buy regular ticket bundles?",
             "Yes. You’ll still have the option of buying regular ticket bundles or using the Free Entry option, as well as taking advantage of any discounts or deals that we offer from time-to-time.",
-            "Every month, you’ll be able to choose from one of over 25 charities to donate to or keep your donation where it is.",
+            "Every month, you’ll be able to choose from one of over 20 charities to donate to or keep your donation where it is.",
             "Everyone has a cause that is near and dear to their hearts, and so we want you to be able to choose where 10% of your purchase goes to.",
             "It’s time to dream big and do good.",
             "",
@@ -1755,6 +1759,9 @@ namespace RaffleAutomationTests.Helpers
 
             [BsonElement("raffle")]
             public ObjectId? Raffle { get; set; }
+
+            [BsonElement("purchaseDate")]
+            public DateTime? PurchaseDate { get; set; }
         }
 
         public class AppliedCredits
@@ -1791,15 +1798,15 @@ namespace RaffleAutomationTests.Helpers
 
     public class SubscriptionEmailsTemplate
     {
-        public static string InitialUnauth(string name, int quantity, double value, string charity)
+        public static string InitialUnauth(string name, int? quantity, double? value, string charity)
         {
             return $"<html><head><style>@media screen and (max-width: 480px) {{\n    .wrap-btn {{\n        text-align: center;\n    }}\n}}\n\n.im {{\n    color: #31323C !important;\n}}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi {name},</strong></p>\n<img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body><p style=\"color:#31323C;font:HK Grotesk;\">Welcome to the Raffle House subscription service. You're now doing good every single month! So sit back, and start dreaming big.\n<p style=\"color:#31323C;font:HK Grotesk;\">Please see your Raffle House subscription receipt below. You will next be billed and issued tickets on the 1st of every month. You’ll also receive confirmation of your new tickets then.</p>\n<table style=\"color:#31323C;border-spacing:10px;\"><tr><td style=\"font-weight:bold;\">Ticket Quantity</td><td>{quantity}</td></tr><tr><td style=\"font-weight:bold;\">Value</td><td>£{value}</td></tr><tr><td style=\"font-weight:bold;\">Charitable Donation</td><td>{charity}</td></tr><tr><td></td><td></td></tr></table>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Activate account</button></a></div>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your tickets have been securely saved to your account</p><div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">View tickets</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">As a subscriber, you can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p></html>\n";
         }
-        public static string InitialAuth(string name, int quantity, double value, string charity)
+        public static string InitialAuth(string name, int? quantity, double? value, string charity)
         {
             return $"<html><head><style>@media screen and (max-width: 480px) {{\n    .wrap-btn {{\n        text-align: center;\n    }}\n}}\n\n.im {{\n    color: #31323C !important;\n}}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi {name},</strong></p>\n<img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body><p style=\"color:#31323C;font:HK Grotesk;\">Welcome to the Raffle House subscription service. You're now doing good every single month! So sit back, and start dreaming big.\n<p style=\"color:#31323C;font:HK Grotesk;\">Please see your Raffle House subscription receipt below. You will next be billed and issued tickets on the 1st of every month. You’ll also receive confirmation of your new tickets then.</p>\n<table style=\"color:#31323C;border-spacing:10px;\"><tr><td style=\"font-weight:bold;\">Ticket Quantity</td><td>{quantity}</td></tr><tr><td style=\"font-weight:bold;\">Value</td><td>£{value}</td></tr><tr><td style=\"font-weight:bold;\">Charitable Donation</td><td>{charity}</td></tr><tr><td></td></tr></table>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your tickets have been securely saved to your account</p><div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">View tickets</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">As a subscriber, you can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p></html>\n";
         }
-        public static string MonthlyAuth(string name, int quantity, double value, string charity)
+        public static string MonthlyAuth(string name, int? quantity, double? value, string charity)
         {
             return $"<html><head><style>@media screen and (max-width: 480px) {{\n    .wrap-btn {{\n        text-align: center;\n    }}\n}}\n\n.im {{\n    color: #31323C !important;\n}}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi {name},</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Please see your Raffle House subscription receipt below. You will next be billed and issued tickets on the 1st of every month. You’ll also receive confirmation of your new tickets then.</p><table style=\"color:#31323C;border-spacing:10px;\"><tr><td style=\"font-weight:bold;\">Ticket Quantity</td><td>{quantity}</td></tr><tr><td style=\"font-weight:bold;\">Value</td><td>£{value}</td></tr><tr><td style=\"font-weight:bold;\">Charitable Donation</td><td>{charity}</td></tr><tr><td></td><td></td></tr></table>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your tickets have been securely saved to your account</p><div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">View tickets</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">As a subscriber, you can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
         }
@@ -1807,7 +1814,7 @@ namespace RaffleAutomationTests.Helpers
         {
             return $"<html><head><style>@media screen and (max-width: 480px) {{\n    .wrap-btn {{\n        text-align: center;\n    }}\n}}\n\n.im {{\n    color: #31323C !important;\n}}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi {name},</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">You have successfully paused your Raffle House subscription. Your subscription will automatically reactivate on the 1st of the next month, following a full month’s pause.</p>\n<p style=\"color:#31323C;font:HK Grotesk;\">All tickets credited before the pause are still active for all draws in the current competition cycle and are securely saved to your account. You can view your tickets and manage your subscription from your account. </p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">My Account</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">You can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
         }
-        public static string Unpause(string name, int quantity, double value, string charity)
+        public static string Unpause(string name, int? quantity, double? value, string charity)
         {
             return $"<html><head><style>@media screen and (max-width: 480px) {{\n    .wrap-btn {{\n        text-align: center;\n    }}\n}}\n\n.im {{\n    color: #31323C !important;\n}}</style></head><body style=\"color:#31323C;font:HK Grotesk;\"><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>Hi {name},</strong></p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your Raffle House subscription has been reactivated following your pause!</p>\n<p style=\"color:#31323C;font:HK Grotesk;\">Please see your Raffle House subscription receipt below. You will next be billed and issued tickets on the 1st of every month. You’ll also receive confirmation of your new tickets then.</p><table style=\"color:#31323C;border-spacing:10px;\"><tr><td style=\"font-weight:bold;\">Ticket Quantity</td><td>{quantity}</td></tr><tr><td style=\"font-weight:bold;\">Value</td><td>£{value}</td></tr><tr><td style=\"font-weight:bold;\">Charitable Donation</td><td>{charity}</td></tr><tr><td></td><td></td></tr></table>\n<p style=\"color:#31323C;font:HK Grotesk;\">Your tickets have been securely saved to your account</p><p style=\"color:#31323C;font:HK Grotesk;\">You can manage your subscription and view your active tickets in your account at any time!</p><div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">My Account</button></a></div><p style=\"color:#31323C;font:HK Grotesk;\">As a subscriber, you can still buy one-off bundles if you want to increase your chances to win. If you want to buy more tickets, just hit the button below.</p>\n<div class=\"wrap-btn\"><a href=\"link with token\"><button type=\"button\" style=\"color:white;background:#f48202;border-radius:10px;padding:5px 25px;width:184px;height:36px;border:none;\">Buy more tickets</button></a>\n</div><p style=\"color:#31323C;font:HK Grotesk;\">Good luck!</p><p style=\"color:#31323C;font:HK Grotesk;font-size:15px;\"><strong>RAFFLE HOUSE</strong></p><p style=\"color:#31323C;font:HK Grotesk;\">You can view our subscription<a href=\"link with token\"> T&Cs here.</a></p><img width=\"1px\" height=\"1px\" alt=\"\" src=\"link with token\"></body></html>\n";
         }
@@ -1949,14 +1956,27 @@ namespace RaffleAutomationTests.Helpers
         };
     }
 
-    public class ErrorTotalCost
+    public class Errors
     {
-        public const int ERROR_BAD_TRACK_DATA = 154;
-        public const int ERROR_SECURITY_VIOLATION = 163;
-        public const int ERROR_INVALID_TRANSACTION = 12;
-        public const int ERROR_RESTRICTED_CARD = 62;
-        public const int ERROR_INSUFIENT_FUNDS = 151;
+        public class ErrorTotalCost
+        {
+            public const int ERROR_BAD_TRACK_DATA = 154;
+            public const int ERROR_SECURITY_VIOLATION = 163;
+            public const int ERROR_INVALID_TRANSACTION = 12;
+            public const int ERROR_RESTRICTED_CARD = 62;
+            public const int ERROR_INSUFIENT_FUNDS = 151;
+        }
+
+        public class ErrorMessages
+        {
+            public const string BAD_TRACK_DATA = "Bad Track Data (invalid CVV and/or expiry date)";
+            public const string INSUFFICIENT_FUNDS = "Insufficient Funds";
+            public const string INVALID_TRANSACTION = "Invalid Transaction";
+            public const string RESTRICTED_CARD = "Restricted Card";
+            public const string SECURITY_VIOLATION = "Security Violation";
+        }
     }
+    
 
     public class PutsboxEmail
     {

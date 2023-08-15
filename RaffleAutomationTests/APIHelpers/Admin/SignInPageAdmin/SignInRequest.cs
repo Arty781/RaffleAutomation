@@ -28,14 +28,10 @@
             req.LoadBodyFromString(SignIn(login, password), charset: "utf-8");
 
             Http http = new();
-
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
-            if (http.LastMethodSuccess != true)
-            {
-                Debug.WriteLine(http.LastErrorText);
-            }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
-            var response = JsonConvert.DeserializeObject<SignInResponseModelAdmin>(resp.BodyStr);
+            var response = http.LastMethodSuccess
+                ? JsonConvert.DeserializeObject<SignInResponseModelAdmin>(resp?.BodyStr ?? throw new Exception("Response body is null."))
+                : throw new ArgumentException(http.LastErrorText);
 
             return response;
         }

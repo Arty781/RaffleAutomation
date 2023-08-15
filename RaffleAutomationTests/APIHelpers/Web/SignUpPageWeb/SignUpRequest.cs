@@ -1,4 +1,6 @@
-﻿namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
+﻿using NUnit.Framework.Constraints;
+
+namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
 {
     public class SignUpRequest
     {
@@ -11,7 +13,7 @@
                 Password = Credentials.PASSWORD,
                 Email = "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com",
                 EmailCommunication = true,
-                Country = Country.COUNTRY_CODES[RandomHelper.RandomFPId(Country.COUNTRY_CODES)],
+                Country = Country.COUNTRY_CODES[137],
                 Phone = RandomHelper.RandomPhone(),
                 Notifications = new()
                 {
@@ -23,9 +25,8 @@
                     NewPrizes = true
                 }
 
-            };
-            var request = JsonConvert.SerializeObject(req);
-            return request;
+            };            
+            return JsonConvert.SerializeObject(req);
         }
 
         private static string JsonBodyReferral(string referralKey)
@@ -51,11 +52,10 @@
                 ReferralKey = referralKey
 
             };
-            var request = JsonConvert.SerializeObject(req);
-            return request;
+            return JsonConvert.SerializeObject(req);
         }
 
-        public static SignUpResponse? RegisterNewUser()
+        public static void RegisterNewUser(out SignUpResponse? response)
         {
             HttpRequest req = new()
             {
@@ -66,20 +66,14 @@
             req.AddHeader("Connection", "Keep-Alive");
             req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
-            req.AddHeader("accept", "*/*");
+            req.AddHeader("accept", "application/json, */*");
             req.LoadBodyFromString(JsonBody(), charset: "utf-8");
 
             Http http = new();
-
-            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
-            if (http.LastMethodSuccess != true)
-            {
-                Debug.WriteLine(http.LastErrorText);
-            }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
-
-            var response = JsonConvert.DeserializeObject<SignUpResponse>(resp.BodyStr);
-            return response;
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            response = http.LastMethodSuccess
+            ? JsonConvert.DeserializeObject<SignUpResponse>(resp?.BodyStr ?? throw new Exception("Response body is null."))
+            : throw new ArgumentException(http.LastErrorText);
         }
 
         public static SignUpResponse? RegisterNewReferral(string referralKey)
@@ -99,13 +93,9 @@
             Http http = new();
 
             HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
-            if (http.LastMethodSuccess != true)
-            {
-                Debug.WriteLine(http.LastErrorText);
-            }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
-
-            var response = JsonConvert.DeserializeObject<SignUpResponse>(resp.BodyStr);
+            var response = http.LastMethodSuccess
+            ? JsonConvert.DeserializeObject<SignUpResponse>(resp?.BodyStr ?? throw new Exception("Response body is null."))
+            : throw new ArgumentException(http.LastErrorText);
             return response;
         }
     }

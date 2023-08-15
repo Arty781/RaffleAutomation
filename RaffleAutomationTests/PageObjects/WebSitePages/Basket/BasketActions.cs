@@ -5,7 +5,7 @@
         [AllureStep("Open cart")]
         public Basket ClickCartBtn()
         {
-            Browser._Driver.Navigate().GoToUrl(WebEndpoints.BASKET);
+            Browser.Driver.Navigate().GoToUrl(WebEndpoints.BASKET);
             WaitUntil.CustomElementIsVisible(btncheckOutNow);
 
             return this;
@@ -66,34 +66,54 @@
         {
 
             WaitUntil.CustomElementIsVisible(framePaymentNumber);
-            Browser._Driver.SwitchTo().Frame(framePaymentNumber);
+            Browser.Driver.SwitchTo().Frame(framePaymentNumber);
             InputBox.Element(inputCardNumber, 15, CardDetails.CARD_NUMBER[RandomHelper.RandomIntNumber(CardDetails.CARD_NUMBER.Count)]);
-            Browser._Driver.SwitchTo().DefaultContent();
-            Browser._Driver.SwitchTo().Frame(framePaymentExpiry);
+            Browser.Driver.SwitchTo().DefaultContent();
+            Browser.Driver.SwitchTo().Frame(framePaymentExpiry);
             InputBox.Element(inputExpiryDate, 15, DateTime.Now.AddYears(2).ToString("MM'/'yy"));
-            Browser._Driver.SwitchTo().DefaultContent();
-            Browser._Driver.SwitchTo().Frame(framePaymentCvv);
+            Browser.Driver.SwitchTo().DefaultContent();
+            Browser.Driver.SwitchTo().Frame(framePaymentCvv);
             InputBox.Element(inputCvv, 15, "100");
-            Browser._Driver.SwitchTo().DefaultContent();
+            Browser.Driver.SwitchTo().DefaultContent();
             WaitUntil.CustomElementIsVisible(btnPay, 5);
 
             return this;
         }
+
+        [AllureStep("Enter card details")]
+        public Basket EnterCardDetails(string cvv)
+        {
+
+            WaitUntil.CustomElementIsVisible(framePaymentNumber);
+            Browser.Driver.SwitchTo().Frame(framePaymentNumber);
+            InputBox.Element(inputCardNumber, 15, "372688581899681");
+            Browser.Driver.SwitchTo().DefaultContent();
+            Browser.Driver.SwitchTo().Frame(framePaymentExpiry);
+            InputBox.Element(inputExpiryDate, 15, DateTime.Now.AddYears(2).ToString("MM'/'yy"));
+            Browser.Driver.SwitchTo().DefaultContent();
+            Browser.Driver.SwitchTo().Frame(framePaymentCvv);
+            InputBox.Element(inputCvv, 15, cvv);
+            Browser.Driver.SwitchTo().DefaultContent();
+            WaitUntil.CustomElementIsVisible(btnPay, 5);
+
+            return this;
+        }
+
 
         //[AllureStep("Enter card details")]
         //public Basket EnterCardDetailsLive()
         //{
 
         //    WaitUntil.CustomElementIsVisible(framePaymentNumber);
-        //    Browser._Driver.SwitchTo().Frame(framePaymentNumber);
+        //    Browser.Driver.SwitchTo().Frame(framePaymentNumber);
         //    InputBox.Element(inputCardNumber, 15, "5373010046212228");
-        //    Browser._Driver.SwitchTo().DefaultContent();
-        //    Browser._Driver.SwitchTo().Frame(framePaymentExpiry);
+        //    Browser.Driver.SwitchTo().DefaultContent();
+        //    Browser.Driver.SwitchTo().Frame(framePaymentExpiry);
         //    InputBox.Element(inputExpiryDate, 15, "07/26");
-        //    Browser._Driver.SwitchTo().DefaultContent();
-        //    Browser._Driver.SwitchTo().Frame(framePaymentCvv);
+        //    Browser.Driver.SwitchTo().DefaultContent();
+        //    Browser.Driver.SwitchTo().Frame(framePaymentCvv);
         //    InputBox.Element(inputCvv, 15, "937");
-        //    Browser._Driver.SwitchTo().DefaultContent();
+        //    Browser.Driver.SwitchTo().DefaultContent();
         //    WaitUntil.CustomElementIsVisible(btnPay, 5);
 
         //    return this;
@@ -113,11 +133,11 @@
 
             WaitUntil.CustomElementIsVisible(frameCheckout, 30);
             WaitUntil.WaitSomeInterval(1000);
-            Browser._Driver.SwitchTo().Frame(frameCheckout);
+            Browser.Driver.SwitchTo().Frame(frameCheckout);
             InputBox.Element(inputPasswordCheckout, 15, "Checkout1!");
             Button.Click(btnContinueCheckout);
             WaitUntil.CustomElevemtIsInvisible(frameCheckout, 120);
-            Browser._Driver.SwitchTo().DefaultContent();
+            Browser.Driver.SwitchTo().DefaultContent();
 
 
             return this;
@@ -137,11 +157,11 @@
         public Basket WaitForTimeout()
         {
             WaitUntil.CustomElementIsVisible(frameCheckout, 30);
-            Browser._Driver.SwitchTo().Frame(frameCheckout);
+            Browser.Driver.SwitchTo().Frame(frameCheckout);
             inputPasswordCheckout.SendKeys("Checkout1!");
-            Browser._Driver.SwitchTo().DefaultContent();
+            Browser.Driver.SwitchTo().DefaultContent();
             WaitUntil.CustomElevemtIsInvisible(frameCheckout, 720);
-            Browser._Driver.SwitchTo().DefaultContent();
+            Browser.Driver.SwitchTo().DefaultContent();
             WaitUntil.CustomElementIsVisible(btncheckOutNow, 120);
 
 
@@ -200,9 +220,9 @@
         [AllureStep("Make a purchase as authorized user")]
         private Basket GoToBasket(string subscriptionId)
         {
-            Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST + $"/subscriptions/{subscriptionId}/payment");
+            Browser.Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST + $"/subscriptions/{subscriptionId}/payment");
             WaitUntil.WaitSomeInterval(10000);
-            Browser._Driver.Navigate().Refresh();
+            Browser.Driver.Navigate().Refresh();
 
             return this;
         }

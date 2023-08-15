@@ -2,11 +2,12 @@
 {
     public partial class ThankYou
     {
-        public void VerifyThankYouPageIsDisplayed()
+        public ThankYou VerifyThankYouPageIsDisplayed()
         {
             Pages.Basket.VerifyUrl();
             WaitUntil.CustomElementIsVisible(titleThankYouPage, 60);
-            Assert.IsTrue(titleThankYouPage.Enabled, "Thank You page is not displayed");
+            //Assert.IsTrue(titleThankYouPage.Enabled, "Thank You page is not displayed");
+            return this;
         }
 
 

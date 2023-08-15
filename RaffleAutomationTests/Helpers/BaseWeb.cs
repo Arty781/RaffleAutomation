@@ -7,39 +7,25 @@
         [OneTimeSetUp]
         public static void OneTimeSetUp()
         {
-            AllureConfigFilesHelper.CreateBatFile();
 
         }
-
-
 
         [OneTimeTearDown]
         public static void OneTimeTearDown()
         {
-
-            if (Browser._Driver != null)
+            if (Browser.Driver != null)
             {
                 Browser.Quit();
-                AllureConfigFilesHelper.DeleteBatFile();
-                ForceCloseWebDriver.ForceClose();
-                ForceCloseWebDriver.RemoveBatFile();
+                ForceCloseDriver.ForeseClose();
             }
-
         }
 
         [TearDown]
         public static void TearDown()
         {
-            if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
-            {
-                _ = TelegramHelper.SendMessage();
-                Browser.Close();
-            }
-            else if (TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed)
-            {
-                Browser.Close();
-            }
-
+            TestStatus testStatus = TestContext.CurrentContext.Result.Outcome.Status;
+            _ = testStatus == TestStatus.Failed ? TelegramHelper.SendMessage() : null;
+            Browser.Close();
         }
     }
 }

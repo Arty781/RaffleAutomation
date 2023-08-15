@@ -70,8 +70,8 @@ namespace End2EndTests.TESTS
 
             #region Make payment on Web
             string name = "";
-            var response = SignUpRequest.RegisterNewUser();
-            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
+            SignUpRequest.RegisterNewUser(out SignUpResponse? response);
+            SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
@@ -159,8 +159,8 @@ namespace End2EndTests.TESTS
             #region Make payment on Web
 
             string name = "";
-            var response = SignUpRequest.RegisterNewUser();
-            var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
+            SignUpRequest.RegisterNewUser(out SignUpResponse? response);
+            SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);

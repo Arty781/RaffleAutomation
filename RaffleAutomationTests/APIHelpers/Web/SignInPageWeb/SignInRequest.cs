@@ -15,7 +15,7 @@ namespace RaffleAutomationTests.APIHelpers.Web.SignIn
             return JsonConvert.SerializeObject(req);
         }
 
-        public static SignInResponseModelWeb? MakeSignIn(string login, string password)
+        public static void MakeSignIn(string login, string password, out SignInResponseModelWeb? token)
         {
             HttpRequest req = new()
             {
@@ -35,11 +35,9 @@ namespace RaffleAutomationTests.APIHelpers.Web.SignIn
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Console.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
-            var token = JsonConvert.DeserializeObject<SignInResponseModelWeb>(resp.BodyStr);
-
-            return token;
+            token = JsonConvert.DeserializeObject<SignInResponseModelWeb>(resp.BodyStr);
         }
 
     }

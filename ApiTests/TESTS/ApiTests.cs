@@ -1,4 +1,5 @@
 using ApiTests.BASE;
+using MongoDB.Driver;
 using NUnit.Framework;
 using RaffleAutomationTests.APIHelpers.Admin;
 using RaffleAutomationTests.APIHelpers.Admin.DreamHomePage;
@@ -10,7 +11,11 @@ using RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb;
 using RaffleAutomationTests.APIHelpers.Web.Subscriptions;
 using RaffleAutomationTests.APIHelpers.Web.Weekly;
 using RaffleAutomationTests.Helpers;
+using RimuTec.Faker;
+using System.Globalization;
+using System.Linq;
 using Telegram.Bot.Types;
+using static RaffleAutomationTests.APIHelpers.Web.Subscriptions.SubsriptionsResponse;
 using static RaffleAutomationTests.Helpers.AppDbHelper;
 
 namespace API
@@ -22,22 +27,55 @@ namespace API
 
         public void Demo()
         {
-            var charity = "None Selected";
-            var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains("@putsbox.com")).Select(x => x).ToList();
-            foreach (var user in users)
+            var customDayOrder = new Dictionary<string, int>
             {
-                var usera = AppDbHelper.Users.GetUserByEmail(user.Email);
-                var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(usera);
-                var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(usera);
-                //Assert.That(ordersList.Count >= 1, $"New order is not created, current subscription orders count is \"{ordersList.Count}\"");
-                //var quantity = (int)(subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.Extra).First());
-                //var value = (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.NextPurchaseDate < DateTime.Now).Select(x => x.TotalCost / 100).First();
-                var quantity1 = (int)(subscriptionList.Where(x => x.Status == "ACTIVE" && x.Emails.First().Type == "pause-reactivate-email").Select(x => x.NumOfTickets).First() + subscriptionList.Where(x => x.Status == "ACTIVE" && x.Emails.First().Type == "pause-reactivate-email").Select(x => x.Extra).First());
-                var value1 = (double)subscriptionList.Where(x => x.Status == "ACTIVE" && x.Emails.First().Type == "pause-reactivate-email").Select(x => x.TotalCost / 100).First();
-                
+                { "Monday", 1 },
+                { "Tuesday", 2 },
+                { "Wednesday", 3 },
+                { "Thursday", 4 },
+                { "Friday", 5 },
+                { "Saturday", 6 },
+                { "Sunday", 7 }
+            };
+
+            var client = new MongoClient(DbConnection.DB_LIVE_CONNECTION_STRING);
+            var database = client.GetDatabase(DbConnection.DB_LIVE);
+            var collection = database.GetCollection<DbModels.Orders>("orders");
+            var collection2 = database.GetCollection<DbModels.Orders>("archiveorders");
+            var filter = Builders<DbModels.Orders>.Filter.And(
+                Builders<DbModels.Orders>.Filter.Gte("purchaseDate", new DateTime(2023, 2, 07)),
+                Builders<DbModels.Orders>.Filter.Eq("paymentStatus", "ACCEPTED"),
+                Builders<DbModels.Orders>.Filter.Nin("orderType","SUBSCRIPTION")
+            );
+            var orders = collection.FindSync(filter).ToList();
+            var archiveorders = collection2.FindSync(filter).ToList();
+            var combinedData = new List<DbModels.Orders>();
+            combinedData.AddRange(orders);
+            combinedData.AddRange(archiveorders);
+
+            var groupedData = combinedData
+            .GroupBy(record => new { record.PurchaseDate.Value.Date, record.PurchaseDate.Value.Hour })
+            .OrderBy(group => group.Key.Date)
+            .ThenBy(group => group.Key.Hour)
+            .Select(group => new
+            {
+                DateAndHour = $"{group.Key.Date:yyyy-MM-dd} {group.Key.Hour:00}:00:00",
+                Count = group.Count()
+            })
+            .OrderByDescending(rec => rec.Count)
+            .ToList();
+            string path = Browser.RootPath() + "output.csv";
+            using (var writer = new StreamWriter(path))
+            {
+                writer.WriteLine("Date and Time,Total Count");
+
+                foreach (var result in groupedData)
+                {
+                    writer.WriteLine($"{result.DateAndHour}; {result.Count}"); 
+                }
             }
 
-
+            Console.WriteLine("CSV file saved successfully.");
         }
     }
 
@@ -50,7 +88,7 @@ namespace API
         [Test]
         public static void AddTicketsToBasket()
         {
-            var token = SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD);
+            SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var competitionId = CountdownRequestWeb.GetWeeklyPrizesCompetitionId(token);
             var listOfWeeklyPrizes = CountdownRequestWeb.GetWeeklyPrizes(token, competitionId[2].Id);
             for (int i = 0; i < 5; i++)
@@ -79,7 +117,7 @@ namespace API
         [Test]
         public static void Registerreferrals()
         {
-            var response = SignUpRequest.RegisterNewUser();
+            SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             for (int i = 0; i < 10; i++)
             {
                 SignUpRequest.RegisterNewReferral(response.User.ReferralKey);
@@ -90,24 +128,24 @@ namespace API
         [Test]
         public static void AddCreditsToUserForVerifyingOfExpirationEmailsTomorrow()
         {
-            var response = SignUpRequest.RegisterNewUser();
+            SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var users = UsersRequest.GetUser(token, response.User.Email);
             UsersRequest.AddCreditsToUser(token, users.Users.FirstOrDefault().Id, "tomorrow");
         }
 
         [Test]
-        [Repeat(250)]
+        //[Repeat(250)]
         public static void RegisterNewUser()
         {
-            var response = SignUpRequest.RegisterNewUser();
-            //var token = SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD);
+            SignUpRequest.RegisterNewUser(out SignUpResponse? response);
+            //SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
         }
 
         [Test]
         public static void ResetPassword()
         {
-            var response = SignUpRequest.RegisterNewUser();
+            SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             RequestForgotPassword.ForgotPassword(response.User.Email);
             string s = PutsBox.GetLinkFromEmailWithValue(response.User.Email, "Reset Password").Substring(29);
             var token = RequestForgotPassword.GetResetLink(s).Substring(47);
@@ -235,7 +273,7 @@ namespace API
             var email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff"), "@putsbox.com");
 
             var raffle = DreamHome.GetAciveRaffles().FirstOrDefault();
-            Insert.InsertSubscriptionModel(ErrorTotalCost.ERROR_BAD_TRACK_DATA);
+            Insert.InsertSubscriptionModel(Errors.ErrorTotalCost.ERROR_BAD_TRACK_DATA);
             var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
             Insert.InsertUser(raffle, email);
             var user = AppDbHelper.Users.GetUserByEmail(email);

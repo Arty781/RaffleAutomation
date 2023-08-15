@@ -41,7 +41,7 @@ namespace RaffleAutomationTests.APIHelpers.Web.Weekly
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Console.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             var countdownResponse = JsonConvert.DeserializeObject<CreateWeeklyPrizeOrderResponse>(resp.BodyStr);
 

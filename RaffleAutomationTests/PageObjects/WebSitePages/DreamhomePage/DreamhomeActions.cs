@@ -6,7 +6,7 @@
         [AllureStep("Open Dreamhome product page")]
         public Dreamhome OpenHomePage()
         {
-            Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST);
+            Browser.Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST);
 
             return this;
         }

@@ -60,7 +60,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open Order History page")]
         public Profile OpenMyTicketsCompetitions()
         {
-            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/profile/tickets");
+            Browser.Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/profile/tickets");
             WaitUntil.CustomElementIsVisible(tabMyTicketsCompetitions);
             WaitUntil.CustomElementIsVisible(listDreamHomeHistory);
             return this;
@@ -82,7 +82,7 @@ namespace RaffleAutomationTests.PageObjects
             WaitUntil.CustomElementIsVisible(prizeName);
             for (int i = 0; i < countOrders; i++)
             {
-                IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)Browser._Driver;
+                IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)Browser.Driver;
                 string script = "arguments[0].scrollTop += 500;";
                 jsExecutor.ExecuteScript(script, listHistory);
                 WaitUntil.WaitSomeInterval(250);
@@ -140,8 +140,8 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open Subscription in Profile")]
         public Profile OpenSubscriptionInProfile()
         {
-            Browser._Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/profile/subscription");
-            Browser._Driver.Navigate().Refresh();
+            Browser.Driver.Navigate().GoToUrl("https://staging.rafflehouse.com/profile/subscription");
+            Browser.Driver.Navigate().Refresh();
             WaitUntil.CustomElementIsVisible(titleSubscriptionProfile);
             return this;
         }

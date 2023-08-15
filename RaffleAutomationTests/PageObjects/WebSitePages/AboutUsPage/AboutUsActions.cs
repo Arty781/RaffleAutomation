@@ -4,7 +4,7 @@
     {
         public AboutUs OpenAboutPage(string url)
         {
-            Browser._Driver.Navigate().GoToUrl(url);
+            Browser.Driver.Navigate().GoToUrl(url);
             WaitUntil.CustomElementIsVisible(titleAboutPage);
 
 

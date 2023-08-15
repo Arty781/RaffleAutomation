@@ -10,7 +10,7 @@
 
         public static async System.Threading.Tasks.Task SendMessage()
         {
-            switch (Browser._Driver)
+            switch (Browser.Driver)
             {
                 case null:
                     _clientM = new TelegramBotClient(token);

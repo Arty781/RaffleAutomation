@@ -4,7 +4,7 @@
     {
         public WinRafflePage OpenWinRaffle()
         {
-            Browser._Driver.Navigate().GoToUrl(WebEndpoints.WIN_RAFFLE);
+            Browser.Driver.Navigate().GoToUrl(WebEndpoints.WIN_RAFFLE);
             WaitUntil.WaitSomeInterval(1000);
             Element.Action(Keys.End);
             WaitUntil.CustomElementIsVisible(btnTicketBundles.FirstOrDefault(), 10);

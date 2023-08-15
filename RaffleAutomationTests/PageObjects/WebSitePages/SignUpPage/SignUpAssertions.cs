@@ -5,7 +5,7 @@
         [AllureStep("Get email value")]
         public static string GetEmail()
         {
-            string getEmail = Browser._Driver.FindElement(By.XPath("//input[@name='email']")).GetAttribute("value");
+            string getEmail = Browser.Driver.FindElement(By.XPath("//input[@name='email']")).GetAttribute("value");
             string email = getEmail.ToLower();
 
             return email;
@@ -26,7 +26,7 @@
         public SignUp VerifyVisibilityOfToaster(string email)
         {
             string s = PutsBox.GetLinkFromEmailWithValue(email, "Verify");
-            Browser._Driver.Navigate().GoToUrl(s);
+            Browser.Driver.Navigate().GoToUrl(s);
             WaitUntil.CustomElementIsVisible(toasterSuccessMessage);
 
 

@@ -7,7 +7,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open Home page")]
         public Home OpenHomePage(string url)
         {
-            Browser._Driver.Navigate().GoToUrl(url);
+            Browser.Driver.Navigate().GoToUrl(url);
             WaitUntil.CustomElementIsVisible(tbsSlider[0]);
 
             return this;
@@ -47,7 +47,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open Dreamhome product page")]
         public Home OpenHomePage()
         {
-            Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST);
+            Browser.Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST);
             WaitUntil.WaitSomeInterval(1000);
 
             return this;

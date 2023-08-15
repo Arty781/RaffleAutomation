@@ -5,12 +5,12 @@
         public Basket VerifyUrl()
         {
             WaitUntil.CustomCheckoutIsDisplayed();
-            string expectedUrl = $"{WebEndpoints.WEBSITE_HOST}";
-            string currentUrl = Browser._Driver.Url;
+            string expectedUrl = WebEndpoints.WEBSITE_HOST;
+            string currentUrl = Browser.Driver.Url;
 
             if (!currentUrl.Contains(expectedUrl))
             {
-                WebDriverWait wait = new WebDriverWait(Browser._Driver, TimeSpan.FromSeconds(10));
+                WebDriverWait wait = new WebDriverWait(Browser.Driver, TimeSpan.FromSeconds(10));
                 wait.IgnoreExceptionTypes(typeof(NoSuchElementException), typeof(StaleElementReferenceException));
 
                 wait.Until(driver =>
@@ -32,26 +32,7 @@
 
                 currentUrl = currentUrl.Replace("http://localhost:8000", expectedUrl);
 
-                //wait.Until(driver =>
-                //{
-                //    try
-                //    {
-                //        if (driver.Url.Contains("https://rafflehouse.com/pending"))
-                //        {
-                //            currentUrl = driver.Url;
-                //            return true;
-                //        }
-                //        return false;
-                //    }
-                //    catch
-                //    {
-                //        return false;
-                //    }
-                //});
-
-                //currentUrl = currentUrl.Replace("https://rafflehouse.com/pending", expectedUrl);
-
-                Browser._Driver.Navigate().GoToUrl(currentUrl);
+                Browser.Driver.Navigate().GoToUrl(currentUrl);
             }
 
             return this;
@@ -62,12 +43,29 @@
         {
             VerifyUrl();
             WaitUntil.CustomElementIsVisible(Pages.Common.toaster);
-            Console.WriteLine(Pages.Common.toaster.Text);
             WaitUntil.CustomElementIsVisible(checkOutNowBtn);
 
             return this;
         }
 
+        public Basket VerifyErrorMessageOnPaymentPage(string message)
+        {
+            WaitUntil.CustomElementIsVisible(textErrorMessage);
+            Assert.AreEqual(message.ToLower(), textErrorMessage.Text.ToLower());
+            return this;
+        }
 
+        public Basket IsErrorDisplayed(string cvv)
+        {
+            try
+            {
+                Assert.NotNull(textErrorMessage);
+            }
+            catch(NoSuchElementException)
+            {
+                Console.WriteLine(cvv);
+            }
+            return this;
+        }
     }
 }

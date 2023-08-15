@@ -19,7 +19,7 @@
                 {
                     new CreditsRate()
                     {
-                        Id = 1,
+                        Id = "0",
                         Count = 20,
                         Percent = 30
                     }
@@ -81,7 +81,7 @@
                 {
                     new CreditsRate()
                     {
-                        Id = 1,
+                        Id = "0",
                         Count = 20,
                         Percent = 30
                     }
@@ -96,7 +96,7 @@
                     {
                         AmountTickets = 15,
                         Percent = 16.67,
-                        NewPrice = 1.6666667
+                        NewPrice = 1.6666666
                     },
                     new DiscountRate()
                     {
@@ -144,7 +144,7 @@
                 {
                     new CreditsRate()
                     {
-                        Id = 1,
+                        Id = "0",
                         Count = 20,
                         Percent = 30
                     }
@@ -159,7 +159,7 @@
                     {
                         AmountTickets = 15,
                         Percent = 16.67,
-                        NewPrice = 1.6666667
+                        NewPrice = 1.6666666
                     },
                     new DiscountRate()
                     {
@@ -210,7 +210,7 @@
                 {
                     new CreditsRate()
                     {
-                        Id = 1,
+                        Id = "0",
                         Count = 20,
                         Percent = 30
                     }
@@ -241,54 +241,33 @@
 
         private static string JsonBodyProperty()
         {
-            Property str = new()
+            PropertyRequest str = new()
             {
-                GalleryImages = new List<string>() { },
-                GalleryImagesMobile = new List<string>() { },
+                GalleryImages = new List<string>() 
+                {
+                    string.Empty,
+                },
+                GalleryImagesMobile = new List<string>()
+                {
+                    string.Empty
+                },
                 FloorPlanImage = String.Empty,
                 BadroomImage = String.Empty,
                 BathroomImage = String.Empty,
                 CardImage = String.Empty,
                 OutspaceImage = String.Empty,
-                BathroomText = Lorem.ParagraphByChars(300),
-                BedroomText = Lorem.ParagraphByChars(300),
-                OutspaceText = Lorem.ParagraphByChars(300),
-                Description = Lorem.ParagraphByChars(50),
-                Heading = Lorem.ParagraphByChars(20),
-                GeneralText = Lorem.ParagraphByChars(50),
+                BathroomText = String.Empty,
+                BedroomText = String.Empty,
+                OutspaceText = String.Empty,
+                Description = Lorem.ParagraphByChars(550),
+                Heading = String.Empty,
+                GeneralText = String.Empty,
                 PixangleSource = String.Empty,
-                Location = Address.FullAddress(),
-                Latitude = Address.Latitude(),
-                Longitude = Address.Longitude(),
+                Location = String.Empty,
+                Latitude = 0,
+                Longitude = 0,
                 TourLink = String.Empty,
-                Overview = new List<Overview>()
-                {
-                    new Overview()
-                    {
-                        Title= Lorem.ParagraphByChars(20),
-                        Value= $"{RandomHelper.RandomIntNumber(99)}",
-                        Icon= "common/dreamhome_prop_icons/Bath.png",
-                    },
-                    new Overview()
-                    {
-                        Title= Lorem.ParagraphByChars(20),
-                        Value= $"{RandomHelper.RandomIntNumber(99)}",
-                        Icon= "common/dreamhome_prop_icons/Bath.png",
-                    },
-                    new Overview()
-                    {
-                        Title= Lorem.ParagraphByChars(20),
-                        Value= $"{RandomHelper.RandomIntNumber(99)}",
-                        Icon= "common/dreamhome_prop_icons/Bath.png",
-                    },
-                    new Overview()
-                    {
-                        Title= Lorem.ParagraphByChars(20),
-                        Value= $"{RandomHelper.RandomIntNumber(99)}",
-                        Icon= "common/dreamhome_prop_icons/Bath.png",
-                    }
-
-                }
+                Overview = new List<Overview>() { }
             };
 
 
@@ -299,6 +278,13 @@
         {
             CreateDreamHomeRequestModel req = new()
             {
+                StepperCountdown = new()
+                {
+                    title= Lorem.Word(),
+                    startAt = DateTime.Now.AddDays(-1),
+                    endsAt= DateTime.Now.AddDays(1),
+                    isActive= false,
+                },
                 Active = false,
                 IsActiveDiscount = false,
                 IsPopular = false,
@@ -306,21 +292,21 @@
                 EndsAt = DateTime.Now.AddYears(1),
                 StartAt = DateTime.Now.AddDays(-1),
                 TicketPrice = 2,
-                DefaultTickets = 10,
+                DefaultTickets = 5,
                 IsDiscountRates = true,
                 CreditsRates = new List<CreditsRate>()
                 {
                     new CreditsRate()
                     {
-                        Id = 1,
+                        Id = "0",
                         Count = 20,
                         Percent = 30
                     }
                 },
-                CreditsEndDate = DateTime.Now.AddMonths(1),
-                CreditsStartDate = DateTime.Now,
+                //CreditsEndDate = DateTime.Now.AddMonths(1),
+                //CreditsStartDate = DateTime.Now,
                 IsCreditsActive = false,
-                IsCreditsPermanent = false,
+                //IsCreditsPermanent = false,
                 DiscountRates = new List<DiscountRate>()
                 {
                     new DiscountRate()
@@ -338,26 +324,20 @@
                 },
                 DiscountTicket = new()
                 {
-                    Percent = 1,
+                    Percent = 0,
                     NewPrice = 1
                 },
                 DiscountCategory = "cash",
-                FreeTicketsRates = new List<object>()
-                {
-                    new FreeTicketsRate()
-                    {
-
-                    }
-                },
+                FreeTicketsRates = new List<object>() { },
                 IsFreeTicketsRates = false,
                 TicketsBundles = new()
                 {
                     5,
                     15,
-                    20,
-                    50
+                    50,
+                    150
                 },
-                Title = Lorem.ParagraphByChars(30),
+                Title = Company.Name() +" "+ Name.LastName(),
                 MetaTitle = Lorem.ParagraphByChars(50),
                 MetaDescription = Lorem.ParagraphByChars(40),
                 Property = property.Id
@@ -386,15 +366,14 @@
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
-                return;
+                throw new ArgumentException(http.LastErrorText);
             }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+            
         }
 
         public static void EditDreamHomeStartEndDate(SignInResponseModelAdmin token, RaffleResponse response, bool isFirst, int hoursStartAt, int hoursEndsAt)
         {
-            HttpRequest req = new();
+            HttpRequest req;
             if (isFirst == true)
             {
                 req = new HttpRequest
@@ -407,7 +386,6 @@
                 req.AddHeader("applicationid", "WppJsNsSvr");
                 req.AddHeader("accept-encoding", "gzip, deflate, br");
                 req.AddHeader("authorization", $"Bearer {token.Token}");
-
                 req.LoadBodyFromString(JsonBody(response, isFirst, hoursStartAt, hoursEndsAt), charset: "utf-8");
             }
             else
@@ -422,19 +400,16 @@
                 req.AddHeader("applicationid", "WppJsNsSvr");
                 req.AddHeader("accept-encoding", "gzip, deflate, br");
                 req.AddHeader("authorization", $"Bearer {token.Token}");
-
                 req.LoadBodyFromString(JsonBody(response, isFirst, hoursStartAt, hoursEndsAt), charset: "utf-8");
             }
 
             Http http = new();
-
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
-                return;
+                throw new ArgumentException(http.LastErrorText);
             }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+            
         }
 
         public static void DeactivateDreamHome(SignInResponseModelAdmin token, RaffleResponse response)
@@ -458,10 +433,9 @@
                 HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
                 if (http.LastMethodSuccess != true)
                 {
-                    Debug.WriteLine(http.LastErrorText);
-                    return;
+                    throw new ArgumentException(http.LastErrorText);
                 }
-                Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+                
             }
 
         }
@@ -480,17 +454,12 @@
             req.AddHeader("authorization", $"Bearer {token.Token}");
 
             Http http = new();
-
-            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
-            if (http.LastMethodSuccess != true)
-            {
-                Debug.WriteLine(http.LastErrorText);
-            }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
-
-            var response = JsonConvert.DeserializeObject<RaffleResponse?>(resp.BodyStr);
-            closeEarlier = response.Raffles.OrderBy(item => item.EndsAt)
-                             .FirstOrDefault();
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);            
+            var response = http.LastMethodSuccess
+                ? JsonConvert.DeserializeObject<RaffleResponse?>(resp?.BodyStr ?? throw new Exception("Response body is null."))
+                : throw new ArgumentException(http.LastErrorText);
+            
+            closeEarlier = response.Raffles.OrderBy(item => item.EndsAt).FirstOrDefault();
             return response;
         }
 
@@ -508,15 +477,10 @@
             req.AddHeader("authorization", $"Bearer {token.Token}");
 
             Http http = new();
-
-            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
-            if (http.LastMethodSuccess != true)
-            {
-                Debug.WriteLine(http.LastErrorText);
-            }
-            var res = JsonConvert.DeserializeObject<DreamHomeResponse>(resp.BodyStr).Raffles.Count;
-            var response = JsonConvert.DeserializeObject<DreamHomeResponse?>(resp.BodyStr);
-
+            HttpResponse resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);            
+            var response = http.LastMethodSuccess
+                ? JsonConvert.DeserializeObject<DreamHomeResponse?>(resp?.BodyStr ?? throw new Exception("Response body is null."))
+                : throw new ArgumentException(http.LastErrorText);
 
             return response;
         }
@@ -533,17 +497,13 @@
             req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
-
             req.LoadBodyFromString(JsonBodyProperty(), charset: "utf-8");
 
             Http http = new();
-
             HttpResponse respProperty = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
-            if (http.LastMethodSuccess != true)
-            {
-                Debug.WriteLine(http.LastErrorText);
-            }
-            var responseProperty = JsonConvert.DeserializeObject<PropertyResponse>(respProperty.BodyStr);
+            var responseProperty = http.LastMethodSuccess
+                ? JsonConvert.DeserializeObject<PropertyResponse>(respProperty?.BodyStr ?? throw new Exception("Response body is null."))
+                : throw new ArgumentException(http.LastErrorText);
 
             req = new HttpRequest
             {
@@ -555,17 +515,14 @@
             req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
             req.AddHeader("authorization", $"Bearer {token.Token}");
-
             req.LoadBodyFromString(JsonBodyRaffle(responseProperty), charset: "utf-8");
 
             http = new();
+            HttpResponse respRaffle = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            var response = http.LastMethodSuccess 
+                ? JsonConvert.DeserializeObject<RaffleResponse?>(respRaffle?.BodyStr ?? throw new Exception("Response body is null."))
+                : throw new ArgumentException(http.LastErrorText);
 
-            HttpResponse respRaffle = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
-            if (http.LastMethodSuccess != true)
-            {
-                Debug.WriteLine(http.LastErrorText);
-            }
-            var response = JsonConvert.DeserializeObject<RaffleResponse?>(respRaffle.BodyStr);
             return response;
         }
 

@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChilkatDnCore" Version="9.50.94" />
+    <PackageReference Include="ChilkatDnCore" Version="9.50.95" />
     <PackageReference Include="DotNetSeleniumExtras.PageObjects.Core" Version="4.3.0" />
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
@@ -30,16 +30,16 @@
     <PackageReference Include="NUnit.Allure" Version="1.2.0.1" />
     <PackageReference Include="NUnit.Allure.Steps" Version="1.0.7.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
-    <PackageReference Include="coverlet.collector" Version="3.2.0">
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="PutsboxWrapper" Version="1.0.0" />
     <PackageReference Include="RestSharp" Version="108.0.3" />
     <PackageReference Include="RimuTec.Faker" Version="1.11.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="113.0.5672.6300" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="115.0.5790.9800" />
     <PackageReference Include="Telegram.Bot" Version="18.0.0" />
-    <PackageReference Include="WebDriverManager" Version="2.16.2" />
+    <PackageReference Include="WebDriverManager" Version="2.17.1" />
   </ItemGroup>
 
 </Project>

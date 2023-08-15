@@ -7,7 +7,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Open WeeklyPrizes page")]
         public Weekly OpenWeeklyPrizesPage()
         {
-            Browser._Driver.Navigate().GoToUrl(WebEndpoints.LIFESTYLE);
+            Browser.Driver.Navigate().GoToUrl(WebEndpoints.LIFESTYLE);
             return this;
         }
 
@@ -62,12 +62,12 @@ namespace RaffleAutomationTests.PageObjects
             for (int i = 1; i < prizeList.Count; ++i)
             {
                 string prizeTitle = "//div[@class='lifestyleProductList__card-wrapper'][" + i + "]//article//h3";
-                IWebElement PrizeTitle = Browser._Driver.FindElement(By.XPath(prizeTitle));
+                IWebElement PrizeTitle = Browser.Driver.FindElement(By.XPath(prizeTitle));
 
                 if (PrizeTitle.Text == title)
                 {
                     string prizeEnterBtn = "//div[@class='lifestyleProductList__card-wrapper'][" + i + "]//article/div/button";
-                    IWebElement PrizeEnterBtn = Browser._Driver.FindElement(By.XPath(prizeEnterBtn));
+                    IWebElement PrizeEnterBtn = Browser.Driver.FindElement(By.XPath(prizeEnterBtn));
                     PrizeEnterBtn.SendKeys("");
                     WaitUntil.WaitSomeInterval(500);
 

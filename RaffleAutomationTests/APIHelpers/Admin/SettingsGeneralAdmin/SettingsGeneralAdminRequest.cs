@@ -36,7 +36,7 @@ namespace RaffleAutomationTests.APIHelpers.Admin
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Console.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             var token = JsonConvert.DeserializeObject<SettingsGeneralAdminResponseModel>(resp.BodyStr);
 

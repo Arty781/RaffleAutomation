@@ -143,7 +143,7 @@ namespace RaffleAutomationTests.PageObjects
         {
             WaitUntil.CustomElementIsVisible(btnCancel);
             int elemPos = btnCancel.Location.Y;
-            ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
+            ((IJavaScriptExecutor)Browser.Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
             btnCancel.Click();
             WaitUntil.WaitSomeInterval(250);
 

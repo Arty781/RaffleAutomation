@@ -29,6 +29,9 @@
         [FindsBy(How = How.XPath, Using = "//span[@class='add-basket']/ancestor::div[@class='popular-tickets-container']/button")]
         public IWebElement btnAddToBasket;
 
+        [FindsBy(How=How.XPath, Using = "//div[@class='loader']")]
+        public IWebElement loader;
+
         #region Toaster
 
         [FindsBy(How = How.XPath, Using = "//div[contains(text(), 'Error')]/parent::div/div[2]")]

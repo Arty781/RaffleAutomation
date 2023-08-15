@@ -82,8 +82,8 @@ namespace RaffleAutomationTests.Helpers
             var user = AppDbHelper.Users.GetUserByEmail(email);
             var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
             var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
-            var quantity = (int)(sub.NumOfTickets + sub.Extra);
-            var value = (double)sub.TotalCost / 100;
+            var quantity = sub.NumOfTickets + sub.Extra;
+            var value = sub.TotalCost / 100;
             Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
             Elements.GgetHtmlBody(email, id, out string emailInitial);
@@ -97,8 +97,8 @@ namespace RaffleAutomationTests.Helpers
             var user = AppDbHelper.Users.GetUserByEmail(email);
             var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
             var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
-            var quantity = (int)(sub.NumOfTickets + sub.Extra);
-            var value = (double)sub.TotalCost / 100;
+            var quantity = sub.NumOfTickets + sub.Extra;
+            var value = sub.TotalCost / 100;
             Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
             Elements.GgetHtmlBody(email, id, out string emailInitial);
@@ -112,12 +112,13 @@ namespace RaffleAutomationTests.Helpers
             var user = AppDbHelper.Users.GetUserByEmail(email);
             var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
             var sub = subscriptionList.Where(x => x.Status == "ACTIVE").Select(x => x).First();
-            var quantity = (int)(sub.NumOfTickets + sub.Extra);
-            var value = (double)sub.TotalCost / 100;
+            var quantity = sub.NumOfTickets + sub.Extra;
+            var value = sub.TotalCost / 100;
             Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription tickets receipt").Select(q => q.id).FirstOrDefault();
             Elements.GgetHtmlBody(email, id, out string emailInitial);
             ParseHelper.ParseHtmlAndCompare(emailInitial, SubscriptionEmailsTemplate.MonthlyAuth(name, quantity * activeRaffles, value, charity));
+            Console.WriteLine(quantity * activeRaffles);
 
         }
 
@@ -145,8 +146,8 @@ namespace RaffleAutomationTests.Helpers
             var user = AppDbHelper.Users.GetUserByEmail(email);
             var subscriptionList = AppDbHelper.Subscriptions.GetAllSubscriptionsByUserId(user);
             var sub = subscriptionList.Where(x => x.Status == "ACTIVE" && x.PausedAt == null).Select(x => x).First();
-            var quantity = (int)(sub.NumOfTickets + sub.Extra);
-            var value = (double)sub.TotalCost / 100;
+            var quantity = sub.NumOfTickets + sub.Extra;
+            var value = sub.TotalCost / 100;
             var ordersList = AppDbHelper.Orders.GetAllSubscriptionOrdersByUserId(user);
             Elements.GgetAllEmailData(email, out emailsList);
             var id = emailsList.Where(x => x.subject == "Subscription pause reactivation").Select(q => q.id).FirstOrDefault();

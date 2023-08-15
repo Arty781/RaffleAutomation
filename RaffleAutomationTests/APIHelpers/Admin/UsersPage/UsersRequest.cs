@@ -229,11 +229,10 @@
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
-
-            var response = JsonConvert.DeserializeObject<CreateUserResponse?>(resp.BodyStr);
+            
+            var response = JsonConvert.DeserializeObject<CreateUserResponse?>(resp.BodyStr) ?? throw new Exception("Response body is null.");
             return response;
         }
         public static UsersResponse? GetUser(SignInResponseModelAdmin token, string email)
@@ -255,10 +254,9 @@
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
-
+            
             var response = JsonConvert.DeserializeObject<UsersResponse?>(resp.BodyStr);
             return response;
         }
@@ -282,9 +280,9 @@
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+            
             var response = JsonConvert.DeserializeObject<UsersResponse>(resp.BodyStr);
 
             req = new()
@@ -304,10 +302,9 @@
             resp = http.SynchronousRequest("staging-api.rafflehouse.com", 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
-
+            
             response = JsonConvert.DeserializeObject<UsersResponse?>(resp.BodyStr);
             return response;
         }
@@ -329,7 +326,7 @@
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             Debug.WriteLine("response message is " + "\r\n" + Convert.ToString(resp.BodyStr));
             var response = JsonConvert.DeserializeObject<OrdersResponseModel?>(resp.BodyStr);
@@ -354,7 +351,7 @@
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             Debug.WriteLine("response message is " + "\r\n" + Convert.ToString(resp.BodyStr));
             var response = JsonConvert.DeserializeObject<AddTicketsResponseModel?>(resp.BodyStr);
@@ -381,7 +378,7 @@
                 HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
                 if (http.LastMethodSuccess != true)
                 {
-                    Debug.WriteLine(http.LastErrorText);
+                    throw new ArgumentException(http.LastErrorText);
                 }
                 Debug.WriteLine("response message is " + "\r\n" + Convert.ToString(resp.BodyStr));
                 response = JsonConvert.DeserializeObject<AddCreditsResponseModel?>(resp.BodyStr);
@@ -406,7 +403,7 @@
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             Debug.WriteLine("response message is " + "\r\n" + Convert.ToString(resp.BodyStr));
         }
@@ -429,9 +426,9 @@
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+            
         }
 
         public static void DeleteUser(SignInResponseModelAdmin token, string userId)
@@ -452,9 +449,9 @@
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
-            Debug.WriteLine("Error message is " + Convert.ToString(resp.BodyStr));
+            
         }
     }
 }

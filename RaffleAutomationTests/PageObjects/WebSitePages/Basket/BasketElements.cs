@@ -76,7 +76,8 @@
         [FindsBy(How = How.Name, Using = "email")]
         public IWebElement inputEmail;
 
-
+        [FindsBy(How = How.XPath, Using = "//div[@class='status-payment-container']/span")]
+        public IWebElement textErrorMessage;
 
 
         #endregion

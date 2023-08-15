@@ -23,7 +23,7 @@ namespace RaffleAutomationTests.APIHelpers.Web
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Console.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             var response = JsonConvert.DeserializeObject<EmailRequest>(resp.BodyStr);
 

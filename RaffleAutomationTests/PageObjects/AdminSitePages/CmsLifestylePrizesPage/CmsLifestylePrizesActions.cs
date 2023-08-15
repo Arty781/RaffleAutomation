@@ -4,7 +4,7 @@
     {
         public CmsLifestylePrizes OpenLifestylePizesPage()
         {
-            Browser._Driver.Navigate().GoToUrl(AdminEndpoints.LIFESTYLE_PRIZES);
+            Browser.Driver.Navigate().GoToUrl(AdminEndpoints.LIFESTYLE_PRIZES);
             return this;
         }
 
@@ -24,7 +24,7 @@
             {
                 buttonNextPage.Click();
                 WaitUntil.WaitSomeInterval(500);
-                new Actions(Browser._Driver)
+                new Actions(Browser.Driver)
                  .SendKeys(Keys.Home)
                  .Build()
                  .Perform();

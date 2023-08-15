@@ -7,7 +7,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Close cookies pop-up")]
         public Common CloseCookiesPopUp()
         {
-            Browser._Driver.Navigate().Refresh();
+            Browser.Driver.Navigate().Refresh();
             Button.Click(confirmCookieBtn);
             return this;
         }
@@ -73,10 +73,10 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Close tab")]
         public Common CloseTabAndWait30Seconds()
         {
-            Browser._Driver.SwitchTo().NewWindow(OpenQA.Selenium.WindowType.Tab);
-            Browser._Driver.SwitchTo().Window(Browser._Driver.WindowHandles.ToList().FirstOrDefault());
-            Browser._Driver.Close();
-            Browser._Driver.SwitchTo().Window(Browser._Driver.WindowHandles.ToList().FirstOrDefault());
+            Browser.Driver.SwitchTo().NewWindow(OpenQA.Selenium.WindowType.Tab);
+            Browser.Driver.SwitchTo().Window(Browser.Driver.WindowHandles.ToList().FirstOrDefault());
+            Browser.Driver.Close();
+            Browser.Driver.SwitchTo().Window(Browser.Driver.WindowHandles.ToList().FirstOrDefault());
             WaitUntil.WaitSomeInterval(30000);
             return this;
         }

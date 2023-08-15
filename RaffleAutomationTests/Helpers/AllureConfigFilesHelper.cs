@@ -1,20 +1,22 @@
-﻿namespace RaffleAutomationTests.Helpers
+﻿using System.IO;
+using System.Threading;
+
+namespace RaffleAutomationTests.Helpers
 {
     public class AllureConfigFilesHelper
     {
-        public static string CreateBatFile()
+        private static string CreateBatFile()
         {
-            string path = String.Empty;
-            if (OperatingSystem.IsWindows())
-            {
-                path = Browser.RootPath() + "allure serve.bat";
-            }
-            else if (OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
-            {
-                path = Browser.RootPath() + "allure serve.sh";
-            }
-            string allureResultsDirectory = Browser.RootPath() + @"\allure-results";
-            string allureResults = @"allure serve " + allureResultsDirectory;
+            string path = OperatingSystem.IsWindows()
+            ? Browser.RootPath() + "allure serve.bat" //Path for OS Windows
+            : (OperatingSystem.IsMacOS() || OperatingSystem.IsLinux()
+                ? Browser.RootPath() + "allure serve.sh" //Path for OS Linux or MacOS
+                : throw new PlatformNotSupportedException("Unsupported operating system."));
+
+            string allureResultsDirectory = Browser.RootPath() + @"allure-results";
+            string allureResults = string.Concat("echo off\r\n",
+                                                 @"allure serve ", allureResultsDirectory,
+                                                 "\r\npause");
             FileInfo fileInf = new(path);
             if (fileInf.Exists)
             {
@@ -24,15 +26,14 @@
             {
                 Directory.CreateDirectory(allureResultsDirectory);
             }
-            using (FileStream fstream = new FileStream($"{path}", FileMode.OpenOrCreate))
+            using (StreamWriter writer = new(path, false, Encoding.UTF8))
             {
-                byte[] array = Encoding.Default.GetBytes(allureResults);
-                fstream.Write(array, 0, array.Length);
+                writer.Write(allureResults);
             }
             return path;
         }
 
-        public static void DeleteBatFile()
+        private static void DeleteBatFile()
         {
             string path = String.Empty;
             if (OperatingSystem.IsWindows())
@@ -48,6 +49,16 @@
             {
                 fileInf.Delete();
             }
+        }
+
+        public static void OpenAllureReport()
+        {
+            Process process = new Process();
+            process.StartInfo.FileName = CreateBatFile();
+            process.Start();
+            process.Close();
+            Thread.Sleep(1000);
+            DeleteBatFile();
         }
 
         public static void CreateJsonConfigFile()

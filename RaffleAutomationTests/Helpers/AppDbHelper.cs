@@ -10,11 +10,9 @@ namespace RaffleAutomationTests.Helpers
 {
     public class ItemNameEqualityComparer : IEqualityComparer<DbModels.Raffle>
     {
-        public bool Equals(DbModels.Raffle x, DbModels.Raffle y)
-        {
+        public bool Equals(DbModels.Raffle? x, DbModels.Raffle? y) =>
             // Compare the "Name" property of the items for equality
-            return x.Title == y.Title;
-        }
+            x.Title == y.Title;
 
         public int GetHashCode(DbModels.Raffle obj)
         {
@@ -63,7 +61,7 @@ namespace RaffleAutomationTests.Helpers
                 var filter = Builders<DbModels.UserResponse>.Filter.Regex(u => u.Email, new BsonRegularExpression(email));
                 var preresult = collection.Find(filter).ToList();
                 var result = preresult.LastOrDefault();
-                return result;
+                return result ?? throw new Exception("Content is null.");
             }
 
             public static DbModels.UserResponse GetOneUserByEmail(string email)
@@ -73,7 +71,7 @@ namespace RaffleAutomationTests.Helpers
                 var collection = database.GetCollection<DbModels.UserResponse>("users");
                 var filter = Builders<DbModels.UserResponse>.Filter.Regex("email", new BsonRegularExpression(email));
                 var result = collection.Find(filter).ToList();
-                return result.Select(x=>x).FirstOrDefault();
+                return result.Select(x=>x).FirstOrDefault() ?? throw new Exception("Content is null.");
             }
 
             public static DbModels.UserResponse GetUserById(string id)
@@ -83,7 +81,7 @@ namespace RaffleAutomationTests.Helpers
                 var collection = database.GetCollection<DbModels.UserResponse>("users");
                 var filter = Builders<DbModels.UserResponse>.Filter.Eq(u=>u.Id, new ObjectId(id));
                 var result = collection.Find(filter).ToList();
-                return result.Select(x => x).FirstOrDefault();
+                return result.Select(x => x).FirstOrDefault() ?? throw new Exception("Content is null.");
             }
 
             public static void UpdateUsers(List<DbModels.UserResponse> users)
@@ -107,7 +105,7 @@ namespace RaffleAutomationTests.Helpers
                 {
                     foreach (var user in users)
                     {
-                        var filter = Builders<DbModels.UserResponse>.Filter.Eq("_id", new ObjectId(user.Id.ToString()));
+                        var filter = Builders<DbModels.UserResponse>.Filter.Eq(u => u.Id, new ObjectId(user.Id.ToString()));
                         collection.DeleteMany(filter);
                     }
                 }
@@ -214,7 +212,7 @@ namespace RaffleAutomationTests.Helpers
                             .Set(r => r.Active, true);
 
                         collection.UpdateOne(filter, update);
-                        Competitions.ActivateRafflesComp(raffle[i]);
+                        Competitions.ActivateRafflesComp(raffle[i], addHoursStartFisrtDH, addHoursEndFisrtDH);
                     }
                 }
                 
@@ -237,7 +235,7 @@ namespace RaffleAutomationTests.Helpers
                             .Set(r => r.Active, true);
 
                         collection.UpdateOne(filter, update);
-                        Competitions.ActivateRafflesComp(raffle[i]);
+                        Competitions.ActivateRafflesComp(raffle[i], addHoursStartFisrtDH, addHoursEndFisrtDH);
                     }
                     if (i == 1)
                     {
@@ -252,7 +250,7 @@ namespace RaffleAutomationTests.Helpers
                             .Set(r => r.Active, true);
 
                         collection.UpdateOne(filter, update);
-                        Competitions.ActivateRafflesComp(raffle[i]);
+                        Competitions.ActivateRafflesComp(raffle[i], addHoursStartSecondDH, addHoursEndSecondDH);
                     }
 
                 }
@@ -337,7 +335,7 @@ namespace RaffleAutomationTests.Helpers
                 var filter = Builders<DbModels.Subscriptions>.Filter.Eq(s => s.User, user.Id);
                 var preresult = collection.Find(filter).ToList();
                 var result = preresult.FirstOrDefault();
-                return result;
+                return result ?? throw new Exception("Content is null.");
             }
 
             public static List<DbModels.SubscriptionsModels> GetAllSubscriptionModels()
@@ -1043,7 +1041,7 @@ namespace RaffleAutomationTests.Helpers
                 collection.UpdateMany(filter, update);
             }
 
-            public static void ActivateRafflesComp(DbModels.Raffle raffle)
+            public static void ActivateRafflesComp(DbModels.Raffle raffle, int addHoursStart, int addHoursEnd)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
@@ -1053,7 +1051,9 @@ namespace RaffleAutomationTests.Helpers
                     (filterBuilder.Eq(r => r.DreamHome, raffle.Id));
                 var updateBuilder = Builders<DbModels.Competitions.Raffle>.Update;
                 var update = updateBuilder
-                    .Set(c => c.IsActive, true);
+                    .Set(c => c.IsActive, true)
+                    .Set(r => r.StartAt, DateTime.Now.AddHours(addHoursStart))
+                    .Set(r => r.EndsAt, DateTime.Now.AddHours(addHoursEnd));
                 collection.UpdateMany(filter, update);
             }
         }

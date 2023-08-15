@@ -42,7 +42,7 @@
             HttpResponse resp = http.PostJson2(url, "application/json", RequestBuilder(email));
             if (http.LastStatus != 200)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             var token = JsonConvert.DeserializeObject<ResponseForgotPassword>(resp.BodyStr);
 
@@ -65,7 +65,7 @@
             HttpResponse resp = http.SynchronousRequest("email.rafflehouse.com", 443, true, req);
             if (http.LastMethodSuccess != true)
             {
-                Console.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             return resp.FinalRedirectUrl;
         }
@@ -81,7 +81,7 @@
             HttpResponse resp = http.PostJson2(url, "Application/json", JsonBody(token));
             if (http.LastStatus != 200)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             var content = JsonConvert.DeserializeObject<ResponseResetPassword>(resp.BodyStr);
 
@@ -99,7 +99,7 @@
             HttpResponse resp = http.PostJson2(url, "Application/json", JsonBody(token, password));
             if (http.LastStatus != 200)
             {
-                Debug.WriteLine(http.LastErrorText);
+                throw new ArgumentException(http.LastErrorText);
             }
             var content = JsonConvert.DeserializeObject<ResponseResetPassword>(resp.BodyStr);
 

@@ -36,17 +36,17 @@
         [JsonProperty("creditsRates")]
         public List<CreditsRate> CreditsRates { get; set; }
 
-        [JsonProperty("creditsEndDate")]
-        public DateTimeOffset CreditsEndDate { get; set; }
+        //[JsonProperty("creditsEndDate")]
+        //public DateTimeOffset CreditsEndDate { get; set; }
 
-        [JsonProperty("creditsStartDate")]
-        public DateTimeOffset CreditsStartDate { get; set; }
+        //[JsonProperty("creditsStartDate")]
+        //public DateTimeOffset CreditsStartDate { get; set; }
 
         [JsonProperty("isCreditsActive")]
         public bool IsCreditsActive { get; set; }
 
-        [JsonProperty("isCreditsPermanent")]
-        public bool IsCreditsPermanent { get; set; }
+        //[JsonProperty("isCreditsPermanent")]
+        //public bool IsCreditsPermanent { get; set; }
 
         [JsonProperty("discountRates")]
         public List<DiscountRate> DiscountRates { get; set; }
@@ -382,13 +382,13 @@
     public class CreditsRate
     {
         [JsonProperty("id")]
-        public long Id { get; set; }
+        public string? Id { get; set; }
 
         [JsonProperty("count")]
-        public long Count { get; set; }
+        public long? Count { get; set; }
 
         [JsonProperty("percent")]
-        public long Percent { get; set; }
+        public long? Percent { get; set; }
     }
 
     public class DiscountRate
@@ -566,5 +566,66 @@
 
         [JsonProperty("__v")]
         public long V { get; set; }
+    }
+
+    [JsonObject]
+    public class PropertyRequest
+    {
+        [JsonProperty("galleryImages")]
+        public List<string>? GalleryImages { get; set; }
+
+        [JsonProperty("galleryImagesMobile")]
+        public List<string>? GalleryImagesMobile { get; set; }
+
+        [JsonProperty("overview")]
+        public List<Overview> Overview { get; set; }
+
+        [JsonProperty("floorPlanImage")]
+        public string FloorPlanImage { get; set; }
+
+        [JsonProperty("badroomImage")]
+        public string BadroomImage { get; set; }
+
+        [JsonProperty("bathroomImage")]
+        public string BathroomImage { get; set; }
+
+        [JsonProperty("outspaceImage")]
+        public string OutspaceImage { get; set; }
+
+        [JsonProperty("cardImage")]
+        public string CardImage { get; set; }
+
+        [JsonProperty("bathroomText")]
+        public string BathroomText { get; set; }
+
+        [JsonProperty("bedroomText")]
+        public string BedroomText { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("outspaceText")]
+        public string OutspaceText { get; set; }
+
+        [JsonProperty("pixangleSource")]
+        public string PixangleSource { get; set; }
+
+        [JsonProperty("generalText")]
+        public string GeneralText { get; set; }
+
+        [JsonProperty("heading")]
+        public string Heading { get; set; }
+
+        [JsonProperty("location")]
+        public string Location { get; set; }
+
+        [JsonProperty("latitude")]
+        public double? Latitude { get; set; }
+
+        [JsonProperty("longitude")]
+        public double? Longitude { get; set; }
+
+        [JsonProperty("tourLink")]
+        public string TourLink { get; set; }
     }
 }

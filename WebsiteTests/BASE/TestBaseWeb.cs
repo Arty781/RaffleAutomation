@@ -7,7 +7,7 @@
         public void Initialize()
         {
             Browser.Initialize();
-            Browser._Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST);
+            Browser.Driver.Navigate().GoToUrl(WebEndpoints.WEBSITE_HOST);
         }
     }
 }

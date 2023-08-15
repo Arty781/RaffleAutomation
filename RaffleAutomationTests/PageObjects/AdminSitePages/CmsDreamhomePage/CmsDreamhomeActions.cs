@@ -196,7 +196,7 @@ namespace RaffleAutomationTests.PageObjects
         {
             WaitUntil.CustomElementIsVisible(tabDescrDream);
             int elemPos = tabDescrDream.Location.Y;
-            ((IJavaScriptExecutor)Browser._Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
+            ((IJavaScriptExecutor)Browser.Driver).ExecuteScript("window.scroll(0, " + elemPos + ");");
             tabDescrDream.Click();
             WaitUntil.WaitSomeInterval(1);
 
@@ -503,7 +503,7 @@ namespace RaffleAutomationTests.PageObjects
         public CmsDreamhome EditDreamHome(string dreamhomeTitle)
         {
             WaitUntil.CustomElementIsVisible(Element.FindSpecificDreamhome(dreamhomeTitle));
-            var btnEditDreamhome = Browser._Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']"));
+            var btnEditDreamhome = Browser.Driver.FindElement(By.XPath($"//td[text()='{dreamhomeTitle}']/ancestor::tbody//td//a[@aria-label='Edit']"));
             btnEditDreamhome.Click();
 
             return this;
