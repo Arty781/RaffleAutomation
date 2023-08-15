@@ -56,8 +56,6 @@ namespace RaffleAutomationTests.Helpers
         public const string DB_STAGING = "rafflehousedb_staging";
         public const string DB_STAGING_CONNECTION_STRING = "mongodb+srv://root:2312Hanford2312!@rafflehousestaging1.jahzn.mongodb.net/rafflehousedb_staging";
 
-        public const string DB_LIVE = "rafflehousedb";
-        public const string DB_LIVE_CONNECTION_STRING = "mongodb+srv://root:2312Hanford2312!@rafflehouse2.iwzre.mongodb.net/rafflehousedb";
     }
 #endif
 #if RELEASE || RELEASE_MOBILE
