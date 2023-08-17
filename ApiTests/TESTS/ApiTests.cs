@@ -38,8 +38,8 @@ namespace API
                 { "Sunday", 7 }
             };
 
-            var client = new MongoClient(DbConnection.DB_LIVE_CONNECTION_STRING);
-            var database = client.GetDatabase(DbConnection.DB_LIVE);
+            var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+            var database = client.GetDatabase(DbConnection.DB_STAGING);
             var collection = database.GetCollection<DbModels.Orders>("orders");
             var collection2 = database.GetCollection<DbModels.Orders>("archiveorders");
             var filter = Builders<DbModels.Orders>.Filter.And(
