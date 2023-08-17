@@ -1,4 +1,6 @@
-﻿namespace RaffleAutomationTests.Helpers
+﻿using System.Threading;
+
+namespace RaffleAutomationTests.Helpers
 {
     public class WaitUntil
     {
@@ -9,7 +11,7 @@
 
         public static void CustomElementIsVisible(IWebElement element, int seconds = 10)
         {
-            WaitUntil.WaitSomeInterval(500);
+            Thread.Sleep(500);
             WebDriverWait wait = new WebDriverWait(Browser.Driver, TimeSpan.FromSeconds(seconds));
             wait.IgnoreExceptionTypes(typeof(NoSuchElementException), typeof(StaleElementReferenceException));
             wait.PollingInterval = TimeSpan.FromMilliseconds(10);
@@ -20,13 +22,13 @@
                 {
                     try
                     {
-                        if (element != null && element.Displayed == true)
+                        if (element != null && element.Enabled == true || element.Displayed == true)
                         {
                             return true;
                         }
                         return false;
                     }
-                    catch { return false; }
+                    catch(Exception) { return false; }
 
                 });
             }

@@ -54,7 +54,7 @@ namespace API
             combinedData.AddRange(archiveorders);
 
             var groupedData = combinedData
-            .GroupBy(record => new { record.PurchaseDate.Value.Date, record.PurchaseDate.Value.Hour })
+            .GroupBy(record => (record.PurchaseDate.Value.Date, record.PurchaseDate.Value.Hour))
             .OrderBy(group => group.Key.Date)
             .ThenBy(group => group.Key.Hour)
             .Select(group => new
@@ -139,7 +139,7 @@ namespace API
         public static void RegisterNewUser()
         {
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
-            //SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
+            SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD, out _);
         }
 
         [Test]
@@ -147,8 +147,8 @@ namespace API
         {
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             RequestForgotPassword.ForgotPassword(response.User.Email);
-            string s = PutsBox.GetLinkFromEmailWithValue(response.User.Email, "Reset Password").Substring(29);
-            var token = RequestForgotPassword.GetResetLink(s).Substring(47);
+            string s = PutsBox.GetLinkFromEmailWithValue(response.User.Email, "Reset Password")[29..];
+            var token = RequestForgotPassword.GetResetLink(s)[47..];
             var reset = RequestForgotPassword.ResetPassword(token);
             Console.WriteLine(reset.Message);
         }

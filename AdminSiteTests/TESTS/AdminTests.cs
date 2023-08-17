@@ -96,7 +96,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             #region Preconditions
 
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out _);
             DreamHomeRequest.DeactivateDreamHome(tokenAdmin, dreamResponse);
 
             #endregion
@@ -244,7 +244,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .ClickSaveBtn();
             Pages.CmsUserManagement
                 .SearchUser(email);
-            var password = PutsBox.GetTextFromEmailWithValue(email, "Your temporary password is: ");
+            Assert.NotNull(PutsBox.GetTextFromEmailWithValue(email, "Your temporary password is: "));
 
             #region PostConditions
 
@@ -360,8 +360,8 @@ namespace RaffleHouseAutomation.AdminSiteTests
                 .ClickEditUser(userResponse.Email)
                 .OpenTicketsTab()
                 .ClickAddTicketBtn()
-                .AddTicketsToUser(numOftickets);
-            var competitionsList = Pages.CmsUserManagement.SelectTicketsDataByCompetition(Competitions.DREAMHOME);
+                .AddTicketsToUser(numOftickets)
+                .SelectTicketsDataByCompetition(Competitions.DREAMHOME);
            
 
 

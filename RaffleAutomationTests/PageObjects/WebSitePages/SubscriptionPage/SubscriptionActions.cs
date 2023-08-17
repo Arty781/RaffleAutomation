@@ -9,7 +9,7 @@
             return this;
         }
 
-        public Subscription AddTenSubscriptionToBasket(out double price, out int quantity)
+        public Subscription AddTenSubscriptionToBasket(out double? price, out int? quantity)
         {
             Button.Click(btnSubscribeNowTop);
             WaitUntil.WaitSomeInterval();
@@ -21,7 +21,7 @@
             return this;
         }
 
-        public Subscription AddTwentyFiveSubscriptionToBasket(out double price, out int quantity)
+        public Subscription AddTwentyFiveSubscriptionToBasket(out double? price, out int? quantity)
         {
             Button.Click(btnSubscribeNowTop);
             WaitUntil.CustomElevemtIsInvisible(Pages.Common.loader);

@@ -21,7 +21,7 @@ namespace End2EndTests.TESTS
             #region Preconditions
 
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? closeEarlier);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out _);
             DreamHomeRequest.DeactivateDreamHome(tokenAdmin, dreamResponse);
 
             #endregion
@@ -69,12 +69,11 @@ namespace End2EndTests.TESTS
             #endregion
 
             #region Make payment on Web
-            string name = "";
+            
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
-            SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
+            SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
-            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
             Browser.Navigate(WebEndpoints.WEBSITE_HOST);
             Pages.Common
                .CloseCookiesPopUp();
@@ -83,7 +82,7 @@ namespace End2EndTests.TESTS
             Pages.SignIn
                 .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out name);
+                .VerifyIsSignIn(out _);
             Pages.Home
                 .AddTicketsToBasket(2);
             Pages.Basket
@@ -110,7 +109,7 @@ namespace End2EndTests.TESTS
             #region Preconditions
 
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? closeEarlier);
+            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out _);
             DreamHomeRequest.DeactivateDreamHome(tokenAdmin, dreamResponse);
 
             #endregion
@@ -158,12 +157,11 @@ namespace End2EndTests.TESTS
 
             #region Make payment on Web
 
-            string name = "";
+            
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
-            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
             Browser.Navigate(WebEndpoints.WEBSITE_HOST);
             Pages.Common
                .CloseCookiesPopUp();
@@ -172,7 +170,7 @@ namespace End2EndTests.TESTS
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out name);
+                .VerifyIsSignIn(out _);
             Pages.Home
                 .AddTicketsToBasket(2);
             Pages.Basket
