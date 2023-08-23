@@ -5,7 +5,7 @@ namespace RaffleAutomationTests.PageObjects
     public partial class SignIn
     {
         [AllureStep("Verify Is Sign In")]
-        public SignIn VerifyIsSignIn(out string? name)
+        public SignIn VerifyIsSignIn(out string name)
         {
             WaitUntil.CustomElementIsVisible(Pages.Profile.inputFirstName);
             Assert.IsTrue(Pages.Profile.inputFirstName.Displayed);

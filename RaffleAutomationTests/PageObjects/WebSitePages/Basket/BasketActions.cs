@@ -1,4 +1,7 @@
-﻿namespace RaffleAutomationTests.PageObjects
+﻿using AngleSharp.Html.Dom;
+using OpenQA.Selenium.Support.UI;
+
+namespace RaffleAutomationTests.PageObjects
 {
     public partial class Basket
     {
@@ -25,7 +28,7 @@
         {
             WaitUntil.CustomElementIsVisible(orderTotalVal);
             WaitUntil.WaitSomeInterval(500);
-            total = double.Parse(orderTotalVal.Text.Substring(1));
+            total = double.Parse(orderTotalVal.Text[1..]);
             return this;
         }
 
@@ -180,6 +183,7 @@
         public Basket MakeAPurchaseAsUnauthorizedUser(string email)
         {
             ClickCheckoutNowBtn();
+            SelectedCharity();
             EnterEmail(email);
             EnterCardDetails();
             ClickPayNowBtn();
@@ -227,18 +231,21 @@
             return this;
         }
 
-        public Basket SelectCharity()
+        public Basket SelectedCharity()
         {
-            Button.Click(inputCharity);
-            WaitUntil.WaitSomeInterval(1000);
-            var charity = listCharities
-                .Where(x => x.Text == Charities.CHARITY[RandomHelper.RandomCharityNumber(7)])
-                .Select(x => x)
-                .FirstOrDefault();
-            Button.ClickJS(charity);
+            Button.Click(inputCharity);            
+            SelectCharity();
             WaitUntil.WaitSomeInterval();
 
             return this;
+        }
+
+        private void SelectCharity()
+        {
+            string text = Charities.CHARITY[RandomHelper.RandomCharityNumber(10)];
+            DropdownList.SelectDropdownItemByText(listCharities, text);
+
+
         }
     }
 }

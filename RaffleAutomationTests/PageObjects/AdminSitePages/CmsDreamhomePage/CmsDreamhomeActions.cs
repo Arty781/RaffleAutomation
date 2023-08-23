@@ -1,5 +1,11 @@
 ﻿
 
+using OpenQA.Selenium.Appium;
+using OpenQA.Selenium.Appium.Enums;
+using OpenQA.Selenium.Appium.Windows;
+using OpenQA.Selenium.Interactions;
+using System.Drawing;
+
 namespace RaffleAutomationTests.PageObjects
 {
     public partial class CmsDreamhome
@@ -54,6 +60,31 @@ namespace RaffleAutomationTests.PageObjects
             return this;
         }
 
+        [AllureStep("Upload Dreamhome slider images")]
+        public CmsDreamhome MoveDesktopImages()
+        {
+            WaitUntil.WaitSomeInterval(5500);
+            var s = listImgDesktop;
+            var sourceElement = s[2];
+            var targetElement = s[5];
+            SmoothMoveElement(Browser.Driver, sourceElement, targetElement);
+            WaitUntil.WaitSomeInterval(15000);
+            
+
+            return this;
+        }
+
+        static void SmoothMoveElement(IWebDriver driver, IWebElement sourceElement, IWebElement targetElement)
+        {
+            var act = new Actions(Browser.Driver);
+            act.MoveToElement(sourceElement, sourceElement.Size.Width / 2, sourceElement.Size.Height / 2)
+                   .ClickAndHold()
+                   .MoveToElement(targetElement, targetElement.Size.Width / 2, targetElement.Size.Height / 2)
+                   .Release()
+                   .Perform();
+        }
+
+
         [AllureStep("Remove Desktop Dreamhome slider images")]
         public CmsDreamhome RemoveDesktopImages()
         {
@@ -89,10 +120,11 @@ namespace RaffleAutomationTests.PageObjects
         }
 
         [AllureStep("Enter Title")]
-        public CmsDreamhome EnterTitle()
+        public CmsDreamhome EnterTitle(out string title)
         {
             InputBox.Element(inputTitle, 5, "Dream New flat " + Company.Name());
-
+            WaitUntil.CustomElementIsVisible(inputTitle);
+            title = inputTitle.GetAttribute("value");
             return this;
         }
 

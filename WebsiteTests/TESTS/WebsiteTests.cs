@@ -1439,7 +1439,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void ActivateNewUserFromEmail()
         {
-            
+            string? name = string.Empty;
             Pages.Common
                 .CloseCookiesPopUp();
             string email = string.Concat("qatester", DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss"), "@putsbox.com");
@@ -1460,7 +1460,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenSignInPage();
             Pages.SignIn
                 .EnterLoginAndPass(email, Credentials.PASSWORD)
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
@@ -1525,7 +1525,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void ActivateNewUserAfterPayment()
         {
-            
+            //string? name = string.Empty;
             Pages.Common
                 .CloseCookiesPopUp();
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
@@ -1545,7 +1545,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenSignInPage();
             Pages.SignIn
                 .EnterLoginAndPass(email, Credentials.PASSWORD)
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out string name);
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()

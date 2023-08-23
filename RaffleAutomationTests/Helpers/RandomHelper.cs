@@ -8,14 +8,11 @@
             int genRand = r.Next(3, 20);
             string randomNum = string.Empty;
 
-            switch (genRand)
+            randomNum = genRand switch
             {
-                default:
-                    // Handle other numbers
-                    randomNum =  genRand.ToString();
-                    break;
-            }
-            if(genRand == 6)
+                _ => genRand.ToString(),// Handle other numbers
+            };
+            if (genRand == 6)
             {
                 RandomNumber();
             }

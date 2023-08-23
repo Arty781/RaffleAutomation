@@ -25,11 +25,26 @@
         [FindsBy(How = How.XPath, Using = "//div[text()='Add images for mobile *']/parent::div/section[@class='file-list'][2]//div[contains(@class, 'image-actions')]//*[contains(@class,'remove-image-icon')]")]
         public IList<IWebElement> btnDeleteImageMobile;
 
+        [FindsBy(How = How.XPath, Using = "//section")]
+        public IList<IWebElement> fileList;
+
+        [FindsBy(How = How.XPath, Using = "/div")]
+        public IList<IWebElement> imageContainer;
+
         [FindsBy(How = How.XPath, Using = "//div[contains(text(),'desktop *')]/following-sibling::div/input")]
         public IWebElement inputDesktopImage;
 
+        [FindsBy(How = How.XPath, Using = "//section[1]/div[./img]")]
+        public IList<IWebElement> listImgDesktop;
+
         [FindsBy(How = How.XPath, Using = "//div[contains(text(),'mobile *')]/following-sibling::div/input")]
         public IWebElement inputMobileImage;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class='dropzone'][2]")]
+        public IWebElement dropZone;
+
+        [FindsBy(How = How.XPath, Using = "//section[2]/div[./img]")]
+        public IList<IWebElement> listImgMobile;
 
         [FindsBy(How = How.XPath, Using = "//input[@id='title']")]
         public IWebElement inputTitle;

@@ -29,6 +29,9 @@
         [FindsBy(How = How.XPath, Using = "//div[@id='menu-']//ul/li")]
         public IList<IWebElement> listCharities;
 
+        [FindsBy(How = How.XPath, Using = "//div[@id='menu-']//ul/li")]
+        public IWebElement dropItemCharities;
+
         [FindsBy(How = How.XPath, Using = "//div[@class='age-control-section']/label//span/input")]
         public IWebElement ageControlSection;
 

@@ -1,4 +1,9 @@
-﻿using System.Threading;
+﻿using OpenQA.Selenium.Appium.Windows;
+using OpenQA.Selenium.Appium;
+using System.Threading;
+using OpenQA.Selenium.Appium.Enums;
+using OpenQA.Selenium.Appium.Service;
+
 
 namespace RaffleAutomationTests.Helpers
 {
@@ -97,7 +102,7 @@ namespace RaffleAutomationTests.Helpers
         public static void ForeseClose()
         {
             string path = CreateBatFile();
-            Process process = new Process();
+            Process process = new();
             process.StartInfo.FileName = path;
             process.Start();
             process.Close();
@@ -105,4 +110,5 @@ namespace RaffleAutomationTests.Helpers
             RemoveBatFile(path);
         }
     }
+
 }

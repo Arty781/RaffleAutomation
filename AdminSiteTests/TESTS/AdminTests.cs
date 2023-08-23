@@ -1,4 +1,4 @@
-using Allure.Commons;
+﻿using Allure.Commons;
 using NUnit.Allure.Attributes;
 using RaffleAutomationTests.APIHelpers.Admin.UsersPage;
 using RaffleAutomationTests.APIHelpers.Web.Basket;
@@ -13,31 +13,24 @@ namespace RaffleHouseAutomation.AdminSiteTests
     public class DemoTest : TestBaseAdmin
     {
         [Test]
-        [Ignore("")]
+        //[Ignore("")]
         public void Demo()
         {
-            var token = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var userResponse = UsersRequest.CreateUserOnCms(token);
+            string dreamhomeTitle = "£2 Million Dream Home";
             Pages.CmsLogin
                 .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
                 .ClickSignInBtn();
             Pages.CmsCommon
                 .VerifyIsLoginSuccessfull();
-            Pages.CmsUserManagement
-                .OpenUserManagement();
-            Pages.CmsUserManagement
-                .SearchUser(userResponse.Email);
-            Pages.CmsUserManagement
-                .ClickEditUser(userResponse.Email)
-                .EnterUserData(userResponse.Email);
-            Pages.CmsCommon
-                .ClickSaveBtn();
-            Pages.CmsUserManagement
-                .SearchUser(userResponse.Email);
-            Pages.CmsUserManagement
-                .ClickEditUser(userResponse.Email)
-                .OpenSecurityTab()
-                .SetNewPassword();
+            Pages.CmsDreamhome
+                .OpenDreamhomePage()
+                .EditDreamHome(dreamhomeTitle)
+                .MoveDesktopImages();
+            //Pages.CmsCommon
+            //    .ClickSaveBtn()
+            //    .ClickSaveBtn()
+            //    .ClickSaveBtn()
+            //    .VerifyIsDreamhomeCreatedSuccessfully(dreamhomeTitle);
         }
     }
 
@@ -53,6 +46,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
         [Test]
         public void CreateNewDreamhomeWithFreeTicketsInGeneralSettings()
         {
+            string dreamhomeTitle = string.Empty;
             Pages.CmsLogin
                 .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
                 .ClickSignInBtn();
@@ -61,8 +55,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsDreamhome
                 .OpenDreamhomePage()
                 .ClickAddDreamhomeBtn()
-                .EnterTitle();
-            string dreamhomeTitle = Pages.CmsDreamhome.GetDreamhomeTitle();
+                .EnterTitle(out dreamhomeTitle);
             Pages.CmsDreamhome
                 .EnterAddress()
                 .EnterStartDate()
@@ -94,10 +87,10 @@ namespace RaffleHouseAutomation.AdminSiteTests
         public void CreateNewDreamhomeWithFreeTicketsWithin()
         {
             #region Preconditions
-
-            var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
-            var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out _);
-            DreamHomeRequest.DeactivateDreamHome(tokenAdmin, dreamResponse);
+            string dreamhomeTitle = string.Empty;
+            //var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
+            //var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out _);
+            //DreamHomeRequest.DeactivateDreamHome(tokenAdmin, dreamResponse);
 
             #endregion
 
@@ -109,24 +102,17 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsDreamhome
                 .OpenDreamhomePage()
                 .ClickAddDreamhomeBtn()
-                .EnterTitle();
-            string dreamhomeTitle = Pages.CmsDreamhome.GetDreamhomeTitle();
+                .EnterTitle(out dreamhomeTitle);
             Pages.CmsDreamhome
-                .EnterAddress()
-                .AcivateDreamHome()
+                .UploadImages()
+                .MoveDesktopImages()
                 .EnterStartDate()
                 .EnterFinishDate()
-                .EnterMetaTags()
-                .UploadImages();
+                .EnterMetaTags();
             Pages.CmsCommon
                 .ClickSaveBtn();
             Pages.CmsDreamhome
-                .UploadDreamhomeCardImage()
-                .UploadFloorPlanCardImage()
-                .UploadLocationImage()
-                .EnterAboutText(DreamHomeTexts.ABOUT)
-                .EnterProductCTAText(DreamHomeTexts.PRODUCT_CTA_BTN)
-                .EnterHeadingText(DreamHomeTexts.HEADING);
+                .EnterAboutText(DreamHomeTexts.ABOUT);
             Pages.CmsCommon
                 .OpenDiscountTab();
             Pages.CmsDreamhome
@@ -143,6 +129,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
         [Test]
         public void EditNewDreamhome()
         {
+            string dreamhomeTitle = string.Empty;
             Pages.CmsLogin
                 .EnterLoginAndPassword(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN)
                 .ClickSignInBtn();
@@ -151,8 +138,7 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsDreamhome
                 .OpenDreamhomePage()
                 .ClickAddDreamhomeBtn()
-                .EnterTitle();
-            string dreamhomeTitle = Pages.CmsDreamhome.GetDreamhomeTitle();
+                .EnterTitle(out dreamhomeTitle);
             Pages.CmsDreamhome
                 .EnterAddress()
                 .EnterStartDate()
@@ -353,10 +339,8 @@ namespace RaffleHouseAutomation.AdminSiteTests
             Pages.CmsCommon
                 .VerifyIsLoginSuccessfull();
             Pages.CmsUserManagement
-                .OpenUserManagement();
-            Pages.CmsUserManagement
-                .SearchUser(userResponse.Email);
-            Pages.CmsUserManagement
+                .OpenUserManagement()
+                .SearchUser(userResponse.Email)
                 .ClickEditUser(userResponse.Email)
                 .OpenTicketsTab()
                 .ClickAddTicketBtn()

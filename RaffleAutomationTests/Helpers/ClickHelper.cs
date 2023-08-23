@@ -36,6 +36,25 @@ namespace RaffleAutomationTests.Helpers
 
 
     }
+
+    public class DropdownList
+    {
+        public static void SelectDropdownItemByText(IList<IWebElement> list, string text)
+        {
+            WaitUntil.CustomElementIsVisible(list.FirstOrDefault());
+            var element = list.Where(x => x.Text == text)
+                              .Select(x => x).First();
+            Button.Click(element);
+        }
+
+        public static void SelectDropdownItemByValue(IList<IWebElement> list, string text)
+        {
+            WaitUntil.CustomElementIsVisible(list.FirstOrDefault());
+            var element = list.Where(x => x.GetAttribute("value") == text)
+                              .Select(x => x).First();
+            Button.Click(element);
+        }
+    }
     public class InputBox
     {
         public static IWebElement Element(IWebElement element, int seconds, string data)

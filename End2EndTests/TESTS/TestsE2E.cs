@@ -19,7 +19,7 @@ namespace End2EndTests.TESTS
         public void CreateDreamHomeFreeTicketsWithinAndMakePurchase()
         {
             #region Preconditions
-
+            string title = string.Empty;
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out _);
             DreamHomeRequest.DeactivateDreamHome(tokenAdmin, dreamResponse);
@@ -36,7 +36,7 @@ namespace End2EndTests.TESTS
             Pages.CmsDreamhome
                 .OpenDreamhomePage()
                 .ClickAddDreamhomeBtn()
-                .EnterTitle();
+                .EnterTitle(out title);
             string dreamhomeTitle = Pages.CmsDreamhome.GetDreamhomeTitle();
             Pages.CmsDreamhome
                 .EnterAddress()
@@ -107,7 +107,7 @@ namespace End2EndTests.TESTS
         public void CreateDreamHomeAndMakePurchase()
         {
             #region Preconditions
-
+            string title = string.Empty;
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             var dreamResponse = DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out _);
             DreamHomeRequest.DeactivateDreamHome(tokenAdmin, dreamResponse);
@@ -124,7 +124,7 @@ namespace End2EndTests.TESTS
             Pages.CmsDreamhome
                 .OpenDreamhomePage()
                 .ClickAddDreamhomeBtn()
-                .EnterTitle();
+                .EnterTitle(out title);
             string dreamhomeTitle = Pages.CmsDreamhome.GetDreamhomeTitle();
             Pages.CmsDreamhome
                 .EnterAddress()

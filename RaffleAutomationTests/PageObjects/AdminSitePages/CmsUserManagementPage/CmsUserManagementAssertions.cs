@@ -4,12 +4,14 @@ namespace RaffleAutomationTests.PageObjects
 {
     public partial class CmsUserManagement
     {
-        public void SearchUser(string email)
+        public CmsUserManagement SearchUser(string email)
         {
             WaitUntil.CustomElementIsVisible(textTitleUserManagement, 25);
             Element.Action(Keys.End);
             Button.Click(Pages.CmsCommon.btnLastPage);
             WaitUntil.CustomElementIsVisible(Element.FindSpecificUser(email).btnEdit);
+
+            return this;
         }
 
         public void VerifyUserIsEdited(Element.UserRowModel userData, string email)
