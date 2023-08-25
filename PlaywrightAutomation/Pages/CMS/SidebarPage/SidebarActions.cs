@@ -1,4 +1,4 @@
-﻿using static PlaywrightAutomation.Base.Helpers.Helpers;
+﻿using static PlaywrightAutomation.Helpers;
 
 namespace PlaywrightAutomation.Pages.CMS.SidebarPage
 {
@@ -7,70 +7,70 @@ namespace PlaywrightAutomation.Pages.CMS.SidebarPage
         #region Opening sidebar menu's tabs
 
         
-        public static async Task OpenPrizeManagementList(IPage page)
+        public static async Task OpenPrizeManagementList()
         {
-            await WaitUntil.ElementIsVisible(page, pagePrizeManagement);
-            await Button.Click(page, pagePrizeManagement);
+            await WaitUntil.ElementIsVisible(pagePrizeManagement);
+            await Button.Click(pagePrizeManagement);
         }
 
-        public static async Task OpenDreamHomePage(IPage page)
+        public static async Task OpenDreamHomePage()
         {
-            await WaitUntil.ElementIsVisible(page, pageDreamHome);
-            await Button.Click(page, pageDreamHome);
+            await WaitUntil.ElementIsVisible(pageDreamHome);
+            await Button.Click(pageDreamHome);
         }
 
-        public static async Task OpenLifestylePrizesPage(IPage page)
+        public static async Task OpenLifestylePrizesPage()
         {
-            await WaitUntil.ElementIsVisible(page, pagePrizes);
-            await Button.Click(page, pagePrizes);
+            await WaitUntil.ElementIsVisible(pagePrizes);
+            await Button.Click(pagePrizes);
         }
 
-        public static async Task OpenCompetitionsPage(IPage page)
+        public static async Task OpenCompetitionsPage()
         {
-            await WaitUntil.ElementIsVisible(page, pageCompetitions);
-            await Button.Click(page, pageCompetitions);
+            await WaitUntil.ElementIsVisible(pageCompetitions);
+            await Button.Click(pageCompetitions);
         }
 
-        public static async Task OpenUserManagementPage(IPage page)
+        public static async Task OpenUserManagementPage()
         {
-            await WaitUntil.ElementIsVisible(page, pageUsers);
-            await Button.Click(page, pageUsers);
+            await WaitUntil.ElementIsVisible(pageUsers);
+            await Button.Click(pageUsers);
         }
 
-        public static async Task OpenStaffManagementPage(IPage page)
+        public static async Task OpenStaffManagementPage()
         {
-            await WaitUntil.ElementIsVisible(page, pageStaff);
-            await Button.Click(page, pageStaff);
+            await WaitUntil.ElementIsVisible(pageStaff);
+            await Button.Click(pageStaff);
         }
 
-        public static async Task OpenSettingsList(IPage page)
+        public static async Task OpenSettingsList()
         {
-            await WaitUntil.ElementIsVisible(page, pageSettings);
-            await Button.Click(page, pageSettings);
+            await WaitUntil.ElementIsVisible(pageSettings);
+            await Button.Click(pageSettings);
         }
 
-        public static async Task OpenGeneralPage(IPage page)
+        public static async Task OpenGeneralPage()
         {
-            await WaitUntil.ElementIsVisible(page, pageSettingsGeneral);
-            await Button.Click(page, pageSettingsGeneral);
+            await WaitUntil.ElementIsVisible(pageSettingsGeneral);
+            await Button.Click(pageSettingsGeneral);
         }
 
-        public static async Task OpenWinnersPage(IPage page)
+        public static async Task OpenWinnersPage()
         {
-            await WaitUntil.ElementIsVisible(page, pageSettingsWinners);
-            await Button.Click(page, pageSettingsWinners);
+            await WaitUntil.ElementIsVisible(pageSettingsWinners);
+            await Button.Click(pageSettingsWinners);
         }
 
-        public static async Task OpenReferralsPage(IPage page)
+        public static async Task OpenReferralsPage()
         {
-            await WaitUntil.ElementIsVisible(page, pageSettingsReferrals);
-            await Button.Click(page, pageSettingsReferrals);
+            await WaitUntil.ElementIsVisible(pageSettingsReferrals);
+            await Button.Click(pageSettingsReferrals);
         }
 
-        public static async Task OpenReportsPage(IPage page)
+        public static async Task OpenReportsPage()
         {
-            await WaitUntil.ElementIsVisible(page, pageSettingsReports);
-            await Button.Click(page, pageSettingsReports);
+            await WaitUntil.ElementIsVisible(pageSettingsReports);
+            await Button.Click(pageSettingsReports);
         }
 
         #endregion

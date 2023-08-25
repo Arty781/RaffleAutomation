@@ -334,5 +334,17 @@ namespace API
             dreamhomeList.Reverse();
             DreamHome.ActivateOneClosedDreamHome(dreamhomeList, addFirstStartHours, addFirstEndHours);
         }
+
+        [Test]
+
+        public void ReplaceUserIdInOrders()
+        {
+            var users = Users.GetAllUsers().Where(predicate: x => x.Email == "qatester91311@gmail.com").Select(x => x).ToList();
+            foreach (var user in users)
+            {
+                Orders.UpdateOrderByUserId(user, "64c25b1438658f0035652fbf");
+            }
+
+        }
     }
 }

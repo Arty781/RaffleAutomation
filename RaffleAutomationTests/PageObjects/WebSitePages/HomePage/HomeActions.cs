@@ -64,7 +64,7 @@ namespace RaffleAutomationTests.PageObjects
         [AllureStep("Select first bundle")]
         public Home SelectFirstBundleBtn()
         {
-            WaitUntil.WaitSomeInterval(500);
+            WaitUntil.WaitSomeInterval(750);
             Button.Click(btnBundles.FirstOrDefault());
             WaitUntil.WaitSomeInterval(2000);
 

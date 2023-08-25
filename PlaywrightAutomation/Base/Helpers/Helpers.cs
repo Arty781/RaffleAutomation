@@ -1,10 +1,12 @@
-﻿using Fizzler.Systems.HtmlAgilityPack;
+﻿using Fizzler;
+using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
 using Microsoft.Playwright;
 using Newtonsoft.Json;
+using PlaywrightAutomation;
 using PlaywrightAutomation.Pages.CMS.UserManagementPage;
+using PlaywrightAutomation.Pages.WEB.ActivateUserPage;
 using RaffleAutomationTests.APIHelpers.Web.Subscriptions;
-using RaffleAutomationTests.Helpers;
 using RequestModels;
 using RestSharp;
 using System;
@@ -18,7 +20,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace PlaywrightAutomation.Base.Helpers
+namespace PlaywrightAutomation
 {
     public class Credentials
     {
@@ -27,6 +29,7 @@ namespace PlaywrightAutomation.Base.Helpers
 
         public const string USER_LOGIN = "qatester91311@gmail.com";
         public const string USER_PASSWORD = "Qaz11111";
+        public const string NEW_PASWORD = "Qaz11111!";
     }
 
     public class Endpoints
@@ -47,95 +50,194 @@ namespace PlaywrightAutomation.Base.Helpers
             public const string SETTINGS_REFERRALS = "https://admin-staging.rafflehouse.com/#/referrals";
             public const string COMPETITIONS = "https://admin-staging.rafflehouse.com/#/competitions";
         }
+
+        public class Web
+        {
+            public const string WEBSITE_HOST = "https://staging.rafflehouse.com";
+            public const string SIGN_IN = "https://staging.rafflehouse.com/sign-in";
+            public const string SIGN_UP = "https://staging.rafflehouse.com/sign-up";
+            public const string DREAMHOME = "https://staging.rafflehouse.com/dreamhome";
+            public const string LIFESTYLE = "https://staging.rafflehouse.com/lifestyleprizes";
+            public const string FIXEDODDS = "https://staging.rafflehouse.com/fixedodds";
+            public const string WINNERS = "https://staging.rafflehouse.com/winners";
+            public const string ABOUT = "https://staging.rafflehouse.com/about-us";
+            public const string PROFILE = "https://staging.rafflehouse.com/profile";
+            public const string FREE_ENTRY = "https://staging.rafflehouse.com/post";
+            public const string BASKET = "https://staging.rafflehouse.com/basket";
+            public const string PAGE_DISCOUNT = "https://pagediscount-staging.rafflehouse.com/";
+            public const string WIN_RAFFLE = "https://win-staging.rafflehouse.com/";
+        }
     }
     
     public class Helpers
     {
-        public static async Task GoToPage(IPage page, string url, string selector)
+        public static async Task GoToPage(string url, string waitSelector)
         {
-            await page.GotoAsync(url);
-            await page.WaitForSelectorAsync(selector);
+            await Browser.Driver.GotoAsync(url);
+            await Browser.Driver.WaitForSelectorAsync(waitSelector);
         } 
 
         public class TextBox
         {
-            public static async Task<string> GetText(IPage page, string selector)
+            public static async Task<string> GetText(string selector)
             {
-                await WaitUntil.ElementIsVisible(page, selector);
-                return page.QuerySelectorAsync(selector).Result.TextContentAsync().Result ?? throw new Exception("Element is null");
+                await WaitUntil.ElementIsVisible(selector);
+                return Browser.Driver.QuerySelectorAsync(selector).Result.TextContentAsync().Result ?? throw new Exception("Element is null");
             }
 
-            public static async Task<string> GetAttribute(IPage page, string selector, string attribute)
+            public static async Task<string> GetTextForList(string selector, int index)
             {
-                await WaitUntil.ElementIsVisible(page, selector);
-                return page.QuerySelectorAsync(selector).Result.GetAttributeAsync(attribute).Result ?? throw new Exception("Element is null");
+                await WaitUntil.ElementIsVisible(selector);
+                return (await Browser.Driver.QuerySelectorAllAsync(selector))[index].TextContentAsync().Result ?? throw new Exception("Element is null");
+            }
+
+            public static async Task<string> GetAttribute(string selector, string attribute)
+            {
+                await WaitUntil.ElementIsVisible(selector);
+                return Browser.Driver.QuerySelectorAsync(selector).Result.GetAttributeAsync(attribute).Result ?? throw new Exception("Element is null");
             }
         }
 
         public class InputBox
         {
-            public static async Task TypeText(IPage page, string selector, string text)
+            public static async Task TypeText(string selector, string text)
             {
-                await WaitUntil.ElementIsVisible(page, selector);
-                await page.QuerySelectorAsync(selector).Result.TypeAsync(text);
+                await WaitUntil.ElementIsVisible(selector);
+                await Browser.Driver.FocusAsync(selector);
+                await Browser.Driver.Keyboard.PressAsync("Control+A");
+                await Browser.Driver.Keyboard.PressAsync("Backspace");
+                await Browser.Driver.QuerySelectorAsync(selector).Result.FillAsync(text);
             }
 
-            public static async Task AddImages(IPage page, string selector, string text)
+            public static async Task AddImages(string selector, string text)
             {
-                await WaitUntil.ElementIsVisible(page, selector);
-                await page.QuerySelectorAsync(selector).Result.TypeAsync(text);
+                await WaitUntil.ElementIsVisible(selector);
+                await Browser.Driver.QuerySelectorAsync(selector).Result.TypeAsync(text);
             }
 
-            public static async Task SelectCbbx(IPage page, string selector, string data)
+            public static async Task SelectCbbx(string selector, string data)
             {
-                await WaitUntil.ElementIsVisible(page, selector);
-                await page.QuerySelectorAsync(selector).Result.TypeAsync(data + page.Keyboard.PressAsync("Enter"));
+                await WaitUntil.ElementIsVisible(selector);
+                await Browser.Driver.QuerySelectorAsync(selector).Result.TypeAsync(data + Browser.Driver.Keyboard.PressAsync("Enter"));
             }
         }
 
         public class Button
         {
-            public static async Task Click(IPage page, string selector)
+            public static async Task Click(string selector)
             {
-                await WaitUntil.ElementIsVisible(page, selector);
-                await page.QuerySelectorAsync(selector).Result.ClickAsync();
+                await WaitUntil.ElementIsVisible(selector);
+                await Browser.Driver.QuerySelectorAsync(selector).Result.ClickAsync();
             }
 
-            public static async Task DoubleClick(IPage page, string selector)
+            public static async Task DoubleClick(string selector)
             {
-                await WaitUntil.ElementIsVisible(page, selector);
-                await page.QuerySelectorAsync(selector).Result.DblClickAsync();
+                await WaitUntil.ElementIsVisible(selector);
+                await Browser.Driver.QuerySelectorAsync(selector).Result.DblClickAsync();
+            }
+
+            public static async Task ClickOnNthElement(string selector, int nthNum)
+            {
+                await WaitUntil.ElementIsVisible(selector);
+                await Browser.Driver.QuerySelectorAllAsync(selector).Result[nthNum].ClickAsync();
+            }
+
+            static async Task<string> GetSelectorFromElement(IElementHandle element)
+            {
+                return await element.EvaluateAsync<string>(@"(element) => {
+                function getPathTo(element) {
+                if (element === document.body) return 'body';
+                const nodeName = element.nodeName.toLowerCase();
+                if (element.id) return `#${element.id}`;
+                const parent = element.parentNode;
+                if (!parent) return nodeName;
+                const sameTagSiblings = Array.from(parent.children).filter(e => e.nodeName.toLowerCase() === nodeName);
+                if (sameTagSiblings.length === 1) return getPathTo(parent) + ' > ' + nodeName;
+                const index = Array.from(sameTagSiblings).indexOf(element) + 1;
+                return getPathTo(parent) + ' > ' + `${nodeName}:nth-child(${index})`;
+                    }
+                    return getPathTo(element);
+                }");
             }
         }
 
         public class Element
         {
-            public static async Task Action(IPage page, string key)
+            public static async Task Action(string key)
             {
-                await page.WaitForTimeoutAsync(700);
-                await page.Keyboard.PressAsync(key);
-                await page.WaitForTimeoutAsync(300);
+                await Browser.Driver.WaitForTimeoutAsync(700);
+                await Browser.Driver.Keyboard.PressAsync(key);
+                await Browser.Driver.WaitForTimeoutAsync(300);
             }
         }
 
         public class WaitUntil
         {
-            public static async Task ElementIsVisible(IPage page, string selector, float milliseconds = 30000)
+            public static async Task Timeout(float timeout = 3000)
+            {
+                await Browser.Driver.WaitForTimeoutAsync(timeout);
+            }
+
+            public static async Task ElementIsVisible(string selector, float milliseconds = 30000)
             {
                 Thread.Sleep(250);
                 var waitForSelectorOptions = new PageWaitForSelectorOptions { Timeout = milliseconds, State = WaitForSelectorState.Attached };
-                await page.WaitForSelectorAsync(selector, waitForSelectorOptions);
+                await Browser.Driver.WaitForSelectorAsync(selector, waitForSelectorOptions);
             }
 
-            public static async Task ElementIsInvisible(IPage page, string selector, float milliseconds = 10000)
+            public static async Task FrameIsVisible(string selector, float milliseconds = 30000)
+            {
+                Thread.Sleep(250);
+                var frame = Browser.Driver.QuerySelectorAsync(selector).Result.ContentFrameAsync().Result;
+                var waitForSelectorOptions = new FrameWaitForSelectorOptions { Timeout = milliseconds, State = WaitForSelectorState.Attached };
+                await frame.WaitForSelectorAsync(selector, waitForSelectorOptions);
+            }
+
+            public static async Task ElementListIsVisible(string selector, float milliseconds = 30000)
+            {
+                Thread.Sleep(250);
+                var waitForSelectorOptions = new PageWaitForFunctionOptions { Timeout = milliseconds, PollingInterval = 50 };
+                await Browser.Driver.WaitForFunctionAsync(
+                $@"async () => {{
+                    const elements = document.querySelectorAll('{selector}');
+                    const allVisible = Array.from(elements).every(element => element.offsetWidth > 0 && element.offsetHeight > 0);
+                    return allVisible;
+                }}", waitForSelectorOptions);
+            }
+
+            public static async Task ElementIsInvisible(string selector, float milliseconds = 10000)
             {
                 Thread.Sleep(250);
                 var waitForSelectorOptions = new PageWaitForSelectorOptions { Timeout = milliseconds, State = WaitForSelectorState.Detached };
-                await page.WaitForSelectorAsync(selector, waitForSelectorOptions);
+                await Browser.Driver.WaitForSelectorAsync(selector, waitForSelectorOptions);
+            }
+
+            public static async Task FrameIsInvisible(string selector, float milliseconds = 10000)
+            {
+                Thread.Sleep(250);
+                var frame = Browser.Driver.QuerySelectorAsync(selector).Result.ContentFrameAsync().Result;
+                var waitForSelectorOptions = new FrameWaitForSelectorOptions { Timeout = milliseconds, State = WaitForSelectorState.Detached };
+                await frame.WaitForSelectorAsync(selector, waitForSelectorOptions);
+            }
+
+            public static async Task CustomCheckoutIsDisplayed(float milliseconds = 10000)
+            {
+                Thread.Sleep(250);
+                var waitForSelectorOptions = new PageWaitForURLOptions { Timeout = milliseconds };
+                await Browser.Driver.WaitForURLAsync(url => url.Contains("pending?cko-session-id"), waitForSelectorOptions);
             }
         }
 
-        
+        public class DropdownList
+        {
+            public static async Task SelectDropdownItemByText(string selector, string text)
+            {
+                await WaitUntil.ElementIsVisible(selector);
+                var element = (await Browser.Driver.QuerySelectorAllAsync(selector)).Where(x => x.TextContentAsync().Result == text)
+                                  .Select(x => x).First().ClickAsync();
+            }
+
+        }
     }
     
     public partial class RandomHelper
@@ -229,24 +331,24 @@ namespace PlaywrightAutomation.Base.Helpers
 
     public class SpecificSearch
     {
-        public static async Task<IElementHandle> FindSpecificDreamhome(IPage page, string titleDreamhome)
+        public static async Task<IElementHandle> FindSpecificDreamhome(string titleDreamhome)
         {
 
-            await Helpers.WaitUntil.ElementIsVisible(page, $"//tbody/tr/td[text()='{titleDreamhome}']");
-            return await page.QuerySelectorAsync($"//tbody/tr/td[text()='{titleDreamhome}']") ?? throw new Exception("Dreamhome is not find");
+            await Helpers.WaitUntil.ElementIsVisible($"//tbody/tr/td[text()='{titleDreamhome}']");
+            return await Browser.Driver.QuerySelectorAsync($"//tbody/tr/td[text()='{titleDreamhome}']") ?? throw new Exception("Dreamhome is not find");
 
         }
 
-        public static async Task<UserRowModel> FindSpecificUser(IPage page, string email)
+        public static async Task<UserRowModel> FindSpecificUser(string email)
         {
-            await Helpers.WaitUntil.ElementIsVisible(page, $"//td[text()='{email}']");
+            await Helpers.WaitUntil.ElementIsVisible($"//td[text()='{email}']");
 
             UserRowModel user = new()
             {
-                Name = await page.QuerySelectorAsync($"//td[text()='{email}']/parent::tr/td[1]").Result.TextContentAsync(),
-                Surname = await page.QuerySelectorAsync($"//td[text()='{email}']/parent::tr/td[2]").Result.TextContentAsync(),
-                Email = await page.QuerySelectorAsync($"//td[text()='{email}']").Result.TextContentAsync(),
-                Phone = await page.QuerySelectorAsync($"//td[text()='{email}']/parent::tr/td[4]").Result.TextContentAsync(),
+                Name = await Browser.Driver.QuerySelectorAsync($"//td[text()='{email}']/parent::tr/td[1]").Result.TextContentAsync(),
+                Surname = await Browser.Driver.QuerySelectorAsync($"//td[text()='{email}']/parent::tr/td[2]").Result.TextContentAsync(),
+                Email = await Browser.Driver.QuerySelectorAsync($"//td[text()='{email}']").Result.TextContentAsync(),
+                Phone = await Browser.Driver.QuerySelectorAsync($"//td[text()='{email}']/parent::tr/td[4]").Result.TextContentAsync(),
                 toggleStatus = new Locator($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']").Selector,
                 btnShow = new Locator($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']").Selector,
                 btnEdit = new Locator($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Edit']").Selector,
@@ -258,12 +360,12 @@ namespace PlaywrightAutomation.Base.Helpers
 
 
 
-        public static async Task<List<CompetitionRowModel>> FindSpecificCompetitionRows(IPage page, string competition)
+        public static async Task<List<CompetitionRowModel>> FindSpecificCompetitionRows(string competition)
         {
-            await Helpers.WaitUntil.ElementIsInvisible(page, UserManagement.textNoOrders);
-            await Helpers.WaitUntil.ElementIsVisible(page, $"//td[text()='{competition}']");
+            await Helpers.WaitUntil.ElementIsInvisible(UserManagement.textNoOrders);
+            await Helpers.WaitUntil.ElementIsVisible($"//td[text()='{competition}']");
 
-            var competitionRowElements = await page.QuerySelectorAllAsync($"//td[text()='{competition}']/parent::tbody");
+            var competitionRowElements = await Browser.Driver.QuerySelectorAllAsync($"//td[text()='{competition}']/parent::tbody");
             var listOfCompetitions = new List<RequestModels.CompetitionRowModel>();
 
             foreach (var item in competitionRowElements)
@@ -349,6 +451,27 @@ namespace RequestModels
         public object attachments { get; set; }
         public string created_at { get; set; }
 
+    }
+
+    public class Profile
+    {
+        public class OrderHistory
+        {
+            public string PRIZE { get; set; }
+            public string PURCHASE_DATE { get; set; }
+            public int NUM_TICKETS { get; set; }
+            public int PRICE { get; set; }
+        }
+    }
+
+    public class Basket
+    {
+        public class Order
+        {
+            public string PRIZE { get; set; }
+            public int NUM_TICKETS { get; set; }
+            public double PRICE { get; set; }
+        }
     }
 }
 
@@ -526,7 +649,7 @@ namespace SMTP_API
             return text;
         }
 
-        public static void GetAllEmails(string domain, out List<RequestModels.PutsboxEmail>? emailList)
+        public static void GetAllEmails(string domain, out List<PutsboxEmail>? emailList)
         {
             Thread.Sleep(2000);
             var htmlContent = GetEmailContent(domain);
@@ -537,7 +660,6 @@ namespace SMTP_API
                 htmlContent = GetEmailContent(domain);
             }
         }
-
 
         public static string CheckEmailBySubject(string email, string subject, string value)
         {
@@ -554,14 +676,14 @@ namespace SMTP_API
 
         }
 
-        static void GgetAllEmailData(string email, out List<RequestModels.PutsboxEmail>? emailList)
+        static void GgetAllEmailData(string email, out List<PutsboxEmail>? emailList)
         {
             GetAllEmails(email, out emailList);
             CheckEmailsCountFor35Minutes(emailList, email);
             GetAllEmails(email, out emailList);
         }
 
-        static void CheckEmailsCountFor35Minutes(List<RequestModels.PutsboxEmail>? userEmails, string email)
+        static void CheckEmailsCountFor35Minutes(List<PutsboxEmail>? userEmails, string email)
         {
             DateTime startTime = DateTime.Now;
             int checkInterval = 30000; // in milliseconds
@@ -596,6 +718,12 @@ namespace SMTP_API
         static void GgetHtmlBody(string email, string id, out string emailInitial)
         {
             emailInitial = GetHtmlFromEmail(email, id);
+        }
+
+        public static async Task GoToActivationLink(string email)
+        {
+            var activateLink = GetLinkFromEmailWithValue(email, "Activate account");
+            await Helpers.GoToPage(activateLink, Activate.inputFirstName);
         }
     }
 }

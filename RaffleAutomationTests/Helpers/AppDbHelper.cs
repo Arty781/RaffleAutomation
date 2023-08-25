@@ -27,10 +27,10 @@ namespace RaffleAutomationTests.Helpers
         {
             public static void DeleteTestUserData(string email)
             {
-                var users = AppDbHelper.Users.GetAllUsers().Where(x => x.Email.Contains(email)).Select(x => x).ToList();
-                AppDbHelper.Subscriptions.DeleteSubscriptionsByUserId(users);
-                AppDbHelper.Orders.DeleteOrdersByUserId(users);
-                Users.DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
+                var users = GetAllUsers().Where(x => x.Email.Contains(email)).Select(x => x).ToList();
+                Subscriptions.DeleteSubscriptionsByUserId(users);
+                Orders.DeleteOrdersByUserId(users);
+                DeleteUsersByEmail("^(?!.*(@gmail\\.com|@outlook\\.com|@anuitex\\.net|@test\\.co|@raffle-house\\.com)).*$");
             }
 
             public static List<DbModels.UserResponse> GetAllUsers()
@@ -362,6 +362,7 @@ namespace RaffleAutomationTests.Helpers
                     .Set(u=>u.NextPurchaseDate, DateTime.Now.AddDays(-1));
                 collection.UpdateMany(filter, update);
             }
+            
             public static void UpdateSubscriptionDateByIdToUnpause(DbModels.UserResponse user)
             {
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
@@ -526,6 +527,20 @@ namespace RaffleAutomationTests.Helpers
                 var update = Builders<DbModels.Orders>.Update
                     .Set(o => o.IsArchive, true);
 
+                collection.UpdateMany(filter, update);
+            }
+
+            public static void UpdateOrderByUserId(DbModels.UserResponse user, string oldUserId)
+            {
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collection = database.GetCollection<DbModels.ArchiveOrders>("archiveorders");
+                var filterBuilder = Builders<DbModels.ArchiveOrders>.Filter;
+                var filter = filterBuilder
+                    .Eq(u=>u.User, new ObjectId(oldUserId));
+                var updateBuilder = Builders<DbModels.ArchiveOrders>.Update;
+                var update = updateBuilder
+                    .Set(u => u.User, user.Id);
                 collection.UpdateMany(filter, update);
             }
         }

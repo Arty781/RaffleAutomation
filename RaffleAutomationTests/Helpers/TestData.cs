@@ -1784,6 +1784,68 @@ namespace RaffleAutomationTests.Helpers
         }
 
         #endregion
+
+        #region ArchiveOrders
+
+        [BsonIgnoreExtraElements]
+        public class ArchiveOrders
+        {
+            [BsonElement("__v")]
+            public int? V { get; set; }
+
+            [BsonElement("_id")]
+            public ObjectId? Id { get; set; }
+
+            [BsonElement("appliedCredits")]
+            public List<AppliedCredits> AppliedCredits { get; set; }
+
+            [BsonElement("checkoutId")]
+            public string? CheckoutId { get; set; }
+
+            [BsonElement("competitionId")]
+            public ObjectId? CompetitionId { get; set; }
+
+            [BsonElement("createdAt")]
+            public DateTimeOffset? CreatedAt { get; set; }
+
+            [BsonElement("fixedOdds")]
+            public ObjectId? FixedOdds { get; set; }
+
+            [BsonElement("groupId")]
+            public string? GroupId { get; set; }
+
+            [BsonElement("isArchive")]
+            public bool IsArchive { get; set; }
+
+            [BsonElement("paymentStatus")]
+            public string? PaymentStatus { get; set; }
+
+            [BsonElement("selectedCharity")]
+            public string? SelectedCharity { get; set; }
+
+            [BsonElement("spentCredits")]
+            public int? SpentCredits { get; set; }
+
+            [BsonElement("tickets")]
+            public List<Tickets> Tickets { get; set; }
+
+            [BsonElement("totalCost")]
+            public int? TotalCost { get; set; }
+
+            [BsonElement("user")]
+            public ObjectId? User { get; set; }
+
+            [BsonElement("orderType")]
+            public string? OrderType { get; set; }
+
+            [BsonElement("raffle")]
+            public ObjectId? Raffle { get; set; }
+
+            [BsonElement("purchaseDate")]
+            public DateTime? PurchaseDate { get; set; }
+        }
+
+        #endregion
     }
 
     public class SubscriptionStatuses

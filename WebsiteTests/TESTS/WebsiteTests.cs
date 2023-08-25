@@ -2960,6 +2960,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         public void VerifyValidationAccountDetailsOnProfilePage()
         {
             #region Preconditions
+            string name = string.Empty;
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             
             #endregion
@@ -2970,7 +2971,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenSignInPage();
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD)
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Profile
                 .ClickEditAccountBtn()
                 .VerifyValidationOnProfileAccountDetails();
