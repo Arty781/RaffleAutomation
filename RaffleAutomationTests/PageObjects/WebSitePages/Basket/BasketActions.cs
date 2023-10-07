@@ -78,7 +78,6 @@ namespace RaffleAutomationTests.PageObjects
             Browser.Driver.SwitchTo().Frame(framePaymentCvv);
             InputBox.Element(inputCvv, 15, "100");
             Browser.Driver.SwitchTo().DefaultContent();
-            WaitUntil.CustomElementIsVisible(btnPay, 5);
 
             return this;
         }
@@ -97,7 +96,6 @@ namespace RaffleAutomationTests.PageObjects
             Browser.Driver.SwitchTo().Frame(framePaymentCvv);
             InputBox.Element(inputCvv, 15, cvv);
             Browser.Driver.SwitchTo().DefaultContent();
-            WaitUntil.CustomElementIsVisible(btnPay, 5);
 
             return this;
         }
@@ -126,6 +124,14 @@ namespace RaffleAutomationTests.PageObjects
         public Basket ClickPayNowBtn()
         {
             Button.ClickJS(btnPay);
+
+            return this;
+        }
+
+        [AllureStep("Click Pay Now button")]
+        public Basket ClickPayNowSubBtn()
+        {
+            Button.ClickJS(btnPaySub);
 
             return this;
         }

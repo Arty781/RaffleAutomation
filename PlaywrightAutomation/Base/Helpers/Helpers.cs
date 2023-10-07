@@ -127,6 +127,7 @@ namespace PlaywrightAutomation
             public static async Task Click(string selector)
             {
                 await WaitUntil.ElementIsVisible(selector);
+                await Browser.Driver.QuerySelectorAsync(selector).Result.ScrollIntoViewIfNeededAsync();
                 await Browser.Driver.QuerySelectorAsync(selector).Result.ClickAsync();
             }
 
@@ -196,13 +197,14 @@ namespace PlaywrightAutomation
             public static async Task ElementListIsVisible(string selector, float milliseconds = 30000)
             {
                 Thread.Sleep(250);
+                var jsCode = string.Concat(
+                "async () => {" +
+                "const elements = document.querySelectorAll('" + selector + "');" +
+                "const allVisible = Array.from(elements).every(element => element.offsetWidth > 0 && element.offsetHeight > 0);" +
+                "return allVisible;" +
+                "}");
                 var waitForSelectorOptions = new PageWaitForFunctionOptions { Timeout = milliseconds, PollingInterval = 50 };
-                await Browser.Driver.WaitForFunctionAsync(
-                $@"async () => {{
-                    const elements = document.querySelectorAll('{selector}');
-                    const allVisible = Array.from(elements).every(element => element.offsetWidth > 0 && element.offsetHeight > 0);
-                    return allVisible;
-                }}", waitForSelectorOptions);
+                await Browser.Driver.WaitForFunctionAsync(jsCode, waitForSelectorOptions);
             }
 
             public static async Task ElementIsInvisible(string selector, float milliseconds = 10000)
@@ -224,7 +226,7 @@ namespace PlaywrightAutomation
             {
                 Thread.Sleep(250);
                 var waitForSelectorOptions = new PageWaitForURLOptions { Timeout = milliseconds };
-                await Browser.Driver.WaitForURLAsync(url => url.Contains("pending?cko-session-id"), waitForSelectorOptions);
+                await Browser.Driver.WaitForURLAsync(url => url.Contains("pending?cko-session-id") || url.Contains("pending?paypal"), waitForSelectorOptions);
             }
         }
 
@@ -349,10 +351,10 @@ namespace PlaywrightAutomation
                 Surname = await Browser.Driver.QuerySelectorAsync($"//td[text()='{email}']/parent::tr/td[2]").Result.TextContentAsync(),
                 Email = await Browser.Driver.QuerySelectorAsync($"//td[text()='{email}']").Result.TextContentAsync(),
                 Phone = await Browser.Driver.QuerySelectorAsync($"//td[text()='{email}']/parent::tr/td[4]").Result.TextContentAsync(),
-                toggleStatus = new Locator($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']").Selector,
-                btnShow = new Locator($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']").Selector,
-                btnEdit = new Locator($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Edit']").Selector,
-                btnDelete = new Locator($"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/div").Selector
+                toggleStatus = $"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']",
+                btnShow = $"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Show']",
+                btnEdit = $"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/a[@aria-label='Edit']",
+                btnDelete = $"//td[text()='{email}']/parent::tr//div[@class='actions-table-body']/div"
             };
 
             return user;

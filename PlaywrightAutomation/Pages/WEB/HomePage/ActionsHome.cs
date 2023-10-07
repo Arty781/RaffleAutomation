@@ -80,32 +80,31 @@ namespace PlaywrightAutomation.Pages.WEB.HomePage
                 switch (i)
                 {
                     case 0:
-                        await OpenHomePage();
-                        await Helpers.Element.Action("End");
+                        await Browser.Driver.QuerySelectorAsync(btnDreamTicketSelector).Result.ScrollIntoViewIfNeededAsync();
                         await OpenDreamTicketSelector();
                         await SelectFirstBundleBtn();
                         break;
                     case 1:
                         await OpenHomePage();
-                        await Helpers.Element.Action("End");
+                        await Browser.Driver.QuerySelectorAsync(btnDreamTicketSelector).Result.ScrollIntoViewIfNeededAsync();
                         await OpenDreamTicketSelector();
                         await SelectSecondBundleBtn();
                         break;
                     case 2:
                         await OpenHomePage();
-                        await Helpers.Element.Action("End");
+                        await Browser.Driver.QuerySelectorAsync(btnDreamTicketSelector).Result.ScrollIntoViewIfNeededAsync();
                         await OpenDreamTicketSelector();
                         await SelectForthBundleBtn();
                         break;
                     case 3:
                         await OpenHomePage();
-                        await Helpers.Element.Action("End");
+                        await Browser.Driver.QuerySelectorAsync(btnDreamTicketSelector).Result.ScrollIntoViewIfNeededAsync();
                         await OpenDreamTicketSelector();
                         await SelectThirdBundleBtn();
                         break;
                     default:
                         await OpenHomePage();
-                        await Helpers.Element.Action("End");
+                        await Browser.Driver.QuerySelectorAsync(btnDreamTicketSelector).Result.ScrollIntoViewIfNeededAsync();
                         await OpenDreamTicketSelector();
                         await SelectFirstBundleBtn();
                         break;

@@ -8,6 +8,8 @@ namespace PlaywrightAutomation.Pages.WEB.UserProfilePage
 {
     public partial class UserProfile
     {
+        public const string tabSubscriptions = "div.profile-sidebar-side > button:nth-child(3)";
+
         #region My Details 
 
         public const string titleProfile = "//h1[contains(text(),'My Details')]";
@@ -69,6 +71,12 @@ namespace PlaywrightAutomation.Pages.WEB.UserProfilePage
         public const string textActiveSubscription = "//h3[.='Active Subscription']";
         public const string textPausedSubscription = "//h3[.='Paused Subscription']";
         public const string textCancelledSubscription = "//h3[.='Cancelled Subscription']";
+
+        public const string btn10BundleWithSub = "div:nth-child(1) > div.button-group > button";
+        public const string btn25BundleWithSub = "div:nth-child(2) > div.button-group > button";
+
+        public const string btn10BundleWithoutSub = "div:nth-child(1) > div.buttons > button";
+        public const string btn25BundleWithoutSub = "div:nth-child(2) > div.buttons > button";
 
         #endregion
     }

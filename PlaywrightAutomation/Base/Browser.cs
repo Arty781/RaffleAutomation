@@ -26,10 +26,13 @@ namespace PlaywrightAutomation
             browserContext = await browser.NewContextAsync();
             page = await browserContext.NewPageAsync();
             await Driver.SetViewportSizeAsync(width: 1920, height: 1020);
+            
         }
 
         public static IPage Driver => page;
         public static IBrowserContext BrowserContext => browserContext;
+
+        
     }
 
     public class Base : PlaywrightTest

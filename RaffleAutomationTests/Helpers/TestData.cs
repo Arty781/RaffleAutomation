@@ -1446,6 +1446,47 @@ namespace RaffleAutomationTests.Helpers
             }
         }
 
+        [BsonIgnoreExtraElements]
+        public class CompetitionsR
+        {
+            
+                [BsonElement("_id")]
+                public ObjectId Id { get; set; }
+
+                [BsonElement("isActive")]
+                public bool? IsActive { get; set; }
+
+                [BsonElement("startAt")]
+                public DateTime? StartAt { get; set; }
+
+                [BsonElement("endsAt")]
+                public DateTime? EndsAt { get; set; }
+
+                [BsonElement("competitionType")]
+                public string? CompetitionType { get; set; }
+
+                [BsonElement("dreamHome")]
+                public ObjectId DreamHome { get; set; }
+
+                [BsonElement("competitionId")]
+                public string? CompetitionId { get; set; }
+
+                [BsonElement("createdAt")]
+                public DateTime? CreatedAt { get; set; }
+
+                [BsonElement("updatedAt")]
+                public DateTime? UpdatedAt { get; set; }
+
+                [BsonElement("__v")]
+                public int? V { get; set; }
+
+                [BsonElement("fixedOdds")]
+                public dynamic? FixedOdds { get; set; }
+
+                [BsonElement("prizes")]
+                public dynamic? Prizes { get; set; }
+        }
+
 
 
 

@@ -15,6 +15,11 @@ namespace PlaywrightAutomation.Pages.WEB.ThankYouPage
             await Button.Click(btnActivateMyAccount);
         }
 
+        public static async Task ClickViewTickets()
+        {
+            await Button.Click(btnViewTickets);
+        }
+
         public static async Task VerifyThankYouPageIsDisplayed()
         {
             await Basket.VerifyUrl();

@@ -256,6 +256,39 @@ namespace RaffleAutomationTests.Helpers
                 }
             }
 
+            public static void UpdateClosedDreamHome()
+            {
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collection = database.GetCollection<DbModels.Raffle>("raffles");
+                var filter = Builders<DbModels.Raffle>.Filter.Eq(r => r.IsClosed, true);
+                var sorting = Builders<DbModels.Raffle>.Sort.Descending(r => r.CreatedAt);
+                var limit = collection.Find(filter).Sort(sorting).Limit(10).ToList();
+                var update = Builders<DbModels.Raffle>.Update
+                    .Set(r => r.StartAt, DateTime.Now.AddDays(-100))
+                    .Set(r => r.EndsAt, DateTime.Now.AddDays(-7));
+                var updatedFilter = Builders<DbModels.Raffle>.Filter.In(r => r.Id, limit.Select(r => r.Id));
+                collection.UpdateMany(updatedFilter, update);
+
+            }
+
+            public static void DeleteClosedDreamHome()
+            {
+                var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
+                var database = client.GetDatabase(DbConnection.DB_STAGING);
+                var collectionRaffles = database.GetCollection<DbModels.Raffle>("raffles");
+                var filterRaffles = Builders<DbModels.Raffle>.Filter.Eq(r => r.IsClosed, true);
+                var raffles = collectionRaffles.Find(filterRaffles).ToList();
+                var collectionCompetitions = database.GetCollection<DbModels.CompetitionsR>("competitions");
+                var filterCompetitions = Builders<DbModels.CompetitionsR>.Filter.In(c => c.DreamHome, raffles.Select(c => c.Id));
+                var collectionProperties = database.GetCollection<DbModels.Property>("properties");
+                var filterProperties = Builders<DbModels.Property>.Filter.In(p => p.Id, raffles.Select(p => p.Property));
+                var comp = collectionCompetitions.Find(filterCompetitions).ToList();
+                var prop = collectionProperties.Find(filterProperties).ToList();
+
+
+            }
+
             public static void DeactivateDreamHome(List<DbModels.Raffle> raffles)
             {
                 foreach (var raffle in raffles)
@@ -476,10 +509,13 @@ namespace RaffleAutomationTests.Helpers
                 var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
                 var database = client.GetDatabase(DbConnection.DB_STAGING);
                 var collection = database.GetCollection<DbModels.Orders>("orders");
-                foreach(var user in users)
+                var collectionArchive = database.GetCollection<DbModels.ArchiveOrders>("archiveorders");
+                foreach (var user in users)
                 {
                     var filter = Builders<DbModels.Orders>.Filter.Eq(o=>o.User, user.Id);
+                    var filterArchive = Builders<DbModels.ArchiveOrders>.Filter.Eq(o => o.User, user.Id);
                     collection.DeleteMany(filter);
+                    collectionArchive.DeleteMany(filterArchive);
                 }
                 
             }
@@ -777,7 +813,7 @@ namespace RaffleAutomationTests.Helpers
                     {
                         new DbModels.SubscriptionsInsert
                         {
-                        Status = "ACTIVE",
+                        Status = "FINISHED",
                         Count= 1,
                         Charity= "",
                         IsReminderSent= false,

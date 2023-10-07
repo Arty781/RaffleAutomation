@@ -18,40 +18,50 @@ namespace RaffleHouseAutomation.WebSiteTests
     public class Demo : TestBaseWeb
     {
         [Test]
-        [Ignore("Demo test")]
+        //[Ignore("Demo test")]
+        [Repeat(5)]
         
         public void Demotest()
         {
-            
-            SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
-            //var basketOrders = BasketRequest.GetBasketOrders(token);
-            var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
-            DreamHomeOrderRequestWeb.AddDreamhomeTicketsForError(token, prizesList.FirstOrDefault(), 20);
-            WaitUntil.WaitSomeInterval(250);
-
-            //Pages.Common
-            //    .CloseCookiesPopUp();
+            string name = string.Empty;
+            double? price = 0;
+            int? quantity = 0;
+            SignUpRequest
+                    .RegisterNewUser(out SignUpResponse? response);
+            Pages.Common
+                .CloseCookiesPopUp();
             Pages.Header
-                .OpenSignInPage();
+               .OpenSignInPage();
             Pages.SignIn
-                .EnterLoginAndPass(token.User.Email, Credentials.PASSWORD);
+                .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
-            Pages.Basket
-                .ClickCartBtn()
-                .ClickCheckoutNowBtn();
-            for (int i = 1000; i <= 9999; i++)
+                .VerifyIsSignIn(out name);
+            for (int i = 0; i < 5; i++)
             {
-                string combination = i.ToString("D4");
+
+                Pages.Home
+                    .AddTicketsToBasket(0);
                 Pages.Basket
-                .EnterCardDetails(combination)
-                .ClickPayNowBtn()
-                .ConfirmPurchaseStage()
-                .VerifyErrorMessageIsDisplayed()
-                .ClickCheckoutNowBtn()
-                .IsErrorDisplayed(combination);
+                    .MakeAPurchaseAsAuthorizedUser();
+                Pages.ThankYou
+                    .VerifyThankYouPageIsDisplayed();
+                Pages.Subscription
+                    .OpenSubscriptionPage()
+                    .AddTenSubscriptionToBasket(out price, out quantity);
+                Pages.Basket
+                    .EnterCardDetails()
+                    .ClickPayNowBtn();
+                Pages.ThankYou
+                    .VerifyThankYouPageIsDisplayed();
             }
             
+            //Pages.Profile
+            //    .OpenMyTicketsCompetitions()
+            //    .OpenDreamHomeHistoryList();
+            //Pages.Profile
+            //    .OpenMyTicketsCompetitions()
+            //    .OpenDreamHomeHistoryList();
+
         }
 
 
@@ -1525,7 +1535,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void ActivateNewUserAfterPayment()
         {
-            //string? name = string.Empty;
+            string? name = string.Empty;
             Pages.Common
                 .CloseCookiesPopUp();
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
@@ -1545,7 +1555,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 .OpenSignInPage();
             Pages.SignIn
                 .EnterLoginAndPass(email, Credentials.PASSWORD)
-                .VerifyIsSignIn(out string name);
+                .VerifyIsSignIn(out name);
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
@@ -1571,7 +1581,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void ActivateNewUserAfterThreePayments()
         {
-            
+            string? name = string.Empty;
             Pages.Common
                 .CloseCookiesPopUp();
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
@@ -1596,7 +1606,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
@@ -1622,7 +1632,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void MakePurchaseWithDelayAndClosingTab()
         {
-            
+            string? name = string.Empty;
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             Pages.Common
                     .CloseCookiesPopUp();
@@ -1632,7 +1642,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                     .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Home
                     .OpenHomePage();
             Pages.Home
@@ -1680,7 +1690,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         {
             #region Update two active dreamhomes
 
-            
+            string? name = string.Empty;
             List<DbModels.Raffle> activeDreamhomeList = DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
             List<DbModels.Raffle> dreamhomeList = DreamHome.GetAllRaffles().Distinct(new ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
             DreamHome.DeactivateDreamHome(activeDreamhomeList);
@@ -1700,7 +1710,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Home
                 .AddTicketsToBasket(0);
             Pages.Basket
@@ -1735,7 +1745,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         public void PurchaseTwoActiveDreamHome()
         {
             #region Update two active dreamhomes
-            
+            string? name = string.Empty;
             int addFirstStartHours = -3600;
             int addFirstEndHours = 3600;
             int addSecondStartHours = -1740;
@@ -1760,7 +1770,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(Credentials.LOGIN, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Home
                 .AddTicketsToBasket(0);
             Pages.Basket
@@ -1794,7 +1804,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void SignUpAddTicketsMakePurchase()
         {
-            
+            string? name = string.Empty;
             Pages.Common
                 .CloseCookiesPopUp();
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
@@ -1807,7 +1817,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn()
                 .GetOrderCount(out int countOrders)
@@ -1854,7 +1864,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void SignUpAddReferralsAndTicketsMakePurchase()
         {
-            
+            string? name = string.Empty;
             Pages.Common
                 .CloseCookiesPopUp();
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
@@ -1867,7 +1877,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn()
                 .GetOrderCount(out int countOrders)
@@ -1893,7 +1903,7 @@ namespace RaffleHouseAutomation.WebSiteTests
                 Pages.SignIn
                     .EnterLoginAndPass(responseReferral.User.Email, Credentials.PASSWORD);
                 Pages.SignIn
-                    .VerifyIsSignIn(out _);
+                    .VerifyIsSignIn(out name);
                 Pages.Basket
                     .ClickCartBtn()
                     .GetOrderCount(out countOrders)
@@ -1926,7 +1936,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void GetPurchaseDreamHome()
         {
-            
+            string? name = string.Empty;
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
@@ -1939,7 +1949,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             for (int i = 0; i <= 0; i++)
             {
                 for (int q = 0; q < RandomHelper.RandomIntNumber(2); q++)
@@ -1985,7 +1995,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void PurchaseTicketsFromWinAndDiscountPages()
         {
-            
+            string? name = string.Empty;
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
@@ -2004,7 +2014,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.WinRafflePage
                 .OpenWinRaffle()
                 .SelectTicketBundle(out string bunleWinPrice)
@@ -2014,7 +2024,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn();
             Pages.Basket
@@ -2047,7 +2057,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void PurchaseTicketsWin()
         {
-            
+            string? name = string.Empty;
             Pages.Common
                 .CloseCookiesPopUp();
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
@@ -2073,7 +2083,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Profile
                 .OpenMyTicketsCompetitions()
                 .OpenDreamHomeHistoryList()
@@ -2096,7 +2106,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void PurchaseTicketsFromPageDiscount()
         {
-            
+            string? name = string.Empty;
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
@@ -2112,7 +2122,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn();
             Pages.Basket
@@ -2146,6 +2156,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         [AllureSubSuite("Payment")]
         public void AddDreamHomeToBasketAndPurchaseSubscription()
         {
+            string? name = string.Empty;
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
@@ -2158,7 +2169,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             for (int i = 0; i <= 0; i++)
             {
                 for (int q = 0; q < 1; q++)
@@ -2170,10 +2181,10 @@ namespace RaffleHouseAutomation.WebSiteTests
             }
             Pages.Subscription
                 .OpenSubscriptionPage()
-                .AddTenSubscriptionToBasket(out _, out _);;
+                .AddTenSubscriptionToBasket(out double? price, out int? quantity);;
             Pages.Basket
                 .EnterCardDetails()
-                .ClickPayNowBtn();
+                .ClickPayNowSubBtn();
             Pages.ThankYou
                 .VerifyThankYouPageIsDisplayed();
             Pages.Profile
@@ -2428,7 +2439,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         public void InsufientFundsError()
         {
             #region Preconditions
-            
+            string name = string.Empty;
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             DreamHomeRequest
                 .GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
@@ -2446,7 +2457,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             SignUpRequest
                 .RegisterNewUser(out SignUpResponse? response);
             SignInRequestWeb
-                .MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
+                .MakeSignIn(response.User.Email, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest
                 .DeleteOrders(token, basketOrders);
@@ -2464,7 +2475,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn()
                 .ClickCheckoutNowBtn()
@@ -2503,7 +2514,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         public void RestrictedCardError()
         {
             #region Preconditions
-            
+            string name = string.Empty;
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             List<long> bundles = new()
@@ -2517,7 +2528,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 0.16666666, 0.01, bundles);
 
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
-            SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
+            SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
@@ -2533,7 +2544,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn()
                 .ClickCheckoutNowBtn()
@@ -2573,7 +2584,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         {
             #region Preconditions
 
-            
+            string name = string.Empty;
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             List<long> bundles = new()
@@ -2587,7 +2598,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 0.16666666, 0.01, bundles);
 
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
-            SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
+            SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
@@ -2603,7 +2614,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn()
                 .ClickCheckoutNowBtn()
@@ -2642,7 +2653,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         public void SecurityVioLationError()
         {
             #region Preconditions
-            
+            string name = string.Empty;
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             List<long> bundles = new()
@@ -2656,7 +2667,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 0.16666666, 0.01, bundles);
 
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
-            SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
+            SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
@@ -2672,7 +2683,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn()
                 .ClickCheckoutNowBtn()
@@ -2711,7 +2722,7 @@ namespace RaffleHouseAutomation.WebSiteTests
         public void InvalidTransactionError()
         {
             #region Preconditions
-            
+            string name = string.Empty;
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);
             DreamHomeRequest.GetActiveDreamHome(tokenAdmin, out Raffles? raffleCloseEarlier);
             List<long> bundles = new()
@@ -2725,7 +2736,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             DreamHomeRequest.EditTiketPriceInDreamHome(tokenAdmin, raffleCloseEarlier, 0.16666666, 0.01, bundles);
 
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
-            SignInRequestWeb.MakeSignIn(Credentials.LOGIN, Credentials.PASSWORD, out SignInResponseModelWeb? token);
+            SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
             BasketRequest.DeleteOrders(token, basketOrders);
             var prizesList = CountdownRequestWeb.GetDreamHomeCountdown(token);
@@ -2741,7 +2752,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
             Pages.Basket
                 .ClickCartBtn()
                 .ClickCheckoutNowBtn()
@@ -2786,6 +2797,8 @@ namespace RaffleHouseAutomation.WebSiteTests
         public void VerifyValidationOnSignInPage()
         {
             #region Preconditions
+
+            string name = string.Empty;
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             
             #endregion
@@ -2799,7 +2812,7 @@ namespace RaffleHouseAutomation.WebSiteTests
             Pages.SignIn
                 .EnterLoginAndPass(response.User.Email, Credentials.PASSWORD);
             Pages.SignIn
-                .VerifyIsSignIn(out _);
+                .VerifyIsSignIn(out name);
 
             #region Postconditions
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.LOGIN_ADMIN, Credentials.PASSWORD_ADMIN);

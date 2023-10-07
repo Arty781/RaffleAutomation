@@ -11,6 +11,20 @@ namespace PlaywrightAutomation.Pages.WEB.UserProfilePage
 {
     public partial class UserProfile
     {
+        public static async Task OpenSubscriptionsTab()
+        {
+            await Button.Click(tabSubscriptions);
+        }
+
+        public static async Task BuyTenPoundsSub()
+        {
+            await Button.Click(btn10BundleWithoutSub);
+        }
+
+        public static async Task BuyTwentyFivePoundsSub()
+        {
+            await Button.Click(btn25BundleWithSub);
+        }
 
         public static async Task ClickEditPersonalDataBtn()
         {
@@ -78,11 +92,7 @@ namespace PlaywrightAutomation.Pages.WEB.UserProfilePage
             await WaitUntil.ElementIsVisible(prizeName);
             for (int i = 0; i < countOrders; i++)
             {
-                // Scroll the element using JavaScript
-                await Browser.Driver.EvaluateAsync(@"(element) => {
-                            element.scrollDown += 500;
-                            }", listHistory);
-
+                await (await Browser.Driver.QuerySelectorAllAsync(prizeName)).Last().ScrollIntoViewIfNeededAsync();
                 await Browser.Driver.WaitForTimeoutAsync(250);
             }
         }
@@ -437,8 +447,12 @@ namespace PlaywrightAutomation.Pages.WEB.UserProfilePage
         public static async Task VerifyAddingTickets(double price, int countOrders)
         {
             await WaitUntil.ElementIsVisible(prizePrice);
+            for (int i = 0; i < countOrders; i++)
+            {
+                await (await Browser.Driver.QuerySelectorAllAsync(prizeName)).Last().ScrollIntoViewIfNeededAsync();
+                await Browser.Driver.WaitForTimeoutAsync(250);
+            }
             var item = await OrderHistoryVerificator.GetOrderHistory((await Browser.Driver.QuerySelectorAllAsync(prizePrice)).ToList(), countOrders);
-
             Assert.That((double)item.Item2, Is.EqualTo(price), $"Order total is not matched. Expected {price}, but was {(double)item.Item2}");
 
         }

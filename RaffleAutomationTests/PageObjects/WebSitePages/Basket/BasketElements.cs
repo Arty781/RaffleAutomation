@@ -59,6 +59,9 @@
         [FindsBy(How = How.Id, Using = "pay-button")]
         public IWebElement btnPay;
 
+        [FindsBy(How = How.Id, Using = "subscription-pay-button")]
+        public IWebElement btnPaySub;
+
         [FindsBy(How = How.XPath, Using = "//div[@class='checkout-header']")]
         public IWebElement orderSummaryBtn;
 

@@ -23,7 +23,7 @@ using PlaywrightAutomation.Pages.WEB.HomePage;
 using PlaywrightAutomation.Pages.WEB.BasketPage;
 using PlaywrightAutomation.Pages.WEB.ThankYouPage;
 using PlaywrightAutomation.Pages.WEB.ActivateUserPage;
-
+using PlaywrightAutomation.Pages.WEB.SubscriptionPage;
 
 namespace PlaywrightAutomation
 {
@@ -43,14 +43,14 @@ namespace PlaywrightAutomation
             await Dreamhome.VerifyDisplayingOfDreamhome(count);
             await Dreamhome.EditDreamHome(0);
             await WaitUntil.ElementIsVisible(Dreamhome.listImgMobileLast10);
-            
-            
+
+
         }
 
         [Test]
         public async Task CreateUserOnCms()
         {
-            
+
             var email = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"), "@putsbox.com");
             await Login.MakeLoginCMS(Credentials.ADMIN_LOGIN, Credentials.ADMIN_PASSWORD);
             await UserManagement.OpenUserManagement();
@@ -70,7 +70,7 @@ namespace PlaywrightAutomation
         [Test, Category("Validation")]
         public async Task VerifyFirstnameValidationOnSignUpPage()
         {
-            
+
             await GoToPage(Endpoints.Web.SIGN_UP, SignUp.btnSignUp);
             await SignUp.VerifyFirstnameValidationOnSignUp();
 
@@ -79,7 +79,7 @@ namespace PlaywrightAutomation
         [Test, Category("Validation")]
         public async Task VerifyLastnameValidationOnSignUpPage()
         {
-            
+
             await GoToPage(Endpoints.Web.SIGN_UP, SignUp.btnSignUp);
             await SignUp.VerifyLastnameValidationOnSignUp();
 
@@ -88,7 +88,7 @@ namespace PlaywrightAutomation
         [Test, Category("Validation")]
         public async Task VerifyEmailValidationOnSignUpPage()
         {
-            
+
             await GoToPage(Endpoints.Web.SIGN_UP, SignUp.btnSignUp);
             await SignUp.VerifyEmailValidationOnSignUp();
 
@@ -97,7 +97,7 @@ namespace PlaywrightAutomation
         [Test, Category("Validation")]
         public async Task VerifyPasswordValidationOnSignUpPage()
         {
-            
+
             await GoToPage(Endpoints.Web.SIGN_UP, SignUp.btnSignUp);
             await SignUp.VerifyPasswordValidationOnSignUp();
 
@@ -107,7 +107,7 @@ namespace PlaywrightAutomation
         public async Task VerifyValidationAccountDetailsOnProfilePage()
         {
             #region Preconditions
-            
+
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
 
             #endregion
@@ -129,7 +129,7 @@ namespace PlaywrightAutomation
         public async Task VerifyValidationPasswordOnProfilePage()
         {
             #region Preconditions
-            
+
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
 
             #endregion
@@ -152,7 +152,7 @@ namespace PlaywrightAutomation
         public async Task VerifyValidationPersonalDetailsOnProfilePage()
         {
             #region Preconditions
-            
+
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
 
             #endregion
@@ -174,7 +174,7 @@ namespace PlaywrightAutomation
         public async Task VerifyValidationOnSignInPage()
         {
             #region Preconditions
-            
+
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
 
             #endregion
@@ -200,7 +200,7 @@ namespace PlaywrightAutomation
         [Test, Category("Authorization")]
         public async Task RegisterNewUser()
         {
-            
+
             await GoToPage(Endpoints.Web.SIGN_UP, SignUp.btnSignUp);
             string email = await SignUp.EnterUserData();
             await SignUp.ClickSignUpBtn();
@@ -223,9 +223,9 @@ namespace PlaywrightAutomation
         {
             string? name = string.Empty;
             string email = string.Concat("qatester", DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss"), "@putsbox.com");
-            
+
             await Pages.WEB.HeaderPage.Header.OpenHomePage();
-            
+
             await Common.CloseCookiesPopUp();
 
             await Home.AddTicketsToBasket(0);
@@ -250,8 +250,8 @@ namespace PlaywrightAutomation
             UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
             RaffleAutomationTests.Helpers.AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
 
-            
-            
+
+
             #endregion
 
         }
@@ -265,7 +265,7 @@ namespace PlaywrightAutomation
         [AllureSubSuite("Payment")]
         public async Task ActivateNewUserFromEmailAfterThreePayments()
         {
-            
+
             await Pages.WEB.HeaderPage.Header.OpenHomePage();
             await Common.CloseCookiesPopUp();
             string email = string.Concat("qatester", DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss"), "@putsbox.com");
@@ -285,8 +285,8 @@ namespace PlaywrightAutomation
             var user = UsersRequest.GetUser(tokenAdmin, email);
             UsersRequest.DeleteUser(tokenAdmin, user.Users.FirstOrDefault().Id);
             RaffleAutomationTests.Helpers.AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
-            
-            
+
+
 
             #endregion
 
@@ -301,11 +301,11 @@ namespace PlaywrightAutomation
         [AllureSubSuite("Payment")]
         public async Task ActivateNewUserAfterPayment()
         {
-            
+
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
             await Pages.WEB.HeaderPage.Header.OpenHomePage();
             await Common.CloseCookiesPopUp();
-            await Home.AddTicketsToBasket(0);
+            await Home.AddTicketsToBasket(3);
             int countOrders = await Basket.GetOrderCount();
             double totalOrder = await Basket.GetOrderTotal();
             await Basket.MakeAPurchaseAsUnauthorizedUser(email);
@@ -324,8 +324,8 @@ namespace PlaywrightAutomation
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.ADMIN_LOGIN, Credentials.ADMIN_PASSWORD);
             UsersRequest.GetUser(tokenAdmin, email);
             RaffleAutomationTests.Helpers.AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
-            
-            
+
+
             #endregion
 
         }
@@ -339,7 +339,7 @@ namespace PlaywrightAutomation
         [AllureSubSuite("Payment")]
         public async Task ActivateNewUserAfterThreePayments()
         {
-            
+
             string email = "qatester" + DateTime.Now.ToString("yyyy-MM-d'-'hh-mm-ss") + "@putsbox.com";
             await Pages.WEB.HeaderPage.Header.OpenHomePage();
             await Common.CloseCookiesPopUp();
@@ -362,8 +362,8 @@ namespace PlaywrightAutomation
             var tokenAdmin = SignInRequestAdmin.MakeAdminSignIn(Credentials.ADMIN_LOGIN, Credentials.ADMIN_PASSWORD);
             UsersRequest.GetUser(tokenAdmin, email);
             RaffleAutomationTests.Helpers.AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
-            
-            
+
+
             #endregion
 
         }
@@ -371,7 +371,7 @@ namespace PlaywrightAutomation
         [Test, Category("Payment")]
         public async Task MakePurchaseWithDelayAndClosingTab()
         {
-            
+
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             await Pages.WEB.HeaderPage.Header.OpenHomePage();
             await Common.CloseCookiesPopUp();
@@ -398,8 +398,8 @@ namespace PlaywrightAutomation
             #region Postconditions
 
             RaffleAutomationTests.Helpers.AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
-            
-            
+
+
             #endregion
         }
 
@@ -413,16 +413,16 @@ namespace PlaywrightAutomation
         [AllureSubSuite("Payment")]
         public async Task PurchaseDreamHome()
         {
-            #region Update two active dreamhomes
+            //#region Update two active dreamhomes
 
-            
-            List<RaffleAutomationTests.Helpers.DbModels.Raffle> activeDreamhomeList = RaffleAutomationTests.Helpers.AppDbHelper.DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
-            List<RaffleAutomationTests.Helpers.DbModels.Raffle> dreamhomeList = RaffleAutomationTests.Helpers.AppDbHelper.DreamHome.GetAllRaffles().Distinct(new RaffleAutomationTests.Helpers.ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
-            RaffleAutomationTests.Helpers.AppDbHelper.DreamHome.DeactivateDreamHome(activeDreamhomeList);
-            dreamhomeList.Reverse();
-            RaffleAutomationTests.Helpers.AppDbHelper.DreamHome.ActivateOneClosedDreamHome(dreamhomeList, -3600, 3600);
 
-            #endregion
+            //List<RaffleAutomationTests.Helpers.DbModels.Raffle> activeDreamhomeList = RaffleAutomationTests.Helpers.AppDbHelper.DreamHome.GetAllRaffles().Where(x => x.Active == true).Select(x => x).ToList();
+            //List<RaffleAutomationTests.Helpers.DbModels.Raffle> dreamhomeList = RaffleAutomationTests.Helpers.AppDbHelper.DreamHome.GetAllRaffles().Distinct(new RaffleAutomationTests.Helpers.ItemNameEqualityComparer()).Where(x => x.IsClosed == true).Select(x => x).ToList();
+            //RaffleAutomationTests.Helpers.AppDbHelper.DreamHome.DeactivateDreamHome(activeDreamhomeList);
+            //dreamhomeList.Reverse();
+            //RaffleAutomationTests.Helpers.AppDbHelper.DreamHome.ActivateOneClosedDreamHome(dreamhomeList, -3600, 3600);
+
+            //#endregion
 
             SignInRequestWeb.MakeSignIn(Credentials.USER_LOGIN, Credentials.USER_PASSWORD, out SignInResponseModelWeb? token);
             var basketOrders = BasketRequest.GetBasketOrders(token);
@@ -458,7 +458,7 @@ namespace PlaywrightAutomation
         [AllureSubSuite("Payment")]
         public async Task PurchaseTwoActiveDreamHome()
         {
-            
+
             #region Update two active dreamhomes
 
             int addFirstStartHours = -3600;
@@ -494,8 +494,8 @@ namespace PlaywrightAutomation
             #region Postconditions
 
             RaffleAutomationTests.Helpers.AppDbHelper.Users.DeleteTestUserData("@putsbox.com");
-            
-            
+
+
             #endregion
         }
 
@@ -509,7 +509,7 @@ namespace PlaywrightAutomation
         [AllureSubSuite("Payment")]
         public async Task SignUpAddTicketsMakePurchase()
         {
-            
+
             await Pages.WEB.HeaderPage.Header.OpenHomePage();
             await Common.CloseCookiesPopUp();
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
@@ -528,7 +528,6 @@ namespace PlaywrightAutomation
             DreamHomeOrderRequestWeb.MultipleAddDreamhomeTickets(token, prizesList.FirstOrDefault(), 15);
             await UserProfile.OpenMyTicketsCompetitions();
             await UserProfile.OpenDreamHomeHistoryList();
-            await UserProfile.ScrollToEndOfHistoryList(countOrders);
             await UserProfile.VerifyAddingTickets(totalOrder, countOrders);
             await Basket.ClickCartBtn();
             countOrders = await Basket.GetOrderCount();
@@ -537,7 +536,6 @@ namespace PlaywrightAutomation
             await ThankYou.VerifyThankYouPageIsDisplayed();
             await UserProfile.OpenMyTicketsCompetitions();
             await UserProfile.OpenDreamHomeHistoryList();
-            await UserProfile.ScrollToEndOfHistoryList(countOrders);
             await UserProfile.VerifyAddingTickets(totalOrder, countOrders);
 
             #region Postconditions
@@ -557,7 +555,7 @@ namespace PlaywrightAutomation
         [AllureSubSuite("Payment")]
         public async Task SignUpAddReferralsAndTicketsMakePurchase()
         {
-            
+
             await Pages.WEB.HeaderPage.Header.OpenHomePage();
             await Common.CloseCookiesPopUp();
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
@@ -611,7 +609,7 @@ namespace PlaywrightAutomation
         [AllureSubSuite("Payment")]
         public async Task GetPurchaseDreamHome()
         {
-            
+
             await Pages.WEB.HeaderPage.Header.OpenHomePage();
             SignUpRequest.RegisterNewUser(out SignUpResponse? response);
             SignInRequestWeb.MakeSignIn(response.User.Email, Credentials.USER_PASSWORD, out SignInResponseModelWeb? token);
@@ -649,10 +647,24 @@ namespace PlaywrightAutomation
         }
 
         [Test]
-        public async Task Demo()
+        public async Task Demotest()
         {
-            var page = await Common.CloseTabAndWait30Seconds();
+            string name = string.Empty;
+            SignUpRequest.RegisterNewUser(out SignUpResponse? response);
+            await Common.CloseCookiesPopUp();
+            await SignIn.MakeSignIn(response.User.Email, Credentials.USER_PASSWORD);
+            await SignIn.VerifyIsSignIn();
             await Home.OpenHomePage();
+            await Home.AddTicketsToBasket(0);
+            await Basket.MakeAPurchasePayPal();
+            await ThankYou.VerifyThankYouPageIsDisplayed();
+            await ThankYou.ClickViewTickets();
+            await UserProfile.OpenSubscriptionsTab();
+            await UserProfile.BuyTenPoundsSub();
+            await Basket.EnterCardDetails();
+            await Basket.ClickPayNowBtn();
+            await ThankYou.VerifyThankYouPageIsDisplayed();
+
         }
 
         //[Test, Category("Payment")]

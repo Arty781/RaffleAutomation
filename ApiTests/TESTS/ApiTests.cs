@@ -27,55 +27,25 @@ namespace API
 
         public void Demo()
         {
-            var customDayOrder = new Dictionary<string, int>
-            {
-                { "Monday", 1 },
-                { "Tuesday", 2 },
-                { "Wednesday", 3 },
-                { "Thursday", 4 },
-                { "Friday", 5 },
-                { "Saturday", 6 },
-                { "Sunday", 7 }
-            };
+            //Insert.InsertSubscriptionModel(Errors.ErrorTotalCost.ERROR_BAD_TRACK_DATA);
+            var raffle = AppDbHelper.DreamHome.GetAciveRaffles().Where(x => x.EndsAt > DateTime.Now).Select(x => x).ToList();
+            var subscriptionsModel = AppDbHelper.Subscriptions.GetAllSubscriptionModels();
+            SignUpResponse? responseFail = null;
+            SignUpResponse? response = null;
 
-            var client = new MongoClient(DbConnection.DB_STAGING_CONNECTION_STRING);
-            var database = client.GetDatabase(DbConnection.DB_STAGING);
-            var collection = database.GetCollection<DbModels.Orders>("orders");
-            var collection2 = database.GetCollection<DbModels.Orders>("archiveorders");
-            var filter = Builders<DbModels.Orders>.Filter.And(
-                Builders<DbModels.Orders>.Filter.Gte("purchaseDate", new DateTime(2023, 2, 07)),
-                Builders<DbModels.Orders>.Filter.Eq("paymentStatus", "ACCEPTED"),
-                Builders<DbModels.Orders>.Filter.Nin("orderType","SUBSCRIPTION")
-            );
-            var orders = collection.FindSync(filter).ToList();
-            var archiveorders = collection2.FindSync(filter).ToList();
-            var combinedData = new List<DbModels.Orders>();
-            combinedData.AddRange(orders);
-            combinedData.AddRange(archiveorders);
-
-            var groupedData = combinedData
-            .GroupBy(record => (record.PurchaseDate.Value.Date, record.PurchaseDate.Value.Hour))
-            .OrderBy(group => group.Key.Date)
-            .ThenBy(group => group.Key.Hour)
-            .Select(group => new
+            for (int i = 0; i < 1000; i++)
             {
-                DateAndHour = $"{group.Key.Date:yyyy-MM-dd} {group.Key.Hour:00}:00:00",
-                Count = group.Count()
-            })
-            .OrderByDescending(rec => rec.Count)
-            .ToList();
-            string path = Browser.RootPath() + "output.csv";
-            using (var writer = new StreamWriter(path))
-            {
-                writer.WriteLine("Date and Time,Total Count");
+                var emailFail = string.Concat("qatester-", DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-fff"), "@putsbox.com");
+                SignUpRequest.RegisterNewUser(emailFail, out responseFail);
+                var user = AppDbHelper.Users.GetUserByEmail(emailFail);
+                Insert.InsertSubscriptionsToUserForFailPayment(user, raffle.FirstOrDefault(), subscriptionsModel);
 
-                foreach (var result in groupedData)
-                {
-                    writer.WriteLine($"{result.DateAndHour}; {result.Count}"); 
-                }
+                string email = "qatester" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "@putsbox.com";
+                SignUpRequest.RegisterNewUser(email, out response);
+                var subscriptionsList = SubscriptionsRequest.GetActiveSubscriptions().SubscriptionModels.Where(x => x.TotalCost == 2500).Select(x => x).FirstOrDefault();
+                var users = AppDbHelper.Users.GetUserByEmailpattern(email).FirstOrDefault();
+                AppDbHelper.Insert.InsertSubscriptionsToUsers(users, raffle.FirstOrDefault(), subscriptionsModel);
             }
-
-            Console.WriteLine("CSV file saved successfully.");
         }
     }
 

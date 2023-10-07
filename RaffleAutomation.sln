@@ -19,9 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiTests", "ApiTests\ApiTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "End2EndTests", "End2EndTests\End2EndTests.csproj", "{00FEDB2D-C0C0-411C-9768-C2A4BF7CE20B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardHelper", "ClipboardHelper\ClipboardHelper.csproj", "{DBF79758-050D-4042-9019-74AB746264DF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaywrightAutomation", "PlaywrightAutomation\PlaywrightAutomation.csproj", "{53A4FB4C-9E21-4D2C-82C2-2B9CC6C4946B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlaywrightAutomation", "PlaywrightAutomation\PlaywrightAutomation.csproj", "{53A4FB4C-9E21-4D2C-82C2-2B9CC6C4946B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,18 +87,6 @@ Global
 		{00FEDB2D-C0C0-411C-9768-C2A4BF7CE20B}.Release_Mobile|Any CPU.Build.0 = Release|Any CPU
 		{00FEDB2D-C0C0-411C-9768-C2A4BF7CE20B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00FEDB2D-C0C0-411C-9768-C2A4BF7CE20B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.Chrome|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.Chrome|Any CPU.Build.0 = Debug|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.Debug_Mobile|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.Debug_Mobile|Any CPU.Build.0 = Debug|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.FireFox|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.FireFox|Any CPU.Build.0 = Debug|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.Release_Mobile|Any CPU.ActiveCfg = Release|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.Release_Mobile|Any CPU.Build.0 = Release|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBF79758-050D-4042-9019-74AB746264DF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53A4FB4C-9E21-4D2C-82C2-2B9CC6C4946B}.Chrome|Any CPU.ActiveCfg = Debug|Any CPU
 		{53A4FB4C-9E21-4D2C-82C2-2B9CC6C4946B}.Chrome|Any CPU.Build.0 = Debug|Any CPU
 		{53A4FB4C-9E21-4D2C-82C2-2B9CC6C4946B}.Debug_Mobile|Any CPU.ActiveCfg = Debug|Any CPU

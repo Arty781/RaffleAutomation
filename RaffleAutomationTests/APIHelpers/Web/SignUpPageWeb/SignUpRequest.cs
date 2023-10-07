@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework.Constraints;
+using RestSharp;
+using System.Net.Http;
 
 namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
 {
@@ -13,8 +15,8 @@ namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
                 Password = Credentials.PASSWORD,
                 Email = "qatester-" + DateTime.Now.ToString("yyyy-MM-dThh-mm-ss") + "@putsbox.com",
                 EmailCommunication = true,
-                Country = Country.COUNTRY_CODES[137],
-                Phone = RandomHelper.RandomPhone(),
+                Country = Country.COUNTRY_CODES[RandomHelper.RandomIntNumber(100)],
+                Phone = "",
                 Notifications = new()
                 {
                     All = true,
@@ -26,6 +28,31 @@ namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
                 }
 
             };            
+            return JsonConvert.SerializeObject(req);
+        }
+
+        private static string JsonBody(string email)
+        {
+            SignUpRequestModel req = new()
+            {
+                Name = Name.FirstName(),
+                Surname = Name.LastName(),
+                Password = Credentials.PASSWORD,
+                Email = email,
+                EmailCommunication = true,
+                Country = Country.COUNTRY_CODES[RandomHelper.RandomIntNumber(100)],
+                Phone = "",
+                Notifications = new()
+                {
+                    All = true,
+                    DreamHome = true,
+                    FixedOdds = true,
+                    Lifestyle = true,
+                    MyCompetitions = true,
+                    NewPrizes = true
+                }
+
+            };
             return JsonConvert.SerializeObject(req);
         }
 
@@ -66,14 +93,35 @@ namespace RaffleAutomationTests.APIHelpers.Web.SignUpPageWeb
             req.AddHeader("Connection", "Keep-Alive");
             req.AddHeader("applicationid", "WppJsNsSvr");
             req.AddHeader("accept-encoding", "gzip, deflate, br");
-            req.AddHeader("accept", "application/json, */*");
+            req.AddHeader("accept", "application/json, text/plain, */*");
             req.LoadBodyFromString(JsonBody(), charset: "utf-8");
 
             Http http = new();
             HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
-            response = http.LastMethodSuccess
+            response = resp.StatusCode.ToString().StartsWith("2")
             ? JsonConvert.DeserializeObject<SignUpResponse>(resp?.BodyStr ?? throw new Exception("Response body is null."))
-            : throw new ArgumentException(http.LastErrorText);
+            : throw new ArgumentException("Status: " + resp.StatusCode + "\r\n" + resp.BodyStr);
+        }
+
+        public static void RegisterNewUser(string email, out SignUpResponse? response)
+        {
+            HttpRequest req = new()
+            {
+                HttpVerb = "POST",
+                Path = $"api/users/signup",
+                ContentType = "application/json"
+            };
+            req.AddHeader("Connection", "Keep-Alive");
+            req.AddHeader("applicationid", "WppJsNsSvr");
+            req.AddHeader("accept-encoding", "gzip, deflate, br");
+            req.AddHeader("accept", "application/json, text/plain, */*");
+            req.LoadBodyFromString(JsonBody(email), charset: "utf-8");
+
+            Http http = new();
+            HttpResponse resp = http.SynchronousRequest(ApiEndpoints.API_CHIL, 443, true, req);
+            response = resp.StatusCode.ToString().StartsWith("2")
+            ? JsonConvert.DeserializeObject<SignUpResponse>(resp?.BodyStr ?? throw new Exception("Response body is null."))
+            : throw new ArgumentException("Status: " + resp.StatusCode + "\r\n" + resp.BodyStr);
         }
 
         public static SignUpResponse? RegisterNewReferral(string referralKey)

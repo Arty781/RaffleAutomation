@@ -1,5 +1,6 @@
 ﻿using PlaywrightAutomation.Pages.WEB.CommonPage;
 using PlaywrightAutomation.Pages.WEB.ThankYouPage;
+using PlaywrightAutomation.Pages.WEB.ThirdPartyPages.PayPalPage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,14 @@ namespace PlaywrightAutomation.Pages.WEB.BasketPage
         {
             await GoToPage(Endpoints.Web.BASKET, btncheckOutNow);
             await WaitUntil.ElementIsVisible(btncheckOutNow);
+        }
+
+        public static async Task ClickPayPalBtn()
+        {
+            await WaitUntil.ElementIsVisible(framePayPal);
+            var frame = await Browser.Driver.QuerySelectorAsync(framePayPal).Result.ContentFrameAsync();
+            await frame.ClickAsync(btnPayPal);
+            var defaultFrame = frame.ParentFrame;
         }
 
         
@@ -150,7 +159,16 @@ namespace PlaywrightAutomation.Pages.WEB.BasketPage
             
         }
 
-        
+        public static async Task MakeAPurchasePayPal()
+        {
+            await ClickCheckoutNowBtn();
+            //await ClickPayPalBtn();
+            await PayPal.LogInPayPal();
+
+
+        }
+
+
         public static async Task MakeAPurchaseSubscriptionAsUnauthorizedUser(string email, string subscriptionId)
         {
             await GoToBasket(subscriptionId);

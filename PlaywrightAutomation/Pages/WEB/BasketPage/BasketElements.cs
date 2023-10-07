@@ -28,6 +28,8 @@ namespace PlaywrightAutomation.Pages.WEB.BasketPage
         public const string inputCvv = "//input[@id='checkout-frames-cvv']";
         public const string btnPay = "#pay-button";
         public const string orderSummaryBtn = "//div[@class='checkout-header']";
+        public const string framePayPal = "//iframe[@title='PayPal']";
+        public const string btnPayPal = "#buttons-container > div > div > div";
 
         #region Checkout Verification page
 
