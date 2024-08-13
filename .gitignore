@@ -366,3 +366,6 @@ FodyWeavers.xsd
 /UploadImages
 /RaffleAutomationTests/_!CloseOpenWith.bat
 /allure serve.bat
+/RaffleAutomationTests/Helpers/AppDbHelper.cs
+/RaffleAutomationTests/Helpers/TelegramHelper.cs
+/RaffleAutomationTests/Helpers/TestData.cs
